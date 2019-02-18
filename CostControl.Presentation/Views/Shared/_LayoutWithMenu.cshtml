@@ -1,0 +1,82 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="wait" class="spinner" style="display:none;position:absolute;top:50%;left:50%;padding:2px;">
+    <div class="dot1"></div>
+    <div class="dot2"></div>
+</div>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">مدیریت هزینه</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a asp-controller="Home" asp-action="Index" class="nav-link">خانه <span class="sr-only">(current)</span></a>
+            </li>
+
+            <li class="nav-item active">
+                <a asp-controller="Home" asp-action="GetData" class="nav-link">بروزرسانی <span class="sr-only"></span></a>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="settingNavbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    تنظیمات
+                </a>
+                <div class="dropdown-menu" aria-labelledby="settingNavbarDropdownMenuLink">
+                    <a id="SalePoint" class="dropdown-item" href="#">مرکز فروش</a>
+                    <a id="CostPointGroup" class="dropdown-item" href="#">گروه مرکز هزینه</a>
+                    <a id="CostPoint" class="dropdown-item" href="#">مرکز هزینه</a>
+                    <a id="SaleCostPoint" class="dropdown-item" href="#">مرکز هزینه - مرکز فروش</a>
+                    <a id="OverCostType" class="dropdown-item" href="#">سرفصل هزینه های سربار</a>
+                    <a id="OverCost" class="dropdown-item" href="#">هزینه های سربار</a>
+                    <a id="ConsumptionUnit" class="dropdown-item" href="#">واحد های مصرفی</a>
+                    <a id="Ingredient" class="dropdown-item" href="#">انبار مواد خام</a>
+                    <a id="Food" class="dropdown-item" href="#">دستور غذا</a>
+                    <a id="Menu" class="dropdown-item" href="#">منو</a>
+                    @*<a id="Sale" class="dropdown-item" href="#">فروش</a>*@
+                    <a id="Inventory" class="dropdown-item" href="#">انبار</a>
+                    <a id="Draft" class="dropdown-item" href="#">حواله انبار</a>
+                    <a id="IntakeRemittance" class="dropdown-item" href="#">حواله مصرفی</a>
+                    <a id="Setting" class="dropdown-item" href="#">تنظیمات</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="reportNavbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    گزارشات
+                </a>
+                <div class="dropdown-menu" aria-labelledby="reportNavbarDropdownMenuLink">
+                    <a class="dropdown-item" href="#">میزان مصرف مواد اولیه</a>
+                    <a class="dropdown-item" href="#">Cost</a>
+                    <a class="dropdown-item" href="#">Net Cost</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a asp-controller="Home" asp-action="About" class="nav-link">در باره ما</a>
+            </li>
+            <li class="nav-item">
+                <a asp-controller="Home" asp-action="Contact" class="nav-link">تماس با ما</a>
+            </li>
+            <li class="nav-item">
+                <a asp-controller="IncommingUser" asp-action="Logout" class="nav-link">خروج</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<partial name="_CookieConsentPartial" />
+
+@RenderBody()
+
+<hr />
+<footer>
+    <p>&copy; نرم افزار مدیریت هزینه ها</p>
+</footer>
+
+@section Scripts
+    {
+    @RenderSection("Scripts", required: false)
+}

@@ -1,0 +1,49 @@
+﻿@model CostControl.BusinessEntity.Models.CostControl.Ingredient
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("DeleteIngredient", "Ingredient", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return SubmitForm(this)" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div>
+        <div>
+            <h3> "@Model.Name" <br /> آیا اطمینان در حذف دارید؟</h3>
+        </div>
+        <br />
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="حذف" class="btn btn-danger" />
+                <input id="btnCancel" type="button" class="btn btn-default" data-dismiss="modal" value="انصراف" />
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts{
+    <script>
+        function SubmitForm(form) {
+            debugger;
+            $.ajax({
+                type: "POST",
+                url: form.action,
+                data: $(form).serialize(),
+                success: function (data) {
+                    debugger;
+                    if (data.success) {
+                        $('body').removeClass('modal-open');
+                        $('.modal-backdrop').remove();
+                        $('#apModal').hide();
+                        getData('IngredientList', 'Ingredient');
+                    } else {
+                        return false;
+                    }
+                }
+            });
+
+            return false;
+        }
+    </script>
+}

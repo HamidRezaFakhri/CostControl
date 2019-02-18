@@ -1,0 +1,95 @@
+﻿@model CostControl.BusinessEntity.Models.CostControl.Recipe
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+
+	var parentId = Model.FoodId;
+}
+
+@using (Html.BeginForm("AddRecipe", "Recipe", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return SubmitForm(this)" }))
+{
+	@Html.AntiForgeryToken()
+
+	<div class="form-horizontal">
+		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+		@Html.HiddenFor(model => model.FoodId)
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.IngredientId, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.DropDownListFor(model => model.IngredientId, ViewBag.Ingredients as IEnumerable<SelectListItem>,
+						"انتخاب کنید ...", htmlAttributes: new { @class = "form-control" })
+				@Html.ValidationMessageFor(model => model.IngredientId, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.ConsumptionUnitId, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.DropDownListFor(model => model.ConsumptionUnitId, ViewBag.ConsumptionUnits as IEnumerable<SelectListItem>,
+						"انتخاب کنید ...", htmlAttributes: new { @class = "form-control" })
+				@Html.ValidationMessageFor(model => model.ConsumptionUnitId, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.ConvertionRate, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.ConvertionRate, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.ConvertionRate, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-md-offset-2 col-md-10">
+				<input type="submit" value="ثبت" class="btn btn-success" />
+				<input id="btnCancel" type="button" class="btn btn-default" data-dismiss="modal" value="انصراف" />
+			</div>
+		</div>
+	</div>
+}
+
+@section scripts{
+	<script>
+		function SubmitForm(form) {
+			debugger;
+
+			var Recipe =
+				{
+					FoodId: @Model.FoodId,
+					IngredientId: @Model.IngredientId,
+					Amount: @Model.Amount,
+					ConsumptionUnitId: @Model.ConsumptionUnitId,
+					ConvertionRate: @Model.ConvertionRate
+				};
+
+			$.ajax({
+				type: "POST",
+				url: form.action,
+				data: $(form).serialize(),
+				success: function (data) {
+					debugger;
+					if (data.success) {
+						$('body').removeClass('modal-open');
+						$('.modal-backdrop').remove();
+						$('#apSecondModal').hide();
+
+						getData('RecipeList', 'Recipe', 1, @Model.FoodId);
+					} else {
+						return false;
+					}
+				}
+			});
+
+			return false;
+		}
+	</script>
+}

@@ -1,0 +1,44 @@
+﻿@model CostControl.BusinessEntity.Models.CostControl.IntakeRemittance
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("AddIntakeRemittance", "IntakeRemittance", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return SubmitForm(this)" }))
+{
+	@Html.AntiForgeryToken()
+
+	<div class="form-horizontal">
+		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+		<div class="form-group">
+			<div class="col-md-offset-2 col-md-10">
+				<input type="submit" value="ثبت" class="btn btn-success" />
+				<input id="btnCancel" type="button" class="btn btn-default" data-dismiss="modal" value="انصراف" />
+			</div>
+		</div>
+	</div>
+}
+
+@section scripts{
+	<script>
+		function SubmitForm(form) {
+			debugger;
+			$.ajax({
+				type: "POST",
+				url: form.action,
+				data: $(form).serialize(),
+				success: function (data) {
+					debugger;
+					if (data.success) {
+						$('#apModal').modal('hide');
+						getData('IntakeRemittanceList', 'IntakeRemittance');
+					} else {
+						return false;
+					}
+				}
+			});
+
+			return false;
+		}
+	</script>
+}

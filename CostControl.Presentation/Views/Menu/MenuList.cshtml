@@ -1,0 +1,80 @@
+﻿@model CostControl.API.Models.ServiceResponse<CostControl.BusinessEntity.Models.CostControl.Menu>
+
+@{
+    Layout = null;
+    var addTitle = Helper.GetEntityTile<CostControl.BusinessEntity.Models.CostControl.Menu>(EnumTitle.Add);
+    var editTitle = Helper.GetEntityTile<CostControl.BusinessEntity.Models.CostControl.Menu>(EnumTitle.Edit);
+    var deleteTitle = Helper.GetEntityTile<CostControl.BusinessEntity.Models.CostControl.Menu>(EnumTitle.Delete);
+}
+
+<h2>@ViewData["title"]</h2>
+
+<div class="row well">
+    <div class="col-md-6">
+        <div class="btn-group" data-toggle="modal">
+            <a id="btnAddMenu" href="#" class="btn btn-primary"
+               onclick='createEntityModal("/Menu/AddMenu", "@addTitle")'>
+                <span class="fa fa-plus"> <i> جدید</i></span>
+            </a>
+
+        </div>
+    </div>
+    <div class="col-md-6">
+        @Html.TextBox("txtSearch", "", new { placeholder = "جستجو ...", @class = "form-input col-md-8" })
+        <button id="btnSearch" class="btn btn-light" type="button" onclick="search()">
+            <i class="fa fa-search"><span>&nbsp;جستجو</span></i>
+        </button>
+    </div>
+</div>
+
+<table id="Menuslist" class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th><a id="Id" href="#">شناسه</a></th>
+            <th><a id="MenuName" href="#">نام</a></th>
+            <th><a id="code" href="#">کد</a></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="setMenuList">
+        @foreach (var item in Model.data)
+        {
+            <tr id="tr_@item.Id">
+                <td>@item.Id</td>
+                <td id="td_Name">@item.Name</td>
+                <td id="td_Code">@item.Code</td>
+                <td>
+                    <a href="#" class="btn btn-sm btn-warning"
+                       onclick="EditEntityModal(@item.Id, '/Menu/EditMenu/', '@editTitle')">
+                        <i class="fa fa-edit"><span> ویرایش </span></i>
+                    </a>
+
+                    <span> | </span>
+                    <a class="btn btn-sm btn-danger"
+                       onclick="DeleteEntityModal(@item.Id, '/Menu/DeleteMenu/', '@deleteTitle', '@item.Name')">
+                        <i class="fa fa-trash"><span> حذف </span></i>
+                    </a>
+
+                    <span> | </span>
+                    <a class="btn btn-sm btn-danger" onclick="mydelete(@item.Id)"> <i class="fa fa-trash"> اقلام خوراکی </i> </a>
+                    <span> | </span>
+                    <a class="btn btn-sm btn-danger" onclick="mydelete(@item.Id)"> <i class="fa fa-trash"> غذاها </i> </a>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<ul class="pagination justify-content-center" style="margin:20px 0">
+    <li class="page-item disabled"><a class="page-link" href="#">قبلی</a></li>
+
+    @for (int i = 1; i < (Model.totalPage + 2); i++)
+    {
+        <li class="page-item @(Model.currentPage == i ? "active" : "")">
+            <a asp-controller="Words" asp-action="Index" asp-route-pageNumber="@i" class="page-link">@i</a>
+        </li>
+    }
+
+    <li class="page-item"><a class="page-link" href="#">بعدی</a></li>
+</ul>

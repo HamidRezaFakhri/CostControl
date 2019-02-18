@@ -1,0 +1,79 @@
+﻿@model CostControl.BusinessEntity.Models.CostControl.Sale
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("EditSale", "Sale", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return SubmitForm(this)" }))
+{
+	@Html.AntiForgeryToken()
+
+	<div class="form-horizontal">
+		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.Code, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.SaleDate, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.SaleDate, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.SaleDate, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-md-offset-2 col-md-10">
+				<input type="submit" value="ثبت" class="btn btn-success" />
+				<input id="btnCancel" type="button" class="btn btn-default" data-dismiss="modal" value="انصراف" />
+			</div>
+		</div>
+	</div>
+}
+
+@section scripts{
+	@*<script language="javascript" type="text/javascript">
+		$(function () {
+			debugger;
+				$("form").submit(function (e) {
+					$.post($(this).attr("action"),
+						$(this).serialize(),
+						function (data) {
+							$("#result").html(data);
+						});
+					e.preventDefault();
+				});
+			});
+		</script>*@
+	<script>
+		function SubmitForm(form) {
+			debugger;
+			$.ajax({
+				type: "POST",
+				url: form.action,
+				data: $(form).serialize(),
+				success: function (data) {
+					debugger;
+					if (data.success) {
+						debugger;
+						
+						$('body').removeClass('modal-open');
+						$('.modal-backdrop').remove();
+						$('#apModal').hide();
+
+						getData('SaleList', 'Sale');
+					} else {
+						return false;
+					}
+				}
+			});
+			return false;
+		}
+	</script>
+}
+
+

@@ -1,0 +1,300 @@
+﻿@{
+	ViewData["Title"] = "Home Page";
+	Layout = "~/Views/Shared/_LayoutWithMenu.cshtml";
+}
+
+<div id="board">
+	Please Wait ...
+</div>
+
+@*<div class="loader"></div>*@
+
+@*<div id="wait"
+		 style="display:none;width:69px;height:89px;border:1px solid black;position:absolute;top:50%;left:50%;padding:2px;">
+		<img src='~/images/demo_wait.gif' width="64" height="64" />
+		<br>Please wait, Loading...
+	</div>*@
+
+<!-- Modal -->
+<div class="modal fade" id="apModal" role="dialog" aria-labelledby="apModalLabel" aria-hidden="true">
+	<div id="modalDialog" class="modal-dialog" role="document">
+		<div id="modalContent" class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="apModalLabel">Modal title</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div id="modalBody" class="modal-body">
+
+			</div>
+			<div id="commands" class="modal-footer d-none">
+				<button id="btnCancel" type="button" class="btn" data-dismiss="modal">انصراف</button>
+				<button id="btnSave" type="button" class="btn btn-danger">حذف</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!--Second Modal-->
+<div class="modal fade" id="apSecondModal" role="dialog" aria-labelledby="apSecondModalTitle" aria-hidden="true">
+	<div id="modalDialogSecond" class="modal-dialog" role="document">
+		<div id="modalContentSecond" class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="apModalLabelSecond">Modal title</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			@*<div id="selectCommandsSecond" class="modal-footer">
+					<button id="btnCancelSelect" type="button" class="btn btn-toolbar" data-dismiss="modal">Cancel</button>
+					<button id="btnSelect" type="button" class="btn btn-primary">Select</button>
+				</div>*@
+
+			<div id="modalBodySecond" class="modal-body">
+
+			</div>
+			<div id="commandsSecond" class="modal-footer d-none">
+				<button id="btnCancel" type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+				<button id="btnSave" type="button" class="btn btn-danger">حذف</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div>
+
+@section Scripts
+	{
+	<script>
+		$(document).ajaxStart(function () {
+			$("#wait").css("display", "block");
+		});
+		$(document).ajaxComplete(function () {
+			$("#wait").css("display", "none");
+		});
+
+		$(function () {
+			$("#board").empty();
+		});
+
+		$('#Recipe').click(function () {
+			getData('RecipeList', 'Recipe');
+		});
+
+		$('#Ingredient').click(function () {
+			$("#board").html("در حال بارگذاری ...");
+			$('#board').load('@Url.Action("IngredientList", "Ingredient")');
+		});
+
+		$('#OverCostType').click(function () {
+			getData('OverCostTypeList', 'OverCostType');
+		});
+
+		$('#OverCost').click(function () {
+			getData('OverCostList', 'OverCost');
+		});
+
+		$('#ConsumptionUnit').click(function () {
+			getData('ConsumptionUnitList', 'ConsumptionUnit');
+		});
+
+		$('#SalePoint').click(function () {
+			getData('SalePointList', 'SalePoint');
+		});
+
+		$('#SaleCostPoint').click(function () {
+			getData('SaleCostPointList', 'SaleCostPoint');
+		});
+
+		$('#CostPointGroup').click(function () {
+			getData('CostPointGroupList', 'CostPointGroup');
+		});
+
+		$('#CostPoint').click(function () {
+			getData('CostPointList', 'CostPoint');
+		});
+
+		$('#Menu').click(function () {
+			getData('MenuList', 'Menu');
+		});
+
+		$('#Sale').click(function () {
+			getData('SaleList', 'Sale');
+		});
+
+		$('#IntakeRemittance').click(function () {
+			getData('IntakeRemittanceList', 'IntakeRemittance');
+		});
+
+		$('#Inventory').click(function () {
+			getData('InventoryList', 'Inventory');
+		});
+
+		$('#Draft').click(function () {
+			getData('DraftList', 'Draft');
+		});
+
+		$('#Setting').click(function () {
+			getData('SettingList', 'Setting');
+		});
+
+		$('#Food').click(function () {
+			getData('FoodList', 'Food');
+		});
+
+		$('#Permission').click(function () {
+			$("#board").html("در حال بارگذاری ...");
+			$('#board').load('@Url.Action("MenuList", "Menu")');
+		});
+
+		$('#User').click(function () {
+			$("#board").html("در حال بارگذاری ...");
+			$('#board').load('@Url.Action("UserList", "IncommingUser")');
+		});
+
+		$('#ApiList').click(function () {
+			$("#board").html("در حال بارگذاری ...");
+			$("#board").load("http://localhost:4130/Help");
+		});
+
+		function createEntityModal(uri, title, modalLevel = 0) {
+			debugger;
+			$.ajax({
+				url: uri,
+				Type: "GET",
+				//headers: {
+				//	'Content-Type': 'application/x-www-form-urlencoded'
+				//},
+				error: function (err) {
+					alert(err.status + "<--------->" + err.statusCode);
+				}
+			}).done(
+				function (result) {
+					if (modalLevel === 0) {
+						$("#commands").addClass("d-none");
+						//$("#apModalLabel").html("افزودن " + ((title === 'undefined' || jQuery.trim(title) == '') ? '' : title) + ' جدید');
+						$("#apModalLabel").html(title);
+						$("#modalBody").html(result);
+						$("#apModal").modal("show");
+					}
+					else if (modalLevel === 1) {
+						$("#commandsSecond").addClass("d-none");
+						//$("#apModalLabelSecond").html("افزودن " + ((title === 'undefined' || jQuery.trim(title) == '') ? '' : title) + ' جدید');
+						$("#apModalLabelSecond").html(title);
+						$("#modalBodySecond").html(result);
+						$("#apSecondModal").modal("show");
+					}
+				});
+		}
+
+		function EditEntityModal(id, uri, title) {
+			debugger;
+			$.ajax({
+				url: uri + id,
+				Type: "GET",
+				data: {},
+				error: function (err) {
+					alert(err.status + "<--------->" + err.statusCode);
+				}
+			}).done(
+				function (result) {
+					$("#commands").addClass("d-none");
+					//$("#apModalLabel").html("اصلاح " + ((title === 'undefined' || jQuery.trim(title) == '') ? '' : title));
+					$("#apModalLabel").html(title);
+					$("#modalBody").html(result);
+					$("#apModal").modal("show");
+				});
+		}
+
+		function DeleteEntityModal(id, uri, title, itemtext/*, callback*/) {
+			debugger;
+			$.ajax({
+				url: uri + id,
+				Type: "GET",
+				data: {},
+				error: function (err) {
+					alert(err.status + "<--------->" + err.statusCode);
+				}
+			}).done(
+				function (result) {
+					debugger;
+					//$("#commands").removeClass("d-none");
+					//$("#apModalLabel").html("حذف " + ((title === 'undefined' || jQuery.trim(title) == '') ? '' : title));
+					$("#apModalLabel").html(title);
+					$("#modalBody").html(result);
+					//$("#modalBody").html('آیا اطمینان در حذف دارید  "' + '\'' + itemtext + '\'');
+					$("#apModal").modal('show');
+				});
+
+			//debugger;
+			//$("#commands").removeClass("d-none");
+   //         //$("#apModalLabel").html("حذف " + ((title === 'undefined' || jQuery.trim(title) == '') ? '' : title));
+			//$("#apModalLabel").html(title);
+			//$("#modalBody").html('آیا اطمینان در حذف دارید  "' + '\'' + itemtext + '\'');
+			//$("#apModal").modal('show');
+			//$("#btnSave").click(function () {
+			//	//callback(id);
+
+   //             $.ajax({
+   //                 url: uri + id,
+   //                 type: "GET",
+   //                 data: {}
+   //             }).done(function (result) {
+   //                 $('#apModal').modal('show');
+
+   //                 $('#modalBody').html(result);
+   //             });
+
+			//	//$("#apModal").modal("hide");
+			//});
+		}
+
+		//$("#apModal").on("hidden.bs.modal", function () {
+		//	alert('hi');
+		//});
+
+		//$(document).on('hide.bs.modal', '#apModal', function () {
+		//	alert('fff');
+		//	//Do stuff here
+		//});
+
+		//$('#apModal')
+		//	.on('hide', function () {
+		//		console.log('hide rrrrrrrrrrrrrrrrrrrrrrrr');
+		//	})
+		//	.on('hidden', function () {
+		//		console.log('hidden rrrrrrrrrrrrrrrrrrrrrrrr');
+		//	})
+		//	.on('show', function () {
+		//		console.log('show rrrrrrrrrrrrrrrrrrrrrrrr');
+		//	})
+		//	.on('shown', function () {
+		//		console.log('shown rrrrrrrrrrrrrrrrrrrrrrrr')
+		//	});
+
+		function getData(actionName, controllerName, level = 0, param) {
+			//$('#board').load('@Url.Action("SalePointList", "SalePoint")');
+
+			var _param = '';
+
+			if (param !== '' && param !== 'undefined' /*&& !isNaN(param)*/)
+				_param = '/' + param;
+
+			debugger;
+			$.ajax({
+				url: "/" + controllerName + "/" + actionName + "?param=uyuyu" /*_param*/,
+				type: "GET",
+				data: {}
+			}).done(function (result) {
+				if (level === 0) {
+					$("#board").html("در حال بارگذاری ...");
+					$('#board').html(result);
+				}
+				else if (level === 1) {
+					$("#modalBody").html("در حال بارگذاری ...");
+					$('#modalBody').html(result);
+				}
+			});
+		}
+
+	</script>
+}

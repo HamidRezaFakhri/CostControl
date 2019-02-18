@@ -1,0 +1,75 @@
+﻿@model CostControl.API.Models.ServiceResponse<CostControl.BusinessEntity.Models.CostControl.SaleCostPoint>
+
+@{
+	Layout = null;
+	var addTitle = Helper.GetEntityTile<CostControl.BusinessEntity.Models.CostControl.SaleCostPoint>(EnumTitle.Add);
+	var editTitle = Helper.GetEntityTile<CostControl.BusinessEntity.Models.CostControl.SaleCostPoint>(EnumTitle.Edit);
+	var deleteTitle = Helper.GetEntityTile<CostControl.BusinessEntity.Models.CostControl.SaleCostPoint>(EnumTitle.Delete);
+}
+
+<h2>@ViewData["title"]</h2>
+
+<div class="row well">
+	<div class="col-md-6">
+		<div class="btn-group" data-toggle="modal">
+			<a id="btnAddSaleCostPoint" href="#" class="btn btn-primary"
+			   onclick='createEntityModal("/SaleCostPoint/AddSaleCostPoint", "@addTitle")'>
+				<span class="fa fa-plus"> <i> جدید</i></span>
+			</a>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		@Html.TextBox("txtSearch", "", new { placeholder = "جستجو ...", @class = "form-input col-md-8" })
+		<button id="btnSearch" class="btn btn-light" type="button" onclick="search()">
+			<i class="fa fa-search"><span>&nbsp;جستجو</span></i>
+		</button>
+	</div>
+
+</div>
+
+<table id="SaleCostPointslist" class="table table-bordered table-striped">
+	<thead>
+		<tr>
+			<th><a id="Id" href="#">شناسه</a></th>
+			<th><a id="SalePointName" href="#">مرکز فروش</a></th>
+			<th><a id="CostPointName" href="#">مرکز هزینه</a></th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody id="setSaleCostPointList">
+		@foreach (var item in Model.data)
+		{
+			<tr id="tr_@item.Id">
+				<td>@item.Id</td>
+				<td id="td_SalePointName">@item.SalePointName</td>
+				<td id="td_CostPointName">@item.CostPointName</td>
+				<td>
+					<a href="#" class="btn btn-sm btn-warning"
+					   onclick="EditEntityModal(@item.Id, '/SaleCostPoint/EditSaleCostPoint/', '@editTitle (@item.SalePointName)')">
+						<i class="fa fa-edit"><span> ویرایش </span></i>
+					</a>
+
+					<span> | </span>
+					<a class="btn btn-sm btn-danger"
+					   onclick="DeleteEntityModal(@item.Id, '/SaleCostPoint/DeleteSaleCostPoint/', '@deleteTitle', '@item.SalePointName')">
+						<i class="fa fa-trash"><span> حذف </span></i>
+					</a>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+<ul class="pagination justify-content-center" style="margin:20px 0">
+	<li class="page-item disabled"><a class="page-link" href="#">قبلی</a></li>
+
+	@for (int i = 1; i < (Model.totalPage + 2); i++)
+	{
+		<li class="page-item @(Model.currentPage == i ? "active" : "")">
+			<a asp-controller="Words" asp-action="Index" asp-route-pageNumber="@i" class="page-link">@i</a>
+		</li>
+	}
+
+	<li class="page-item"><a class="page-link" href="#">بعدی</a></li>
+</ul>
