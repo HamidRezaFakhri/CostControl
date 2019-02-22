@@ -1,6 +1,7 @@
 ﻿using CostControl.Entity.Models.CostControl;
 using CostControl.Entity.Models.Security;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -14,13 +15,26 @@ namespace CostControl.Data.DAL
     {
         //public CostControlDbContext(DbContextOptions options) : base(options) { }
 
+        //private static ILoggerFactory LoggerFactory => new LoggerFactory().AddConsole(LogLevel.Trace);
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
+                //optionsBuilder.EnableDetailedErrors;
+                //optionsBuilder.EnableSensitiveDataLogging;
+                //await db.Database.EnsureDeletedAsync();
+                //await db.Database.EnsureCreatedAsync();
+
+                //var log = new LoggerFactory(new[] { new ConsoleLoggerProvider((_, __) => true, true) });
+                //optionsBuilder.UseLoggerFactory(log);
+
                 optionsBuilder
-                    .UseSqlServer(@"Data Source=.\fakhri;Initial Catalog=CostControl;Trusted_Connection=false;
-                                    User ID=sa; Password=2129;MultipleActiveResultSets=true;");
+                    .UseSqlServer(@"Data Source=.\Hrf;Initial Catalog=CostControl;Trusted_Connection=false;
+                                    User ID=sa; Password=2129;MultipleActiveResultSets=true;")
+                    .EnableSensitiveDataLogging();
+                    //.UseLoggerFactory(LoggerFactory);
+                ;
             }
             base.OnConfiguring(optionsBuilder);
         }

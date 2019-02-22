@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using CostControl.BusinessLogic.Mapper.Helper;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
@@ -12,6 +11,33 @@ using SecurityEntityModel = CostControl.Entity.Models.Security;
 
 namespace CostControl.BusinessLogic.Mapper
 {
+    //public class DateTimeTypeConverter : ITypeConverter<string, DateTime>
+    //{
+    //    public DateTime Convert(string source, DateTime destination, ResolutionContext context)
+    //    {
+    //        return System.Convert.ToDateTime(source);
+    //    }
+    //}
+
+    public class CurrencyFormatter : IValueConverter<decimal, string>
+    {
+        public string Convert(decimal sourceMember, ResolutionContext context)
+            => sourceMember.ToString("c");
+    }
+
+    public class TypeTypeConverter : ITypeConverter<string, Type>
+    {
+        public Type Convert(string source, Type destination, ResolutionContext context)
+        {
+            return Assembly.GetExecutingAssembly().GetType(source);
+        }
+    }
+
+    //http://docs.automapper.org/en/stable/Configuration.html
+    //https://visualstudiomagazine.com/Articles/2012/02/01/Simplify-Your-Projections-with-AutoMapper.aspx?Page=2
+    //https://csharp.hotexamples.com/examples/-/AutoMapper/CreateMap/php-automapper-createmap-method-examples.html
+    //https://www.fuget.org/packages/AutoMapper/6.2.0/lib/net40/AutoMapper.dll/AutoMapper/IMappingExpression%602
+    //https://searchcode.com/codesearch/view/4344762/
     public class ClientMappingProfile : Profile
     {
         public override string ProfileName
@@ -21,6 +47,9 @@ namespace CostControl.BusinessLogic.Mapper
 
         public ClientMappingProfile()
         {
+            //SourceMemberNamingConvention = new LowerUnderscoreNamingConvention();
+            //DestinationMemberNamingConvention = new PascalCaseNamingConvention();
+
             CreateMap<SecurityEntityModel.Role, SecurityBusinessModel.Role>(MemberList.None)
                 //.ForMember(dest => dest.Users, opt => opt.Ignore())
                 //.ForMember(dest => dest.Users, opt => opt.MapFrom(src => src.Users))
@@ -56,7 +85,11 @@ namespace CostControl.BusinessLogic.Mapper
             CreateMap<CostControlEntityModel.Sale, CostControlBusinessModel.Sale>(MemberList.None).ReverseMap();
             CreateMap<CostControlEntityModel.SaleItem, CostControlBusinessModel.SaleItem>(MemberList.None).ReverseMap();
             CreateMap<CostControlEntityModel.CostPointGroup, CostControlBusinessModel.CostPointGroup>(MemberList.None).ReverseMap();
-            CreateMap<CostControlEntityModel.CostPoint, CostControlBusinessModel.CostPoint>(MemberList.None).ReverseMap();
+
+            CreateMap<CostControlEntityModel.CostPoint, CostControlBusinessModel.CostPoint>(MemberList.None)
+                .ForMember(dest => dest.CostPointGroupName, opt => opt.MapFrom(src => src.CostPointGroup.Name))
+                .ReverseMap();
+
             CreateMap<CostControlEntityModel.SaleCostPoint, CostControlBusinessModel.SaleCostPoint>(MemberList.None)
                 //.ForMember(dest => dest.CostPointName, opt => opt.MapFrom(src => src.CostPoint.Name))
                 //.ForMember(dest => dest.SalePointName, opt => opt.MapFrom(src => src.SalePoint.Name))
@@ -82,7 +115,7 @@ namespace CostControl.BusinessLogic.Mapper
         //    return mappedSelector;
         //}
 
-        
+
 
         //private Expression<Func<TDestination, TProperty>> GetMappedSelector<TSource, TDestination, TProperty>(Expression<Func<TSource, TProperty>> selector)
         //{
@@ -130,7 +163,7 @@ namespace CostControl.BusinessLogic.Mapper
         //        return memberExpr != null ? memberExpr.Member : null;
         //    }
         //}
-        
+
 
         //public IQueryable<CostControlBusinessModel.SaleCenter> Find(Expression<Func<CostControlEntityModel.SaleCenter, bool>> predicate)
         //{

@@ -33,29 +33,31 @@
             <th><a id="Id" href="#">شناسه</a></th>
             <th><a id="CostPointName" href="#">نام</a></th>
             <th><a id="code" href="#">کد</a></th>
+            <th><a id="CostPointGroupName" href="#">نام گروه</a></th>
             <th></th>
         </tr>
     </thead>
     <tbody id="setCostPointList">
         @foreach (var item in Model.data)
         {
-            <tr id="tr_@item.Id">
-                <td>@item.Id</td>
-                <td id="td_Name">@item.Name</td>
-                <td id="td_Code">@item.Code</td>
-                <td>
-                    <a href="#" class="btn btn-sm btn-warning"
-                       onclick="EditEntityModal(@item.Id, '/CostPoint/EditCostPoint/', '@editTitle (@item.Name)')">
-                        <i class="fa fa-edit"><span> ویرایش </span></i>
-                    </a>
+        <tr id="tr_@item.Id">
+            <td>@item.Id</td>
+            <td id="td_Name">@item.Name</td>
+            <td id="td_Code">@item.Code</td>
+            <td id="td_CostPointGroupName">@item.CostPointGroupName</td>
+            <td>
+                <a href="#" class="btn btn-sm btn-warning"
+                   onclick="EditEntityModal(@item.Id, '/CostPoint/EditCostPoint/', '@editTitle (@item.Name)')">
+                    <i class="fa fa-edit"><span> ویرایش </span></i>
+                </a>
 
-                    <span> | </span>
-                    <a class="btn btn-sm btn-danger"
-                       onclick="DeleteEntityModal(@item.Id, '/CostPoint/DeleteCostPoint/', '@deleteTitle', '@item.Name')">
-                        <i class="fa fa-trash"><span> حذف </span></i>
-                    </a>
-                </td>
-            </tr>
+                <span> | </span>
+                <a class="btn btn-sm btn-danger"
+                   onclick="DeleteEntityModal(@item.Id, '/CostPoint/DeleteCostPoint/', '@deleteTitle', '@item.Name')">
+                    <i class="fa fa-trash"><span> حذف </span></i>
+                </a>
+            </td>
+        </tr>
         }
     </tbody>
 </table>

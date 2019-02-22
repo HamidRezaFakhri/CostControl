@@ -21,5 +21,7 @@ namespace CostControl.BusinessEntity.Models.CostControl
         [Required(ErrorMessage = "گروه مرکز هزینه اجباریست!")]
         [Display(Name = "گروه مرکز هزینه")]
         public long CostPointGroupId { get; set; }
+
+        public string CostPointGroupName { get; set; }
     }
 }

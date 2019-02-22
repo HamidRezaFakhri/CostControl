@@ -12,7 +12,9 @@ namespace CostControl.Presentation.Controllers
         {
             ViewData["title"] = Helper.GetEntityTile<CostPoint>(EnumTitle.List);
 
-            return View(Helper.GetServiceResponse<CostPoint>("Get?PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1"));
+            var a = Helper.GetServiceResponse<CostPoint>("Get?PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1");
+
+            return View(a);
         }
 
         private IEnumerable<CostPointGroup> GetCostPointGroups()

@@ -120,12 +120,24 @@ namespace CostControl.BusinessLogic.Logics.CostControl
             List<Expression<Func<CostControlBusinessEntity.CostPoint, object>>> includeProperties = null,
             int? pageNumber = null,
             int? pageSize = null)
-        => CostPointIMapper.Map<IEnumerable<CostControlEntity.CostPoint>, IEnumerable<CostControlBusinessEntity.CostPoint>>(
-                Repository.Get(
-                    CostPointIMapper.Map<Expression<Func<CostControlBusinessEntity.CostPoint, bool>>, Expression<Func<CostControlEntity.CostPoint, bool>>>(filter),
-                    CostPointIMapper.Map<Func<IQueryable<CostControlBusinessEntity.CostPoint>, IOrderedQueryable<CostControlBusinessEntity.CostPoint>>,
-                    Func<IQueryable<CostControlEntity.CostPoint>, IOrderedQueryable<CostControlEntity.CostPoint>>>(orderBy),
-                    CostPointIMapper.Map<List<Expression<Func<CostControlEntity.CostPoint, object>>>>(includeProperties), pageNumber, pageSize));
+        {
+            try
+            {
+                IEnumerable<CostControlEntity.CostPoint> a = Repository.Get(
+                          CostPointIMapper.Map<Expression<Func<CostControlBusinessEntity.CostPoint, bool>>, Expression<Func<CostControlEntity.CostPoint, bool>>>(filter),
+                          CostPointIMapper.Map<Func<IQueryable<CostControlBusinessEntity.CostPoint>, IOrderedQueryable<CostControlBusinessEntity.CostPoint>>,
+                          Func<IQueryable<CostControlEntity.CostPoint>, IOrderedQueryable<CostControlEntity.CostPoint>>>(orderBy),
+                          CostPointIMapper.Map<List<Expression<Func<CostControlEntity.CostPoint, object>>>>(includeProperties), pageNumber, pageSize);
+                
+                return CostPointIMapper
+                    .Map<IEnumerable<CostControlBusinessEntity.CostPoint>>(a);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+        }
 
         public async Task<IEnumerable<CostControlBusinessEntity.CostPoint>> GetAsync(Expression<Func<CostControlBusinessEntity.CostPoint, bool>> filter = null,
             Func<IQueryable<CostControlBusinessEntity.CostPoint>, IOrderedQueryable<CostControlBusinessEntity.CostPoint>> orderBy = null,
@@ -409,18 +421,18 @@ namespace CostControl.BusinessLogic.Logics.CostControl
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!this._disposed)
+            if (!_disposed)
             {
                 if (disposing)
                 {
                     //Context?.Dispose();
                     CostPointMapperConfig = null;
                     CostPointIMapper = null;
-                    this.Repository = null;
+                    Repository = null;
                     _unitOfWork?.Dispose();
                 }
             }
-            this._disposed = true;
+            _disposed = true;
         }
 
         public void Dispose()

@@ -34,6 +34,8 @@
             <th><a id="Id" href="#">شناسه</a></th>
             <th><a id="SalePointName" href="#">نام</a></th>
             <th><a id="code" href="#">کد</a></th>
+            <th><a id="SalePointEnglishName" href="#">نام لاتین</a></th>
+            <th><a id="IsHall" href="#">سالن</a></th>
             <th></th>
         </tr>
     </thead>
@@ -44,6 +46,13 @@
                 <td>@item.Id</td>
                 <td id="td_Name">@item.Name</td>
                 <td id="td_Code">@item.Code</td>
+                <td id="td_EnglishName">@item.EnglishName</td>
+                <td id="td_IsHall">
+                    @*@Html.CheckBox("IsHall", new { @class = "form-control disabled" })*@
+                    <input checked="@item.IsHall" id="IsHall"
+                           name="IsHall" type="checkbox"
+                           value="@item.IsHall" disabled />
+                </td>
                 <td>
                     <a href="#" class="btn btn-sm btn-warning"
                        onclick="EditEntityModal(@item.Id, '/SalePoint/EditSalePoint/', '@editTitle (@item.Name)')">

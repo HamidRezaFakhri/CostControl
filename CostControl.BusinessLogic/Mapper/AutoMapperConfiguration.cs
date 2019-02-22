@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.Extensions.ExpressionMapping;
 
 namespace CostControl.BusinessLogic.Mapper
 {
@@ -8,12 +9,16 @@ namespace CostControl.BusinessLogic.Mapper
         {
             var config = new MapperConfiguration(cfg =>
             {
+                //cfg.AddCollectionMappers();
+                cfg.AllowNullCollections = true;
+                cfg.AddExpressionMapping();
+                //cfg.ValueTransformers
                 cfg.AddProfile<ClientMappingProfile>();
             });
-            
+
             // Test Mapping and Configuration Validation
             config.AssertConfigurationIsValid();
-
+            
             return config;
         }
     }
