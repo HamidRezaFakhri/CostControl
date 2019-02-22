@@ -38,6 +38,7 @@ namespace CostControl.BusinessLogic.Mapper
     //https://csharp.hotexamples.com/examples/-/AutoMapper/CreateMap/php-automapper-createmap-method-examples.html
     //https://www.fuget.org/packages/AutoMapper/6.2.0/lib/net40/AutoMapper.dll/AutoMapper/IMappingExpression%602
     //https://searchcode.com/codesearch/view/4344762/
+    //https://code.i-harness.com/en/q/2b331be
     public class ClientMappingProfile : Profile
     {
         public override string ProfileName
@@ -88,6 +89,7 @@ namespace CostControl.BusinessLogic.Mapper
 
             CreateMap<CostControlEntityModel.CostPoint, CostControlBusinessModel.CostPoint>(MemberList.None)
                 .ForMember(dest => dest.CostPointGroupName, opt => opt.MapFrom(src => src.CostPointGroup.Name))
+                .PreserveReferences()
                 .ReverseMap();
 
             CreateMap<CostControlEntityModel.SaleCostPoint, CostControlBusinessModel.SaleCostPoint>(MemberList.None)

@@ -128,7 +128,9 @@ namespace CostControl.BusinessLogic.Logics.CostControl
                           CostPointIMapper.Map<Func<IQueryable<CostControlBusinessEntity.CostPoint>, IOrderedQueryable<CostControlBusinessEntity.CostPoint>>,
                           Func<IQueryable<CostControlEntity.CostPoint>, IOrderedQueryable<CostControlEntity.CostPoint>>>(orderBy),
                           CostPointIMapper.Map<List<Expression<Func<CostControlEntity.CostPoint, object>>>>(includeProperties), pageNumber, pageSize);
-                
+
+                var b = a.ToList();
+
                 return CostPointIMapper
                     .Map<IEnumerable<CostControlBusinessEntity.CostPoint>>(a);
             }

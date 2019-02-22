@@ -29,7 +29,7 @@ namespace CostControl.API.Controllers.CostControl
                 return GenerateResponse(paginate,
                     PDKBusinessLogic.Get(/*s => s.Name.Contains(paginate.SearchKey),*/
                         filter: null,
-                        includeProperties: ip,
+                        //includeProperties: ip,
                         pageSize: paginate.PageSize,
                         page: paginate.PageNumber));
             }

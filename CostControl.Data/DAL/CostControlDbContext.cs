@@ -30,7 +30,7 @@ namespace CostControl.Data.DAL
                 //optionsBuilder.UseLoggerFactory(log);
 
                 optionsBuilder
-                    .UseSqlServer(@"Data Source=.\Hrf;Initial Catalog=CostControl;Trusted_Connection=false;
+                    .UseSqlServer(@"Data Source=.\Last;Initial Catalog=CostControl;Trusted_Connection=false;
                                     User ID=sa; Password=2129;MultipleActiveResultSets=true;")
                     .EnableSensitiveDataLogging();
                     //.UseLoggerFactory(LoggerFactory);
