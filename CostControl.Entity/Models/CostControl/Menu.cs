@@ -33,6 +33,6 @@ namespace CostControl.Entity.Models.CostControl
         public decimal Price { get; set; } = 0;
 
         [Required]
-        public ICollection<MenuItem> MenuItems { get; set; }
+        public virtual ICollection<MenuItem> MenuItems { get; set; }
     }
 }

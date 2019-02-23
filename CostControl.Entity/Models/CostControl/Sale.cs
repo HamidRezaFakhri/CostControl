@@ -21,6 +21,6 @@ namespace CostControl.Entity.Models.CostControl
         public string Code { get; set; }
 
         [Required]
-        public ICollection<SaleItem> SaleItems { get; set; }
+        public virtual ICollection<SaleItem> SaleItems { get; set; }
     }
 }

@@ -31,10 +31,10 @@ namespace CostControl.Entity.Models.CostControl
         [Required]
         public long RegisteredUserId { get; set; }
 
-        public User RegisteredUser { get; set; }
+        public virtual User RegisteredUser { get; set; }
 
         [Required]
-        public ICollection<DraftItem> DraftItems { get; set; }
+        public virtual ICollection<DraftItem> DraftItems { get; set; }
 
         [StringLength(500, MinimumLength = 10,
             ErrorMessage = "Please enter a vlid description, it must be greater than {2} characters and less than {1} characters.")]

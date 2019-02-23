@@ -9,10 +9,14 @@ namespace CostControl.Entity.Models.CostControl
         public long MenuId { get; set; }
 
         public virtual Menu Menu { get; set; }
+        
+        public long FoodId { get; set; }
 
-        public Food Food { get; set; }
+        public virtual Food Food { get; set; }
 
-        public Ingredient Ingredient { get; set; }
+        public long IngredientId { get; set; }
+
+        public virtual Ingredient Ingredient { get; set; }
 
         [Required]
         public decimal Amount { get; set; }

@@ -8,7 +8,7 @@ namespace CostControl.Entity.Models.CostControl
         [Required]
         public long DraftId { get; set; }
 
-        public Draft Draft { get; set; }
+        public virtual Draft Draft { get; set; }
 
         [Required]
         public long IngredientId { get; set; }

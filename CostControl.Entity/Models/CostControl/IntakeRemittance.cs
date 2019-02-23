@@ -10,7 +10,7 @@ namespace CostControl.Entity.Models.CostControl
         [Required]
         public long SaleCostPointId { get; set; }
 
-        public SaleCostPoint SaleCostPoint { get; set; }
+        public virtual SaleCostPoint SaleCostPoint { get; set; }
 
         [Required]
         public DateTime IntakeDate { get; set; }
@@ -25,8 +25,8 @@ namespace CostControl.Entity.Models.CostControl
         [Required]
         public long RegisteredUserId { get; set; }
 
-        public User RegisteredUser { get; set; }
+        public virtual User RegisteredUser { get; set; }
 
-        public ICollection<IntakeRemittanceItem> IntakeRemittanceItems { get; set; }
+        public virtual ICollection<IntakeRemittanceItem> IntakeRemittanceItems { get; set; }
     }
 }

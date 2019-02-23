@@ -36,6 +36,6 @@ namespace CostControl.Entity.Models.CostControl
         [Required]
         public long RegisteredUserId { get; set; }
 
-        public User RegisteredUser { get; set; }
+        public virtual User RegisteredUser { get; set; }
     }
 }

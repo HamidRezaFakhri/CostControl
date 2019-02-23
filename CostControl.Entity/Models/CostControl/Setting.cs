@@ -2,7 +2,7 @@
 
 namespace CostControl.Entity.Models.CostControl
 {
-    public sealed class Setting : SuperEntity<int>
+    public class Setting : SuperEntity<int>
     {
         public decimal IngredientUsageRate { get; set; } = 70;
     }

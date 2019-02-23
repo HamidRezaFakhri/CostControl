@@ -10,7 +10,7 @@ namespace CostControl.Entity.Models.CostControl
         [Required]
         public long SaleCostPointId { get; set; }
 
-        public SaleCostPoint SaleCostPoint { get; set; }
+        public virtual SaleCostPoint SaleCostPoint { get; set; }
 
         [StringLength(25,
             ErrorMessage = "Please enter a unique Code, it must be less than {0} characters.")]

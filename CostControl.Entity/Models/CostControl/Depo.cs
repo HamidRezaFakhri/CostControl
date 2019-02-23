@@ -9,7 +9,7 @@ namespace CostControl.Entity.Models.CostControl
         [Required]
         public long SaleCostPointId { get; set; }
 
-        public SaleCostPoint SaleCostPoint { get; set; }
+        public virtual SaleCostPoint SaleCostPoint { get; set; }
 
         [Required]
         public long IngredientId { get; set; }

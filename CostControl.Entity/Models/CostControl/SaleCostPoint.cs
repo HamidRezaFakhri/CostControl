@@ -9,12 +9,12 @@ namespace CostControl.Entity.Models.CostControl
         [Required]
         public long SalePointId { get; set; }
 
-        public SalePoint SalePoint { get; set; }
+        public virtual SalePoint SalePoint { get; set; }
 
         [Required]
         public long CostPointId { get; set; }
 
-        public CostPoint CostPoint { get; set; }
+        public virtual CostPoint CostPoint { get; set; }
 
         public virtual ICollection<Food> Foods { get; set; }
 

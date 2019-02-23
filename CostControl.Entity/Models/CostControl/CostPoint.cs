@@ -13,7 +13,7 @@ namespace CostControl.Entity.Models.CostControl
         [Required]
         public long CostPointGroupId { get; set; }
 
-        public CostPointGroup CostPointGroup { get; set; }
+        public virtual CostPointGroup CostPointGroup { get; set; }
 
         public virtual ICollection<SaleCostPoint> SaleCostPoints { get; set; }
 

@@ -1,6 +1,7 @@
 ﻿using CostControl.Entity.Models.CostControl;
 using CostControl.Entity.Models.Security;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
@@ -32,8 +33,13 @@ namespace CostControl.Data.DAL
                 optionsBuilder
                     .UseSqlServer(@"Data Source=.\Last;Initial Catalog=CostControl;Trusted_Connection=false;
                                     User ID=sa; Password=2129;MultipleActiveResultSets=true;")
+                    .UseLazyLoadingProxies()
+                    .ConfigureWarnings(warnings => warnings.Ignore(CoreEventId.DetachedLazyLoadingWarning))
                     .EnableSensitiveDataLogging();
-                    //.UseLoggerFactory(LoggerFactory);
+
+                //_context.ChangeTracker.LazyLoadingEnabled = false;
+
+                //.UseLoggerFactory(LoggerFactory);
                 ;
             }
             base.OnConfiguring(optionsBuilder);
