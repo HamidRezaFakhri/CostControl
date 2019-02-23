@@ -12,6 +12,7 @@ namespace CostControl.BusinessLogic.Mapper
                 //cfg.AddCollectionMappers();
                 cfg.AllowNullCollections = true;
                 cfg.AddExpressionMapping();
+                cfg.ValidateInlineMaps = false;
                 //cfg.ValueTransformers
                 cfg.AddProfile<ClientMappingProfile>();
             });

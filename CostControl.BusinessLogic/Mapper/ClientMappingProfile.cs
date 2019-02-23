@@ -88,7 +88,9 @@ namespace CostControl.BusinessLogic.Mapper
             CreateMap<CostControlEntityModel.CostPointGroup, CostControlBusinessModel.CostPointGroup>(MemberList.None).ReverseMap();
 
             CreateMap<CostControlEntityModel.CostPoint, CostControlBusinessModel.CostPoint>(MemberList.None)
+                .ForMember(dest => dest.CostPointGroupId, opt => opt.MapFrom(src => src.CostPointGroup.Id))
                 .ForMember(dest => dest.CostPointGroupName, opt => opt.MapFrom(src => src.CostPointGroup.Name))
+                .ForMember(dest => dest.CostPointGroup, opt => opt.Ignore())
                 .PreserveReferences()
                 .ReverseMap();
 

@@ -23,5 +23,7 @@ namespace CostControl.BusinessEntity.Models.CostControl
         public long CostPointGroupId { get; set; }
 
         public string CostPointGroupName { get; set; }
+
+        public CostPointGroup CostPointGroup { get; set; }
     }
 }
