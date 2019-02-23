@@ -4,6 +4,7 @@ using CostControl.BusinessLogic.Mapper;
 using CostControl.Data.DAL;
 using CostControl.Data.Repository;
 using CostControl.Data.UnitOfWork;
+using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -117,7 +118,7 @@ namespace CostControl.BusinessLogic.Logics.CostControl
 
         public IEnumerable<CostControlBusinessEntity.Depo> Get(Expression<Func<CostControlBusinessEntity.Depo, bool>> filter = null,
             Func<IQueryable<CostControlBusinessEntity.Depo>, IOrderedQueryable<CostControlBusinessEntity.Depo>> orderBy = null,
-            List<Expression<Func<CostControlBusinessEntity.Depo, object>>> includeProperties = null,
+            Func<IQueryable<CostControlBusinessEntity.Depo>, IIncludableQueryable<CostControlBusinessEntity.Depo, object>> includeProperties = null,
             int? pageNumber = null,
             int? pageSize = null)
         => DepoIMapper.Map<IEnumerable<CostControlEntity.Depo>, IEnumerable<CostControlBusinessEntity.Depo>>(
@@ -125,11 +126,11 @@ namespace CostControl.BusinessLogic.Logics.CostControl
                     DepoIMapper.Map<Expression<Func<CostControlBusinessEntity.Depo, bool>>, Expression<Func<CostControlEntity.Depo, bool>>>(filter),
                     DepoIMapper.Map<Func<IQueryable<CostControlBusinessEntity.Depo>, IOrderedQueryable<CostControlBusinessEntity.Depo>>,
                     Func<IQueryable<CostControlEntity.Depo>, IOrderedQueryable<CostControlEntity.Depo>>>(orderBy),
-                    DepoIMapper.Map<List<Expression<Func<CostControlEntity.Depo, object>>>>(includeProperties), pageNumber, pageSize));
+                    DepoIMapper.Map<Func<IQueryable<CostControlEntity.Depo>, IIncludableQueryable<CostControlEntity.Depo, object>>>(includeProperties), pageNumber, pageSize));
 
         public async Task<IEnumerable<CostControlBusinessEntity.Depo>> GetAsync(Expression<Func<CostControlBusinessEntity.Depo, bool>> filter = null,
             Func<IQueryable<CostControlBusinessEntity.Depo>, IOrderedQueryable<CostControlBusinessEntity.Depo>> orderBy = null,
-            List<Expression<Func<CostControlBusinessEntity.Depo, object>>> includeProperties = null,
+            Func<IQueryable<CostControlBusinessEntity.Depo>, IIncludableQueryable<CostControlBusinessEntity.Depo, object>> includeProperties = null,
             int? pageNumber = null, int? pageSize = null,
             CancellationToken cancellationToken = default(CancellationToken))
         => await DepoIMapper.Map<Task<IEnumerable<CostControlEntity.Depo>>, Task<IEnumerable<CostControlBusinessEntity.Depo>>>(
@@ -137,20 +138,20 @@ namespace CostControl.BusinessLogic.Logics.CostControl
                     DepoIMapper.Map<Expression<Func<CostControlBusinessEntity.Depo, bool>>, Expression<Func<CostControlEntity.Depo, bool>>>(filter),
                     DepoIMapper.Map<Func<IQueryable<CostControlBusinessEntity.Depo>, IOrderedQueryable<CostControlBusinessEntity.Depo>>,
                     Func<IQueryable<CostControlEntity.Depo>, IOrderedQueryable<CostControlEntity.Depo>>>(orderBy),
-                    DepoIMapper.Map<List<Expression<Func<CostControlEntity.Depo, object>>>>(includeProperties),
+                    DepoIMapper.Map<Func<IQueryable<CostControlEntity.Depo>, IIncludableQueryable<CostControlEntity.Depo, object>>>(includeProperties),
                     pageNumber, pageSize, cancellationToken));
 
         public CostControlBusinessEntity.Depo GetById(object id,
-            List<Expression<Func<CostControlBusinessEntity.Depo, object>>> includeProperties = null)
+            Func<IQueryable<CostControlBusinessEntity.Depo>, IIncludableQueryable<CostControlBusinessEntity.Depo, object>> includeProperties = null)
         => id == null ? null : DepoIMapper.Map<CostControlEntity.Depo, CostControlBusinessEntity.Depo>
-            (Repository.GetById(id, DepoIMapper.Map<List<Expression<Func<CostControlEntity.Depo, object>>>>(includeProperties)));
+            (Repository.GetById(id, DepoIMapper.Map<Func<IQueryable<CostControlEntity.Depo>, IIncludableQueryable<CostControlEntity.Depo, object>>>(includeProperties)));
 
         public async Task<CostControlBusinessEntity.Depo> GetByIdAsync(object id,
-            List<Expression<Func<CostControlBusinessEntity.Depo, object>>> includeProperties = null,
+            Func<IQueryable<CostControlBusinessEntity.Depo>, IIncludableQueryable<CostControlBusinessEntity.Depo, object>> includeProperties = null,
             CancellationToken cancellationToken = default(CancellationToken))
         //=> await await Task.FromResult(DepoIMapper.Map<Task<Entity.Models.Depo>, Task<Depo>>(Repository.GetByIdAsync(id, cancellationToken)));
         => id == null ? null : DepoIMapper.Map<CostControlEntity.Depo, CostControlBusinessEntity.Depo>
-            (await Repository.GetByIdAsync(id, DepoIMapper.Map<List<Expression<Func<CostControlEntity.Depo, object>>>>(includeProperties), cancellationToken));
+            (await Repository.GetByIdAsync(id, DepoIMapper.Map<Func<IQueryable<CostControlEntity.Depo>, IIncludableQueryable<CostControlEntity.Depo, object>>>(includeProperties), cancellationToken));
 
         public IEnumerable<CostControlBusinessEntity.Depo> GetWithRawSql(string query, params object[] parameters)
         => DepoIMapper.Map<IEnumerable<CostControlEntity.Depo>, IEnumerable<CostControlBusinessEntity.Depo>>(Repository.GetWithRawSql(query, parameters));
@@ -409,18 +410,18 @@ namespace CostControl.BusinessLogic.Logics.CostControl
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!this._disposed)
+            if (!_disposed)
             {
                 if (disposing)
                 {
                     //Context?.Dispose();
                     DepoMapperConfig = null;
                     DepoIMapper = null;
-                    this.Repository = null;
+                    Repository = null;
                     _unitOfWork?.Dispose();
                 }
             }
-            this._disposed = true;
+            _disposed = true;
         }
 
         public void Dispose()
@@ -444,7 +445,7 @@ namespace CostControl.BusinessLogic.Logics.CostControl
             throw new NotImplementedException();
         }
 
-        public IEnumerable<CostControlBusinessEntity.Depo> GetByParentId(long parentId, Func<IQueryable<CostControlBusinessEntity.Depo>, IOrderedQueryable<CostControlBusinessEntity.Depo>> orderBy = null, List<Expression<Func<CostControlBusinessEntity.Depo, object>>> includeProperties = null, int? page = null, int? pageSize = null)
+        public IEnumerable<CostControlBusinessEntity.Depo> GetByParentId(long parentId, Func<IQueryable<CostControlBusinessEntity.Depo>, IOrderedQueryable<CostControlBusinessEntity.Depo>> orderBy = null, Func<IQueryable<CostControlBusinessEntity.Depo>, IIncludableQueryable<CostControlBusinessEntity.Depo, object>> includeProperties = null, int? page = null, int? pageSize = null)
         {
             throw new NotImplementedException();
         }

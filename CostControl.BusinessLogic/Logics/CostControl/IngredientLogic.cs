@@ -4,6 +4,7 @@ using CostControl.BusinessLogic.Mapper;
 using CostControl.Data.DAL;
 using CostControl.Data.Repository;
 using CostControl.Data.UnitOfWork;
+using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -117,7 +118,7 @@ namespace CostControl.BusinessLogic.Logics.CostControl
 
         public IEnumerable<CostControlBusinessEntity.Ingredient> Get(Expression<Func<CostControlBusinessEntity.Ingredient, bool>> filter = null,
             Func<IQueryable<CostControlBusinessEntity.Ingredient>, IOrderedQueryable<CostControlBusinessEntity.Ingredient>> orderBy = null,
-            List<Expression<Func<CostControlBusinessEntity.Ingredient, object>>> includeProperties = null,
+            Func<IQueryable<CostControlBusinessEntity.Ingredient>, IIncludableQueryable<CostControlBusinessEntity.Ingredient, object>> includeProperties = null,
             int? pageNumber = null,
             int? pageSize = null)
         => IngredientIMapper.Map<IEnumerable<CostControlEntity.Ingredient>, IEnumerable<CostControlBusinessEntity.Ingredient>>(
@@ -125,11 +126,11 @@ namespace CostControl.BusinessLogic.Logics.CostControl
                     IngredientIMapper.Map<Expression<Func<CostControlBusinessEntity.Ingredient, bool>>, Expression<Func<CostControlEntity.Ingredient, bool>>>(filter),
                     IngredientIMapper.Map<Func<IQueryable<CostControlBusinessEntity.Ingredient>, IOrderedQueryable<CostControlBusinessEntity.Ingredient>>,
                     Func<IQueryable<CostControlEntity.Ingredient>, IOrderedQueryable<CostControlEntity.Ingredient>>>(orderBy),
-                    IngredientIMapper.Map<List<Expression<Func<CostControlEntity.Ingredient, object>>>>(includeProperties), pageNumber, pageSize));
+                    IngredientIMapper.Map<Func<IQueryable<CostControlEntity.Ingredient>, IIncludableQueryable<CostControlEntity.Ingredient, object>>>(includeProperties), pageNumber, pageSize));
 
         public async Task<IEnumerable<CostControlBusinessEntity.Ingredient>> GetAsync(Expression<Func<CostControlBusinessEntity.Ingredient, bool>> filter = null,
             Func<IQueryable<CostControlBusinessEntity.Ingredient>, IOrderedQueryable<CostControlBusinessEntity.Ingredient>> orderBy = null,
-            List<Expression<Func<CostControlBusinessEntity.Ingredient, object>>> includeProperties = null,
+            Func<IQueryable<CostControlBusinessEntity.Ingredient>, IIncludableQueryable<CostControlBusinessEntity.Ingredient, object>> includeProperties = null,
             int? pageNumber = null, int? pageSize = null,
             CancellationToken cancellationToken = default(CancellationToken))
         => await IngredientIMapper.Map<Task<IEnumerable<CostControlEntity.Ingredient>>, Task<IEnumerable<CostControlBusinessEntity.Ingredient>>>(
@@ -137,20 +138,20 @@ namespace CostControl.BusinessLogic.Logics.CostControl
                     IngredientIMapper.Map<Expression<Func<CostControlBusinessEntity.Ingredient, bool>>, Expression<Func<CostControlEntity.Ingredient, bool>>>(filter),
                     IngredientIMapper.Map<Func<IQueryable<CostControlBusinessEntity.Ingredient>, IOrderedQueryable<CostControlBusinessEntity.Ingredient>>,
                     Func<IQueryable<CostControlEntity.Ingredient>, IOrderedQueryable<CostControlEntity.Ingredient>>>(orderBy),
-                    IngredientIMapper.Map<List<Expression<Func<CostControlEntity.Ingredient, object>>>>(includeProperties),
+                    IngredientIMapper.Map<Func<IQueryable<CostControlEntity.Ingredient>, IIncludableQueryable<CostControlEntity.Ingredient, object>>>(includeProperties),
                     pageNumber, pageSize, cancellationToken));
 
         public CostControlBusinessEntity.Ingredient GetById(object id,
-            List<Expression<Func<CostControlBusinessEntity.Ingredient, object>>> includeProperties = null)
+            Func<IQueryable<CostControlBusinessEntity.Ingredient>, IIncludableQueryable<CostControlBusinessEntity.Ingredient, object>> includeProperties = null)
         => id == null ? null : IngredientIMapper.Map<CostControlEntity.Ingredient, CostControlBusinessEntity.Ingredient>
-            (Repository.GetById(id, IngredientIMapper.Map<List<Expression<Func<CostControlEntity.Ingredient, object>>>>(includeProperties)));
+            (Repository.GetById(id, IngredientIMapper.Map<Func<IQueryable<CostControlEntity.Ingredient>, IIncludableQueryable<CostControlEntity.Ingredient, object>>>(includeProperties)));
 
         public async Task<CostControlBusinessEntity.Ingredient> GetByIdAsync(object id,
-            List<Expression<Func<CostControlBusinessEntity.Ingredient, object>>> includeProperties = null,
+            Func<IQueryable<CostControlBusinessEntity.Ingredient>, IIncludableQueryable<CostControlBusinessEntity.Ingredient, object>> includeProperties = null,
             CancellationToken cancellationToken = default(CancellationToken))
         //=> await await Task.FromResult(IngredientIMapper.Map<Task<Entity.Models.Ingredient>, Task<Ingredient>>(Repository.GetByIdAsync(id, cancellationToken)));
         => id == null ? null : IngredientIMapper.Map<CostControlEntity.Ingredient, CostControlBusinessEntity.Ingredient>
-            (await Repository.GetByIdAsync(id, IngredientIMapper.Map<List<Expression<Func<CostControlEntity.Ingredient, object>>>>(includeProperties), cancellationToken));
+            (await Repository.GetByIdAsync(id, IngredientIMapper.Map<Func<IQueryable<CostControlEntity.Ingredient>, IIncludableQueryable<CostControlEntity.Ingredient, object>>>(includeProperties), cancellationToken));
 
         public IEnumerable<CostControlBusinessEntity.Ingredient> GetWithRawSql(string query, params object[] parameters)
         => IngredientIMapper.Map<IEnumerable<CostControlEntity.Ingredient>, IEnumerable<CostControlBusinessEntity.Ingredient>>(Repository.GetWithRawSql(query, parameters));
@@ -409,18 +410,18 @@ namespace CostControl.BusinessLogic.Logics.CostControl
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!this._disposed)
+            if (!_disposed)
             {
                 if (disposing)
                 {
                     //Context?.Dispose();
                     IngredientMapperConfig = null;
                     IngredientIMapper = null;
-                    this.Repository = null;
+                    Repository = null;
                     _unitOfWork?.Dispose();
                 }
             }
-            this._disposed = true;
+            _disposed = true;
         }
 
         public void Dispose()
@@ -444,7 +445,7 @@ namespace CostControl.BusinessLogic.Logics.CostControl
             throw new NotImplementedException();
         }
 
-        public IEnumerable<CostControlBusinessEntity.Ingredient> GetByParentId(long parentId, Func<IQueryable<CostControlBusinessEntity.Ingredient>, IOrderedQueryable<CostControlBusinessEntity.Ingredient>> orderBy = null, List<Expression<Func<CostControlBusinessEntity.Ingredient, object>>> includeProperties = null, int? page = null, int? pageSize = null)
+        public IEnumerable<CostControlBusinessEntity.Ingredient> GetByParentId(long parentId, Func<IQueryable<CostControlBusinessEntity.Ingredient>, IOrderedQueryable<CostControlBusinessEntity.Ingredient>> orderBy = null, Func<IQueryable<CostControlBusinessEntity.Ingredient>, IIncludableQueryable<CostControlBusinessEntity.Ingredient, object>> includeProperties = null, int? page = null, int? pageSize = null)
         {
             throw new NotImplementedException();
         }

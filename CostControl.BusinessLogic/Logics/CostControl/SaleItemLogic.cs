@@ -4,6 +4,7 @@ using CostControl.BusinessLogic.Mapper;
 using CostControl.Data.DAL;
 using CostControl.Data.Repository;
 using CostControl.Data.UnitOfWork;
+using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -117,7 +118,7 @@ namespace CostControl.BusinessLogic.Logics.CostControl
 
         public IEnumerable<CostControlBusinessEntity.SaleItem> Get(Expression<Func<CostControlBusinessEntity.SaleItem, bool>> filter = null,
             Func<IQueryable<CostControlBusinessEntity.SaleItem>, IOrderedQueryable<CostControlBusinessEntity.SaleItem>> orderBy = null,
-            List<Expression<Func<CostControlBusinessEntity.SaleItem, object>>> includeProperties = null,
+            Func<IQueryable<CostControlBusinessEntity.SaleItem>, IIncludableQueryable<CostControlBusinessEntity.SaleItem, object>> includeProperties = null,
             int? pageNumber = null,
             int? pageSize = null)
         => SaleItemIMapper.Map<IEnumerable<CostControlEntity.SaleItem>, IEnumerable<CostControlBusinessEntity.SaleItem>>(
@@ -125,11 +126,11 @@ namespace CostControl.BusinessLogic.Logics.CostControl
                     SaleItemIMapper.Map<Expression<Func<CostControlBusinessEntity.SaleItem, bool>>, Expression<Func<CostControlEntity.SaleItem, bool>>>(filter),
                     SaleItemIMapper.Map<Func<IQueryable<CostControlBusinessEntity.SaleItem>, IOrderedQueryable<CostControlBusinessEntity.SaleItem>>,
                     Func<IQueryable<CostControlEntity.SaleItem>, IOrderedQueryable<CostControlEntity.SaleItem>>>(orderBy),
-                    SaleItemIMapper.Map<List<Expression<Func<CostControlEntity.SaleItem, object>>>>(includeProperties), pageNumber, pageSize));
+                    SaleItemIMapper.Map<Func<IQueryable<CostControlEntity.SaleItem>, IIncludableQueryable<CostControlEntity.SaleItem, object>>>(includeProperties), pageNumber, pageSize));
 
         public async Task<IEnumerable<CostControlBusinessEntity.SaleItem>> GetAsync(Expression<Func<CostControlBusinessEntity.SaleItem, bool>> filter = null,
             Func<IQueryable<CostControlBusinessEntity.SaleItem>, IOrderedQueryable<CostControlBusinessEntity.SaleItem>> orderBy = null,
-            List<Expression<Func<CostControlBusinessEntity.SaleItem, object>>> includeProperties = null,
+            Func<IQueryable<CostControlBusinessEntity.SaleItem>, IIncludableQueryable<CostControlBusinessEntity.SaleItem, object>> includeProperties = null,
             int? pageNumber = null, int? pageSize = null,
             CancellationToken cancellationToken = default(CancellationToken))
         => await SaleItemIMapper.Map<Task<IEnumerable<CostControlEntity.SaleItem>>, Task<IEnumerable<CostControlBusinessEntity.SaleItem>>>(
@@ -137,20 +138,20 @@ namespace CostControl.BusinessLogic.Logics.CostControl
                     SaleItemIMapper.Map<Expression<Func<CostControlBusinessEntity.SaleItem, bool>>, Expression<Func<CostControlEntity.SaleItem, bool>>>(filter),
                     SaleItemIMapper.Map<Func<IQueryable<CostControlBusinessEntity.SaleItem>, IOrderedQueryable<CostControlBusinessEntity.SaleItem>>,
                     Func<IQueryable<CostControlEntity.SaleItem>, IOrderedQueryable<CostControlEntity.SaleItem>>>(orderBy),
-                    SaleItemIMapper.Map<List<Expression<Func<CostControlEntity.SaleItem, object>>>>(includeProperties),
+                    SaleItemIMapper.Map<Func<IQueryable<CostControlEntity.SaleItem>, IIncludableQueryable<CostControlEntity.SaleItem, object>>>(includeProperties),
                     pageNumber, pageSize, cancellationToken));
 
         public CostControlBusinessEntity.SaleItem GetById(object id,
-            List<Expression<Func<CostControlBusinessEntity.SaleItem, object>>> includeProperties = null)
+            Func<IQueryable<CostControlBusinessEntity.SaleItem>, IIncludableQueryable<CostControlBusinessEntity.SaleItem, object>> includeProperties = null)
         => id == null ? null : SaleItemIMapper.Map<CostControlEntity.SaleItem, CostControlBusinessEntity.SaleItem>
-            (Repository.GetById(id, SaleItemIMapper.Map<List<Expression<Func<CostControlEntity.SaleItem, object>>>>(includeProperties)));
+            (Repository.GetById(id, SaleItemIMapper.Map<Func<IQueryable<CostControlEntity.SaleItem>, IIncludableQueryable<CostControlEntity.SaleItem, object>>>(includeProperties)));
 
         public async Task<CostControlBusinessEntity.SaleItem> GetByIdAsync(object id,
-            List<Expression<Func<CostControlBusinessEntity.SaleItem, object>>> includeProperties = null,
+            Func<IQueryable<CostControlBusinessEntity.SaleItem>, IIncludableQueryable<CostControlBusinessEntity.SaleItem, object>> includeProperties = null,
             CancellationToken cancellationToken = default(CancellationToken))
         //=> await await Task.FromResult(SaleItemIMapper.Map<Task<Entity.Models.SaleItem>, Task<SaleItem>>(Repository.GetByIdAsync(id, cancellationToken)));
         => id == null ? null : SaleItemIMapper.Map<CostControlEntity.SaleItem, CostControlBusinessEntity.SaleItem>
-            (await Repository.GetByIdAsync(id, SaleItemIMapper.Map<List<Expression<Func<CostControlEntity.SaleItem, object>>>>(includeProperties), cancellationToken));
+            (await Repository.GetByIdAsync(id, SaleItemIMapper.Map<Func<IQueryable<CostControlEntity.SaleItem>, IIncludableQueryable<CostControlEntity.SaleItem, object>>>(includeProperties), cancellationToken));
 
         public IEnumerable<CostControlBusinessEntity.SaleItem> GetWithRawSql(string query, params object[] parameters)
         => SaleItemIMapper.Map<IEnumerable<CostControlEntity.SaleItem>, IEnumerable<CostControlBusinessEntity.SaleItem>>(Repository.GetWithRawSql(query, parameters));
@@ -409,18 +410,18 @@ namespace CostControl.BusinessLogic.Logics.CostControl
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!this._disposed)
+            if (!_disposed)
             {
                 if (disposing)
                 {
                     //Context?.Dispose();
                     SaleItemMapperConfig = null;
                     SaleItemIMapper = null;
-                    this.Repository = null;
+                    Repository = null;
                     _unitOfWork?.Dispose();
                 }
             }
-            this._disposed = true;
+            _disposed = true;
         }
 
         public void Dispose()
@@ -444,7 +445,7 @@ namespace CostControl.BusinessLogic.Logics.CostControl
             throw new NotImplementedException();
         }
 
-        public IEnumerable<CostControlBusinessEntity.SaleItem> GetByParentId(long parentId, Func<IQueryable<CostControlBusinessEntity.SaleItem>, IOrderedQueryable<CostControlBusinessEntity.SaleItem>> orderBy = null, List<Expression<Func<CostControlBusinessEntity.SaleItem, object>>> includeProperties = null, int? page = null, int? pageSize = null)
+        public IEnumerable<CostControlBusinessEntity.SaleItem> GetByParentId(long parentId, Func<IQueryable<CostControlBusinessEntity.SaleItem>, IOrderedQueryable<CostControlBusinessEntity.SaleItem>> orderBy = null, Func<IQueryable<CostControlBusinessEntity.SaleItem>, IIncludableQueryable<CostControlBusinessEntity.SaleItem, object>> includeProperties = null, int? page = null, int? pageSize = null)
         {
             throw new NotImplementedException();
         }

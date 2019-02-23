@@ -4,6 +4,7 @@ using CostControl.BusinessLogic.Mapper;
 using CostControl.Data.DAL;
 using CostControl.Data.Repository;
 using CostControl.Data.UnitOfWork;
+using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +33,7 @@ namespace CostControl.BusinessLogic.Logics.Security
             _unitOfWork = new UnitOfWork(new CostControlDbContext());
             Repository = _unitOfWork.GetRepository<SecurityEntity.Role>();
         }
-        
+
         public SecurityBusinessEntity.Role Remove(object id)
         {
             if (id == null) return null;
@@ -117,7 +118,7 @@ namespace CostControl.BusinessLogic.Logics.Security
 
         public IEnumerable<SecurityBusinessEntity.Role> Get(Expression<Func<SecurityBusinessEntity.Role, bool>> filter = null,
             Func<IQueryable<SecurityBusinessEntity.Role>, IOrderedQueryable<SecurityBusinessEntity.Role>> orderBy = null,
-            List<Expression<Func<SecurityBusinessEntity.Role, object>>> includeProperties = null,
+            Func<IQueryable<SecurityBusinessEntity.Role>, IIncludableQueryable<SecurityBusinessEntity.Role, object>> includeProperties = null,
             int? pageNumber = null,
             int? pageSize = null)
         => RoleIMapper.Map<IEnumerable<SecurityEntity.Role>, IEnumerable<SecurityBusinessEntity.Role>>(
@@ -125,11 +126,11 @@ namespace CostControl.BusinessLogic.Logics.Security
                     RoleIMapper.Map<Expression<Func<SecurityBusinessEntity.Role, bool>>, Expression<Func<SecurityEntity.Role, bool>>>(filter),
                     RoleIMapper.Map<Func<IQueryable<SecurityBusinessEntity.Role>, IOrderedQueryable<SecurityBusinessEntity.Role>>,
                     Func<IQueryable<SecurityEntity.Role>, IOrderedQueryable<SecurityEntity.Role>>>(orderBy),
-                    RoleIMapper.Map<List<Expression<Func<SecurityEntity.Role, object>>>>(includeProperties), pageNumber, pageSize));
+                    RoleIMapper.Map<Func<IQueryable<SecurityEntity.Role>, IIncludableQueryable<SecurityEntity.Role, object>>>(includeProperties), pageNumber, pageSize));
 
         public async Task<IEnumerable<SecurityBusinessEntity.Role>> GetAsync(Expression<Func<SecurityBusinessEntity.Role, bool>> filter = null,
             Func<IQueryable<SecurityBusinessEntity.Role>, IOrderedQueryable<SecurityBusinessEntity.Role>> orderBy = null,
-            List<Expression<Func<SecurityBusinessEntity.Role, object>>> includeProperties = null,
+            Func<IQueryable<SecurityBusinessEntity.Role>, IIncludableQueryable<SecurityBusinessEntity.Role, object>> includeProperties = null,
             int? pageNumber = null, int? pageSize = null,
             CancellationToken cancellationToken = default(CancellationToken))
         => await RoleIMapper.Map<Task<IEnumerable<SecurityEntity.Role>>, Task<IEnumerable<SecurityBusinessEntity.Role>>>(
@@ -137,20 +138,20 @@ namespace CostControl.BusinessLogic.Logics.Security
                     RoleIMapper.Map<Expression<Func<SecurityBusinessEntity.Role, bool>>, Expression<Func<SecurityEntity.Role, bool>>>(filter),
                     RoleIMapper.Map<Func<IQueryable<SecurityBusinessEntity.Role>, IOrderedQueryable<SecurityBusinessEntity.Role>>,
                     Func<IQueryable<SecurityEntity.Role>, IOrderedQueryable<SecurityEntity.Role>>>(orderBy),
-                    RoleIMapper.Map<List<Expression<Func<SecurityEntity.Role, object>>>>(includeProperties),
+                    RoleIMapper.Map<Func<IQueryable<SecurityEntity.Role>, IIncludableQueryable<SecurityEntity.Role, object>>>(includeProperties),
                     pageNumber, pageSize, cancellationToken));
 
         public SecurityBusinessEntity.Role GetById(object id,
-            List<Expression<Func<SecurityBusinessEntity.Role, object>>> includeProperties = null)
+            Func<IQueryable<SecurityBusinessEntity.Role>, IIncludableQueryable<SecurityBusinessEntity.Role, object>> includeProperties = null)
         => id == null ? null : RoleIMapper.Map<SecurityEntity.Role, SecurityBusinessEntity.Role>
-            (Repository.GetById(id, RoleIMapper.Map<List<Expression<Func<SecurityEntity.Role, object>>>>(includeProperties)));
+            (Repository.GetById(id, RoleIMapper.Map<Func<IQueryable<SecurityEntity.Role>, IIncludableQueryable<SecurityEntity.Role, object>>>(includeProperties)));
 
         public async Task<SecurityBusinessEntity.Role> GetByIdAsync(object id,
-            List<Expression<Func<SecurityBusinessEntity.Role, object>>> includeProperties = null,
+            Func<IQueryable<SecurityBusinessEntity.Role>, IIncludableQueryable<SecurityBusinessEntity.Role, object>> includeProperties = null,
             CancellationToken cancellationToken = default(CancellationToken))
         //=> await await Task.FromResult(RoleIMapper.Map<Task<Entity.Models.Role>, Task<Role>>(Repository.GetByIdAsync(id, cancellationToken)));
         => id == null ? null : RoleIMapper.Map<SecurityEntity.Role, SecurityBusinessEntity.Role>
-            (await Repository.GetByIdAsync(id, RoleIMapper.Map<List<Expression<Func<SecurityEntity.Role, object>>>>(includeProperties), cancellationToken));
+            (await Repository.GetByIdAsync(id, RoleIMapper.Map<Func<IQueryable<SecurityEntity.Role>, IIncludableQueryable<SecurityEntity.Role, object>>>(includeProperties), cancellationToken));
 
         public IEnumerable<SecurityBusinessEntity.Role> GetWithRawSql(string query, params object[] parameters)
         => RoleIMapper.Map<IEnumerable<SecurityEntity.Role>, IEnumerable<SecurityBusinessEntity.Role>>(Repository.GetWithRawSql(query, parameters));
@@ -409,18 +410,18 @@ namespace CostControl.BusinessLogic.Logics.Security
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!this._disposed)
+            if (!_disposed)
             {
                 if (disposing)
                 {
                     //Context?.Dispose();
                     RoleMapperConfig = null;
                     RoleIMapper = null;
-                    this.Repository = null;
+                    Repository = null;
                     _unitOfWork?.Dispose();
                 }
             }
-            this._disposed = true;
+            _disposed = true;
         }
 
         public void Dispose()
@@ -444,7 +445,7 @@ namespace CostControl.BusinessLogic.Logics.Security
             throw new NotImplementedException();
         }
 
-        public IEnumerable<SecurityBusinessEntity.Role> GetByParentId(long parentId, Func<IQueryable<SecurityBusinessEntity.Role>, IOrderedQueryable<SecurityBusinessEntity.Role>> orderBy = null, List<Expression<Func<SecurityBusinessEntity.Role, object>>> includeProperties = null, int? page = null, int? pageSize = null)
+        public IEnumerable<SecurityBusinessEntity.Role> GetByParentId(long parentId, Func<IQueryable<SecurityBusinessEntity.Role>, IOrderedQueryable<SecurityBusinessEntity.Role>> orderBy = null, Func<IQueryable<SecurityBusinessEntity.Role>, IIncludableQueryable<SecurityBusinessEntity.Role, object>> includeProperties = null, int? page = null, int? pageSize = null)
         {
             throw new NotImplementedException();
         }

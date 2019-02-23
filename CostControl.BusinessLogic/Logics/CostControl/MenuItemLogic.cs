@@ -4,6 +4,7 @@ using CostControl.BusinessLogic.Mapper;
 using CostControl.Data.DAL;
 using CostControl.Data.Repository;
 using CostControl.Data.UnitOfWork;
+using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -117,7 +118,7 @@ namespace CostControl.BusinessLogic.Logics.CostControl
 
         public IEnumerable<CostControlBusinessEntity.MenuItem> Get(Expression<Func<CostControlBusinessEntity.MenuItem, bool>> filter = null,
             Func<IQueryable<CostControlBusinessEntity.MenuItem>, IOrderedQueryable<CostControlBusinessEntity.MenuItem>> orderBy = null,
-            List<Expression<Func<CostControlBusinessEntity.MenuItem, object>>> includeProperties = null,
+            Func<IQueryable<CostControlBusinessEntity.MenuItem>, IIncludableQueryable<CostControlBusinessEntity.MenuItem, object>> includeProperties = null,
             int? pageNumber = null,
             int? pageSize = null)
         => MenuItemIMapper.Map<IEnumerable<CostControlEntity.MenuItem>, IEnumerable<CostControlBusinessEntity.MenuItem>>(
@@ -125,11 +126,11 @@ namespace CostControl.BusinessLogic.Logics.CostControl
                     MenuItemIMapper.Map<Expression<Func<CostControlBusinessEntity.MenuItem, bool>>, Expression<Func<CostControlEntity.MenuItem, bool>>>(filter),
                     MenuItemIMapper.Map<Func<IQueryable<CostControlBusinessEntity.MenuItem>, IOrderedQueryable<CostControlBusinessEntity.MenuItem>>,
                     Func<IQueryable<CostControlEntity.MenuItem>, IOrderedQueryable<CostControlEntity.MenuItem>>>(orderBy),
-                    MenuItemIMapper.Map<List<Expression<Func<CostControlEntity.MenuItem, object>>>>(includeProperties), pageNumber, pageSize));
+                    MenuItemIMapper.Map<Func<IQueryable<CostControlEntity.MenuItem>, IIncludableQueryable<CostControlEntity.MenuItem, object>>>(includeProperties), pageNumber, pageSize));
 
         public async Task<IEnumerable<CostControlBusinessEntity.MenuItem>> GetAsync(Expression<Func<CostControlBusinessEntity.MenuItem, bool>> filter = null,
             Func<IQueryable<CostControlBusinessEntity.MenuItem>, IOrderedQueryable<CostControlBusinessEntity.MenuItem>> orderBy = null,
-            List<Expression<Func<CostControlBusinessEntity.MenuItem, object>>> includeProperties = null,
+            Func<IQueryable<CostControlBusinessEntity.MenuItem>, IIncludableQueryable<CostControlBusinessEntity.MenuItem, object>> includeProperties = null,
             int? pageNumber = null, int? pageSize = null,
             CancellationToken cancellationToken = default(CancellationToken))
         => await MenuItemIMapper.Map<Task<IEnumerable<CostControlEntity.MenuItem>>, Task<IEnumerable<CostControlBusinessEntity.MenuItem>>>(
@@ -137,20 +138,20 @@ namespace CostControl.BusinessLogic.Logics.CostControl
                     MenuItemIMapper.Map<Expression<Func<CostControlBusinessEntity.MenuItem, bool>>, Expression<Func<CostControlEntity.MenuItem, bool>>>(filter),
                     MenuItemIMapper.Map<Func<IQueryable<CostControlBusinessEntity.MenuItem>, IOrderedQueryable<CostControlBusinessEntity.MenuItem>>,
                     Func<IQueryable<CostControlEntity.MenuItem>, IOrderedQueryable<CostControlEntity.MenuItem>>>(orderBy),
-                    MenuItemIMapper.Map<List<Expression<Func<CostControlEntity.MenuItem, object>>>>(includeProperties),
+                    MenuItemIMapper.Map<Func<IQueryable<CostControlEntity.MenuItem>, IIncludableQueryable<CostControlEntity.MenuItem, object>>>(includeProperties),
                     pageNumber, pageSize, cancellationToken));
 
         public CostControlBusinessEntity.MenuItem GetById(object id,
-            List<Expression<Func<CostControlBusinessEntity.MenuItem, object>>> includeProperties = null)
+            Func<IQueryable<CostControlBusinessEntity.MenuItem>, IIncludableQueryable<CostControlBusinessEntity.MenuItem, object>> includeProperties = null)
         => id == null ? null : MenuItemIMapper.Map<CostControlEntity.MenuItem, CostControlBusinessEntity.MenuItem>
-            (Repository.GetById(id, MenuItemIMapper.Map<List<Expression<Func<CostControlEntity.MenuItem, object>>>>(includeProperties)));
+            (Repository.GetById(id, MenuItemIMapper.Map<Func<IQueryable<CostControlEntity.MenuItem>, IIncludableQueryable<CostControlEntity.MenuItem, object>>>(includeProperties)));
 
         public async Task<CostControlBusinessEntity.MenuItem> GetByIdAsync(object id,
-            List<Expression<Func<CostControlBusinessEntity.MenuItem, object>>> includeProperties = null,
+            Func<IQueryable<CostControlBusinessEntity.MenuItem>, IIncludableQueryable<CostControlBusinessEntity.MenuItem, object>> includeProperties = null,
             CancellationToken cancellationToken = default(CancellationToken))
         //=> await await Task.FromResult(MenuItemIMapper.Map<Task<Entity.Models.MenuItem>, Task<MenuItem>>(Repository.GetByIdAsync(id, cancellationToken)));
         => id == null ? null : MenuItemIMapper.Map<CostControlEntity.MenuItem, CostControlBusinessEntity.MenuItem>
-            (await Repository.GetByIdAsync(id, MenuItemIMapper.Map<List<Expression<Func<CostControlEntity.MenuItem, object>>>>(includeProperties), cancellationToken));
+            (await Repository.GetByIdAsync(id, MenuItemIMapper.Map<Func<IQueryable<CostControlEntity.MenuItem>, IIncludableQueryable<CostControlEntity.MenuItem, object>>>(includeProperties), cancellationToken));
 
         public IEnumerable<CostControlBusinessEntity.MenuItem> GetWithRawSql(string query, params object[] parameters)
         => MenuItemIMapper.Map<IEnumerable<CostControlEntity.MenuItem>, IEnumerable<CostControlBusinessEntity.MenuItem>>(Repository.GetWithRawSql(query, parameters));
@@ -409,18 +410,18 @@ namespace CostControl.BusinessLogic.Logics.CostControl
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!this._disposed)
+            if (!_disposed)
             {
                 if (disposing)
                 {
                     //Context?.Dispose();
                     MenuItemMapperConfig = null;
                     MenuItemIMapper = null;
-                    this.Repository = null;
+                    Repository = null;
                     _unitOfWork?.Dispose();
                 }
             }
-            this._disposed = true;
+            _disposed = true;
         }
 
         public void Dispose()
@@ -444,7 +445,7 @@ namespace CostControl.BusinessLogic.Logics.CostControl
             throw new NotImplementedException();
         }
 
-        public IEnumerable<CostControlBusinessEntity.MenuItem> GetByParentId(long parentId, Func<IQueryable<CostControlBusinessEntity.MenuItem>, IOrderedQueryable<CostControlBusinessEntity.MenuItem>> orderBy = null, List<Expression<Func<CostControlBusinessEntity.MenuItem, object>>> includeProperties = null, int? page = null, int? pageSize = null)
+        public IEnumerable<CostControlBusinessEntity.MenuItem> GetByParentId(long parentId, Func<IQueryable<CostControlBusinessEntity.MenuItem>, IOrderedQueryable<CostControlBusinessEntity.MenuItem>> orderBy = null, Func<IQueryable<CostControlBusinessEntity.MenuItem>, IIncludableQueryable<CostControlBusinessEntity.MenuItem, object>> includeProperties = null, int? page = null, int? pageSize = null)
         {
             throw new NotImplementedException();
         }

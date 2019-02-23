@@ -4,6 +4,7 @@ using CostControl.BusinessLogic.Mapper;
 using CostControl.Data.DAL;
 using CostControl.Data.Repository;
 using CostControl.Data.UnitOfWork;
+using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -117,7 +118,7 @@ namespace CostControl.BusinessLogic.Logics.CostControl
 
         public IEnumerable<CostControlBusinessEntity.Buffet> Get(Expression<Func<CostControlBusinessEntity.Buffet, bool>> filter = null,
             Func<IQueryable<CostControlBusinessEntity.Buffet>, IOrderedQueryable<CostControlBusinessEntity.Buffet>> orderBy = null,
-            List<Expression<Func<CostControlBusinessEntity.Buffet, object>>> includeProperties = null,
+            Func<IQueryable<CostControlBusinessEntity.Buffet>, IIncludableQueryable<CostControlBusinessEntity.Buffet, object>> includeProperties = null,
             int? pageNumber = null,
             int? pageSize = null)
         => BuffetIMapper.Map<IEnumerable<CostControlEntity.Buffet>, IEnumerable<CostControlBusinessEntity.Buffet>>(
@@ -125,11 +126,12 @@ namespace CostControl.BusinessLogic.Logics.CostControl
                     BuffetIMapper.Map<Expression<Func<CostControlBusinessEntity.Buffet, bool>>, Expression<Func<CostControlEntity.Buffet, bool>>>(filter),
                     BuffetIMapper.Map<Func<IQueryable<CostControlBusinessEntity.Buffet>, IOrderedQueryable<CostControlBusinessEntity.Buffet>>,
                     Func<IQueryable<CostControlEntity.Buffet>, IOrderedQueryable<CostControlEntity.Buffet>>>(orderBy),
-                    BuffetIMapper.Map<List<Expression<Func<CostControlEntity.Buffet, object>>>>(includeProperties), pageNumber, pageSize));
+                    BuffetIMapper.Map<Func<IQueryable<CostControlEntity.Buffet>, IIncludableQueryable<CostControlEntity.Buffet, object>>>(includeProperties), pageNumber, pageSize));
+
 
         public async Task<IEnumerable<CostControlBusinessEntity.Buffet>> GetAsync(Expression<Func<CostControlBusinessEntity.Buffet, bool>> filter = null,
             Func<IQueryable<CostControlBusinessEntity.Buffet>, IOrderedQueryable<CostControlBusinessEntity.Buffet>> orderBy = null,
-            List<Expression<Func<CostControlBusinessEntity.Buffet, object>>> includeProperties = null,
+            Func<IQueryable<CostControlBusinessEntity.Buffet>, IIncludableQueryable<CostControlBusinessEntity.Buffet, object>> includeProperties = null,
             int? pageNumber = null, int? pageSize = null,
             CancellationToken cancellationToken = default(CancellationToken))
         => await BuffetIMapper.Map<Task<IEnumerable<CostControlEntity.Buffet>>, Task<IEnumerable<CostControlBusinessEntity.Buffet>>>(
@@ -137,20 +139,20 @@ namespace CostControl.BusinessLogic.Logics.CostControl
                     BuffetIMapper.Map<Expression<Func<CostControlBusinessEntity.Buffet, bool>>, Expression<Func<CostControlEntity.Buffet, bool>>>(filter),
                     BuffetIMapper.Map<Func<IQueryable<CostControlBusinessEntity.Buffet>, IOrderedQueryable<CostControlBusinessEntity.Buffet>>,
                     Func<IQueryable<CostControlEntity.Buffet>, IOrderedQueryable<CostControlEntity.Buffet>>>(orderBy),
-                    BuffetIMapper.Map<List<Expression<Func<CostControlEntity.Buffet, object>>>>(includeProperties),
+                    BuffetIMapper.Map<Func<IQueryable<CostControlEntity.Buffet>, IIncludableQueryable<CostControlEntity.Buffet, object>>>(includeProperties),
                     pageNumber, pageSize, cancellationToken));
 
         public CostControlBusinessEntity.Buffet GetById(object id,
-            List<Expression<Func<CostControlBusinessEntity.Buffet, object>>> includeProperties = null)
+            Func<IQueryable<CostControlBusinessEntity.Buffet>, IIncludableQueryable<CostControlBusinessEntity.Buffet, object>> includeProperties = null)
         => id == null ? null : BuffetIMapper.Map<CostControlEntity.Buffet, CostControlBusinessEntity.Buffet>
-            (Repository.GetById(id, BuffetIMapper.Map<List<Expression<Func<CostControlEntity.Buffet, object>>>>(includeProperties)));
+            (Repository.GetById(id, BuffetIMapper.Map<Func<IQueryable<CostControlEntity.Buffet>, IIncludableQueryable<CostControlEntity.Buffet, object>>>(includeProperties)));
 
         public async Task<CostControlBusinessEntity.Buffet> GetByIdAsync(object id,
-            List<Expression<Func<CostControlBusinessEntity.Buffet, object>>> includeProperties = null,
+            Func<IQueryable<CostControlBusinessEntity.Buffet>, IIncludableQueryable<CostControlBusinessEntity.Buffet, object>> includeProperties = null,
             CancellationToken cancellationToken = default(CancellationToken))
         //=> await await Task.FromResult(BuffetIMapper.Map<Task<Entity.Models.Buffet>, Task<Buffet>>(Repository.GetByIdAsync(id, cancellationToken)));
         => id == null ? null : BuffetIMapper.Map<CostControlEntity.Buffet, CostControlBusinessEntity.Buffet>
-            (await Repository.GetByIdAsync(id, BuffetIMapper.Map<List<Expression<Func<CostControlEntity.Buffet, object>>>>(includeProperties), cancellationToken));
+            (await Repository.GetByIdAsync(id, BuffetIMapper.Map<Func<IQueryable<CostControlEntity.Buffet>, IIncludableQueryable<CostControlEntity.Buffet, object>>>(includeProperties), cancellationToken));
 
         public IEnumerable<CostControlBusinessEntity.Buffet> GetWithRawSql(string query, params object[] parameters)
         => BuffetIMapper.Map<IEnumerable<CostControlEntity.Buffet>, IEnumerable<CostControlBusinessEntity.Buffet>>(Repository.GetWithRawSql(query, parameters));
@@ -409,18 +411,18 @@ namespace CostControl.BusinessLogic.Logics.CostControl
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!this._disposed)
+            if (!_disposed)
             {
                 if (disposing)
                 {
                     //Context?.Dispose();
                     BuffetMapperConfig = null;
                     BuffetIMapper = null;
-                    this.Repository = null;
+                    Repository = null;
                     _unitOfWork?.Dispose();
                 }
             }
-            this._disposed = true;
+            _disposed = true;
         }
 
         public void Dispose()
@@ -444,7 +446,7 @@ namespace CostControl.BusinessLogic.Logics.CostControl
             throw new NotImplementedException();
         }
 
-        public IEnumerable<CostControlBusinessEntity.Buffet> GetByParentId(long parentId, Func<IQueryable<CostControlBusinessEntity.Buffet>, IOrderedQueryable<CostControlBusinessEntity.Buffet>> orderBy = null, List<Expression<Func<CostControlBusinessEntity.Buffet, object>>> includeProperties = null, int? page = null, int? pageSize = null)
+        public IEnumerable<CostControlBusinessEntity.Buffet> GetByParentId(long parentId, Func<IQueryable<CostControlBusinessEntity.Buffet>, IOrderedQueryable<CostControlBusinessEntity.Buffet>> orderBy = null, Func<IQueryable<CostControlBusinessEntity.Buffet>, IIncludableQueryable<CostControlBusinessEntity.Buffet, object>> includeProperties = null, int? page = null, int? pageSize = null)
         {
             throw new NotImplementedException();
         }

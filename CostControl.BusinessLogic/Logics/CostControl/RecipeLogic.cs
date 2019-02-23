@@ -4,6 +4,7 @@ using CostControl.BusinessLogic.Mapper;
 using CostControl.Data.DAL;
 using CostControl.Data.Repository;
 using CostControl.Data.UnitOfWork;
+using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -126,7 +127,7 @@ namespace CostControl.BusinessLogic.Logics.CostControl
 
         public IEnumerable<CostControlBusinessEntity.Recipe> Get(Expression<Func<CostControlBusinessEntity.Recipe, bool>> filter = null,
             Func<IQueryable<CostControlBusinessEntity.Recipe>, IOrderedQueryable<CostControlBusinessEntity.Recipe>> orderBy = null,
-            List<Expression<Func<CostControlBusinessEntity.Recipe, object>>> includeProperties = null,
+            Func<IQueryable<CostControlBusinessEntity.Recipe>, IIncludableQueryable<CostControlBusinessEntity.Recipe, object>> includeProperties = null,
             int? pageNumber = null,
             int? pageSize = null)
         {
@@ -142,7 +143,7 @@ namespace CostControl.BusinessLogic.Logics.CostControl
                     //RecipeIMapper.Map<Expression<Func<CostControlEntity.Recipe, bool>>>(filter),
                     //a,
                     RecipeIMapper.Map<Func<IQueryable<CostControlEntity.Recipe>, IOrderedQueryable<CostControlEntity.Recipe>>>(orderBy),
-                    RecipeIMapper.Map<List<Expression<Func<CostControlEntity.Recipe, object>>>>(includeProperties),
+                    RecipeIMapper.Map<Func<IQueryable<CostControlEntity.Recipe>, IIncludableQueryable<CostControlEntity.Recipe, object>>>(includeProperties),
                     pageNumber,
                     pageSize);
 
@@ -152,20 +153,20 @@ namespace CostControl.BusinessLogic.Logics.CostControl
 
         public IEnumerable<CostControlBusinessEntity.Recipe> GetByParentId(long parentId,
             Func<IQueryable<CostControlBusinessEntity.Recipe>, IOrderedQueryable<CostControlBusinessEntity.Recipe>> orderBy = null,
-            List<Expression<Func<CostControlBusinessEntity.Recipe, object>>> includeProperties = null,
+            Func<IQueryable<CostControlBusinessEntity.Recipe>, IIncludableQueryable<CostControlBusinessEntity.Recipe, object>> includeProperties = null,
             int? page = null,
             int? pageSize = null)
         => RecipeIMapper.Map<IEnumerable<CostControlBusinessEntity.Recipe>>(
                 Repository.Get(
                     r => r.FoodId == parentId,
                     RecipeIMapper.Map<Func<IQueryable<CostControlEntity.Recipe>, IOrderedQueryable<CostControlEntity.Recipe>>>(orderBy),
-                    RecipeIMapper.Map<List<Expression<Func<CostControlEntity.Recipe, object>>>>(includeProperties),
+                    RecipeIMapper.Map<Func<IQueryable<CostControlEntity.Recipe>, IIncludableQueryable<CostControlEntity.Recipe, object>>>(includeProperties),
                     page,
                     pageSize));
-        
+
         public async Task<IEnumerable<CostControlBusinessEntity.Recipe>> GetAsync(Expression<Func<CostControlBusinessEntity.Recipe, bool>> filter = null,
             Func<IQueryable<CostControlBusinessEntity.Recipe>, IOrderedQueryable<CostControlBusinessEntity.Recipe>> orderBy = null,
-            List<Expression<Func<CostControlBusinessEntity.Recipe, object>>> includeProperties = null,
+            Func<IQueryable<CostControlBusinessEntity.Recipe>, IIncludableQueryable<CostControlBusinessEntity.Recipe, object>> includeProperties = null,
             int? pageNumber = null, int? pageSize = null,
             CancellationToken cancellationToken = default(CancellationToken))
         => await RecipeIMapper.Map<Task<IEnumerable<CostControlEntity.Recipe>>, Task<IEnumerable<CostControlBusinessEntity.Recipe>>>(
@@ -173,20 +174,20 @@ namespace CostControl.BusinessLogic.Logics.CostControl
                     RecipeIMapper.Map<Expression<Func<CostControlBusinessEntity.Recipe, bool>>, Expression<Func<CostControlEntity.Recipe, bool>>>(filter),
                     RecipeIMapper.Map<Func<IQueryable<CostControlBusinessEntity.Recipe>, IOrderedQueryable<CostControlBusinessEntity.Recipe>>,
                     Func<IQueryable<CostControlEntity.Recipe>, IOrderedQueryable<CostControlEntity.Recipe>>>(orderBy),
-                    RecipeIMapper.Map<List<Expression<Func<CostControlEntity.Recipe, object>>>>(includeProperties),
+                    RecipeIMapper.Map<Func<IQueryable<CostControlEntity.Recipe>, IIncludableQueryable<CostControlEntity.Recipe, object>>>(includeProperties),
                     pageNumber, pageSize, cancellationToken));
 
         public CostControlBusinessEntity.Recipe GetById(object id,
-            List<Expression<Func<CostControlBusinessEntity.Recipe, object>>> includeProperties = null)
+            Func<IQueryable<CostControlBusinessEntity.Recipe>, IIncludableQueryable<CostControlBusinessEntity.Recipe, object>> includeProperties = null)
         => id == null ? null : RecipeIMapper.Map<CostControlEntity.Recipe, CostControlBusinessEntity.Recipe>
-            (Repository.GetById(id, RecipeIMapper.Map<List<Expression<Func<CostControlEntity.Recipe, object>>>>(includeProperties)));
+            (Repository.GetById(id, RecipeIMapper.Map<Func<IQueryable<CostControlEntity.Recipe>, IIncludableQueryable<CostControlEntity.Recipe, object>>>(includeProperties)));
 
         public async Task<CostControlBusinessEntity.Recipe> GetByIdAsync(object id,
-            List<Expression<Func<CostControlBusinessEntity.Recipe, object>>> includeProperties = null,
+            Func<IQueryable<CostControlBusinessEntity.Recipe>, IIncludableQueryable<CostControlBusinessEntity.Recipe, object>> includeProperties = null,
             CancellationToken cancellationToken = default(CancellationToken))
         //=> await await Task.FromResult(RecipeIMapper.Map<Task<Entity.Models.Recipe>, Task<Recipe>>(Repository.GetByIdAsync(id, cancellationToken)));
         => id == null ? null : RecipeIMapper.Map<CostControlEntity.Recipe, CostControlBusinessEntity.Recipe>
-            (await Repository.GetByIdAsync(id, RecipeIMapper.Map<List<Expression<Func<CostControlEntity.Recipe, object>>>>(includeProperties), cancellationToken));
+            (await Repository.GetByIdAsync(id, RecipeIMapper.Map<Func<IQueryable<CostControlEntity.Recipe>, IIncludableQueryable<CostControlEntity.Recipe, object>>>(includeProperties), cancellationToken));
 
         public IEnumerable<CostControlBusinessEntity.Recipe> GetWithRawSql(string query, params object[] parameters)
         => RecipeIMapper.Map<IEnumerable<CostControlEntity.Recipe>, IEnumerable<CostControlBusinessEntity.Recipe>>(Repository.GetWithRawSql(query, parameters));

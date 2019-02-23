@@ -4,6 +4,7 @@ using CostControl.BusinessLogic.Mapper;
 using CostControl.Data.DAL;
 using CostControl.Data.Repository;
 using CostControl.Data.UnitOfWork;
+using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -117,7 +118,7 @@ namespace CostControl.BusinessLogic.Logics.CostControl
 
         public IEnumerable<CostControlBusinessEntity.OverCostType> Get(Expression<Func<CostControlBusinessEntity.OverCostType, bool>> filter = null,
             Func<IQueryable<CostControlBusinessEntity.OverCostType>, IOrderedQueryable<CostControlBusinessEntity.OverCostType>> orderBy = null,
-            List<Expression<Func<CostControlBusinessEntity.OverCostType, object>>> includeProperties = null,
+            Func<IQueryable<CostControlBusinessEntity.OverCostType>, IIncludableQueryable<CostControlBusinessEntity.OverCostType, object>> includeProperties = null,
             int? pageNumber = null,
             int? pageSize = null)
         => OverCostTypeIMapper.Map<IEnumerable<CostControlEntity.OverCostType>, IEnumerable<CostControlBusinessEntity.OverCostType>>(
@@ -125,11 +126,11 @@ namespace CostControl.BusinessLogic.Logics.CostControl
                     OverCostTypeIMapper.Map<Expression<Func<CostControlBusinessEntity.OverCostType, bool>>, Expression<Func<CostControlEntity.OverCostType, bool>>>(filter),
                     OverCostTypeIMapper.Map<Func<IQueryable<CostControlBusinessEntity.OverCostType>, IOrderedQueryable<CostControlBusinessEntity.OverCostType>>,
                     Func<IQueryable<CostControlEntity.OverCostType>, IOrderedQueryable<CostControlEntity.OverCostType>>>(orderBy),
-                    OverCostTypeIMapper.Map<List<Expression<Func<CostControlEntity.OverCostType, object>>>>(includeProperties), pageNumber, pageSize));
+                    OverCostTypeIMapper.Map<Func<IQueryable<CostControlEntity.OverCostType>, IIncludableQueryable<CostControlEntity.OverCostType, object>>>(includeProperties), pageNumber, pageSize));
 
         public async Task<IEnumerable<CostControlBusinessEntity.OverCostType>> GetAsync(Expression<Func<CostControlBusinessEntity.OverCostType, bool>> filter = null,
             Func<IQueryable<CostControlBusinessEntity.OverCostType>, IOrderedQueryable<CostControlBusinessEntity.OverCostType>> orderBy = null,
-            List<Expression<Func<CostControlBusinessEntity.OverCostType, object>>> includeProperties = null,
+            Func<IQueryable<CostControlBusinessEntity.OverCostType>, IIncludableQueryable<CostControlBusinessEntity.OverCostType, object>> includeProperties = null,
             int? pageNumber = null, int? pageSize = null,
             CancellationToken cancellationToken = default(CancellationToken))
         => await OverCostTypeIMapper.Map<Task<IEnumerable<CostControlEntity.OverCostType>>, Task<IEnumerable<CostControlBusinessEntity.OverCostType>>>(
@@ -137,20 +138,20 @@ namespace CostControl.BusinessLogic.Logics.CostControl
                     OverCostTypeIMapper.Map<Expression<Func<CostControlBusinessEntity.OverCostType, bool>>, Expression<Func<CostControlEntity.OverCostType, bool>>>(filter),
                     OverCostTypeIMapper.Map<Func<IQueryable<CostControlBusinessEntity.OverCostType>, IOrderedQueryable<CostControlBusinessEntity.OverCostType>>,
                     Func<IQueryable<CostControlEntity.OverCostType>, IOrderedQueryable<CostControlEntity.OverCostType>>>(orderBy),
-                    OverCostTypeIMapper.Map<List<Expression<Func<CostControlEntity.OverCostType, object>>>>(includeProperties),
+                    OverCostTypeIMapper.Map<Func<IQueryable<CostControlEntity.OverCostType>, IIncludableQueryable<CostControlEntity.OverCostType, object>>>(includeProperties),
                     pageNumber, pageSize, cancellationToken));
 
         public CostControlBusinessEntity.OverCostType GetById(object id,
-            List<Expression<Func<CostControlBusinessEntity.OverCostType, object>>> includeProperties = null)
+            Func<IQueryable<CostControlBusinessEntity.OverCostType>, IIncludableQueryable<CostControlBusinessEntity.OverCostType, object>> includeProperties = null)
         => id == null ? null : OverCostTypeIMapper.Map<CostControlEntity.OverCostType, CostControlBusinessEntity.OverCostType>
-            (Repository.GetById(id, OverCostTypeIMapper.Map<List<Expression<Func<CostControlEntity.OverCostType, object>>>>(includeProperties)));
+            (Repository.GetById(id, OverCostTypeIMapper.Map<Func<IQueryable<CostControlEntity.OverCostType>, IIncludableQueryable<CostControlEntity.OverCostType, object>>>(includeProperties)));
 
         public async Task<CostControlBusinessEntity.OverCostType> GetByIdAsync(object id,
-            List<Expression<Func<CostControlBusinessEntity.OverCostType, object>>> includeProperties = null,
+            Func<IQueryable<CostControlBusinessEntity.OverCostType>, IIncludableQueryable<CostControlBusinessEntity.OverCostType, object>> includeProperties = null,
             CancellationToken cancellationToken = default(CancellationToken))
         //=> await await Task.FromResult(OverCostTypeIMapper.Map<Task<Entity.Models.OverCostType>, Task<OverCostType>>(Repository.GetByIdAsync(id, cancellationToken)));
         => id == null ? null : OverCostTypeIMapper.Map<CostControlEntity.OverCostType, CostControlBusinessEntity.OverCostType>
-            (await Repository.GetByIdAsync(id, OverCostTypeIMapper.Map<List<Expression<Func<CostControlEntity.OverCostType, object>>>>(includeProperties), cancellationToken));
+            (await Repository.GetByIdAsync(id, OverCostTypeIMapper.Map<Func<IQueryable<CostControlEntity.OverCostType>, IIncludableQueryable<CostControlEntity.OverCostType, object>>>(includeProperties), cancellationToken));
 
         public IEnumerable<CostControlBusinessEntity.OverCostType> GetWithRawSql(string query, params object[] parameters)
         => OverCostTypeIMapper.Map<IEnumerable<CostControlEntity.OverCostType>, IEnumerable<CostControlBusinessEntity.OverCostType>>(Repository.GetWithRawSql(query, parameters));
@@ -409,18 +410,18 @@ namespace CostControl.BusinessLogic.Logics.CostControl
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!this._disposed)
+            if (!_disposed)
             {
                 if (disposing)
                 {
                     //Context?.Dispose();
                     OverCostTypeMapperConfig = null;
                     OverCostTypeIMapper = null;
-                    this.Repository = null;
+                    Repository = null;
                     _unitOfWork?.Dispose();
                 }
             }
-            this._disposed = true;
+            _disposed = true;
         }
 
         public void Dispose()
@@ -444,7 +445,7 @@ namespace CostControl.BusinessLogic.Logics.CostControl
             throw new NotImplementedException();
         }
 
-        public IEnumerable<CostControlBusinessEntity.OverCostType> GetByParentId(long parentId, Func<IQueryable<CostControlBusinessEntity.OverCostType>, IOrderedQueryable<CostControlBusinessEntity.OverCostType>> orderBy = null, List<Expression<Func<CostControlBusinessEntity.OverCostType, object>>> includeProperties = null, int? page = null, int? pageSize = null)
+        public IEnumerable<CostControlBusinessEntity.OverCostType> GetByParentId(long parentId, Func<IQueryable<CostControlBusinessEntity.OverCostType>, IOrderedQueryable<CostControlBusinessEntity.OverCostType>> orderBy = null, Func<IQueryable<CostControlBusinessEntity.OverCostType>, IIncludableQueryable<CostControlBusinessEntity.OverCostType, object>> includeProperties = null, int? page = null, int? pageSize = null)
         {
             throw new NotImplementedException();
         }

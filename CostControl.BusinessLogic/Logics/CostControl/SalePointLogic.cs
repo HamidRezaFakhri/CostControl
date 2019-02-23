@@ -4,6 +4,7 @@ using CostControl.BusinessLogic.Mapper;
 using CostControl.Data.DAL;
 using CostControl.Data.Repository;
 using CostControl.Data.UnitOfWork;
+using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -175,7 +176,7 @@ namespace CostControl.BusinessLogic.Logics.CostControl
 
         public IEnumerable<CostControlBusinessEntity.SalePoint> Get(Expression<Func<CostControlBusinessEntity.SalePoint, bool>> filter = null,
                 Func<IQueryable<CostControlBusinessEntity.SalePoint>, IOrderedQueryable<CostControlBusinessEntity.SalePoint>> orderBy = null,
-                List<Expression<Func<CostControlBusinessEntity.SalePoint, object>>> includeProperties = null,
+                Func<IQueryable<CostControlBusinessEntity.SalePoint>, IIncludableQueryable<CostControlBusinessEntity.SalePoint, object>> includeProperties = null,
                 int? pageNumber = null,
                 int? pageSize = null)
             //{
@@ -189,13 +190,13 @@ namespace CostControl.BusinessLogic.Logics.CostControl
                     Repository.Get(
                         SalePointIMapper.Map<Expression<Func<CostControlEntity.SalePoint, bool>>>(filter),
                         SalePointIMapper.Map<Func<IQueryable<CostControlEntity.SalePoint>, IOrderedQueryable<CostControlEntity.SalePoint>>>(orderBy),
-                        SalePointIMapper.Map<List<Expression<Func<CostControlEntity.SalePoint, object>>>>(includeProperties),
+                        SalePointIMapper.Map<Func<IQueryable<CostControlEntity.SalePoint>, IIncludableQueryable<CostControlEntity.SalePoint, object>>>(includeProperties),
                         pageNumber,
                         pageSize));
 
         public async Task<IEnumerable<CostControlBusinessEntity.SalePoint>> GetAsync(Expression<Func<CostControlBusinessEntity.SalePoint, bool>> filter = null,
             Func<IQueryable<CostControlBusinessEntity.SalePoint>, IOrderedQueryable<CostControlBusinessEntity.SalePoint>> orderBy = null,
-            List<Expression<Func<CostControlBusinessEntity.SalePoint, object>>> includeProperties = null,
+            Func<IQueryable<CostControlBusinessEntity.SalePoint>, IIncludableQueryable<CostControlBusinessEntity.SalePoint, object>> includeProperties = null,
             int? pageNumber = null, int? pageSize = null,
             CancellationToken cancellationToken = default(CancellationToken))
         => await SalePointIMapper.Map<Task<IEnumerable<CostControlEntity.SalePoint>>, Task<IEnumerable<CostControlBusinessEntity.SalePoint>>>(
@@ -203,20 +204,20 @@ namespace CostControl.BusinessLogic.Logics.CostControl
                     SalePointIMapper.Map<Expression<Func<CostControlBusinessEntity.SalePoint, bool>>, Expression<Func<CostControlEntity.SalePoint, bool>>>(filter),
                     SalePointIMapper.Map<Func<IQueryable<CostControlBusinessEntity.SalePoint>, IOrderedQueryable<CostControlBusinessEntity.SalePoint>>,
                     Func<IQueryable<CostControlEntity.SalePoint>, IOrderedQueryable<CostControlEntity.SalePoint>>>(orderBy),
-                    SalePointIMapper.Map<List<Expression<Func<CostControlEntity.SalePoint, object>>>>(includeProperties),
+                    SalePointIMapper.Map<Func<IQueryable<CostControlEntity.SalePoint>, IIncludableQueryable<CostControlEntity.SalePoint, object>>>(includeProperties),
                     pageNumber, pageSize, cancellationToken));
 
         public CostControlBusinessEntity.SalePoint GetById(object id,
-            List<Expression<Func<CostControlBusinessEntity.SalePoint, object>>> includeProperties = null)
+            Func<IQueryable<CostControlBusinessEntity.SalePoint>, IIncludableQueryable<CostControlBusinessEntity.SalePoint, object>> includeProperties = null)
         => id == null ? null : SalePointIMapper.Map<CostControlEntity.SalePoint, CostControlBusinessEntity.SalePoint>
-            (Repository.GetById(id, SalePointIMapper.Map<List<Expression<Func<CostControlEntity.SalePoint, object>>>>(includeProperties)));
+            (Repository.GetById(id, SalePointIMapper.Map<Func<IQueryable<CostControlEntity.SalePoint>, IIncludableQueryable<CostControlEntity.SalePoint, object>>>(includeProperties)));
 
         public async Task<CostControlBusinessEntity.SalePoint> GetByIdAsync(object id,
-            List<Expression<Func<CostControlBusinessEntity.SalePoint, object>>> includeProperties = null,
+            Func<IQueryable<CostControlBusinessEntity.SalePoint>, IIncludableQueryable<CostControlBusinessEntity.SalePoint, object>> includeProperties = null,
             CancellationToken cancellationToken = default(CancellationToken))
         //=> await await Task.FromResult(SalePointIMapper.Map<Task<Entity.Models.SalePoint>, Task<SalePoint>>(Repository.GetByIdAsync(id, cancellationToken)));
         => id == null ? null : SalePointIMapper.Map<CostControlEntity.SalePoint, CostControlBusinessEntity.SalePoint>
-            (await Repository.GetByIdAsync(id, SalePointIMapper.Map<List<Expression<Func<CostControlEntity.SalePoint, object>>>>(includeProperties), cancellationToken));
+            (await Repository.GetByIdAsync(id, SalePointIMapper.Map<Func<IQueryable<CostControlEntity.SalePoint>, IIncludableQueryable<CostControlEntity.SalePoint, object>>>(includeProperties), cancellationToken));
 
         public IEnumerable<CostControlBusinessEntity.SalePoint> GetWithRawSql(string query, params object[] parameters)
         => SalePointIMapper.Map<IEnumerable<CostControlEntity.SalePoint>, IEnumerable<CostControlBusinessEntity.SalePoint>>(Repository.GetWithRawSql(query, parameters));
@@ -511,7 +512,7 @@ namespace CostControl.BusinessLogic.Logics.CostControl
             throw new NotImplementedException();
         }
 
-        public IEnumerable<CostControlBusinessEntity.SalePoint> GetByParentId(long parentId, Func<IQueryable<CostControlBusinessEntity.SalePoint>, IOrderedQueryable<CostControlBusinessEntity.SalePoint>> orderBy = null, List<Expression<Func<CostControlBusinessEntity.SalePoint, object>>> includeProperties = null, int? page = null, int? pageSize = null)
+        public IEnumerable<CostControlBusinessEntity.SalePoint> GetByParentId(long parentId, Func<IQueryable<CostControlBusinessEntity.SalePoint>, IOrderedQueryable<CostControlBusinessEntity.SalePoint>> orderBy = null, Func<IQueryable<CostControlBusinessEntity.SalePoint>, IIncludableQueryable<CostControlBusinessEntity.SalePoint, object>> includeProperties = null, int? page = null, int? pageSize = null)
         {
             throw new NotImplementedException();
         }

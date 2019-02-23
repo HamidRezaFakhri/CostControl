@@ -4,6 +4,7 @@ using CostControl.BusinessLogic.Mapper;
 using CostControl.Data.DAL;
 using CostControl.Data.Repository;
 using CostControl.Data.UnitOfWork;
+using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -117,7 +118,7 @@ namespace CostControl.BusinessLogic.Logics.CostControl
 
         public IEnumerable<CostControlBusinessEntity.ConsumptionUnit> Get(Expression<Func<CostControlBusinessEntity.ConsumptionUnit, bool>> filter = null,
             Func<IQueryable<CostControlBusinessEntity.ConsumptionUnit>, IOrderedQueryable<CostControlBusinessEntity.ConsumptionUnit>> orderBy = null,
-            List<Expression<Func<CostControlBusinessEntity.ConsumptionUnit, object>>> includeProperties = null,
+            Func<IQueryable<CostControlBusinessEntity.ConsumptionUnit>, IIncludableQueryable<CostControlBusinessEntity.ConsumptionUnit, object>> includeProperties = null,
             int? pageNumber = null,
             int? pageSize = null)
         => ConsumptionUnitIMapper.Map<IEnumerable<CostControlEntity.ConsumptionUnit>, IEnumerable<CostControlBusinessEntity.ConsumptionUnit>>(
@@ -125,11 +126,11 @@ namespace CostControl.BusinessLogic.Logics.CostControl
                     ConsumptionUnitIMapper.Map<Expression<Func<CostControlBusinessEntity.ConsumptionUnit, bool>>, Expression<Func<CostControlEntity.ConsumptionUnit, bool>>>(filter),
                     ConsumptionUnitIMapper.Map<Func<IQueryable<CostControlBusinessEntity.ConsumptionUnit>, IOrderedQueryable<CostControlBusinessEntity.ConsumptionUnit>>,
                     Func<IQueryable<CostControlEntity.ConsumptionUnit>, IOrderedQueryable<CostControlEntity.ConsumptionUnit>>>(orderBy),
-                    ConsumptionUnitIMapper.Map<List<Expression<Func<CostControlEntity.ConsumptionUnit, object>>>>(includeProperties), pageNumber, pageSize));
+                    ConsumptionUnitIMapper.Map<Func<IQueryable<CostControlEntity.ConsumptionUnit>, IIncludableQueryable<CostControlEntity.ConsumptionUnit, object>>>(includeProperties), pageNumber, pageSize));
 
         public async Task<IEnumerable<CostControlBusinessEntity.ConsumptionUnit>> GetAsync(Expression<Func<CostControlBusinessEntity.ConsumptionUnit, bool>> filter = null,
             Func<IQueryable<CostControlBusinessEntity.ConsumptionUnit>, IOrderedQueryable<CostControlBusinessEntity.ConsumptionUnit>> orderBy = null,
-            List<Expression<Func<CostControlBusinessEntity.ConsumptionUnit, object>>> includeProperties = null,
+            Func<IQueryable<CostControlBusinessEntity.ConsumptionUnit>, IIncludableQueryable<CostControlBusinessEntity.ConsumptionUnit, object>> includeProperties = null,
             int? pageNumber = null, int? pageSize = null,
             CancellationToken cancellationToken = default(CancellationToken))
         => await ConsumptionUnitIMapper.Map<Task<IEnumerable<CostControlEntity.ConsumptionUnit>>, Task<IEnumerable<CostControlBusinessEntity.ConsumptionUnit>>>(
@@ -137,20 +138,20 @@ namespace CostControl.BusinessLogic.Logics.CostControl
                     ConsumptionUnitIMapper.Map<Expression<Func<CostControlBusinessEntity.ConsumptionUnit, bool>>, Expression<Func<CostControlEntity.ConsumptionUnit, bool>>>(filter),
                     ConsumptionUnitIMapper.Map<Func<IQueryable<CostControlBusinessEntity.ConsumptionUnit>, IOrderedQueryable<CostControlBusinessEntity.ConsumptionUnit>>,
                     Func<IQueryable<CostControlEntity.ConsumptionUnit>, IOrderedQueryable<CostControlEntity.ConsumptionUnit>>>(orderBy),
-                    ConsumptionUnitIMapper.Map<List<Expression<Func<CostControlEntity.ConsumptionUnit, object>>>>(includeProperties),
+                    ConsumptionUnitIMapper.Map<Func<IQueryable<CostControlEntity.ConsumptionUnit>, IIncludableQueryable<CostControlEntity.ConsumptionUnit, object>>>(includeProperties),
                     pageNumber, pageSize, cancellationToken));
 
         public CostControlBusinessEntity.ConsumptionUnit GetById(object id,
-            List<Expression<Func<CostControlBusinessEntity.ConsumptionUnit, object>>> includeProperties = null)
+            Func<IQueryable<CostControlBusinessEntity.ConsumptionUnit>, IIncludableQueryable<CostControlBusinessEntity.ConsumptionUnit, object>> includeProperties = null)
         => id == null ? null : ConsumptionUnitIMapper.Map<CostControlEntity.ConsumptionUnit, CostControlBusinessEntity.ConsumptionUnit>
-            (Repository.GetById(id, ConsumptionUnitIMapper.Map<List<Expression<Func<CostControlEntity.ConsumptionUnit, object>>>>(includeProperties)));
+            (Repository.GetById(id, ConsumptionUnitIMapper.Map<Func<IQueryable<CostControlEntity.ConsumptionUnit>, IIncludableQueryable<CostControlEntity.ConsumptionUnit, object>>>(includeProperties)));
 
         public async Task<CostControlBusinessEntity.ConsumptionUnit> GetByIdAsync(object id,
-            List<Expression<Func<CostControlBusinessEntity.ConsumptionUnit, object>>> includeProperties = null,
+            Func<IQueryable<CostControlBusinessEntity.ConsumptionUnit>, IIncludableQueryable<CostControlBusinessEntity.ConsumptionUnit, object>> includeProperties = null,
             CancellationToken cancellationToken = default(CancellationToken))
         //=> await await Task.FromResult(ConsumptionUnitIMapper.Map<Task<Entity.Models.ConsumptionUnit>, Task<ConsumptionUnit>>(Repository.GetByIdAsync(id, cancellationToken)));
         => id == null ? null : ConsumptionUnitIMapper.Map<CostControlEntity.ConsumptionUnit, CostControlBusinessEntity.ConsumptionUnit>
-            (await Repository.GetByIdAsync(id, ConsumptionUnitIMapper.Map<List<Expression<Func<CostControlEntity.ConsumptionUnit, object>>>>(includeProperties), cancellationToken));
+            (await Repository.GetByIdAsync(id, ConsumptionUnitIMapper.Map<Func<IQueryable<CostControlEntity.ConsumptionUnit>, IIncludableQueryable<CostControlEntity.ConsumptionUnit, object>>>(includeProperties), cancellationToken));
 
         public IEnumerable<CostControlBusinessEntity.ConsumptionUnit> GetWithRawSql(string query, params object[] parameters)
         => ConsumptionUnitIMapper.Map<IEnumerable<CostControlEntity.ConsumptionUnit>, IEnumerable<CostControlBusinessEntity.ConsumptionUnit>>(Repository.GetWithRawSql(query, parameters));
@@ -409,18 +410,18 @@ namespace CostControl.BusinessLogic.Logics.CostControl
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!this._disposed)
+            if (!_disposed)
             {
                 if (disposing)
                 {
                     //Context?.Dispose();
                     ConsumptionUnitMapperConfig = null;
                     ConsumptionUnitIMapper = null;
-                    this.Repository = null;
+                    Repository = null;
                     _unitOfWork?.Dispose();
                 }
             }
-            this._disposed = true;
+            _disposed = true;
         }
 
         public void Dispose()
@@ -444,7 +445,7 @@ namespace CostControl.BusinessLogic.Logics.CostControl
             throw new NotImplementedException();
         }
 
-        public IEnumerable<CostControlBusinessEntity.ConsumptionUnit> GetByParentId(long parentId, Func<IQueryable<CostControlBusinessEntity.ConsumptionUnit>, IOrderedQueryable<CostControlBusinessEntity.ConsumptionUnit>> orderBy = null, List<Expression<Func<CostControlBusinessEntity.ConsumptionUnit, object>>> includeProperties = null, int? page = null, int? pageSize = null)
+        public IEnumerable<CostControlBusinessEntity.ConsumptionUnit> GetByParentId(long parentId, Func<IQueryable<CostControlBusinessEntity.ConsumptionUnit>, IOrderedQueryable<CostControlBusinessEntity.ConsumptionUnit>> orderBy = null, Func<IQueryable<CostControlBusinessEntity.ConsumptionUnit>, IIncludableQueryable<CostControlBusinessEntity.ConsumptionUnit, object>> includeProperties = null, int? page = null, int? pageSize = null)
         {
             throw new NotImplementedException();
         }

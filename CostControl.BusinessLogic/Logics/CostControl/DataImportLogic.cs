@@ -4,6 +4,7 @@ using CostControl.BusinessLogic.Mapper;
 using CostControl.Data.DAL;
 using CostControl.Data.Repository;
 using CostControl.Data.UnitOfWork;
+using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -130,7 +131,7 @@ namespace CostControl.BusinessLogic.Logics.CostControl
 
         public IEnumerable<CostControlBusinessEntity.DataImport> Get(Expression<Func<CostControlBusinessEntity.DataImport, bool>> filter = null,
             Func<IQueryable<CostControlBusinessEntity.DataImport>, IOrderedQueryable<CostControlBusinessEntity.DataImport>> orderBy = null,
-            List<Expression<Func<CostControlBusinessEntity.DataImport, object>>> includeProperties = null,
+            Func<IQueryable<CostControlBusinessEntity.DataImport>, IIncludableQueryable<CostControlBusinessEntity.DataImport, object>> includeProperties = null,
             int? pageNumber = null,
             int? pageSize = null)
         {
@@ -139,12 +140,12 @@ namespace CostControl.BusinessLogic.Logics.CostControl
                                DataImportIMapper.Map<Expression<Func<CostControlBusinessEntity.DataImport, bool>>, Expression<Func<CostControlEntity.DataImport, bool>>>(filter),
                                DataImportIMapper.Map<Func<IQueryable<CostControlBusinessEntity.DataImport>, IOrderedQueryable<CostControlBusinessEntity.DataImport>>,
                                Func<IQueryable<CostControlEntity.DataImport>, IOrderedQueryable<CostControlEntity.DataImport>>>(orderBy),
-                               DataImportIMapper.Map<List<Expression<Func<CostControlEntity.DataImport, object>>>>(includeProperties), pageNumber, pageSize));
+                               DataImportIMapper.Map<Func<IQueryable<CostControlEntity.DataImport>, IIncludableQueryable<CostControlEntity.DataImport, object>>>(includeProperties), pageNumber, pageSize));
         }
 
         public async Task<IEnumerable<CostControlBusinessEntity.DataImport>> GetAsync(Expression<Func<CostControlBusinessEntity.DataImport, bool>> filter = null,
             Func<IQueryable<CostControlBusinessEntity.DataImport>, IOrderedQueryable<CostControlBusinessEntity.DataImport>> orderBy = null,
-            List<Expression<Func<CostControlBusinessEntity.DataImport, object>>> includeProperties = null,
+            Func<IQueryable<CostControlBusinessEntity.DataImport>, IIncludableQueryable<CostControlBusinessEntity.DataImport, object>> includeProperties = null,
             int? pageNumber = null, int? pageSize = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -153,23 +154,23 @@ namespace CostControl.BusinessLogic.Logics.CostControl
                                DataImportIMapper.Map<Expression<Func<CostControlBusinessEntity.DataImport, bool>>, Expression<Func<CostControlEntity.DataImport, bool>>>(filter),
                                DataImportIMapper.Map<Func<IQueryable<CostControlBusinessEntity.DataImport>, IOrderedQueryable<CostControlBusinessEntity.DataImport>>,
                                Func<IQueryable<CostControlEntity.DataImport>, IOrderedQueryable<CostControlEntity.DataImport>>>(orderBy),
-                               DataImportIMapper.Map<List<Expression<Func<CostControlEntity.DataImport, object>>>>(includeProperties),
+                               DataImportIMapper.Map<Func<IQueryable<CostControlEntity.DataImport>, IIncludableQueryable<CostControlEntity.DataImport, object>>>(includeProperties),
                                pageNumber, pageSize, cancellationToken));
         }
 
         public CostControlBusinessEntity.DataImport GetById(object id,
-            List<Expression<Func<CostControlBusinessEntity.DataImport, object>>> includeProperties = null)
+            Func<IQueryable<CostControlBusinessEntity.DataImport>, IIncludableQueryable<CostControlBusinessEntity.DataImport, object>> includeProperties = null)
         {
             return id == null ? null : DataImportIMapper.Map<CostControlEntity.DataImport, CostControlBusinessEntity.DataImport>
-                       (Repository.GetById(id, DataImportIMapper.Map<List<Expression<Func<CostControlEntity.DataImport, object>>>>(includeProperties)));
+                       (Repository.GetById(id, DataImportIMapper.Map<Func<IQueryable<CostControlEntity.DataImport>, IIncludableQueryable<CostControlEntity.DataImport, object>>>(includeProperties)));
         }
 
         public async Task<CostControlBusinessEntity.DataImport> GetByIdAsync(object id,
-            List<Expression<Func<CostControlBusinessEntity.DataImport, object>>> includeProperties = null,
+            Func<IQueryable<CostControlBusinessEntity.DataImport>, IIncludableQueryable<CostControlBusinessEntity.DataImport, object>> includeProperties = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             return id == null ? null : DataImportIMapper.Map<CostControlEntity.DataImport, CostControlBusinessEntity.DataImport>
-                       (await Repository.GetByIdAsync(id, DataImportIMapper.Map<List<Expression<Func<CostControlEntity.DataImport, object>>>>(includeProperties), cancellationToken));
+                       (await Repository.GetByIdAsync(id, DataImportIMapper.Map<Func<IQueryable<CostControlEntity.DataImport>, IIncludableQueryable<CostControlEntity.DataImport, object>>>(includeProperties), cancellationToken));
         }
 
         public IEnumerable<CostControlBusinessEntity.DataImport> GetWithRawSql(string query, params object[] parameters)
@@ -509,7 +510,7 @@ namespace CostControl.BusinessLogic.Logics.CostControl
             throw new NotImplementedException();
         }
 
-        public IEnumerable<CostControlBusinessEntity.DataImport> GetByParentId(long parentId, Func<IQueryable<CostControlBusinessEntity.DataImport>, IOrderedQueryable<CostControlBusinessEntity.DataImport>> orderBy = null, List<Expression<Func<CostControlBusinessEntity.DataImport, object>>> includeProperties = null, int? page = null, int? pageSize = null)
+        public IEnumerable<CostControlBusinessEntity.DataImport> GetByParentId(long parentId, Func<IQueryable<CostControlBusinessEntity.DataImport>, IOrderedQueryable<CostControlBusinessEntity.DataImport>> orderBy = null, Func<IQueryable<CostControlBusinessEntity.DataImport>, IIncludableQueryable<CostControlBusinessEntity.DataImport, object>> includeProperties = null, int? page = null, int? pageSize = null)
         {
             throw new NotImplementedException();
         }
