@@ -162,10 +162,20 @@ namespace CostControl.Data.Repository
                 //    .Aggregate(query, (current, include) => current.Include(include));
 
                 query = includeProperties(query);
-                
+
+                //previous type
                 //foreach (var include in includeProperties)
                 //{
                 //    query = query.Include(include);
+                //}
+
+                //if (includeExpressions.Any())
+                //{
+                //    var set = includeExpressions
+                //      .Aggregate<Expression<Func<TEntity, object>>, IQueryable<TEntity>>
+                //        (_DbSet, (current, expression) => current.Include(expression));
+
+                //    return set.SingleOrDefault(match);
                 //}
             }
 
