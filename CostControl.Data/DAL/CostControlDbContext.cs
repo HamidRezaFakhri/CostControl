@@ -31,10 +31,10 @@ namespace CostControl.Data.DAL
                 //optionsBuilder.UseLoggerFactory(log);
 
                 optionsBuilder
-                    .UseSqlServer(@"Data Source=.\Last;Initial Catalog=CostControl;Trusted_Connection=false;
+                    .UseSqlServer(@"Data Source=.\SQLEXPRESS;Initial Catalog=CostControl;Trusted_Connection=false;
                                     User ID=sa; Password=2129;MultipleActiveResultSets=true;")
-                    .UseLazyLoadingProxies()
-                    .ConfigureWarnings(warnings => warnings.Ignore(CoreEventId.DetachedLazyLoadingWarning))
+                    //.UseLazyLoadingProxies()
+                    //.ConfigureWarnings(warnings => warnings.Ignore(CoreEventId.DetachedLazyLoadingWarning))
                     .EnableSensitiveDataLogging();
 
                 //_context.ChangeTracker.LazyLoadingEnabled = false;

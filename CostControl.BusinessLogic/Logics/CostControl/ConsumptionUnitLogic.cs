@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.Extensions.ExpressionMapping;
 using CostControl.BusinessLogic.Logics.Base;
 using CostControl.BusinessLogic.Mapper;
 using CostControl.Data.DAL;
@@ -36,11 +37,14 @@ namespace CostControl.BusinessLogic.Logics.CostControl
 
         public CostControlBusinessEntity.ConsumptionUnit Remove(object id)
         {
-            if (id == null) return null;
+            if (id == null)
+            {
+                return null;
+            }
 
             if (Repository.GetById(id) != null)
             {
-                var result = ConsumptionUnitIMapper.Map<CostControlEntity.ConsumptionUnit, CostControlBusinessEntity.ConsumptionUnit>(Repository.Remove(id));
+                CostControlBusinessEntity.ConsumptionUnit result = ConsumptionUnitIMapper.Map<CostControlEntity.ConsumptionUnit, CostControlBusinessEntity.ConsumptionUnit>(Repository.Remove(id));
                 _unitOfWork.Commit();
 
                 return result;
@@ -51,11 +55,14 @@ namespace CostControl.BusinessLogic.Logics.CostControl
 
         public IEnumerable<CostControlBusinessEntity.ConsumptionUnit> Remove(Expression<Func<CostControlBusinessEntity.ConsumptionUnit, bool>> filter)
         {
-            if (filter == null) return null;
+            if (filter == null)
+            {
+                return null;
+            }
 
             List<CostControlBusinessEntity.ConsumptionUnit> result = null;
 
-            var deleteLst = Repository.Get(ConsumptionUnitIMapper
+            IEnumerable<CostControlEntity.ConsumptionUnit> deleteLst = Repository.Get(ConsumptionUnitIMapper
                                 .Map<Expression<Func<CostControlBusinessEntity.ConsumptionUnit, bool>>,
                                     Expression<Func<CostControlEntity.ConsumptionUnit, bool>>>(filter));
 
@@ -75,13 +82,16 @@ namespace CostControl.BusinessLogic.Logics.CostControl
         public async Task<CostControlBusinessEntity.ConsumptionUnit> RemoveAsync(object id,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (id == null) return null;
+            if (id == null)
+            {
+                return null;
+            }
 
-            var entity = await Repository.GetByIdAsync(id, null, cancellationToken);
+            CostControlEntity.ConsumptionUnit entity = await Repository.GetByIdAsync(id, null, cancellationToken);
 
             if (entity != null)
             {
-                var result = ConsumptionUnitIMapper.Map<CostControlEntity.ConsumptionUnit, CostControlBusinessEntity.ConsumptionUnit>(Repository.Remove(id));
+                CostControlBusinessEntity.ConsumptionUnit result = ConsumptionUnitIMapper.Map<CostControlEntity.ConsumptionUnit, CostControlBusinessEntity.ConsumptionUnit>(Repository.Remove(id));
                 await _unitOfWork.CommitAsync(cancellationToken);
 
                 return result;
@@ -95,7 +105,7 @@ namespace CostControl.BusinessLogic.Logics.CostControl
         {
             try
             {
-                var result = ConsumptionUnitIMapper.Map<IEnumerable<CostControlBusinessEntity.ConsumptionUnit>>(
+                IEnumerable<CostControlBusinessEntity.ConsumptionUnit> result = ConsumptionUnitIMapper.Map<IEnumerable<CostControlBusinessEntity.ConsumptionUnit>>(
                   Repository
                   .Remove(ConsumptionUnitIMapper.Map<Expression<Func<CostControlEntity.ConsumptionUnit, bool>>>(filter)));
 
@@ -110,66 +120,84 @@ namespace CostControl.BusinessLogic.Logics.CostControl
         }
 
         public CostControlBusinessEntity.ConsumptionUnit Exists(object primaryKey)
-            => ConsumptionUnitIMapper.Map<CostControlBusinessEntity.ConsumptionUnit>(Repository.Exists(primaryKey));
+        {
+            return ConsumptionUnitIMapper.Map<CostControlBusinessEntity.ConsumptionUnit>(Repository.Exists(primaryKey));
+        }
 
         public async Task<CostControlBusinessEntity.ConsumptionUnit> ExistsAsync(object primaryKey,
             CancellationToken cancellationToken = default(CancellationToken))
-        => ConsumptionUnitIMapper.Map<CostControlBusinessEntity.ConsumptionUnit>(await Repository.ExistsAsync(cancellationToken, primaryKey));
+        {
+            return ConsumptionUnitIMapper.Map<CostControlBusinessEntity.ConsumptionUnit>(await Repository.ExistsAsync(cancellationToken, primaryKey));
+        }
 
         public IEnumerable<CostControlBusinessEntity.ConsumptionUnit> Get(Expression<Func<CostControlBusinessEntity.ConsumptionUnit, bool>> filter = null,
             Func<IQueryable<CostControlBusinessEntity.ConsumptionUnit>, IOrderedQueryable<CostControlBusinessEntity.ConsumptionUnit>> orderBy = null,
-            Func<IQueryable<CostControlBusinessEntity.ConsumptionUnit>, IIncludableQueryable<CostControlBusinessEntity.ConsumptionUnit, object>> includeProperties = null,
+            ICollection<Expression<Func<IQueryable<CostControlBusinessEntity.ConsumptionUnit>, IIncludableQueryable<CostControlBusinessEntity.ConsumptionUnit, object>>>> includeProperties = null,
             int? pageNumber = null,
             int? pageSize = null)
-        => ConsumptionUnitIMapper.Map<IEnumerable<CostControlEntity.ConsumptionUnit>, IEnumerable<CostControlBusinessEntity.ConsumptionUnit>>(
-                Repository.Get(
-                    ConsumptionUnitIMapper.Map<Expression<Func<CostControlBusinessEntity.ConsumptionUnit, bool>>, Expression<Func<CostControlEntity.ConsumptionUnit, bool>>>(filter),
-                    ConsumptionUnitIMapper.Map<Func<IQueryable<CostControlBusinessEntity.ConsumptionUnit>, IOrderedQueryable<CostControlBusinessEntity.ConsumptionUnit>>,
-                    Func<IQueryable<CostControlEntity.ConsumptionUnit>, IOrderedQueryable<CostControlEntity.ConsumptionUnit>>>(orderBy),
-                    ConsumptionUnitIMapper.Map<Func<IQueryable<CostControlEntity.ConsumptionUnit>, IIncludableQueryable<CostControlEntity.ConsumptionUnit, object>>>(includeProperties), pageNumber, pageSize));
+        {
+            return ConsumptionUnitIMapper.Map<IEnumerable<CostControlEntity.ConsumptionUnit>, IEnumerable<CostControlBusinessEntity.ConsumptionUnit>>(
+                           Repository.Get(
+                               ConsumptionUnitIMapper.Map<Expression<Func<CostControlBusinessEntity.ConsumptionUnit, bool>>, Expression<Func<CostControlEntity.ConsumptionUnit, bool>>>(filter),
+                               ConsumptionUnitIMapper.Map<Func<IQueryable<CostControlBusinessEntity.ConsumptionUnit>, IOrderedQueryable<CostControlBusinessEntity.ConsumptionUnit>>,
+                               Func<IQueryable<CostControlEntity.ConsumptionUnit>, IOrderedQueryable<CostControlEntity.ConsumptionUnit>>>(orderBy),
+                               ConsumptionUnitIMapper.MapIncludesList<Expression<Func<IQueryable<CostControlEntity.ConsumptionUnit>, IIncludableQueryable<CostControlEntity.ConsumptionUnit, object>>>>(includeProperties), pageNumber, pageSize));
+        }
 
         public async Task<IEnumerable<CostControlBusinessEntity.ConsumptionUnit>> GetAsync(Expression<Func<CostControlBusinessEntity.ConsumptionUnit, bool>> filter = null,
             Func<IQueryable<CostControlBusinessEntity.ConsumptionUnit>, IOrderedQueryable<CostControlBusinessEntity.ConsumptionUnit>> orderBy = null,
-            Func<IQueryable<CostControlBusinessEntity.ConsumptionUnit>, IIncludableQueryable<CostControlBusinessEntity.ConsumptionUnit, object>> includeProperties = null,
+            ICollection<Expression<Func<IQueryable<CostControlBusinessEntity.ConsumptionUnit>, IIncludableQueryable<CostControlBusinessEntity.ConsumptionUnit, object>>>> includeProperties = null,
             int? pageNumber = null, int? pageSize = null,
             CancellationToken cancellationToken = default(CancellationToken))
-        => await ConsumptionUnitIMapper.Map<Task<IEnumerable<CostControlEntity.ConsumptionUnit>>, Task<IEnumerable<CostControlBusinessEntity.ConsumptionUnit>>>(
-                Repository.GetAsync(
-                    ConsumptionUnitIMapper.Map<Expression<Func<CostControlBusinessEntity.ConsumptionUnit, bool>>, Expression<Func<CostControlEntity.ConsumptionUnit, bool>>>(filter),
-                    ConsumptionUnitIMapper.Map<Func<IQueryable<CostControlBusinessEntity.ConsumptionUnit>, IOrderedQueryable<CostControlBusinessEntity.ConsumptionUnit>>,
-                    Func<IQueryable<CostControlEntity.ConsumptionUnit>, IOrderedQueryable<CostControlEntity.ConsumptionUnit>>>(orderBy),
-                    ConsumptionUnitIMapper.Map<Func<IQueryable<CostControlEntity.ConsumptionUnit>, IIncludableQueryable<CostControlEntity.ConsumptionUnit, object>>>(includeProperties),
-                    pageNumber, pageSize, cancellationToken));
+        {
+            return await ConsumptionUnitIMapper.Map<Task<IEnumerable<CostControlEntity.ConsumptionUnit>>, Task<IEnumerable<CostControlBusinessEntity.ConsumptionUnit>>>(
+                           Repository.GetAsync(
+                               ConsumptionUnitIMapper.Map<Expression<Func<CostControlBusinessEntity.ConsumptionUnit, bool>>, Expression<Func<CostControlEntity.ConsumptionUnit, bool>>>(filter),
+                               ConsumptionUnitIMapper.Map<Func<IQueryable<CostControlBusinessEntity.ConsumptionUnit>, IOrderedQueryable<CostControlBusinessEntity.ConsumptionUnit>>,
+                               Func<IQueryable<CostControlEntity.ConsumptionUnit>, IOrderedQueryable<CostControlEntity.ConsumptionUnit>>>(orderBy),
+                               ConsumptionUnitIMapper.MapIncludesList<Expression<Func<IQueryable<CostControlEntity.ConsumptionUnit>, IIncludableQueryable<CostControlEntity.ConsumptionUnit, object>>>>(includeProperties),
+                               pageNumber, pageSize, cancellationToken));
+        }
 
         public CostControlBusinessEntity.ConsumptionUnit GetById(object id,
-            Func<IQueryable<CostControlBusinessEntity.ConsumptionUnit>, IIncludableQueryable<CostControlBusinessEntity.ConsumptionUnit, object>> includeProperties = null)
-        => id == null ? null : ConsumptionUnitIMapper.Map<CostControlEntity.ConsumptionUnit, CostControlBusinessEntity.ConsumptionUnit>
-            (Repository.GetById(id, ConsumptionUnitIMapper.Map<Func<IQueryable<CostControlEntity.ConsumptionUnit>, IIncludableQueryable<CostControlEntity.ConsumptionUnit, object>>>(includeProperties)));
+            ICollection<Expression<Func<IQueryable<CostControlBusinessEntity.ConsumptionUnit>, IIncludableQueryable<CostControlBusinessEntity.ConsumptionUnit, object>>>> includeProperties = null)
+        {
+            return id == null ? null : ConsumptionUnitIMapper.Map<CostControlEntity.ConsumptionUnit, CostControlBusinessEntity.ConsumptionUnit>
+                       (Repository.GetById(id, ConsumptionUnitIMapper.MapIncludesList<Expression<Func<IQueryable<CostControlEntity.ConsumptionUnit>, IIncludableQueryable<CostControlEntity.ConsumptionUnit, object>>>>(includeProperties)));
+        }
 
         public async Task<CostControlBusinessEntity.ConsumptionUnit> GetByIdAsync(object id,
-            Func<IQueryable<CostControlBusinessEntity.ConsumptionUnit>, IIncludableQueryable<CostControlBusinessEntity.ConsumptionUnit, object>> includeProperties = null,
+            ICollection<Expression<Func<IQueryable<CostControlBusinessEntity.ConsumptionUnit>, IIncludableQueryable<CostControlBusinessEntity.ConsumptionUnit, object>>>> includeProperties = null,
             CancellationToken cancellationToken = default(CancellationToken))
-        //=> await await Task.FromResult(ConsumptionUnitIMapper.Map<Task<Entity.Models.ConsumptionUnit>, Task<ConsumptionUnit>>(Repository.GetByIdAsync(id, cancellationToken)));
-        => id == null ? null : ConsumptionUnitIMapper.Map<CostControlEntity.ConsumptionUnit, CostControlBusinessEntity.ConsumptionUnit>
-            (await Repository.GetByIdAsync(id, ConsumptionUnitIMapper.Map<Func<IQueryable<CostControlEntity.ConsumptionUnit>, IIncludableQueryable<CostControlEntity.ConsumptionUnit, object>>>(includeProperties), cancellationToken));
+        {
+            return id == null ? null : ConsumptionUnitIMapper.Map<CostControlEntity.ConsumptionUnit, CostControlBusinessEntity.ConsumptionUnit>
+                       (await Repository.GetByIdAsync(id, ConsumptionUnitIMapper.MapIncludesList<Expression<Func<IQueryable<CostControlEntity.ConsumptionUnit>, IIncludableQueryable<CostControlEntity.ConsumptionUnit, object>>>>(includeProperties), cancellationToken));
+        }
 
         public IEnumerable<CostControlBusinessEntity.ConsumptionUnit> GetWithRawSql(string query, params object[] parameters)
-        => ConsumptionUnitIMapper.Map<IEnumerable<CostControlEntity.ConsumptionUnit>, IEnumerable<CostControlBusinessEntity.ConsumptionUnit>>(Repository.GetWithRawSql(query, parameters));
+        {
+            return ConsumptionUnitIMapper.Map<IEnumerable<CostControlEntity.ConsumptionUnit>, IEnumerable<CostControlBusinessEntity.ConsumptionUnit>>(Repository.GetWithRawSql(query, parameters));
+        }
 
         public async Task<IEnumerable<CostControlBusinessEntity.ConsumptionUnit>> GetWithRawSqlAsync(string query,
             CancellationToken cancellationToken = default(CancellationToken),
             params object[] parameters)
-        => ConsumptionUnitIMapper.Map<IEnumerable<CostControlEntity.ConsumptionUnit>, IEnumerable<CostControlBusinessEntity.ConsumptionUnit>>(await Repository.GetWithRawSqlAsync(query, cancellationToken, parameters));
+        {
+            return ConsumptionUnitIMapper.Map<IEnumerable<CostControlEntity.ConsumptionUnit>, IEnumerable<CostControlBusinessEntity.ConsumptionUnit>>(await Repository.GetWithRawSqlAsync(query, cancellationToken, parameters));
+        }
 
         public CostControlBusinessEntity.ConsumptionUnit Add(CostControlBusinessEntity.ConsumptionUnit entity)
         {
             //using (var transaction = objectContext.Connection.BeginTransaction())
 
-            if (entity == null) return null;
+            if (entity == null)
+            {
+                return null;
+            }
 
             try
             {
-                var result = ConsumptionUnitIMapper
+                CostControlBusinessEntity.ConsumptionUnit result = ConsumptionUnitIMapper
                     .Map<CostControlEntity.ConsumptionUnit, CostControlBusinessEntity.ConsumptionUnit>(
                         Repository.Add(ConsumptionUnitIMapper.Map<CostControlBusinessEntity.ConsumptionUnit, CostControlEntity.ConsumptionUnit>(entity)));
                 _unitOfWork.Commit();
@@ -185,13 +213,16 @@ namespace CostControl.BusinessLogic.Logics.CostControl
         public async Task<CostControlBusinessEntity.ConsumptionUnit> AddAsync(CostControlBusinessEntity.ConsumptionUnit entity,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (entity == null) return null;
+            if (entity == null)
+            {
+                return null;
+            }
 
             try
             {
-                var ConsumptionUnit = ConsumptionUnitIMapper.Map<CostControlBusinessEntity.ConsumptionUnit, CostControlEntity.ConsumptionUnit>(entity);
+                CostControlEntity.ConsumptionUnit ConsumptionUnit = ConsumptionUnitIMapper.Map<CostControlBusinessEntity.ConsumptionUnit, CostControlEntity.ConsumptionUnit>(entity);
 
-                var result = ConsumptionUnitIMapper.Map<CostControlEntity.ConsumptionUnit, CostControlBusinessEntity.ConsumptionUnit>(Repository.Add(ConsumptionUnit));
+                CostControlBusinessEntity.ConsumptionUnit result = ConsumptionUnitIMapper.Map<CostControlEntity.ConsumptionUnit, CostControlBusinessEntity.ConsumptionUnit>(Repository.Add(ConsumptionUnit));
                 await _unitOfWork.CommitAsync(cancellationToken);
 
                 return result;
@@ -204,13 +235,16 @@ namespace CostControl.BusinessLogic.Logics.CostControl
 
         public CostControlBusinessEntity.ConsumptionUnit Update(CostControlBusinessEntity.ConsumptionUnit entity)
         {
-            if (entity == null) return null;
+            if (entity == null)
+            {
+                return null;
+            }
 
             try
             {
                 CostControlEntity.ConsumptionUnit ConsumptionUnit = ConsumptionUnitIMapper.Map<CostControlBusinessEntity.ConsumptionUnit, CostControlEntity.ConsumptionUnit>(entity);
 
-                var result = ConsumptionUnitIMapper.Map<CostControlEntity.ConsumptionUnit, CostControlBusinessEntity.ConsumptionUnit>(Repository.Update(ConsumptionUnit));
+                CostControlBusinessEntity.ConsumptionUnit result = ConsumptionUnitIMapper.Map<CostControlEntity.ConsumptionUnit, CostControlBusinessEntity.ConsumptionUnit>(Repository.Update(ConsumptionUnit));
                 _unitOfWork.Commit();
 
                 return result;
@@ -224,13 +258,16 @@ namespace CostControl.BusinessLogic.Logics.CostControl
         public async Task<CostControlBusinessEntity.ConsumptionUnit> UpdateAsync(CostControlBusinessEntity.ConsumptionUnit entity,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (entity == null) return null;
+            if (entity == null)
+            {
+                return null;
+            }
 
             try
             {
-                var ConsumptionUnit = ConsumptionUnitIMapper.Map<CostControlBusinessEntity.ConsumptionUnit, CostControlEntity.ConsumptionUnit>(entity);
+                CostControlEntity.ConsumptionUnit ConsumptionUnit = ConsumptionUnitIMapper.Map<CostControlBusinessEntity.ConsumptionUnit, CostControlEntity.ConsumptionUnit>(entity);
 
-                var result = ConsumptionUnitIMapper.Map<CostControlEntity.ConsumptionUnit, CostControlBusinessEntity.ConsumptionUnit>(Repository.Update(ConsumptionUnit));
+                CostControlBusinessEntity.ConsumptionUnit result = ConsumptionUnitIMapper.Map<CostControlEntity.ConsumptionUnit, CostControlBusinessEntity.ConsumptionUnit>(Repository.Update(ConsumptionUnit));
 
                 await _unitOfWork.CommitAsync(cancellationToken);
 
@@ -244,40 +281,52 @@ namespace CostControl.BusinessLogic.Logics.CostControl
 
         public int RunRawSql(string query,
             params object[] parameters)
-        => Repository.RunRawSql(query, parameters);
+        {
+            return Repository.RunRawSql(query, parameters);
+        }
 
         public async Task<int> RunRawSqlAsync(string query,
             CancellationToken cancellationToken = default(CancellationToken),
             params object[] parameters)
-        => await Repository.RunRawSqlAsync(query, cancellationToken, parameters);
+        {
+            return await Repository.RunRawSqlAsync(query, cancellationToken, parameters);
+        }
 
         public CostControlBusinessEntity.ConsumptionUnit SingleOrDefault(Expression<Func<CostControlBusinessEntity.ConsumptionUnit, bool>> filter = null)
-        => ConsumptionUnitIMapper.Map<CostControlEntity.ConsumptionUnit, CostControlBusinessEntity.ConsumptionUnit>(
-            Repository.SingleOrDefault(ConsumptionUnitIMapper.Map<Expression<Func<CostControlBusinessEntity.ConsumptionUnit, bool>>,
-                Expression<Func<CostControlEntity.ConsumptionUnit, bool>>>(filter)));
+        {
+            return ConsumptionUnitIMapper.Map<CostControlEntity.ConsumptionUnit, CostControlBusinessEntity.ConsumptionUnit>(
+                       Repository.SingleOrDefault(ConsumptionUnitIMapper.Map<Expression<Func<CostControlBusinessEntity.ConsumptionUnit, bool>>,
+                           Expression<Func<CostControlEntity.ConsumptionUnit, bool>>>(filter)));
+        }
 
         public async Task<CostControlBusinessEntity.ConsumptionUnit> SingleOrDefaultAsync(Expression<Func<CostControlBusinessEntity.ConsumptionUnit, bool>> filter = null,
             CancellationToken cancellationToken = default(CancellationToken))
-        => await ConsumptionUnitIMapper.Map<Task<CostControlEntity.ConsumptionUnit>, Task<CostControlBusinessEntity.ConsumptionUnit>>(
-                Repository.SingleOrDefaultAsync(ConsumptionUnitIMapper.Map<Expression<Func<CostControlBusinessEntity.ConsumptionUnit, bool>>,
-                    Expression<Func<CostControlEntity.ConsumptionUnit, bool>>>(filter), cancellationToken));
+        {
+            return await ConsumptionUnitIMapper.Map<Task<CostControlEntity.ConsumptionUnit>, Task<CostControlBusinessEntity.ConsumptionUnit>>(
+                           Repository.SingleOrDefaultAsync(ConsumptionUnitIMapper.Map<Expression<Func<CostControlBusinessEntity.ConsumptionUnit, bool>>,
+                               Expression<Func<CostControlEntity.ConsumptionUnit, bool>>>(filter), cancellationToken));
+        }
 
         public CostControlBusinessEntity.ConsumptionUnit FirstOrDefault(Expression<Func<CostControlBusinessEntity.ConsumptionUnit, bool>> filter = null)
-        => ConsumptionUnitIMapper.Map<CostControlEntity.ConsumptionUnit, CostControlBusinessEntity.ConsumptionUnit>(
-                Repository.SingleOrDefault(ConsumptionUnitIMapper.Map<Expression<Func<CostControlBusinessEntity.ConsumptionUnit, bool>>,
-                    Expression<Func<CostControlEntity.ConsumptionUnit, bool>>>(filter)));
+        {
+            return ConsumptionUnitIMapper.Map<CostControlEntity.ConsumptionUnit, CostControlBusinessEntity.ConsumptionUnit>(
+                           Repository.SingleOrDefault(ConsumptionUnitIMapper.Map<Expression<Func<CostControlBusinessEntity.ConsumptionUnit, bool>>,
+                               Expression<Func<CostControlEntity.ConsumptionUnit, bool>>>(filter)));
+        }
 
         public async Task<CostControlBusinessEntity.ConsumptionUnit> FirstOrDefaultAsync(Expression<Func<CostControlBusinessEntity.ConsumptionUnit, bool>> filter = null,
             CancellationToken cancellationToken = default(CancellationToken))
-        => await ConsumptionUnitIMapper.Map<Task<CostControlEntity.ConsumptionUnit>, Task<CostControlBusinessEntity.ConsumptionUnit>>(
-                Repository.SingleOrDefaultAsync(ConsumptionUnitIMapper.Map<Expression<Func<CostControlBusinessEntity.ConsumptionUnit, bool>>,
-                    Expression<Func<CostControlEntity.ConsumptionUnit, bool>>>(filter), cancellationToken));
+        {
+            return await ConsumptionUnitIMapper.Map<Task<CostControlEntity.ConsumptionUnit>, Task<CostControlBusinessEntity.ConsumptionUnit>>(
+                           Repository.SingleOrDefaultAsync(ConsumptionUnitIMapper.Map<Expression<Func<CostControlBusinessEntity.ConsumptionUnit, bool>>,
+                               Expression<Func<CostControlEntity.ConsumptionUnit, bool>>>(filter), cancellationToken));
+        }
 
         public IEnumerable<CostControlBusinessEntity.ConsumptionUnit> AddRange(IEnumerable<CostControlBusinessEntity.ConsumptionUnit> entities)
         {
             try
             {
-                var result =
+                IEnumerable<CostControlBusinessEntity.ConsumptionUnit> result =
                 ConsumptionUnitIMapper.Map<IEnumerable<CostControlBusinessEntity.ConsumptionUnit>>(
                       Repository.AddRange(ConsumptionUnitIMapper.Map<IEnumerable<CostControlEntity.ConsumptionUnit>>(entities)));
 
@@ -296,7 +345,7 @@ namespace CostControl.BusinessLogic.Logics.CostControl
         {
             try
             {
-                var result = await ConsumptionUnitIMapper.Map<Task<IEnumerable<CostControlBusinessEntity.ConsumptionUnit>>>(
+                IEnumerable<CostControlBusinessEntity.ConsumptionUnit> result = await ConsumptionUnitIMapper.Map<Task<IEnumerable<CostControlBusinessEntity.ConsumptionUnit>>>(
                       Repository
                       .AddRange(ConsumptionUnitIMapper.Map<IEnumerable<CostControlEntity.ConsumptionUnit>>(entities)));
 
@@ -314,7 +363,7 @@ namespace CostControl.BusinessLogic.Logics.CostControl
         {
             try
             {
-                var result = ConsumptionUnitIMapper.Map<IEnumerable<CostControlBusinessEntity.ConsumptionUnit>>(
+                IEnumerable<CostControlBusinessEntity.ConsumptionUnit> result = ConsumptionUnitIMapper.Map<IEnumerable<CostControlBusinessEntity.ConsumptionUnit>>(
                     Repository.RemoveFiltered(ConsumptionUnitIMapper.Map<Expression<Func<CostControlBusinessEntity.ConsumptionUnit, bool>>,
                         Expression<Func<CostControlEntity.ConsumptionUnit, bool>>>(filter)));
 
@@ -333,7 +382,7 @@ namespace CostControl.BusinessLogic.Logics.CostControl
         {
             try
             {
-                var result = await ConsumptionUnitIMapper.Map<Task<IEnumerable<CostControlBusinessEntity.ConsumptionUnit>>>(
+                IEnumerable<CostControlBusinessEntity.ConsumptionUnit> result = await ConsumptionUnitIMapper.Map<Task<IEnumerable<CostControlBusinessEntity.ConsumptionUnit>>>(
                     Repository.RemoveFilteredAsync(ConsumptionUnitIMapper.Map<Expression<Func<CostControlBusinessEntity.ConsumptionUnit, bool>>,
                     Expression<Func<CostControlEntity.ConsumptionUnit, bool>>>(filter), cancellationToken));
 
@@ -351,7 +400,7 @@ namespace CostControl.BusinessLogic.Logics.CostControl
         {
             try
             {
-                var result = ConsumptionUnitIMapper.Map<IEnumerable<CostControlBusinessEntity.ConsumptionUnit>>(
+                IEnumerable<CostControlBusinessEntity.ConsumptionUnit> result = ConsumptionUnitIMapper.Map<IEnumerable<CostControlBusinessEntity.ConsumptionUnit>>(
                     Repository.RemoveRange(ConsumptionUnitIMapper.Map<IEnumerable<CostControlEntity.ConsumptionUnit>>(entities)));
 
                 _unitOfWork.Commit();
@@ -369,7 +418,7 @@ namespace CostControl.BusinessLogic.Logics.CostControl
         {
             try
             {
-                var result = await ConsumptionUnitIMapper.Map<Task<IEnumerable<CostControlBusinessEntity.ConsumptionUnit>>>(
+                IEnumerable<CostControlBusinessEntity.ConsumptionUnit> result = await ConsumptionUnitIMapper.Map<Task<IEnumerable<CostControlBusinessEntity.ConsumptionUnit>>>(
                         Repository
                         .Remove(ConsumptionUnitIMapper.Map<IEnumerable<CostControlEntity.ConsumptionUnit>>(entities)));
 
@@ -384,27 +433,39 @@ namespace CostControl.BusinessLogic.Logics.CostControl
         }
 
         public CostControlBusinessEntity.ConsumptionUnit Exists(params object[] primaryKey)
-        => ConsumptionUnitIMapper.Map<CostControlBusinessEntity.ConsumptionUnit>(Repository.Exists(primaryKey));
+        {
+            return ConsumptionUnitIMapper.Map<CostControlBusinessEntity.ConsumptionUnit>(Repository.Exists(primaryKey));
+        }
 
         public async Task<CostControlBusinessEntity.ConsumptionUnit> ExistsAsync(CancellationToken cancellationToken = default(CancellationToken),
             params object[] primaryKey)
-        => await ConsumptionUnitIMapper.Map<Task<CostControlBusinessEntity.ConsumptionUnit>>(Repository.ExistsAsync(cancellationToken, primaryKey));
+        {
+            return await ConsumptionUnitIMapper.Map<Task<CostControlBusinessEntity.ConsumptionUnit>>(Repository.ExistsAsync(cancellationToken, primaryKey));
+        }
 
         public bool Exists(Expression<Func<CostControlBusinessEntity.ConsumptionUnit, bool>> filter = null)
-        => Repository.Exists(ConsumptionUnitIMapper.Map<Expression<Func<CostControlEntity.ConsumptionUnit, bool>>>(filter));
+        {
+            return Repository.Exists(ConsumptionUnitIMapper.Map<Expression<Func<CostControlEntity.ConsumptionUnit, bool>>>(filter));
+        }
 
         public async Task<bool> ExistsAsync(Expression<Func<CostControlBusinessEntity.ConsumptionUnit, bool>> filter = null,
             CancellationToken cancellationToken = default(CancellationToken))
-        => await Repository.ExistsAsync(ConsumptionUnitIMapper.Map<Expression<Func<CostControlEntity.ConsumptionUnit, bool>>>(filter), cancellationToken);
+        {
+            return await Repository.ExistsAsync(ConsumptionUnitIMapper.Map<Expression<Func<CostControlEntity.ConsumptionUnit, bool>>>(filter), cancellationToken);
+        }
 
         public async Task<int> GetCountAsync(Expression<Func<CostControlBusinessEntity.ConsumptionUnit, bool>> filter = null,
             CancellationToken cancellationToken = default(CancellationToken))
-        => await Repository.CountAsync(ConsumptionUnitIMapper.Map<Expression<Func<CostControlBusinessEntity.ConsumptionUnit, bool>>,
-            Expression<Func<CostControlEntity.ConsumptionUnit, bool>>>(filter), cancellationToken);
+        {
+            return await Repository.CountAsync(ConsumptionUnitIMapper.Map<Expression<Func<CostControlBusinessEntity.ConsumptionUnit, bool>>,
+                       Expression<Func<CostControlEntity.ConsumptionUnit, bool>>>(filter), cancellationToken);
+        }
 
         public int GetCount(Expression<Func<CostControlBusinessEntity.ConsumptionUnit, bool>> filter = null)
-            => Repository.Count(ConsumptionUnitIMapper.Map<Expression<Func<CostControlBusinessEntity.ConsumptionUnit, bool>>,
-                Expression<Func<CostControlEntity.ConsumptionUnit, bool>>>(filter));
+        {
+            return Repository.Count(ConsumptionUnitIMapper.Map<Expression<Func<CostControlBusinessEntity.ConsumptionUnit, bool>>,
+                           Expression<Func<CostControlEntity.ConsumptionUnit, bool>>>(filter));
+        }
 
         private bool _disposed = false;
 
@@ -445,7 +506,10 @@ namespace CostControl.BusinessLogic.Logics.CostControl
             throw new NotImplementedException();
         }
 
-        public IEnumerable<CostControlBusinessEntity.ConsumptionUnit> GetByParentId(long parentId, Func<IQueryable<CostControlBusinessEntity.ConsumptionUnit>, IOrderedQueryable<CostControlBusinessEntity.ConsumptionUnit>> orderBy = null, Func<IQueryable<CostControlBusinessEntity.ConsumptionUnit>, IIncludableQueryable<CostControlBusinessEntity.ConsumptionUnit, object>> includeProperties = null, int? page = null, int? pageSize = null)
+        public IEnumerable<CostControlBusinessEntity.ConsumptionUnit> GetByParentId(long parentId,
+            Func<IQueryable<CostControlBusinessEntity.ConsumptionUnit>, IOrderedQueryable<CostControlBusinessEntity.ConsumptionUnit>> orderBy = null,
+            ICollection<Expression<Func<IQueryable<CostControlBusinessEntity.ConsumptionUnit>, IIncludableQueryable<CostControlBusinessEntity.ConsumptionUnit, object>>>> includeProperties = null,
+            int? page = null, int? pageSize = null)
         {
             throw new NotImplementedException();
         }

@@ -15,7 +15,8 @@ namespace CostControl.Data.Repository
     /// Generic repository class for entity operations
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    public class Repository<TEntity> : IDisposable, IRepository<TEntity> where TEntity : class, IBaseEntity, new()
+    public class Repository<TEntity> : IDisposable, IRepository<TEntity>
+        where TEntity : class, IBaseEntity, new()
         //public class Repository<TEntity> where TEntity : class
     {
         //private readonly OrderBy<TEntity> DefaultOrderBy = new OrderBy<TEntity>(qry => qry.OrderBy(e => e.Id));
@@ -102,10 +103,11 @@ namespace CostControl.Data.Repository
             Expression<Func<TEntity, bool>> filter = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
             //Action<IFetchOptions<TEntity>> fetchOptions = null,
-            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> includeProperties = null,
+            ICollection<Expression<Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>>> includeProperties = null,
             int? page = null,
             int? pageSize = null,
-            bool disableTracking = true)
+            bool disableTracking = true,
+            bool eagerLoaging = false)
         {
             //if (orderBy != null)
             //{
@@ -116,13 +118,15 @@ namespace CostControl.Data.Repository
             //    return query.Select(selector).FirstOrDefault();
             //}
 
-            return Get(
+            return
+                Get(
                         filter,
                         orderBy,
                         includeProperties,
                         page,
                         pageSize,
-                        disableTracking);
+                        disableTracking,
+                        eagerLoaging);
         }
 
         /// <summary>
@@ -130,17 +134,18 @@ namespace CostControl.Data.Repository
         /// </summary>
         /// <param name="filter">Filter expression for filtering the entities.</param>
         /// <param name="orderBy">Sorting the entities.</param>
-        /// <param name="includeProperties">Include for eager-loading.</param>
+        /// <param name="includes">Include for eager-loading.</param>
         /// <returns></returns>
         public virtual IEnumerable<TEntity> Get(
             Expression<Func<TEntity, bool>> filter = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
             //Action<IFetchOptions<TEntity>> fetchOptions = null,
-            //List<Expression<Func<TEntity, object>>> includeProperties = null,
-            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> includeProperties = null,
+            //List<Expression<Func<TEntity, object>>> includes = null,
+            ICollection<Expression<Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>>> includeProperties = null,
             int? page = null,
             int? pageSize = null,
-            bool disableTracking = true)
+            bool disableTracking = false,
+            bool eagerLoaging = false)
         {
             IQueryable<TEntity> query = DbSet;
 
@@ -153,30 +158,46 @@ namespace CostControl.Data.Repository
                 query = query.Where(e => e.State == ObjectState.Active);
             }
 
-            //foreach (Expression<Func<TEntity, object>> include in includeProperties)
+            //foreach (Expression<Func<TEntity, object>> include in includes)
             //    query = query.Include(include);
 
-            if (includeProperties != null)
+            if (eagerLoaging)
             {
-                //query = includeProperties
-                //    .Aggregate(query, (current, include) => current.Include(include));
+                //foreach (var property in FindEntityType(typeof(TEntity)).GetNavigations())
+                //    query = query.Include(property.Name);
+            }
+            else
+            {
+                if (includeProperties != null)
+                {
+                    //query = includes
+                    //    .Aggregate(query, (current, include) => current.Include(include));
 
-                query = includeProperties(query);
+                    //query = includeProperties(query);
 
-                //previous type
-                //foreach (var include in includeProperties)
-                //{
-                //    query = query.Include(include);
-                //}
+                    query = includeProperties
+                    .Select(i => i.Compile())
+                    .Aggregate(query, (list, next) => query = next(query));
 
-                //if (includeExpressions.Any())
-                //{
-                //    var set = includeExpressions
-                //      .Aggregate<Expression<Func<TEntity, object>>, IQueryable<TEntity>>
-                //        (_DbSet, (current, expression) => current.Include(expression));
+                    //previous type
+                    //foreach (var include in includes)
+                    //{
+                    //    query = query.Include(include);
+                    //}
 
-                //    return set.SingleOrDefault(match);
-                //}
+                    //query = includeProperties
+                    //  .Aggregate<Expression<Func<TEntity, object>>, IQueryable<TEntity>>
+                    //    (query, (current, expression) => current.Include(expression));
+
+                    //if (includeExpressions.Any())
+                    //{
+                    //    var set = includeExpressions
+                    //      .Aggregate<Expression<Func<TEntity, object>>, IQueryable<TEntity>>
+                    //        (_DbSet, (current, expression) => current.Include(expression));
+
+                    //    return set.SingleOrDefault(match);
+                    //}
+                }
             }
 
             query = orderBy != null ? orderBy(query) : query.OrderBy(q => q.State);
@@ -201,13 +222,14 @@ namespace CostControl.Data.Repository
         public virtual async Task<IEnumerable<TEntity>> GetAsync(
             Expression<Func<TEntity, bool>> filter = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-            //List<Expression<Func<TEntity, object>>> includeProperties = null,
-            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> includeProperties = null,
+            //List<Expression<Func<TEntity, object>>> includes = null,
+            ICollection<Expression<Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>>> includeProperties = null,
             int? page = null, int? pageSize = null,
             CancellationToken cancellationToken = default(CancellationToken),
-            bool disableTracking = true)
-            //=> await Task.FromResult(Get(filter, orderBy, includeProperties, page, pageSize));
-            => await Get(filter, orderBy, includeProperties, page, pageSize, disableTracking)
+            bool disableTracking = true,
+            bool eagerLoaging = false)
+            //=> await Task.FromResult(Get(filter, orderBy, includes, page, pageSize));
+            => await Get(filter, orderBy, includeProperties, page, pageSize, disableTracking, eagerLoaging)
                         .AsQueryable()
                         .ToListAsync(cancellationToken);
 
@@ -228,6 +250,17 @@ namespace CostControl.Data.Repository
             => filter == null
                 ? await DbSet.FirstOrDefaultAsync(cancellationToken)
                 : await DbSet.FirstOrDefaultAsync(filter, cancellationToken);
+        
+        public virtual TEntity LastOrDefault(Expression<Func<TEntity, bool>> filter = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Task<TEntity> LastOrDefaultAsync(Expression<Func<TEntity, bool>> filter = null,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            throw new NotImplementedException();
+        }
 
         /// <summary>
         /// Generic get method on the basis of id for Entities.
@@ -235,7 +268,8 @@ namespace CostControl.Data.Repository
         /// <param name="id"></param>
         /// <returns></returns>
         public virtual TEntity GetById(object id,
-            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> includeProperties = null)
+            ICollection<Expression<Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>>> includeProperties = null
+            )
             => id == null ? null : DbSet.Find(id);
 
         /// <summary>
@@ -245,7 +279,7 @@ namespace CostControl.Data.Repository
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         public virtual async Task<TEntity> GetByIdAsync(object id,
-            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> includeProperties = null,
+            ICollection<Expression<Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>>> includeProperties = null,
             CancellationToken cancellationToken = default(CancellationToken))
             => id == null ? null : await DbSet.FindAsync(cancellationToken, id);
 

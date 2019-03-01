@@ -24,19 +24,14 @@ namespace CostControl.API.Controllers.CostControl
             {
                 paginate = (paginate == null || paginate.PageSize <= 0) ? new Pagination() : paginate;
                 paginate.RowCount = PDKBusinessLogic.GetCount();
-
-
-                //var ip = new Func<IQueryable<CostPoint>, IIncludableQueryable<CostPoint, object>>();
-                ////{
-                ////    a => new CostPointGroup()
-                ////};
-
+                
                 return GenerateResponse(paginate,
-                    PDKBusinessLogic.Get(/*s => s.Name.Contains(paginate.SearchKey),*/
-                        filter: null,
-                        includeProperties: source => source.Include(a => new CostPointGroup()),
-                        pageSize: paginate.PageSize,
-                        page: paginate.PageNumber));
+                                    PDKBusinessLogic.Get(
+                                        includeProperties: new List<Expression<Func<IQueryable<CostPoint>, IIncludableQueryable<CostPoint, object>>>>{
+                                            a => a.Include(b => b.CostPointGroup)
+                                        },
+                                        pageSize: paginate.PageSize,
+                                        page: paginate.PageNumber));
             }
             catch (Exception e)
             {

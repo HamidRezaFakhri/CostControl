@@ -1,7 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace CostControl.BusinessEntity.Models.CostControl
+﻿namespace CostControl.BusinessEntity.Models.CostControl
 {
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+
     public class CostPointGroup : Base.Interfaces.IEntity<long>
     {
         public long Id { get; set; }

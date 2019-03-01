@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
-using System.Net;
-
-namespace CostControl.API.Models
+﻿namespace CostControl.API.Models
 {
+    using System.Collections.Generic;
+    using Newtonsoft.Json;
+    using System.Net;
+
     public class ServiceResponse<TEntity>
     {
         public ServiceResponse()
@@ -20,6 +20,7 @@ namespace CostControl.API.Models
             searchKey = string.Empty;
             hasPreviousPage = false;
             hasNextPage = false;
+            responseDateTime = System.DateTime.Now;
         }
 
         public HttpStatusCode statusCode { get; set; }
@@ -48,6 +49,8 @@ namespace CostControl.API.Models
         public bool hasPreviousPage { get; set; }
 
         public bool hasNextPage { get; set; }
+
+        public System.DateTime responseDateTime { get; set; }
 
         //public override string ToString()
         //{

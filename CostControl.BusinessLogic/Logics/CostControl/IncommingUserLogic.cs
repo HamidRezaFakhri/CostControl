@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.Extensions.ExpressionMapping;
 using CostControl.BusinessLogic.Logics.Base;
 using CostControl.BusinessLogic.Mapper;
 using CostControl.Data.DAL;
@@ -176,7 +177,7 @@ namespace CostControl.BusinessLogic.Logics.CostControl
 
         public IEnumerable<CostControlBusinessEntity.IncommingUser> Get(Expression<Func<CostControlBusinessEntity.IncommingUser, bool>> filter = null,
                 Func<IQueryable<CostControlBusinessEntity.IncommingUser>, IOrderedQueryable<CostControlBusinessEntity.IncommingUser>> orderBy = null,
-                Func<IQueryable<CostControlBusinessEntity.IncommingUser>, IIncludableQueryable<CostControlBusinessEntity.IncommingUser, object>> includeProperties = null,
+                ICollection<Expression<Func<IQueryable<CostControlBusinessEntity.IncommingUser>, IIncludableQueryable<CostControlBusinessEntity.IncommingUser, object>>>> includeProperties = null,
                 int? pageNumber = null,
                 int? pageSize = null)
             //{
@@ -190,13 +191,13 @@ namespace CostControl.BusinessLogic.Logics.CostControl
                     Repository.Get(
                         IncommingUserIMapper.Map<Expression<Func<CostControlEntity.IncommingUser, bool>>>(filter),
                         IncommingUserIMapper.Map<Func<IQueryable<CostControlEntity.IncommingUser>, IOrderedQueryable<CostControlEntity.IncommingUser>>>(orderBy),
-                        IncommingUserIMapper.Map<Func<IQueryable<CostControlEntity.IncommingUser>, IIncludableQueryable<CostControlEntity.IncommingUser, object>>>(includeProperties),
+                        IncommingUserIMapper.MapIncludesList<Expression<Func<IQueryable<CostControlEntity.IncommingUser>, IIncludableQueryable<CostControlEntity.IncommingUser, object>>>>(includeProperties),
                         pageNumber,
                         pageSize));
 
         public async Task<IEnumerable<CostControlBusinessEntity.IncommingUser>> GetAsync(Expression<Func<CostControlBusinessEntity.IncommingUser, bool>> filter = null,
             Func<IQueryable<CostControlBusinessEntity.IncommingUser>, IOrderedQueryable<CostControlBusinessEntity.IncommingUser>> orderBy = null,
-            Func<IQueryable<CostControlBusinessEntity.IncommingUser>, IIncludableQueryable<CostControlBusinessEntity.IncommingUser, object>> includeProperties = null,
+            ICollection<Expression<Func<IQueryable<CostControlBusinessEntity.IncommingUser>, IIncludableQueryable<CostControlBusinessEntity.IncommingUser, object>>>> includeProperties = null,
             int? pageNumber = null, int? pageSize = null,
             CancellationToken cancellationToken = default(CancellationToken))
         => await IncommingUserIMapper.Map<Task<IEnumerable<CostControlEntity.IncommingUser>>, Task<IEnumerable<CostControlBusinessEntity.IncommingUser>>>(
@@ -204,20 +205,20 @@ namespace CostControl.BusinessLogic.Logics.CostControl
                     IncommingUserIMapper.Map<Expression<Func<CostControlBusinessEntity.IncommingUser, bool>>, Expression<Func<CostControlEntity.IncommingUser, bool>>>(filter),
                     IncommingUserIMapper.Map<Func<IQueryable<CostControlBusinessEntity.IncommingUser>, IOrderedQueryable<CostControlBusinessEntity.IncommingUser>>,
                     Func<IQueryable<CostControlEntity.IncommingUser>, IOrderedQueryable<CostControlEntity.IncommingUser>>>(orderBy),
-                    IncommingUserIMapper.Map<Func<IQueryable<CostControlEntity.IncommingUser>, IIncludableQueryable<CostControlEntity.IncommingUser, object>>>(includeProperties),
+                    IncommingUserIMapper.MapIncludesList<Expression<Func<IQueryable<CostControlEntity.IncommingUser>, IIncludableQueryable<CostControlEntity.IncommingUser, object>>>>(includeProperties),
                     pageNumber, pageSize, cancellationToken));
 
         public CostControlBusinessEntity.IncommingUser GetById(object id,
-            Func<IQueryable<CostControlBusinessEntity.IncommingUser>, IIncludableQueryable<CostControlBusinessEntity.IncommingUser, object>> includeProperties = null)
+            ICollection<Expression<Func<IQueryable<CostControlBusinessEntity.IncommingUser>, IIncludableQueryable<CostControlBusinessEntity.IncommingUser, object>>>> includeProperties = null)
         => id == null ? null : IncommingUserIMapper.Map<CostControlEntity.IncommingUser, CostControlBusinessEntity.IncommingUser>
-            (Repository.GetById(id, IncommingUserIMapper.Map<Func<IQueryable<CostControlEntity.IncommingUser>, IIncludableQueryable<CostControlEntity.IncommingUser, object>>>(includeProperties)));
+            (Repository.GetById(id, IncommingUserIMapper.MapIncludesList<Expression<Func<IQueryable<CostControlEntity.IncommingUser>, IIncludableQueryable<CostControlEntity.IncommingUser, object>>>>(includeProperties)));
 
         public async Task<CostControlBusinessEntity.IncommingUser> GetByIdAsync(object id,
-            Func<IQueryable<CostControlBusinessEntity.IncommingUser>, IIncludableQueryable<CostControlBusinessEntity.IncommingUser, object>> includeProperties = null,
+            ICollection<Expression<Func<IQueryable<CostControlBusinessEntity.IncommingUser>, IIncludableQueryable<CostControlBusinessEntity.IncommingUser, object>>>> includeProperties = null,
             CancellationToken cancellationToken = default(CancellationToken))
         //=> await await Task.FromResult(IncommingUserIMapper.Map<Task<Entity.Models.IncommingUser>, Task<IncommingUser>>(Repository.GetByIdAsync(id, cancellationToken)));
         => id == null ? null : IncommingUserIMapper.Map<CostControlEntity.IncommingUser, CostControlBusinessEntity.IncommingUser>
-            (await Repository.GetByIdAsync(id, IncommingUserIMapper.Map<Func<IQueryable<CostControlEntity.IncommingUser>, IIncludableQueryable<CostControlEntity.IncommingUser, object>>>(includeProperties), cancellationToken));
+            (await Repository.GetByIdAsync(id, IncommingUserIMapper.MapIncludesList<Expression<Func<IQueryable<CostControlEntity.IncommingUser>, IIncludableQueryable<CostControlEntity.IncommingUser, object>>>>(includeProperties), cancellationToken));
 
         public IEnumerable<CostControlBusinessEntity.IncommingUser> GetWithRawSql(string query, params object[] parameters)
         => IncommingUserIMapper.Map<IEnumerable<CostControlEntity.IncommingUser>, IEnumerable<CostControlBusinessEntity.IncommingUser>>(Repository.GetWithRawSql(query, parameters));
@@ -511,7 +512,7 @@ namespace CostControl.BusinessLogic.Logics.CostControl
             throw new NotImplementedException();
         }
 
-        public IEnumerable<CostControlBusinessEntity.IncommingUser> GetByParentId(long parentId, Func<IQueryable<CostControlBusinessEntity.IncommingUser>, IOrderedQueryable<CostControlBusinessEntity.IncommingUser>> orderBy = null, Func<IQueryable<CostControlBusinessEntity.IncommingUser>, IIncludableQueryable<CostControlBusinessEntity.IncommingUser, object>> includeProperties = null, int? page = null, int? pageSize = null)
+        public IEnumerable<CostControlBusinessEntity.IncommingUser> GetByParentId(long parentId, Func<IQueryable<CostControlBusinessEntity.IncommingUser>, IOrderedQueryable<CostControlBusinessEntity.IncommingUser>> orderBy = null, ICollection<Expression<Func<IQueryable<CostControlBusinessEntity.IncommingUser>, IIncludableQueryable<CostControlBusinessEntity.IncommingUser, object>>>> includeProperties = null, int? page = null, int? pageSize = null)
         {
             throw new NotImplementedException();
         }

@@ -15,7 +15,7 @@ namespace CostControl.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.0-preview3-35497")
+                .HasAnnotation("ProductVersion", "2.2.2-servicing-10034")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -477,9 +477,9 @@ namespace CostControl.Data.Migrations
 
                     b.Property<long>("ConsumptionUnitId");
 
-                    b.Property<long?>("FoodId");
+                    b.Property<long>("FoodId");
 
-                    b.Property<long?>("IngredientId");
+                    b.Property<long>("IngredientId");
 
                     b.Property<long>("MenuId");
 
@@ -913,11 +913,13 @@ namespace CostControl.Data.Migrations
 
                     b.HasOne("CostControl.Entity.Models.CostControl.Food", "Food")
                         .WithMany("MenuItems")
-                        .HasForeignKey("FoodId");
+                        .HasForeignKey("FoodId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("CostControl.Entity.Models.CostControl.Ingredient", "Ingredient")
                         .WithMany("MenuItems")
-                        .HasForeignKey("IngredientId");
+                        .HasForeignKey("IngredientId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("CostControl.Entity.Models.CostControl.Menu", "Menu")
                         .WithMany("MenuItems")

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.Extensions.ExpressionMapping;
 using CostControl.BusinessLogic.Logics.Base;
 using CostControl.BusinessLogic.Mapper;
 using CostControl.Data.DAL;
@@ -118,7 +119,7 @@ namespace CostControl.BusinessLogic.Logics.CostControl
 
         public IEnumerable<CostControlBusinessEntity.IntakeRemittance> Get(Expression<Func<CostControlBusinessEntity.IntakeRemittance, bool>> filter = null,
             Func<IQueryable<CostControlBusinessEntity.IntakeRemittance>, IOrderedQueryable<CostControlBusinessEntity.IntakeRemittance>> orderBy = null,
-            Func<IQueryable<CostControlBusinessEntity.IntakeRemittance>, IIncludableQueryable<CostControlBusinessEntity.IntakeRemittance, object>> includeProperties = null,
+            ICollection<Expression<Func<IQueryable<CostControlBusinessEntity.IntakeRemittance>, IIncludableQueryable<CostControlBusinessEntity.IntakeRemittance, object>>>> includeProperties = null,
             int? pageNumber = null,
             int? pageSize = null)
         => IntakeRemittanceIMapper.Map<IEnumerable<CostControlEntity.IntakeRemittance>, IEnumerable<CostControlBusinessEntity.IntakeRemittance>>(
@@ -126,11 +127,12 @@ namespace CostControl.BusinessLogic.Logics.CostControl
                     IntakeRemittanceIMapper.Map<Expression<Func<CostControlBusinessEntity.IntakeRemittance, bool>>, Expression<Func<CostControlEntity.IntakeRemittance, bool>>>(filter),
                     IntakeRemittanceIMapper.Map<Func<IQueryable<CostControlBusinessEntity.IntakeRemittance>, IOrderedQueryable<CostControlBusinessEntity.IntakeRemittance>>,
                     Func<IQueryable<CostControlEntity.IntakeRemittance>, IOrderedQueryable<CostControlEntity.IntakeRemittance>>>(orderBy),
-                    IntakeRemittanceIMapper.Map<Func<IQueryable<CostControlEntity.IntakeRemittance>, IIncludableQueryable<CostControlEntity.IntakeRemittance, object>>>(includeProperties), pageNumber, pageSize));
+                    IntakeRemittanceIMapper.MapIncludesList<Expression<Func<IQueryable<CostControlEntity.IntakeRemittance>, IIncludableQueryable<CostControlEntity.IntakeRemittance, object>>>>(includeProperties),
+                    pageNumber, pageSize));
 
         public async Task<IEnumerable<CostControlBusinessEntity.IntakeRemittance>> GetAsync(Expression<Func<CostControlBusinessEntity.IntakeRemittance, bool>> filter = null,
             Func<IQueryable<CostControlBusinessEntity.IntakeRemittance>, IOrderedQueryable<CostControlBusinessEntity.IntakeRemittance>> orderBy = null,
-            Func<IQueryable<CostControlBusinessEntity.IntakeRemittance>, IIncludableQueryable<CostControlBusinessEntity.IntakeRemittance, object>> includeProperties = null,
+            ICollection<Expression<Func<IQueryable<CostControlBusinessEntity.IntakeRemittance>, IIncludableQueryable<CostControlBusinessEntity.IntakeRemittance, object>>>> includeProperties = null,
             int? pageNumber = null, int? pageSize = null,
             CancellationToken cancellationToken = default(CancellationToken))
         => await IntakeRemittanceIMapper.Map<Task<IEnumerable<CostControlEntity.IntakeRemittance>>, Task<IEnumerable<CostControlBusinessEntity.IntakeRemittance>>>(
@@ -138,20 +140,20 @@ namespace CostControl.BusinessLogic.Logics.CostControl
                     IntakeRemittanceIMapper.Map<Expression<Func<CostControlBusinessEntity.IntakeRemittance, bool>>, Expression<Func<CostControlEntity.IntakeRemittance, bool>>>(filter),
                     IntakeRemittanceIMapper.Map<Func<IQueryable<CostControlBusinessEntity.IntakeRemittance>, IOrderedQueryable<CostControlBusinessEntity.IntakeRemittance>>,
                     Func<IQueryable<CostControlEntity.IntakeRemittance>, IOrderedQueryable<CostControlEntity.IntakeRemittance>>>(orderBy),
-                    IntakeRemittanceIMapper.Map<Func<IQueryable<CostControlEntity.IntakeRemittance>, IIncludableQueryable<CostControlEntity.IntakeRemittance, object>>>(includeProperties),
+                    IntakeRemittanceIMapper.MapIncludesList<Expression<Func<IQueryable<CostControlEntity.IntakeRemittance>, IIncludableQueryable<CostControlEntity.IntakeRemittance, object>>>>(includeProperties),
                     pageNumber, pageSize, cancellationToken));
 
         public CostControlBusinessEntity.IntakeRemittance GetById(object id,
-            Func<IQueryable<CostControlBusinessEntity.IntakeRemittance>, IIncludableQueryable<CostControlBusinessEntity.IntakeRemittance, object>> includeProperties = null)
+            ICollection<Expression<Func<IQueryable<CostControlBusinessEntity.IntakeRemittance>, IIncludableQueryable<CostControlBusinessEntity.IntakeRemittance, object>>>> includeProperties = null)
         => id == null ? null : IntakeRemittanceIMapper.Map<CostControlEntity.IntakeRemittance, CostControlBusinessEntity.IntakeRemittance>
-            (Repository.GetById(id, IntakeRemittanceIMapper.Map<Func<IQueryable<CostControlEntity.IntakeRemittance>, IIncludableQueryable<CostControlEntity.IntakeRemittance, object>>>(includeProperties)));
+            (Repository.GetById(id, IntakeRemittanceIMapper.MapIncludesList<Expression<Func<IQueryable<CostControlEntity.IntakeRemittance>, IIncludableQueryable<CostControlEntity.IntakeRemittance, object>>>>(includeProperties)));
 
         public async Task<CostControlBusinessEntity.IntakeRemittance> GetByIdAsync(object id,
-            Func<IQueryable<CostControlBusinessEntity.IntakeRemittance>, IIncludableQueryable<CostControlBusinessEntity.IntakeRemittance, object>> includeProperties = null,
+            ICollection<Expression<Func<IQueryable<CostControlBusinessEntity.IntakeRemittance>, IIncludableQueryable<CostControlBusinessEntity.IntakeRemittance, object>>>> includeProperties = null,
             CancellationToken cancellationToken = default(CancellationToken))
         //=> await await Task.FromResult(IntakeRemittanceIMapper.Map<Task<Entity.Models.IntakeRemittance>, Task<IntakeRemittance>>(Repository.GetByIdAsync(id, cancellationToken)));
         => id == null ? null : IntakeRemittanceIMapper.Map<CostControlEntity.IntakeRemittance, CostControlBusinessEntity.IntakeRemittance>
-            (await Repository.GetByIdAsync(id, IntakeRemittanceIMapper.Map<Func<IQueryable<CostControlEntity.IntakeRemittance>, IIncludableQueryable<CostControlEntity.IntakeRemittance, object>>>(includeProperties), cancellationToken));
+            (await Repository.GetByIdAsync(id, IntakeRemittanceIMapper.MapIncludesList<Expression<Func<IQueryable<CostControlEntity.IntakeRemittance>, IIncludableQueryable<CostControlEntity.IntakeRemittance, object>>>>(includeProperties), cancellationToken));
 
         public IEnumerable<CostControlBusinessEntity.IntakeRemittance> GetWithRawSql(string query, params object[] parameters)
         => IntakeRemittanceIMapper.Map<IEnumerable<CostControlEntity.IntakeRemittance>, IEnumerable<CostControlBusinessEntity.IntakeRemittance>>(Repository.GetWithRawSql(query, parameters));
@@ -445,7 +447,7 @@ namespace CostControl.BusinessLogic.Logics.CostControl
             throw new NotImplementedException();
         }
 
-        public IEnumerable<CostControlBusinessEntity.IntakeRemittance> GetByParentId(long parentId, Func<IQueryable<CostControlBusinessEntity.IntakeRemittance>, IOrderedQueryable<CostControlBusinessEntity.IntakeRemittance>> orderBy = null, Func<IQueryable<CostControlBusinessEntity.IntakeRemittance>, IIncludableQueryable<CostControlBusinessEntity.IntakeRemittance, object>> includeProperties = null, int? page = null, int? pageSize = null)
+        public IEnumerable<CostControlBusinessEntity.IntakeRemittance> GetByParentId(long parentId, Func<IQueryable<CostControlBusinessEntity.IntakeRemittance>, IOrderedQueryable<CostControlBusinessEntity.IntakeRemittance>> orderBy = null, ICollection<Expression<Func<IQueryable<CostControlBusinessEntity.IntakeRemittance>, IIncludableQueryable<CostControlBusinessEntity.IntakeRemittance, object>>>> includeProperties = null, int? page = null, int? pageSize = null)
         {
             throw new NotImplementedException();
         }

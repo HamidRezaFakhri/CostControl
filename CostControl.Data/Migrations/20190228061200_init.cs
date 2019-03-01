@@ -15,9 +15,9 @@ namespace CostControl.Data.Migrations
                 name: "Role",
                 columns: table => new
                 {
-                    State = table.Column<int>(nullable: false),
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    State = table.Column<int>(nullable: false),
                     Name = table.Column<string>(maxLength: 250, nullable: false),
                     Code = table.Column<string>(maxLength: 25, nullable: true)
                 },
@@ -31,9 +31,9 @@ namespace CostControl.Data.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     Name = table.Column<string>(maxLength: 250, nullable: false),
                     Code = table.Column<string>(maxLength: 25, nullable: true)
                 },
@@ -47,9 +47,9 @@ namespace CostControl.Data.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     Name = table.Column<string>(maxLength: 250, nullable: false),
                     Code = table.Column<string>(maxLength: 25, nullable: true)
                 },
@@ -63,9 +63,9 @@ namespace CostControl.Data.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     ImportTime = table.Column<DateTime>(type: "DateTime", nullable: false)
                 },
                 constraints: table =>
@@ -78,9 +78,9 @@ namespace CostControl.Data.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     UserID = table.Column<int>(nullable: false),
                     UserName = table.Column<string>(nullable: true),
                     OperatorCode = table.Column<int>(nullable: false)
@@ -95,9 +95,9 @@ namespace CostControl.Data.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     Name = table.Column<string>(maxLength: 250, nullable: false),
                     Code = table.Column<string>(maxLength: 25, nullable: true),
                     EnglishName = table.Column<string>(maxLength: 250, nullable: false),
@@ -116,9 +116,9 @@ namespace CostControl.Data.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     Name = table.Column<string>(maxLength: 250, nullable: false),
                     Code = table.Column<string>(maxLength: 25, nullable: true),
                     IsWasted = table.Column<bool>(nullable: false)
@@ -133,9 +133,9 @@ namespace CostControl.Data.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     Id = table.Column<byte>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     Name = table.Column<string>(maxLength: 250, nullable: false),
                     FinancialCode = table.Column<string>(maxLength: 25, nullable: true)
                 },
@@ -149,9 +149,9 @@ namespace CostControl.Data.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     Name = table.Column<string>(maxLength: 250, nullable: false),
                     Code = table.Column<string>(maxLength: 25, nullable: true),
                     EnglishName = table.Column<string>(maxLength: 250, nullable: false),
@@ -167,9 +167,9 @@ namespace CostControl.Data.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     IngredientUsageRate = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>
@@ -181,9 +181,9 @@ namespace CostControl.Data.Migrations
                 name: "User",
                 columns: table => new
                 {
-                    State = table.Column<int>(nullable: false),
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    State = table.Column<int>(nullable: false),
                     RoleId = table.Column<long>(nullable: false),
                     UserName = table.Column<string>(maxLength: 50, nullable: false),
                     Password = table.Column<string>(maxLength: 50, nullable: false),
@@ -206,9 +206,9 @@ namespace CostControl.Data.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     Name = table.Column<string>(maxLength: 250, nullable: false),
                     Code = table.Column<string>(maxLength: 25, nullable: true),
                     CostPointGroupId = table.Column<long>(nullable: false)
@@ -230,9 +230,9 @@ namespace CostControl.Data.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     SalePointId = table.Column<long>(nullable: false)
                 },
                 constraints: table =>
@@ -252,9 +252,9 @@ namespace CostControl.Data.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     SalePointId = table.Column<long>(nullable: false),
                     CostPointId = table.Column<long>(nullable: false)
                 },
@@ -282,9 +282,9 @@ namespace CostControl.Data.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     SaleCostPointId = table.Column<long>(nullable: false),
                     IngredientId = table.Column<long>(nullable: false),
                     ConsumptionUnitId = table.Column<long>(nullable: false),
@@ -321,9 +321,9 @@ namespace CostControl.Data.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     Name = table.Column<string>(maxLength: 250, nullable: false),
                     SaleCostPointId = table.Column<long>(nullable: false),
                     Code = table.Column<string>(maxLength: 25, nullable: true),
@@ -348,9 +348,9 @@ namespace CostControl.Data.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     SaleCostPointId = table.Column<long>(nullable: false),
                     IntakeDate = table.Column<DateTime>(type: "datetime", nullable: false),
                     Description = table.Column<string>(maxLength: 500, nullable: true),
@@ -380,9 +380,9 @@ namespace CostControl.Data.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     Name = table.Column<string>(maxLength: 250, nullable: false),
                     SaleCostPointId = table.Column<long>(nullable: false),
                     Code = table.Column<string>(maxLength: 25, nullable: true),
@@ -409,9 +409,9 @@ namespace CostControl.Data.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     SaleCostPointId = table.Column<long>(nullable: false),
                     OverCostTypeId = table.Column<byte>(nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime", nullable: false),
@@ -451,9 +451,9 @@ namespace CostControl.Data.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     SaleCostPointId = table.Column<long>(nullable: false),
                     SaleDate = table.Column<DateTime>(type: "datetime", nullable: false),
                     Code = table.Column<string>(maxLength: 25, nullable: false)
@@ -475,9 +475,9 @@ namespace CostControl.Data.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     SaleCostPointId = table.Column<long>(nullable: false),
                     InventoryId = table.Column<long>(nullable: false),
                     DepoId = table.Column<long>(nullable: false),
@@ -523,9 +523,9 @@ namespace CostControl.Data.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     FoodId = table.Column<long>(nullable: false),
                     IngredientId = table.Column<long>(nullable: false),
                     Amount = table.Column<decimal>(type: "numeric(28, 2)", nullable: false),
@@ -563,9 +563,9 @@ namespace CostControl.Data.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     IntakeRemittanceID = table.Column<long>(nullable: false),
                     IngredientId = table.Column<long>(nullable: false),
                     Amount = table.Column<decimal>(nullable: false),
@@ -602,12 +602,12 @@ namespace CostControl.Data.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     MenuId = table.Column<long>(nullable: false),
-                    FoodId = table.Column<long>(nullable: true),
-                    IngredientId = table.Column<long>(nullable: true),
+                    FoodId = table.Column<long>(nullable: false),
+                    IngredientId = table.Column<long>(nullable: false),
                     Amount = table.Column<decimal>(nullable: false),
                     ConsumptionUnitId = table.Column<long>(nullable: false)
                 },
@@ -649,9 +649,9 @@ namespace CostControl.Data.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     SaleId = table.Column<long>(nullable: false),
                     FoodId = table.Column<long>(nullable: false),
                     IngredientId = table.Column<long>(nullable: false),
@@ -689,9 +689,9 @@ namespace CostControl.Data.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     DraftId = table.Column<long>(nullable: false),
                     IngredientId = table.Column<long>(nullable: false),
                     ConsumptionUnitId = table.Column<long>(nullable: false),

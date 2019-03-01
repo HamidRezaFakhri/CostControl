@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.Extensions.ExpressionMapping;
 using CostControl.BusinessLogic.Logics.Base;
 using CostControl.BusinessLogic.Mapper;
 using CostControl.Data.DAL;
@@ -118,7 +119,7 @@ namespace CostControl.BusinessLogic.Logics.CostControl
 
         public IEnumerable<CostControlBusinessEntity.Draft> Get(Expression<Func<CostControlBusinessEntity.Draft, bool>> filter = null,
             Func<IQueryable<CostControlBusinessEntity.Draft>, IOrderedQueryable<CostControlBusinessEntity.Draft>> orderBy = null,
-            Func<IQueryable<CostControlBusinessEntity.Draft>, IIncludableQueryable<CostControlBusinessEntity.Draft, object>> includeProperties = null,
+            ICollection<Expression<Func<IQueryable<CostControlBusinessEntity.Draft>, IIncludableQueryable<CostControlBusinessEntity.Draft, object>>>> includeProperties = null,
             int? pageNumber = null,
             int? pageSize = null)
         => DraftIMapper.Map<IEnumerable<CostControlEntity.Draft>, IEnumerable<CostControlBusinessEntity.Draft>>(
@@ -126,11 +127,11 @@ namespace CostControl.BusinessLogic.Logics.CostControl
                     DraftIMapper.Map<Expression<Func<CostControlBusinessEntity.Draft, bool>>, Expression<Func<CostControlEntity.Draft, bool>>>(filter),
                     DraftIMapper.Map<Func<IQueryable<CostControlBusinessEntity.Draft>, IOrderedQueryable<CostControlBusinessEntity.Draft>>,
                     Func<IQueryable<CostControlEntity.Draft>, IOrderedQueryable<CostControlEntity.Draft>>>(orderBy),
-                    DraftIMapper.Map<Func<IQueryable<CostControlEntity.Draft>, IIncludableQueryable<CostControlEntity.Draft, object>>>(includeProperties), pageNumber, pageSize));
+                    DraftIMapper.MapIncludesList<Expression<Func<IQueryable<CostControlEntity.Draft>, IIncludableQueryable<CostControlEntity.Draft, object>>>>(includeProperties), pageNumber, pageSize));
 
         public async Task<IEnumerable<CostControlBusinessEntity.Draft>> GetAsync(Expression<Func<CostControlBusinessEntity.Draft, bool>> filter = null,
             Func<IQueryable<CostControlBusinessEntity.Draft>, IOrderedQueryable<CostControlBusinessEntity.Draft>> orderBy = null,
-            Func<IQueryable<CostControlBusinessEntity.Draft>, IIncludableQueryable<CostControlBusinessEntity.Draft, object>> includeProperties = null,
+            ICollection<Expression<Func<IQueryable<CostControlBusinessEntity.Draft>, IIncludableQueryable<CostControlBusinessEntity.Draft, object>>>> includeProperties = null,
             int? pageNumber = null, int? pageSize = null,
             CancellationToken cancellationToken = default(CancellationToken))
         => await DraftIMapper.Map<Task<IEnumerable<CostControlEntity.Draft>>, Task<IEnumerable<CostControlBusinessEntity.Draft>>>(
@@ -138,20 +139,20 @@ namespace CostControl.BusinessLogic.Logics.CostControl
                     DraftIMapper.Map<Expression<Func<CostControlBusinessEntity.Draft, bool>>, Expression<Func<CostControlEntity.Draft, bool>>>(filter),
                     DraftIMapper.Map<Func<IQueryable<CostControlBusinessEntity.Draft>, IOrderedQueryable<CostControlBusinessEntity.Draft>>,
                     Func<IQueryable<CostControlEntity.Draft>, IOrderedQueryable<CostControlEntity.Draft>>>(orderBy),
-                    DraftIMapper.Map<Func<IQueryable<CostControlEntity.Draft>, IIncludableQueryable<CostControlEntity.Draft, object>>>(includeProperties),
+                    DraftIMapper.MapIncludesList<Expression<Func<IQueryable<CostControlEntity.Draft>, IIncludableQueryable<CostControlEntity.Draft, object>>>>(includeProperties),
                     pageNumber, pageSize, cancellationToken));
 
         public CostControlBusinessEntity.Draft GetById(object id,
-            Func<IQueryable<CostControlBusinessEntity.Draft>, IIncludableQueryable<CostControlBusinessEntity.Draft, object>> includeProperties = null)
+            ICollection<Expression<Func<IQueryable<CostControlBusinessEntity.Draft>, IIncludableQueryable<CostControlBusinessEntity.Draft, object>>>> includeProperties = null)
         => id == null ? null : DraftIMapper.Map<CostControlEntity.Draft, CostControlBusinessEntity.Draft>
-            (Repository.GetById(id, DraftIMapper.Map<Func<IQueryable<CostControlEntity.Draft>, IIncludableQueryable<CostControlEntity.Draft, object>>>(includeProperties)));
+            (Repository.GetById(id, DraftIMapper.MapIncludesList<Expression<Func<IQueryable<CostControlEntity.Draft>, IIncludableQueryable<CostControlEntity.Draft, object>>>>(includeProperties)));
 
         public async Task<CostControlBusinessEntity.Draft> GetByIdAsync(object id,
-            Func<IQueryable<CostControlBusinessEntity.Draft>, IIncludableQueryable<CostControlBusinessEntity.Draft, object>> includeProperties = null,
+            ICollection<Expression<Func<IQueryable<CostControlBusinessEntity.Draft>, IIncludableQueryable<CostControlBusinessEntity.Draft, object>>>> includeProperties = null,
             CancellationToken cancellationToken = default(CancellationToken))
         //=> await await Task.FromResult(DraftIMapper.Map<Task<Entity.Models.Draft>, Task<Draft>>(Repository.GetByIdAsync(id, cancellationToken)));
         => id == null ? null : DraftIMapper.Map<CostControlEntity.Draft, CostControlBusinessEntity.Draft>
-            (await Repository.GetByIdAsync(id, DraftIMapper.Map<Func<IQueryable<CostControlEntity.Draft>, IIncludableQueryable<CostControlEntity.Draft, object>>>(includeProperties), cancellationToken));
+            (await Repository.GetByIdAsync(id, DraftIMapper.MapIncludesList<Expression<Func<IQueryable<CostControlEntity.Draft>, IIncludableQueryable<CostControlEntity.Draft, object>>>>(includeProperties), cancellationToken));
 
         public IEnumerable<CostControlBusinessEntity.Draft> GetWithRawSql(string query, params object[] parameters)
         => DraftIMapper.Map<IEnumerable<CostControlEntity.Draft>, IEnumerable<CostControlBusinessEntity.Draft>>(Repository.GetWithRawSql(query, parameters));
@@ -445,7 +446,7 @@ namespace CostControl.BusinessLogic.Logics.CostControl
             throw new NotImplementedException();
         }
 
-        public IEnumerable<CostControlBusinessEntity.Draft> GetByParentId(long parentId, Func<IQueryable<CostControlBusinessEntity.Draft>, IOrderedQueryable<CostControlBusinessEntity.Draft>> orderBy = null, Func<IQueryable<CostControlBusinessEntity.Draft>, IIncludableQueryable<CostControlBusinessEntity.Draft, object>> includeProperties = null, int? page = null, int? pageSize = null)
+        public IEnumerable<CostControlBusinessEntity.Draft> GetByParentId(long parentId, Func<IQueryable<CostControlBusinessEntity.Draft>, IOrderedQueryable<CostControlBusinessEntity.Draft>> orderBy = null, ICollection<Expression<Func<IQueryable<CostControlBusinessEntity.Draft>, IIncludableQueryable<CostControlBusinessEntity.Draft, object>>>> includeProperties = null, int? page = null, int? pageSize = null)
         {
             throw new NotImplementedException();
         }

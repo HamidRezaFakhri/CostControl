@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.Extensions.ExpressionMapping;
 using CostControl.BusinessLogic.Logics.Base;
 using CostControl.BusinessLogic.Mapper;
 using CostControl.Data.DAL;
@@ -118,7 +119,7 @@ namespace CostControl.BusinessLogic.Logics.CostControl
 
         public IEnumerable<CostControlBusinessEntity.CostPointGroup> Get(Expression<Func<CostControlBusinessEntity.CostPointGroup, bool>> filter = null,
             Func<IQueryable<CostControlBusinessEntity.CostPointGroup>, IOrderedQueryable<CostControlBusinessEntity.CostPointGroup>> orderBy = null,
-            Func<IQueryable<CostControlBusinessEntity.CostPointGroup>, IIncludableQueryable<CostControlBusinessEntity.CostPointGroup, object>> includeProperties = null,
+            ICollection<Expression<Func<IQueryable<CostControlBusinessEntity.CostPointGroup>, IIncludableQueryable<CostControlBusinessEntity.CostPointGroup, object>>>> includeProperties = null,
             int? pageNumber = null,
             int? pageSize = null)
         => CostPointGroupIMapper.Map<IEnumerable<CostControlEntity.CostPointGroup>, IEnumerable<CostControlBusinessEntity.CostPointGroup>>(
@@ -126,11 +127,11 @@ namespace CostControl.BusinessLogic.Logics.CostControl
                     CostPointGroupIMapper.Map<Expression<Func<CostControlBusinessEntity.CostPointGroup, bool>>, Expression<Func<CostControlEntity.CostPointGroup, bool>>>(filter),
                     CostPointGroupIMapper.Map<Func<IQueryable<CostControlBusinessEntity.CostPointGroup>, IOrderedQueryable<CostControlBusinessEntity.CostPointGroup>>,
                     Func<IQueryable<CostControlEntity.CostPointGroup>, IOrderedQueryable<CostControlEntity.CostPointGroup>>>(orderBy),
-                    CostPointGroupIMapper.Map<Func<IQueryable<CostControlEntity.CostPointGroup>, IIncludableQueryable<CostControlEntity.CostPointGroup, object>>>(includeProperties), pageNumber, pageSize));
+                    CostPointGroupIMapper.MapIncludesList<Expression<Func<IQueryable<CostControlEntity.CostPointGroup>, IIncludableQueryable<CostControlEntity.CostPointGroup, object>>>>(includeProperties), pageNumber, pageSize));
 
         public async Task<IEnumerable<CostControlBusinessEntity.CostPointGroup>> GetAsync(Expression<Func<CostControlBusinessEntity.CostPointGroup, bool>> filter = null,
             Func<IQueryable<CostControlBusinessEntity.CostPointGroup>, IOrderedQueryable<CostControlBusinessEntity.CostPointGroup>> orderBy = null,
-            Func<IQueryable<CostControlBusinessEntity.CostPointGroup>, IIncludableQueryable<CostControlBusinessEntity.CostPointGroup, object>> includeProperties = null,
+            ICollection<Expression<Func<IQueryable<CostControlBusinessEntity.CostPointGroup>, IIncludableQueryable<CostControlBusinessEntity.CostPointGroup, object>>>> includeProperties = null,
             int? pageNumber = null, int? pageSize = null,
             CancellationToken cancellationToken = default(CancellationToken))
         => await CostPointGroupIMapper.Map<Task<IEnumerable<CostControlEntity.CostPointGroup>>, Task<IEnumerable<CostControlBusinessEntity.CostPointGroup>>>(
@@ -138,20 +139,20 @@ namespace CostControl.BusinessLogic.Logics.CostControl
                     CostPointGroupIMapper.Map<Expression<Func<CostControlBusinessEntity.CostPointGroup, bool>>, Expression<Func<CostControlEntity.CostPointGroup, bool>>>(filter),
                     CostPointGroupIMapper.Map<Func<IQueryable<CostControlBusinessEntity.CostPointGroup>, IOrderedQueryable<CostControlBusinessEntity.CostPointGroup>>,
                     Func<IQueryable<CostControlEntity.CostPointGroup>, IOrderedQueryable<CostControlEntity.CostPointGroup>>>(orderBy),
-                    CostPointGroupIMapper.Map<Func<IQueryable<CostControlEntity.CostPointGroup>, IIncludableQueryable<CostControlEntity.CostPointGroup, object>>>(includeProperties),
+                    CostPointGroupIMapper.MapIncludesList<Expression<Func<IQueryable<CostControlEntity.CostPointGroup>, IIncludableQueryable<CostControlEntity.CostPointGroup, object>>>>(includeProperties),
                     pageNumber, pageSize, cancellationToken));
 
         public CostControlBusinessEntity.CostPointGroup GetById(object id,
-            Func<IQueryable<CostControlBusinessEntity.CostPointGroup>, IIncludableQueryable<CostControlBusinessEntity.CostPointGroup, object>> includeProperties = null)
+            ICollection<Expression<Func<IQueryable<CostControlBusinessEntity.CostPointGroup>, IIncludableQueryable<CostControlBusinessEntity.CostPointGroup, object>>>> includeProperties = null)
         => id == null ? null : CostPointGroupIMapper.Map<CostControlEntity.CostPointGroup, CostControlBusinessEntity.CostPointGroup>
-            (Repository.GetById(id, CostPointGroupIMapper.Map<Func<IQueryable<CostControlEntity.CostPointGroup>, IIncludableQueryable<CostControlEntity.CostPointGroup, object>>>(includeProperties)));
+            (Repository.GetById(id, CostPointGroupIMapper.MapIncludesList<Expression<Func<IQueryable<CostControlEntity.CostPointGroup>, IIncludableQueryable<CostControlEntity.CostPointGroup, object>>>>(includeProperties)));
 
         public async Task<CostControlBusinessEntity.CostPointGroup> GetByIdAsync(object id,
-            Func<IQueryable<CostControlBusinessEntity.CostPointGroup>, IIncludableQueryable<CostControlBusinessEntity.CostPointGroup, object>> includeProperties = null,
+            ICollection<Expression<Func<IQueryable<CostControlBusinessEntity.CostPointGroup>, IIncludableQueryable<CostControlBusinessEntity.CostPointGroup, object>>>> includeProperties = null,
             CancellationToken cancellationToken = default(CancellationToken))
         //=> await await Task.FromResult(CostPointGroupIMapper.Map<Task<Entity.Models.CostPointGroup>, Task<CostPointGroup>>(Repository.GetByIdAsync(id, cancellationToken)));
         => id == null ? null : CostPointGroupIMapper.Map<CostControlEntity.CostPointGroup, CostControlBusinessEntity.CostPointGroup>
-            (await Repository.GetByIdAsync(id, CostPointGroupIMapper.Map<Func<IQueryable<CostControlEntity.CostPointGroup>, IIncludableQueryable<CostControlEntity.CostPointGroup, object>>>(includeProperties), cancellationToken));
+            (await Repository.GetByIdAsync(id, CostPointGroupIMapper.MapIncludesList<Expression<Func<IQueryable<CostControlEntity.CostPointGroup>, IIncludableQueryable<CostControlEntity.CostPointGroup, object>>>>(includeProperties), cancellationToken));
 
         public IEnumerable<CostControlBusinessEntity.CostPointGroup> GetWithRawSql(string query, params object[] parameters)
         => CostPointGroupIMapper.Map<IEnumerable<CostControlEntity.CostPointGroup>, IEnumerable<CostControlBusinessEntity.CostPointGroup>>(Repository.GetWithRawSql(query, parameters));
@@ -445,7 +446,7 @@ namespace CostControl.BusinessLogic.Logics.CostControl
             throw new NotImplementedException();
         }
 
-        public IEnumerable<CostControlBusinessEntity.CostPointGroup> GetByParentId(long parentId, Func<IQueryable<CostControlBusinessEntity.CostPointGroup>, IOrderedQueryable<CostControlBusinessEntity.CostPointGroup>> orderBy = null, Func<IQueryable<CostControlBusinessEntity.CostPointGroup>, IIncludableQueryable<CostControlBusinessEntity.CostPointGroup, object>> includeProperties = null, int? page = null, int? pageSize = null)
+        public IEnumerable<CostControlBusinessEntity.CostPointGroup> GetByParentId(long parentId, Func<IQueryable<CostControlBusinessEntity.CostPointGroup>, IOrderedQueryable<CostControlBusinessEntity.CostPointGroup>> orderBy = null, ICollection<Expression<Func<IQueryable<CostControlBusinessEntity.CostPointGroup>, IIncludableQueryable<CostControlBusinessEntity.CostPointGroup, object>>>> includeProperties = null, int? page = null, int? pageSize = null)
         {
             throw new NotImplementedException();
         }

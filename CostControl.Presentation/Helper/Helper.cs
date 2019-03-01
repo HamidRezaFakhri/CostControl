@@ -78,7 +78,7 @@ namespace CostControl.Presentation
             string str = string.Empty;
             using (HttpClient client = new HttpClient())
             {
-                client.BaseAddress = new Uri("http://localhost:5001/api/SaleCostPoint/");
+                client.BaseAddress = new Uri(GetAPIAddress() + "SaleCostPoint/");
 
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue("nl-NL"));
@@ -86,13 +86,13 @@ namespace CostControl.Presentation
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                 //HTTP GET
-                System.Threading.Tasks.Task<HttpResponseMessage> responseTask = client.GetAsync("Get?PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1");
+                var responseTask = client.GetAsync("Get?PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1");
                 responseTask.Wait();
 
-                HttpResponseMessage result = responseTask.Result;
+                var result = responseTask.Result;
                 if (result.IsSuccessStatusCode)
                 {
-                    System.Threading.Tasks.Task<ServiceResponse<SaleCostPoint>> readTask = result.Content.ReadAsAsync<ServiceResponse<SaleCostPoint>>();
+                    var readTask = result.Content.ReadAsAsync<ServiceResponse<SaleCostPoint>>();
 
                     readTask.Wait();
 
@@ -122,9 +122,7 @@ namespace CostControl.Presentation
         private static readonly string editEntityTitle = "فهرست ";
 
         private static readonly string deleteEntityTitle = "فهرست ";
-
-
-
+        
         public static string GetAPIAddress() => "http://localhost:5001/api/";
 
         public static string GetAPIAddress(string controllerName) =>
@@ -145,7 +143,8 @@ namespace CostControl.Presentation
 
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                System.Threading.Tasks.Task<HttpResponseMessage> responseTask = client.GetAsync(apiParams);
+                var responseTask = client.GetAsync(apiParams);
+                //EnsureSuccessStatusCode();
                 responseTask.Wait();
 
                 HttpResponseMessage result = responseTask.Result;
@@ -178,7 +177,7 @@ namespace CostControl.Presentation
                 var responseTask = client.GetAsync(apiParams);
                 responseTask.Wait();
 
-                HttpResponseMessage result = responseTask.Result;
+                var result = responseTask.Result;
                 if (result.IsSuccessStatusCode)
                 {
                     var readTask = result.Content.ReadAsAsync<ServiceResponse<T>>();
@@ -203,8 +202,8 @@ namespace CostControl.Presentation
 
                     var result = client.PostAsJsonAsync(actionName, value);
                     result.Wait();
-                    HttpResponseMessage res = result.Result;
-
+                    var res = result.Result;
+                    
                     if (res.IsSuccessStatusCode)
                     {
                         System.Threading.Tasks.Task<string> p1 = res.Content.ReadAsStringAsync();
