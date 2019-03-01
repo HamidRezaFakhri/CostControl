@@ -42,8 +42,8 @@
 		{
 			<tr id="tr_@item.Id">
 				<td>@item.Id</td>
-				<td id="td_SalePointName">@item.SalePointName</td>
-				<td id="td_CostPointName">@item.CostPointName</td>
+				<td id="td_SalePointName">@item.SalePoint.Name</td>
+				<td id="td_CostPointName">@item.CostPoint.Name</td>
 				<td>
 					<a href="#" class="btn btn-sm btn-warning"
 					   onclick="EditEntityModal(@item.Id, '/SaleCostPoint/EditSaleCostPoint/', '@editTitle (@item.SalePointName)')">
