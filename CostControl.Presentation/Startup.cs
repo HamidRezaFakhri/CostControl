@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace CostControl.Presentation
 {
@@ -25,8 +26,11 @@ namespace CostControl.Presentation
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-            
-            services.AddSession();
+
+            services.AddDistributedMemoryCache();
+            services.AddSession(options => {
+                options.IdleTimeout = TimeSpan.FromMinutes(20);//You can set Time   
+            });
 
             services.AddMvc()
                 .AddSessionStateTempDataProvider();//.SetCompatibilityVersion(CompatibilityVersion.Version_2_1);

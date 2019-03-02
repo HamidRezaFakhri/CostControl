@@ -71,6 +71,8 @@ namespace CostControl.Presentation.Controllers
             //    //}
             //}
 
+            HttpContext.Session.SetInt32("IUI", 1);
+
             return RedirectToAction("Index", "Home");
         }
 

@@ -48,6 +48,10 @@ namespace CostControl.Presentation.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult AddOverCost(OverCost OverCost)
         {
+            HttpContext.Session.TryGetValue("IUI", out var a);
+            var b = a.LastOrDefault().ToString();
+
+            OverCost.RegisteredUserId = Convert.ToInt64(b);
             if (ModelState.IsValid)
             {
                 var postResult = Helper.PostValueToSevice<OverCost>("POST", OverCost);

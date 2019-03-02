@@ -32,10 +32,6 @@ namespace CostControl.Entity.Models.Security
 
         [Required]
         public DateTime CreatedDate { get; set; } = DateTime.Now;
-
-        public virtual ICollection<OverCost> OverCosts { get; set; }
-
-        public virtual ICollection<Draft> Drafts { get; set; }
         
         //public virtual ICollection<UserClaim> UserClaims { get; set; }
 

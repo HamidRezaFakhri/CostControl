@@ -31,7 +31,7 @@ namespace CostControl.Entity.Models.CostControl
         [Required]
         public long RegisteredUserId { get; set; }
 
-        public virtual User RegisteredUser { get; set; }
+        public virtual IncommingUser RegisteredUser { get; set; }
 
         [Required]
         public virtual ICollection<DraftItem> DraftItems { get; set; }

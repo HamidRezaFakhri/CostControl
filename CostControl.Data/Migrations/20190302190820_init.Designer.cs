@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CostControl.Data.Migrations
 {
     [DbContext(typeof(CostControlDbContext))]
-    [Migration("20190228061200_init")]
+    [Migration("20190302190820_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -190,6 +190,8 @@ namespace CostControl.Data.Migrations
 
                     b.Property<long>("RegisteredUserId");
 
+                    b.Property<int?>("RegisteredUserId1");
+
                     b.Property<long>("SaleCostPointId");
 
                     b.Property<int>("State")
@@ -202,7 +204,7 @@ namespace CostControl.Data.Migrations
 
                     b.HasIndex("InventoryId");
 
-                    b.HasIndex("RegisteredUserId");
+                    b.HasIndex("RegisteredUserId1");
 
                     b.HasIndex("SaleCostPointId");
 
@@ -288,7 +290,7 @@ namespace CostControl.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("1");
 
-                    b.Property<int>("UserID");
+                    b.Property<long>("UserID");
 
                     b.Property<string>("UserName");
 
@@ -523,6 +525,8 @@ namespace CostControl.Data.Migrations
 
                     b.Property<long>("RegisteredUserId");
 
+                    b.Property<int?>("RegisteredUserId1");
+
                     b.Property<long>("SaleCostPointId");
 
                     b.Property<DateTime>("StartDate")
@@ -536,7 +540,7 @@ namespace CostControl.Data.Migrations
 
                     b.HasIndex("OverCostTypeId");
 
-                    b.HasIndex("RegisteredUserId");
+                    b.HasIndex("RegisteredUserId1");
 
                     b.HasIndex("SaleCostPointId");
 
@@ -615,18 +619,15 @@ namespace CostControl.Data.Migrations
 
                     b.Property<long>("SaleCostPointId");
 
-                    b.Property<DateTime>("SaleDate")
-                        .HasColumnType("datetime");
+                    b.Property<DateTime>("SaleDate");
 
-                    b.Property<int>("State")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("1");
+                    b.Property<int>("State");
 
                     b.HasKey("Id");
 
                     b.HasIndex("SaleCostPointId");
 
-                    b.ToTable("Sale","dbo");
+                    b.ToTable("Sale");
                 });
 
             modelBuilder.Entity("CostControl.Entity.Models.CostControl.SaleCostPoint", b =>
@@ -669,9 +670,7 @@ namespace CostControl.Data.Migrations
 
                     b.Property<long>("SaleId");
 
-                    b.Property<int>("State")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("1");
+                    b.Property<int>("State");
 
                     b.HasKey("Id");
 
@@ -681,7 +680,7 @@ namespace CostControl.Data.Migrations
 
                     b.HasIndex("SaleId");
 
-                    b.ToTable("SaleItem","dbo");
+                    b.ToTable("SaleItem");
                 });
 
             modelBuilder.Entity("CostControl.Entity.Models.CostControl.SalePoint", b =>
@@ -830,10 +829,9 @@ namespace CostControl.Data.Migrations
                         .HasForeignKey("InventoryId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("CostControl.Entity.Models.Security.User", "RegisteredUser")
+                    b.HasOne("CostControl.Entity.Models.CostControl.IncommingUser", "RegisteredUser")
                         .WithMany("Drafts")
-                        .HasForeignKey("RegisteredUserId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("RegisteredUserId1");
 
                     b.HasOne("CostControl.Entity.Models.CostControl.SaleCostPoint", "SaleCostPoint")
                         .WithMany("Drafts")
@@ -936,10 +934,9 @@ namespace CostControl.Data.Migrations
                         .HasForeignKey("OverCostTypeId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("CostControl.Entity.Models.Security.User", "RegisteredUser")
+                    b.HasOne("CostControl.Entity.Models.CostControl.IncommingUser", "RegisteredUser")
                         .WithMany("OverCosts")
-                        .HasForeignKey("RegisteredUserId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("RegisteredUserId1");
 
                     b.HasOne("CostControl.Entity.Models.CostControl.SaleCostPoint", "SaleCostPoint")
                         .WithMany("OverCosts")
