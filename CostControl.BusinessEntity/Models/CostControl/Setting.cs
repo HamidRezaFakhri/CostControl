@@ -1,4 +1,6 @@
-﻿namespace CostControl.BusinessEntity.Models.CostControl
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace CostControl.BusinessEntity.Models.CostControl
 {
     public class Setting : Base.Interfaces.IEntity<int>
     {
@@ -8,6 +10,8 @@
 
         public Base.Enums.ObjectState State { get; set; }
 
+        [Required(ErrorMessage = "درصد قابل استفاده اجباریست!")]
+        [Display(Name = "درصد قابل استفاده")]
         public decimal IngredientUsageRate { get; set; }
     }
 }

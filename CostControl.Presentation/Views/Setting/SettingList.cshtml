@@ -31,8 +31,7 @@
     <thead>
         <tr>
             <th><a id="Id" href="#">شناسه</a></th>
-            <th><a id="SettingName" href="#">نام</a></th>
-            <th><a id="code" href="#">کد</a></th>
+            <th><a id="IngredientUsageRate" href="#">نرخ مصرف</a></th>
             <th></th>
         </tr>
     </thead>
@@ -41,8 +40,7 @@
         {
             <tr id="tr_@item.Id">
                 <td>@item.Id</td>
-                <td id="td_Name">@item.Id</td>
-                <td id="td_Code">@item.Id</td>
+                <td id="td_IngredientUsageRate">@item.IngredientUsageRate</td>
                 <td>
                     <a href="#" class="btn btn-sm btn-warning"
                        onclick="EditEntityModal(@item.Id, '/Setting/EditSetting/', '@editTitle (@item.Id)')">
