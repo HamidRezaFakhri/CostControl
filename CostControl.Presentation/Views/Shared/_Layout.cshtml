@@ -32,6 +32,24 @@
 			  asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
 		<link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
 	</environment>
+
+	<link href="~/lib/bootstrap-table/dist/bootstrap-table.min.css" rel="stylesheet" />
+	<style>
+		.sortableClass {
+			width: 100px;
+			height: 50px;
+		}
+
+		.container {
+			width: 1024px;
+			padding: 2em;
+		}
+
+		.bold-blue {
+			font-weight: bold;
+			color: #0277BD;
+		}
+	</style>
 </head>
 @*<body class="@clas">*@
 <body class="rtl">
@@ -46,9 +64,21 @@
 
 	<environment include="Development">
 		<script src="~/lib/jquery/dist/jquery.js"></script>
-		<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+		<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
 		<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
 		<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+		<script src="~/lib/tableExport.jquery/libs/FileSaver/FileSaver.min.js"></script>
+		<script src="~/lib/bootstrap-table/dist/bootstrap-table.min.js"></script>
+		<script src="~/lib/bootstrap-table/dist/extensions/export/bootstrap-table-export.js"></script>
+		<script src="~/lib/bootstrap-table/dist/extensions/natural-sorting/bootstrap-table-natural-sorting.js"></script>
+		<script src="~/lib/tableExport.jquery/libs/js-xlsx/xlsx.core.min.js"></script>
+		<script src="~/lib/tableExport.jquery/libs/jsPDF/jspdf.min.js"></script>
+		<script src="~/lib/tableExport.jquery/libs/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script>
+		<script src="~/lib/tableExport.jquery/libs/es6-promise/es6-promise.auto.min.js"></script>
+		<script src="~/lib/tableExport.jquery/libs/html2canvas/html2canvas.min.js"></script>
+		<script src="~/lib/tableExport.jquery/libs/tableExport.min.js"></script>
+		<script src="~/lib/bootstrap-table/dist/locale/bootstrap-table-fa-IR.js"></script>
+
 		<script src="~/js/site.js" asp-append-version="true"></script>
 	</environment>
 	<environment exclude="Development">

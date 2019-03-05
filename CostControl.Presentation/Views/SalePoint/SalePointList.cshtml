@@ -1,101 +1,210 @@
 ﻿@model CostControl.API.Models.ServiceResponse<CostControl.BusinessEntity.Models.CostControl.SalePoint>
 
-@{
-    Layout = null;
-    var addTitle = Helper.GetEntityTile<CostControl.BusinessEntity.Models.CostControl.SalePoint>(EnumTitle.Add);
-    var editTitle = Helper.GetEntityTile<CostControl.BusinessEntity.Models.CostControl.SalePoint>(EnumTitle.Edit);
-    var deleteTitle = Helper.GetEntityTile<CostControl.BusinessEntity.Models.CostControl.SalePoint>(EnumTitle.Delete);
-}
+<div class="container">
+	<div id="toolbar">
+		<select class="form-control">
+			<option value="">Export Basic</option>
+			<option value="all">Export All</option>
+			<option value="selected">Export Selected</option>
+		</select>
+	</div>
 
-<h2>@ViewData["title"]</h2>
-
-<div class="row well">
-    <div class="col-md-6">
-        <div class="btn-group" data-toggle="modal">
-            <a id="btnAddSalePoint" href="#" class="btn btn-primary"
-               onclick='createEntityModal("/SalePoint/AddSalePoint", "@addTitle")'>
-                <span class="fa fa-plus"> <i> جدید</i></span>
-            </a>
-        </div>
-    </div>
-
-    <div class="col-md-6">
-        @Html.TextBox("txtSearch", "", new { placeholder = "جستجو ...", @class = "form-input col-md-8" })
-        <button id="btnSearch" class="btn btn-light" type="button" onclick="search()">
-            <i class="fa fa-search"><span>&nbsp;جستجو</span></i>
-        </button>
-    </div>
+	<table class="table table-striped" id="table"
+		   data-filter-show-clear="true"
+		   data-show-refresh="true"
+		   data-auto-refresh="true"
+		   data-show-columns="true"
+		   data-show-multi-sort="true"
+		   data-search="true"
+		   data-pagination="true"
+		   showExport="true"
+		   exportDataType="all"
+		   exportTypes="['json', 'xml', 'png', 'csv', 'txt', 'sql', 'doc', 'excel', 'xlsx', 'pdf']"
+		   Icons="glyphicon-export icon-share"
+		   showToggle="true"
+		   data-toggle="table"
+		   data-show-toggle="true"
+		   data-filter-control="true"
+		   data-show-export="true"
+		   data-click-to-select="true"
+		   data-toolbar="#toolbar"
+		   data-url="https://examples.wenzhixin.net.cn/examples/bootstrap_table/data"
+		   data-side-pagination="server">
+		<thead>
+			<tr>
+				<th data-field="id" data-align="center" data-sortable="true">Item ID</th>
+				<th data-field="name" data-sortable="true">Item Name</th>
+				<th data-field="price" data-sortable="true">Item Price</th>
+				<th data-field="operate" data-formatter="operateFormatter" data-events="operateEvents">Item Operate</th>
+			</tr>
+		</thead>
+		@*<tbody>
+				<tr>
+					<td>1</td>
+					<td>Item 1</td>
+					<td>$1</td>
+				</tr>
+				<tr>
+					<td>2</td>
+					<td>Item 2</td>
+					<td>$2</td>
+				</tr>
+				<tr>
+					<td>3</td>
+					<td>Item 3</td>
+					<td>$3</td>
+				</tr>
+				<tr>
+					<td>4</td>
+					<td>Item 4</td>
+					<td>$4</td>
+				</tr>
+				<tr>
+					<td>5</td>
+					<td>Item 5</td>
+					<td>$5</td>
+				</tr>
+				<tr>
+					<td>6</td>
+					<td>Item 6</td>
+					<td>$6</td>
+				</tr>
+				<tr>
+					<td>7</td>
+					<td>Item 7</td>
+					<td>$7</td>
+				</tr>
+				<tr>
+					<td>8</td>
+					<td>Item 8</td>
+					<td>$8</td>
+				</tr>
+				<tr>
+					<td>9</td>
+					<td>Item 9</td>
+					<td>$9</td>
+				</tr>
+				<tr>
+					<td>10</td>
+					<td>Item 10</td>
+					<td>$10</td>
+				</tr>
+				<tr>
+					<td>11</td>
+					<td>Item 11</td>
+					<td>$11</td>
+				</tr>
+				<tr>
+					<td>12</td>
+					<td>Item 12</td>
+					<td>$12</td>
+				</tr>
+				<tr>
+					<td>13</td>
+					<td>Item 13</td>
+					<td>$13</td>
+				</tr>
+				<tr>
+					<td>14</td>
+					<td>Item 14</td>
+					<td>$14</td>
+				</tr>
+				<tr>
+					<td>15</td>
+					<td>Item 15</td>
+					<td>$15</td>
+				</tr>
+				<tr>
+					<td>16</td>
+					<td>Item 16</td>
+					<td>$16</td>
+				</tr>
+				<tr>
+					<td>17</td>
+					<td>Item 17</td>
+					<td>$17</td>
+				</tr>
+				<tr>
+					<td>18</td>
+					<td>Item 18</td>
+					<td>$18</td>
+				</tr>
+				<tr>
+					<td>19</td>
+					<td>Item 19</td>
+					<td>$19</td>
+				</tr>
+				<tr>
+					<td>20</td>
+					<td>Item 20</td>
+					<td>$20</td>
+				</tr>
+			</tbody>*@
+	</table>
 
 </div>
 
-<table id="SalePointslist" class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th><a id="Id" href="#">شناسه</a></th>
-            <th><a id="SalePointName" href="#">نام</a></th>
-            <th><a id="code" href="#">کد</a></th>
-            <th><a id="SalePointEnglishName" href="#">نام لاتین</a></th>
-            <th><a id="IsHall" href="#">سالن</a></th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody id="setSalePointList">
-        @foreach (var item in Model.data)
-        {
-            <tr id="tr_@item.Id">
-                <td>@item.Id</td>
-                <td id="td_Name">@item.Name</td>
-                <td id="td_Code">@item.Code</td>
-                <td id="td_EnglishName">@item.EnglishName</td>
-                <td id="td_IsHall">
-                    @*@Html.CheckBox("IsHall", new { @class = "form-control disabled" })*@
-                    <input checked="@item.IsHall" id="IsHall"
-                           name="IsHall" type="checkbox"
-                           value="@item.IsHall" disabled />
-                </td>
-                <td>
-                    <a href="#" class="btn btn-sm btn-warning"
-                       onclick="EditEntityModal(@item.Id, '/SalePoint/EditSalePoint/', '@editTitle (@item.Name)')">
-                        <i class="fa fa-edit"><span> ویرایش </span></i>
-                    </a>
+@section Scripts {
+	<script>
+		var $table = $('#table');
+		$(function () {
+			$('#toolbar').find('select').change(function () {
+				debugger;
+				$table.bootstrapTable();
+				$table.bootstrapTable('changeLocale', 'fa-IR');
 
-                    <span> | </span>
-                    <a class="btn btn-sm btn-danger"
-                       onclick="DeleteEntityModal(@item.Id, '/SalePoint/DeleteSalePoint/', '@deleteTitle', '@item.Name')">
-                        <i class="fa fa-trash"><span> حذف </span></i>
-                    </a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+				$table.bootstrapTable('refreshOptions', {
+					exportDataType: $(this).val()
+				});
+			});
+		})
 
-<ul class="pagination justify-content-center" style="margin:20px 0">
-    <li class="page-item disabled"><a class="page-link" href="#">قبلی</a></li>
+		function mounted() {
+			$table.bootstrapTable();
+			$table.bootstrapTable('changeLocale', 'fa-IR');
+		}
 
-    @for (int i = 1; i < (Model.totalPage + 2); i++)
-    {
-        <li class="page-item @(Model.currentPage == i ? "active" : "")">
-            <a asp-controller="Words" asp-action="Index" asp-route-pageNumber="@i" class="page-link">@i</a>
-        </li>
-    }
+		var trBoldBlue = $("table");
 
-    <li class="page-item"><a class="page-link" href="#">بعدی</a></li>
-</ul>
+		$(trBoldBlue).on("click", "tr", function () {
+			$(this).toggleClass("bold-blue");
+		});
 
-<script>
-    function onComplete() {
-        $('#apModal').modal('toggle');
-        alert('ddddddd');
+		function nameFormatter(value, row) {
+			var icon = row.id % 2 === 0 ? 'fa-star' : 'fa-star-and-crescent'
+			return '<i class="fa ' + icon + '"></i> ' + value
+		}
 
-        return false;
-    }
+		function priceFormatter(value) {
+			// 16777215 == ffffff in decimal
+			var color = '#' + Math.floor(Math.random() * 6777215).toString(16)
+			return '<div style="color: ' + color + '">' +
+				'<i class="fa fa-dollar-sign"></i>' +
+				value.substring(1) +
+				'</div>'
+		}
 
-    function onBegin() {
-        alert('begin');
-    }
+		function operateFormatter(value, row, index) {
+			return [
+				'<a class="like" href="javascript:void(0)" title="Like">',
+				'<i class="fa fa-heart"></i>',
+				'</a>  ',
+				'<a class="remove" href="javascript:void(0)" title="Remove">',
+				'<i class="fa fa-trash"></i>',
+				'</a>'
+			].join('')
+		}
 
-    function search() {
-        getData("SalePointList", "SalePoint", 0, "ddddddddd");
-    }
-</script>
+		window.operateEvents = {
+			'click .like': function (e, value, row, index) {
+				alert('You click like action, row: ' + JSON.stringify(row))
+			},
+			'click .remove': function (e, value, row, index) {
+				$table.bootstrapTable('remove', {
+					field: 'id',
+					values: [row.id]
+				})
+			}
+		}
+	</script>
+}
