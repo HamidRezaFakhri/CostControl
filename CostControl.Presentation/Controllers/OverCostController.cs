@@ -1,12 +1,10 @@
-﻿using CostControl.API.Models;
-using CostControl.BusinessEntity.Models.CostControl;
+﻿using CostControl.BusinessEntity.Models.CostControl;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
 
 namespace CostControl.Presentation.Controllers
 {
@@ -48,13 +46,13 @@ namespace CostControl.Presentation.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult AddOverCost(OverCost OverCost)
         {
-            HttpContext.Session.TryGetValue("IUI", out var a);
-            var b = a.LastOrDefault().ToString();
+            HttpContext.Session.TryGetValue("IUI", out byte[] a);
+            string b = a.LastOrDefault().ToString();
 
             OverCost.RegisteredUserId = Convert.ToInt64(b);
             if (ModelState.IsValid)
             {
-                var postResult = Helper.PostValueToSevice<OverCost>("POST", OverCost);
+                (bool result, string message) postResult = Helper.PostValueToSevice<OverCost>("POST", OverCost);
 
                 return Json(new { success = postResult.result, message = postResult.message });
             }
@@ -66,7 +64,13 @@ namespace CostControl.Presentation.Controllers
         {
             ViewData["title"] = Helper.GetEntityTile<SalePoint>(EnumTitle.Edit);
 
-            var model = GetOverCostById(id);
+            OverCost model = GetOverCostById(id);
+            
+            model.StartDate = Convert.ToDateTime(model.StartDate.Date
+                                    .ToString("yyyy/MM/dd", new CultureInfo("fa-IR")));
+
+            model.EndDate = Convert.ToDateTime(model.EndDate.Date
+                                    .ToString("yyyy/MM/dd", new CultureInfo("fa-IR")));
 
             ViewBag.OverCostType = Helper.GetServiceResponseList<OverCostType>("Get?PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1")
                             .Select(c => new SelectListItem()
@@ -96,7 +100,7 @@ namespace CostControl.Presentation.Controllers
             {
                 OverCost.State = BusinessEntity.Models.Base.Enums.ObjectState.Active;
 
-                var postResult = Helper.PostValueToSevice<OverCost>("PUT?id=" + OverCost.Id.ToString(), OverCost);
+                (bool result, string message) postResult = Helper.PostValueToSevice<OverCost>("PUT?id=" + OverCost.Id.ToString(), OverCost);
 
                 return Json(new { success = postResult.result, message = postResult.message });
             }
@@ -114,7 +118,7 @@ namespace CostControl.Presentation.Controllers
         [HttpPost]
         public IActionResult DeleteOverCost(OverCost OverCost)
         {
-            var postResult = Helper.PostValueToSevice<OverCost>("Delete?id=" + OverCost.Id.ToString(), OverCost);
+            (bool result, string message) postResult = Helper.PostValueToSevice<OverCost>("Delete?id=" + OverCost.Id.ToString(), OverCost);
 
             return Json(new { success = postResult.result, message = postResult.message });
         }

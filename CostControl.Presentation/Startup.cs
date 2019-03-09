@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using CostControl.Presentation.ModelBinding.PersianDate;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -28,11 +28,14 @@ namespace CostControl.Presentation
             });
 
             services.AddDistributedMemoryCache();
-            services.AddSession(options => {
+            services.AddSession(options =>
+            {
                 options.IdleTimeout = TimeSpan.FromMinutes(20);//You can set Time   
             });
 
-            services.AddMvc()
+            services.AddMvc(
+                config => config.ModelBinderProviders.Insert(0, new PersianDateModelBinderProvider()))
+                //options => { options.extention })
                 .AddSessionStateTempDataProvider();//.SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 

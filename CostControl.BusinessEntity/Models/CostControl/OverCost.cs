@@ -10,17 +10,21 @@ namespace CostControl.BusinessEntity.Models.CostControl
         public System.Guid? InstanceId { get; set; }
 
         public Base.Enums.ObjectState State { get; set; }
-        
+
         [Required(ErrorMessage = "مرکز فروش-مرکز هزینه اجباریست!")]
         [Display(Name = "مرکز فروش-مرکز هزینه")]
         public long SaleCostPointId { get; set; }
+
+        public virtual SaleCostPoint SaleCostPoint { get; set; }
 
         [Required(ErrorMessage = "سرفصل هزینه سربار اجباریست!")]
         [Display(Name = "سرفصل هزینه سربار")]
         public long OverCostTypeId { get; set; }
 
-        //[Required(ErrorMessage = "تاریخ شروع اجباریست!")]
-        //[Display(Name = "تاریخ شروع")]
+        public virtual OverCostType OverCostType { get; set; }
+
+        [Required(ErrorMessage = "تاریخ شروع اجباریست!")]
+        [Display(Name = "تاریخ شروع")]
         public DateTime StartDate { get; set; }
 
         [Required(ErrorMessage = "تاریخ پایان اجباریست!")]
