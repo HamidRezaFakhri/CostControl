@@ -25,17 +25,22 @@ namespace CostControl.BusinessEntity.Models.CostControl
 
         [Required(ErrorMessage = "تاریخ شروع اجباریست!")]
         [Display(Name = "تاریخ شروع")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy/MM/dd}")]
         public DateTime StartDate { get; set; }
 
         [Required(ErrorMessage = "تاریخ پایان اجباریست!")]
         [Display(Name = "تاریخ پایان")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy/MM/dd}")]
         public DateTime EndDate { get; set; }
 
         [Required(ErrorMessage = "قیمت اجباریست!")]
         [Display(Name = "قیمت")]
+        //[DataType(DataType.Currency)]
+        [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
         public decimal Price { get; set; } = 0;
 
         [Display(Name = "شرح")]
+        [DataType(DataType.MultilineText)]
         public string Description { get; set; }
 
         public DateTime RegisteredDate { get; set; } = DateTime.Now;
