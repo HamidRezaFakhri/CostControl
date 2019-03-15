@@ -34,10 +34,10 @@ namespace CostControl.BusinessEntity.Models.CostControl
         [Display(Name = "قیمت")]
         [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
         public decimal Price { get; set; }
-        
+
         [Required(ErrorMessage = "نرخ اجباریست!")]
-        [Display(Name = "نرخ")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:P2}")]
+        [Display(Name = "نرخ (درصد)")]
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:P2}")]
         public decimal UsefullRatio { get; set; }
 
         [Display(Name = "شرح")]

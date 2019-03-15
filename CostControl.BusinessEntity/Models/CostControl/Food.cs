@@ -28,9 +28,11 @@ namespace CostControl.BusinessEntity.Models.CostControl
 
         [Required(ErrorMessage = "نحوه سرو اجباریست!")]
         [Display(Name = "نحوه سرو")]
+        //[EnumDataType(typeof(ServeType))]
         public byte ServeType { get; set; }
 
         [Required(ErrorMessage = "قیمت اجباریست!")]
+        [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
         [Display(Name = "قیمت")]
         public decimal Price { get; set; }
     }

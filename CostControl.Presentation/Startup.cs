@@ -34,8 +34,12 @@ namespace CostControl.Presentation
             });
 
             services.AddMvc(
-                config => config.ModelBinderProviders.Insert(0, new PersianDateModelBinderProvider()))
+                config => {
+                    config.ModelBinderProviders.Insert(0, new PersianDateModelBinderProvider());
+                    //config.ModelMetadataDetailsProviders.Add(new HumanizerMetadataProvider());
+                    })
                 //options => { options.extention })
+                //.AddMvcOptions(m => m.ModelMetadataDetailsProviders.Add(new HumanizerMetadataProvider()))
                 .AddSessionStateTempDataProvider();//.SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
