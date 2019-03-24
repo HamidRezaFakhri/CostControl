@@ -1,45 +1,45 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-
-namespace CostControl.Presentation.Controllers
+﻿namespace CostControl.Presentation.Controllers
 {
-    public class BaseController : Controller
-    {
-        public BaseController()
-        {
-            var username = HttpContext?.Session?.GetString("userName");
+	using Microsoft.AspNetCore.Http;
+	using Microsoft.AspNetCore.Mvc;
 
-            if (string.IsNullOrEmpty(username))
-                RedirectToAction("Login", "User");
-        }
+	public class BaseController : Controller
+	{
+		public BaseController()
+		{
+			var username = HttpContext?.Session?.GetString("userName");
 
-        protected string CookieName = "";
+			if (string.IsNullOrEmpty(username))
+				RedirectToAction("Login", "User");
+		}
 
-        public void Title(string title)
-        {
-            ViewBag.PageTitle = title;
-        }
+		protected string CookieName = "";
 
-        public void AddCookie(string param)
-        {
-            //var cookie = new HttpCookie(CookieName)
-            //{
-            //    Expires = DateTime.Now.AddMinutes(45),
-            //    Value = SerializeObject(param)
-            //};
-            //HttpContext.Request.Cookies.Remove(CookieName);
-            //HttpContext.Request.Cookies.Add(cookie);
-        }
+		public void Title(string title)
+		{
+			ViewBag.PageTitle = title;
+		}
 
-        public string GetCookie()
-        {
-            //var cookie = Request.Cookies[CookieName];
-            //if (cookie != null)
-            //{
-            //    return DeserializeObject<string>(cookie.Value);
-            //}
+		public void AddCookie(string param)
+		{
+			//var cookie = new HttpCookie(CookieName)
+			//{
+			//    Expires = DateTime.Now.AddMinutes(45),
+			//    Value = SerializeObject(param)
+			//};
+			//HttpContext.Request.Cookies.Remove(CookieName);
+			//HttpContext.Request.Cookies.Add(cookie);
+		}
 
-            return null;
-        }
-    }
+		public string GetCookie()
+		{
+			//var cookie = Request.Cookies[CookieName];
+			//if (cookie != null)
+			//{
+			//    return DeserializeObject<string>(cookie.Value);
+			//}
+
+			return null;
+		}
+	}
 }

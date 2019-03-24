@@ -1,4 +1,4 @@
 ﻿namespace CostControl.BusinessEntity.Models.Base.Interfaces
 {
-    public interface IBaseEntity { }
+	public interface IBaseEntity { }
 }

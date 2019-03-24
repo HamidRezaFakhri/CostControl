@@ -1,85 +1,81 @@
-﻿using CostControl.API.Models;
-using CostControl.BusinessEntity.Models.CostControl;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-
-namespace CostControl.Presentation.Controllers
+﻿namespace CostControl.Presentation.Controllers
 {
-    public class SettingController : BaseController
-    {
-        public IActionResult SettingList(string param)
-        {
-            ViewData["title"] = Helper.GetEntityTile<Setting>(EnumTitle.List);
+	using System.Collections.Generic;
+	using System.Linq;
+	using CostControl.BusinessEntity.Models.CostControl;
+	using Microsoft.AspNetCore.Mvc;
 
-            return View(Helper.GetServiceResponse<Setting>("Get?PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1"));
-        }
+	public class SettingController : BaseController
+	{
+		public IActionResult SettingList(string param)
+		{
+			ViewData["title"] = Helper.GetEntityTile<Setting>(EnumTitle.List);
 
-        public IActionResult AddSetting()
-        {
-            ViewData["title"] = Helper.GetEntityTile<Setting>(EnumTitle.Add);
+			return View(Helper.GetServiceResponse<Setting>("Get?PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1"));
+		}
 
-            return PartialView();
-        }
+		public IActionResult AddSetting()
+		{
+			ViewData["title"] = Helper.GetEntityTile<Setting>(EnumTitle.Add);
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult AddSetting(Setting Setting)
-        {
-            if (ModelState.IsValid)
-            {
-                var postResult = Helper.PostValueToSevice<Setting>("POST", Setting);
+			return PartialView();
+		}
 
-                return Json(new { success = postResult.result, message = postResult.message });
-            }
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public IActionResult AddSetting(Setting Setting)
+		{
+			if (ModelState.IsValid)
+			{
+				var postResult = Helper.PostValueToSevice<Setting>("POST", Setting);
 
-            return Json(new { success = false, message = "Model Is Not Vald!" });
-        }
+				return Json(new { success = postResult.result, message = postResult.message });
+			}
 
-        public IActionResult EditSetting(long id)
-        {
-            ViewData["title"] = Helper.GetEntityTile<Setting>(EnumTitle.Edit);
+			return Json(new { success = false, message = "Model Is Not Vald!" });
+		}
 
-            return PartialView(GetSettingById(id));
-        }
+		public IActionResult EditSetting(long id)
+		{
+			ViewData["title"] = Helper.GetEntityTile<Setting>(EnumTitle.Edit);
 
-        [HttpPost]
-        public IActionResult EditSetting(long id, Setting Setting)
-        {
-            if (ModelState.IsValid)
-            {
-                Setting.State = BusinessEntity.Models.Base.Enums.ObjectState.Active;
+			return PartialView(GetSettingById(id));
+		}
 
-                var postResult = Helper.PostValueToSevice<Setting>("PUT?id=" + Setting.Id.ToString(), Setting);
+		[HttpPost]
+		public IActionResult EditSetting(long id, Setting Setting)
+		{
+			if (ModelState.IsValid)
+			{
+				Setting.State = BusinessEntity.Models.Base.Enums.ObjectState.Active;
 
-                return Json(new { success = postResult.result, message = postResult.message });
-            }
+				var postResult = Helper.PostValueToSevice<Setting>("PUT?id=" + Setting.Id.ToString(), Setting);
 
-            return Json(new { success = false, message = "Model Is Not Valid!" });
-        }
+				return Json(new { success = postResult.result, message = postResult.message });
+			}
 
-        public IActionResult DeleteSetting(long id)
-        {
-            ViewData["title"] = Helper.GetEntityTile<Setting>(EnumTitle.Delete);
+			return Json(new { success = false, message = "Model Is Not Valid!" });
+		}
 
-            return PartialView(GetSettingById(id));
-        }
+		public IActionResult DeleteSetting(long id)
+		{
+			ViewData["title"] = Helper.GetEntityTile<Setting>(EnumTitle.Delete);
 
-        [HttpPost]
-        public IActionResult DeleteSetting(Setting Setting)
-        {
-            var postResult = Helper.PostValueToSevice<Setting>("Delete?id=" + Setting.Id.ToString(), Setting);
+			return PartialView(GetSettingById(id));
+		}
 
-            return Json(new { success = postResult.result, message = postResult.message });
-        }
+		[HttpPost]
+		public IActionResult DeleteSetting(Setting Setting)
+		{
+			var postResult = Helper.PostValueToSevice<Setting>("Delete?id=" + Setting.Id.ToString(), Setting);
 
-        private Setting GetSettingById(long id)
-        {
-            return (Helper.GetServiceResponse<Setting>("GetById?id=" + id.ToString()).data as List<Setting>)
-                .FirstOrDefault();
-        }
-    }
+			return Json(new { success = postResult.result, message = postResult.message });
+		}
+
+		private Setting GetSettingById(long id)
+		{
+			return (Helper.GetServiceResponse<Setting>("GetById?id=" + id.ToString()).data as List<Setting>)
+				.FirstOrDefault();
+		}
+	}
 }

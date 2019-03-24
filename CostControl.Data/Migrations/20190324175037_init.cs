@@ -831,16 +831,17 @@ namespace CostControl.Data.Migrations
                 column: "ConsumptionUnitId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DraftItem_DraftId",
-                schema: "dbo",
-                table: "DraftItem",
-                column: "DraftId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_DraftItem_IngredientId",
                 schema: "dbo",
                 table: "DraftItem",
                 column: "IngredientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DraftItem_DraftId_IngredientId",
+                schema: "dbo",
+                table: "DraftItem",
+                columns: new[] { "DraftId", "IngredientId" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Food_Name",
@@ -907,6 +908,14 @@ namespace CostControl.Data.Migrations
                 column: "SaleCostPointId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Menu_FromDate_ToDate",
+                schema: "dbo",
+                table: "Menu",
+                columns: new[] { "FromDate", "ToDate" },
+                unique: true,
+                filter: "[ToDate] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_MenuItem_ConsumptionUnitId",
                 schema: "dbo",
                 table: "MenuItem",
@@ -947,6 +956,13 @@ namespace CostControl.Data.Migrations
                 schema: "dbo",
                 table: "OverCost",
                 column: "SaleCostPointId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OverCost_StartDate_EndDate",
+                schema: "dbo",
+                table: "OverCost",
+                columns: new[] { "StartDate", "EndDate" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_OverCostType_Name",

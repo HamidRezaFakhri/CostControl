@@ -1,11 +1,9 @@
-﻿using System;
-
-namespace CostControl.Entity.Models.Base.Interfaces
+﻿namespace CostControl.Entity.Models.Base.Interfaces
 {
-    public interface IBaseEntity
-    {
-        //Guid? InstanceId { get; }
+	public interface IBaseEntity
+	{
+		//Guid? InstanceId { get; }
 
-        Enums.ObjectState State { get; set; }
-    }
+		Enums.ObjectState State { get; set; }
+	}
 }

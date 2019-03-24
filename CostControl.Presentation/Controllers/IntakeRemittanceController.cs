@@ -1,206 +1,206 @@
-﻿using CostControl.API.Models;
-using CostControl.BusinessEntity.Models.CostControl;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-
-namespace CostControl.Presentation.Controllers
+﻿namespace CostControl.Presentation.Controllers
 {
-    public class IntakeRemittanceController : BaseController
-    {
-        public IActionResult IntakeRemittanceList(string param)
-        {
-            ViewData["title"] = "فهرست حواله های مصرفی";
+	using System;
+	using System.Collections.Generic;
+	using System.Linq;
+	using System.Net.Http;
+	using System.Net.Http.Headers;
+	using CostControl.API.Models;
+	using CostControl.BusinessEntity.Models.CostControl;
+	using Microsoft.AspNetCore.Mvc;
 
-            ServiceResponse<IntakeRemittance> values = null;
+	public class IntakeRemittanceController : BaseController
+	{
+		public IActionResult IntakeRemittanceList(string param)
+		{
+			ViewData["title"] = "فهرست حواله های مصرفی";
 
-            string str = string.Empty;
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri("http://localhost:5001/api/IntakeRemittance/");
+			ServiceResponse<IntakeRemittance> values = null;
 
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue("nl-NL"));
+			string str = string.Empty;
+			using (var client = new HttpClient())
+			{
+				client.BaseAddress = new Uri("http://localhost:5001/api/IntakeRemittance/");
 
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+				client.DefaultRequestHeaders.Clear();
+				client.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue("nl-NL"));
 
-                //HTTP GET
-                var responseTask = client.GetAsync("Get?PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1");
-                responseTask.Wait();
+				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                var result = responseTask.Result;
-                if (result.IsSuccessStatusCode)
-                {
-                    var readTask = result.Content.ReadAsAsync<ServiceResponse<IntakeRemittance>>();
+				//HTTP GET
+				var responseTask = client.GetAsync("Get?PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1");
+				responseTask.Wait();
 
-                    readTask.Wait();
+				var result = responseTask.Result;
+				if (result.IsSuccessStatusCode)
+				{
+					var readTask = result.Content.ReadAsAsync<ServiceResponse<IntakeRemittance>>();
 
-                    values = readTask.Result;
-                }
-                else //web api sent error response 
-                {
-                    //log response status here..
+					readTask.Wait();
 
-                    values = null;
+					values = readTask.Result;
+				}
+				else //web api sent error response 
+				{
+					//log response status here..
 
-                    ModelState.AddModelError(string.Empty, "Server error. Please contact administrator.");
+					values = null;
 
-                    str = "Server error. Please contact administrator.";
-                }
-            }
+					ModelState.AddModelError(string.Empty, "Server error. Please contact administrator.");
 
-            //return PartialView("~/Views/IntakeRemittance/IntakeRemittanceList.cshtml");
-            return View(values);
-        }
+					str = "Server error. Please contact administrator.";
+				}
+			}
 
-        public IActionResult AddIntakeRemittance()
-        {
-            return PartialView();
-        }
+			//return PartialView("~/Views/IntakeRemittance/IntakeRemittanceList.cshtml");
+			return View(values);
+		}
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult AddIntakeRemittance(IntakeRemittance IntakeRemittance)
-        {
-            //https://johnthiriet.com/efficient-post-calls/
-            if (ModelState.IsValid)
-            {
-                using (var client = new HttpClient())
-                {
-                    client.BaseAddress = new Uri("http://localhost:5001/api/IntakeRemittance/");
+		public IActionResult AddIntakeRemittance()
+		{
+			return PartialView();
+		}
 
-                    var result = client.PostAsJsonAsync("POST", IntakeRemittance);
-                    result.Wait();
-                    var res = result.Result;
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public IActionResult AddIntakeRemittance(IntakeRemittance IntakeRemittance)
+		{
+			//https://johnthiriet.com/efficient-post-calls/
+			if (ModelState.IsValid)
+			{
+				using (var client = new HttpClient())
+				{
+					client.BaseAddress = new Uri("http://localhost:5001/api/IntakeRemittance/");
 
-                    if (res.IsSuccessStatusCode)
-                    {
-                        var p1 = res.Content.ReadAsStringAsync();
-                        var p = res.Content.ReadAsStringAsync().Result;
-                    }
-                }
-            }
-            return Json(new { success = true, message = "Ok" });
-        }
+					var result = client.PostAsJsonAsync("POST", IntakeRemittance);
+					result.Wait();
+					var res = result.Result;
 
-        public IActionResult EditIntakeRemittance(long id)
-        {
-            return PartialView(GetIntakeRemittanceById(id));
-        }
+					if (res.IsSuccessStatusCode)
+					{
+						var p1 = res.Content.ReadAsStringAsync();
+						var p = res.Content.ReadAsStringAsync().Result;
+					}
+				}
+			}
+			return Json(new { success = true, message = "Ok" });
+		}
 
-        [HttpPost]
-        public IActionResult EditIntakeRemittance(long id, IntakeRemittance IntakeRemittance)
-        {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    IntakeRemittance.State = BusinessEntity.Models.Base.Enums.ObjectState.Active;
+		public IActionResult EditIntakeRemittance(long id)
+		{
+			return PartialView(GetIntakeRemittanceById(id));
+		}
 
-                    using (var client = new HttpClient())
-                    {
-                        client.BaseAddress = new Uri("http://localhost:5001/api/IntakeRemittance/");
+		[HttpPost]
+		public IActionResult EditIntakeRemittance(long id, IntakeRemittance IntakeRemittance)
+		{
+			try
+			{
+				if (ModelState.IsValid)
+				{
+					IntakeRemittance.State = BusinessEntity.Models.Base.Enums.ObjectState.Active;
 
-                        var result = client.PostAsJsonAsync("PUT?id=" + id.ToString(), IntakeRemittance);
-                        result.Wait();
-                        var res = result.Result;
+					using (var client = new HttpClient())
+					{
+						client.BaseAddress = new Uri("http://localhost:5001/api/IntakeRemittance/");
 
-                        if (res.IsSuccessStatusCode)
-                        {
-                            var p1 = res.Content.ReadAsStringAsync();
-                            var p = res.Content.ReadAsStringAsync().Result;
-                        }
-                    }
-                }
-                return Json(new { success = true, message = "Ok" });
-            }
-            catch (Exception ex)
-            {
-                return Json(new { success = false, message = ex.Message });
-            }
-        }
+						var result = client.PostAsJsonAsync("PUT?id=" + id.ToString(), IntakeRemittance);
+						result.Wait();
+						var res = result.Result;
 
-        public IActionResult DeleteIntakeRemittance(long id)
-        {
-            return PartialView(GetIntakeRemittanceById(id));
-        }
+						if (res.IsSuccessStatusCode)
+						{
+							var p1 = res.Content.ReadAsStringAsync();
+							var p = res.Content.ReadAsStringAsync().Result;
+						}
+					}
+				}
+				return Json(new { success = true, message = "Ok" });
+			}
+			catch (Exception ex)
+			{
+				return Json(new { success = false, message = ex.Message });
+			}
+		}
 
-        [HttpPost]
-        public IActionResult DeleteIntakeRemittance(IntakeRemittance IntakeRemittance)
-        {
-            try
-            {
-                using (var client = new HttpClient())
-                {
-                    client.BaseAddress = new Uri("http://localhost:5001/api/IntakeRemittance/");
+		public IActionResult DeleteIntakeRemittance(long id)
+		{
+			return PartialView(GetIntakeRemittanceById(id));
+		}
 
-                    var result = client.PostAsJsonAsync("Delete?id=" + IntakeRemittance.Id.ToString(), IntakeRemittance);
-                    result.Wait();
-                    var res = result.Result;
+		[HttpPost]
+		public IActionResult DeleteIntakeRemittance(IntakeRemittance IntakeRemittance)
+		{
+			try
+			{
+				using (var client = new HttpClient())
+				{
+					client.BaseAddress = new Uri("http://localhost:5001/api/IntakeRemittance/");
 
-                    if (res.IsSuccessStatusCode)
-                    {
-                        var p1 = res.Content.ReadAsStringAsync();
-                        var p = res.Content.ReadAsStringAsync().Result;
-                    }
-                }
-                return Json(new { success = true, message = "Ok" });
-            }
-            catch (Exception ex)
-            {
-                return Json(new { success = false, message = ex.Message });
-            }
-        }
+					var result = client.PostAsJsonAsync("Delete?id=" + IntakeRemittance.Id.ToString(), IntakeRemittance);
+					result.Wait();
+					var res = result.Result;
 
-        private IntakeRemittance GetIntakeRemittanceById(long id)
-        {
-            ServiceResponse<IntakeRemittance> value = null;
-            string str = string.Empty;
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri("http://localhost:5001/api/IntakeRemittance/");
+					if (res.IsSuccessStatusCode)
+					{
+						var p1 = res.Content.ReadAsStringAsync();
+						var p = res.Content.ReadAsStringAsync().Result;
+					}
+				}
+				return Json(new { success = true, message = "Ok" });
+			}
+			catch (Exception ex)
+			{
+				return Json(new { success = false, message = ex.Message });
+			}
+		}
 
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue("nl-NL"));
+		private IntakeRemittance GetIntakeRemittanceById(long id)
+		{
+			ServiceResponse<IntakeRemittance> value = null;
+			string str = string.Empty;
+			using (var client = new HttpClient())
+			{
+				client.BaseAddress = new Uri("http://localhost:5001/api/IntakeRemittance/");
 
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+				client.DefaultRequestHeaders.Clear();
+				client.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue("nl-NL"));
 
-                //HTTP GET
-                var responseTask = client.GetAsync("GetById?id=" + id.ToString());
-                responseTask.Wait();
+				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                var result = responseTask.Result;
-                if (result.IsSuccessStatusCode)
-                {
-                    var readTask = result.Content.ReadAsAsync<ServiceResponse<IntakeRemittance>>();
+				//HTTP GET
+				var responseTask = client.GetAsync("GetById?id=" + id.ToString());
+				responseTask.Wait();
 
-                    readTask.Wait();
+				var result = responseTask.Result;
+				if (result.IsSuccessStatusCode)
+				{
+					var readTask = result.Content.ReadAsAsync<ServiceResponse<IntakeRemittance>>();
 
-                    value = readTask.Result;
+					readTask.Wait();
 
-                    return (value.data as List<IntakeRemittance>).FirstOrDefault();
-                }
-                else //web api sent error response 
-                {
-                    //log response status here..
+					value = readTask.Result;
 
-                    value = null;
+					return (value.data as List<IntakeRemittance>).FirstOrDefault();
+				}
+				else //web api sent error response 
+				{
+					//log response status here..
 
-                    ModelState.AddModelError(string.Empty, "Server error. Please contact administrator.");
+					value = null;
 
-                    str = "Server error. Please contact administrator.";
-                }
+					ModelState.AddModelError(string.Empty, "Server error. Please contact administrator.");
 
-                return null;
-            }
-        }
+					str = "Server error. Please contact administrator.";
+				}
 
-        public IActionResult PostIntakeRemittance(string name)
-        {
-            return null;
-        }
-    }
+				return null;
+			}
+		}
+
+		public IActionResult PostIntakeRemittance(string name)
+		{
+			return null;
+		}
+	}
 }

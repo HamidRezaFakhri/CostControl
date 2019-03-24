@@ -1,37 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
-using AutoMapper.Extensions.ExpressionMapping;
-using CostControl.BusinessLogic.Logics.Base;
-using CostControl.BusinessLogic.Mapper;
-using CostControl.Data.DAL;
-using CostControl.Data.Repository;
-using CostControl.Data.UnitOfWork;
-using Microsoft.EntityFrameworkCore.Query;
-using CostControlBusinessEntity = CostControl.BusinessEntity.Models.CostControl;
-using CostControlEntity = CostControl.Entity.Models.CostControl;
-
-namespace CostControl.BusinessLogic.Logics.CostControl
+﻿namespace CostControl.BusinessLogic.Logics.CostControl
 {
-	public class DataImportLogic : IGenericLogic<CostControlBusinessEntity.DataImport>, IDisposable
+	using System;
+	using System.Collections.Generic;
+	using System.Linq;
+	using System.Linq.Expressions;
+	using System.Threading;
+	using System.Threading.Tasks;
+	using AutoMapper;
+	using AutoMapper.Extensions.ExpressionMapping;
+	using Microsoft.EntityFrameworkCore.Query;
+	using CostControlBusinessEntity = BusinessEntity.Models.CostControl;
+	using CostControlEntity = Entity.Models.CostControl;
+
+	public class DataImportLogic : Base.IGenericLogic<CostControlBusinessEntity.DataImport>, IDisposable
 	{
 		private MapperConfiguration DataImportMapperConfig { get; set; }
 
 		private IMapper DataImportIMapper { get; set; }
 
-		private readonly UnitOfWork _unitOfWork;
+		private readonly Data.UnitOfWork.UnitOfWork _unitOfWork;
 
-		protected IRepository<CostControlEntity.DataImport> Repository;
+		protected Data.Repository.IRepository<CostControlEntity.DataImport> Repository;
 
 		public DataImportLogic()
 		{
-			DataImportMapperConfig = new AutoMapperConfiguration().Configure();
+			DataImportMapperConfig = new BusinessLogic.Mapper.AutoMapperConfiguration().Configure();
 			DataImportIMapper = DataImportMapperConfig.CreateMapper();
-			_unitOfWork = new UnitOfWork(new CostControlDbContext());
+			_unitOfWork = new Data.UnitOfWork.UnitOfWork(new Data.DAL.CostControlDbContext());
 			Repository = _unitOfWork.GetRepository<CostControlEntity.DataImport>();
 		}
 

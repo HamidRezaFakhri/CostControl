@@ -1,139 +1,139 @@
-﻿using CostControl.BusinessEntity.Models.CostControl;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace CostControl.Presentation.Controllers
+﻿namespace CostControl.Presentation.Controllers
 {
-    public class SaleCostPointController : BaseController
-    {
-        public IActionResult SaleCostPointList(string param, int pageNumber, int pageSize)
-        {
-            ViewData["title"] = Helper.GetEntityTile<SaleCostPoint>(EnumTitle.List);
+	using System.Collections.Generic;
+	using System.Linq;
+	using CostControl.BusinessEntity.Models.CostControl;
+	using Microsoft.AspNetCore.Mvc;
+	using Microsoft.AspNetCore.Mvc.Rendering;
 
-            return View(Helper.GetServiceResponse<SaleCostPoint>("Get?PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1"));
-        }
+	public class SaleCostPointController : BaseController
+	{
+		public IActionResult SaleCostPointList(string param, int pageNumber, int pageSize)
+		{
+			ViewData["title"] = Helper.GetEntityTile<SaleCostPoint>(EnumTitle.List);
 
-        public IActionResult AddSaleCostPoint()
-        {
-            ViewData["title"] = Helper.GetEntityTile<SaleCostPoint>(EnumTitle.Add);
+			return View(Helper.GetServiceResponse<SaleCostPoint>("Get?PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1"));
+		}
 
-            ViewBag.CostPoints = GetCostPoints()
-                            .Select(c => new SelectListItem()
-                            {
-                                Text = c.Name,
-                                Value = c.Id.ToString()
-                            })
-                            .ToList();
+		public IActionResult AddSaleCostPoint()
+		{
+			ViewData["title"] = Helper.GetEntityTile<SaleCostPoint>(EnumTitle.Add);
 
-            ViewBag.SalePoints = GetSalePoints()
-                                        .Select(c => new SelectListItem()
-                                        {
-                                            Text = c.Name,
-                                            Value = c.Id.ToString()
-                                        })
-                                        .ToList();
-            return PartialView();
-        }
+			ViewBag.CostPoints = GetCostPoints()
+							.Select(c => new SelectListItem()
+							{
+								Text = c.Name,
+								Value = c.Id.ToString()
+							})
+							.ToList();
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult AddSaleCostPoint(SaleCostPoint SaleCostPoint)
-        {
-            if (ModelState.IsValid)
-            {
-                var postResult = Helper.PostValueToSevice<SaleCostPoint>("POST", SaleCostPoint);
+			ViewBag.SalePoints = GetSalePoints()
+										.Select(c => new SelectListItem()
+										{
+											Text = c.Name,
+											Value = c.Id.ToString()
+										})
+										.ToList();
+			return PartialView();
+		}
 
-                return Json(new { success = postResult.result, message = postResult.message });
-            }
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public IActionResult AddSaleCostPoint(SaleCostPoint SaleCostPoint)
+		{
+			if (ModelState.IsValid)
+			{
+				var postResult = Helper.PostValueToSevice<SaleCostPoint>("POST", SaleCostPoint);
 
-            return Json(new { success = false, message = "Model Is Not Vald!" });
-        }
+				return Json(new { success = postResult.result, message = postResult.message });
+			}
 
-        public IActionResult EditSaleCostPoint(long id)
-        {
-            ViewData["title"] = Helper.GetEntityTile<SaleCostPoint>(EnumTitle.Edit);
+			return Json(new { success = false, message = "Model Is Not Vald!" });
+		}
 
-            var model = GetSaleCostPointById(id);
+		public IActionResult EditSaleCostPoint(long id)
+		{
+			ViewData["title"] = Helper.GetEntityTile<SaleCostPoint>(EnumTitle.Edit);
 
-            ViewBag.CostPoints = GetCostPoints()
-                            .Select(c => new SelectListItem()
-                            {
-                                Text = c.Name,
-                                Value = c.Id.ToString(),
-                                Selected = c.Id == model.CostPointId
-                            })
-                            .ToList();
+			var model = GetSaleCostPointById(id);
 
-            ViewBag.SalePoints = GetSalePoints()
-                                        .Select(c => new SelectListItem()
-                                        {
-                                            Text = c.Name,
-                                            Value = c.Id.ToString(),
-                                            Selected = c.Id == model.SalePointId
-                                        })
-                                        .ToList();
+			ViewBag.CostPoints = GetCostPoints()
+							.Select(c => new SelectListItem()
+							{
+								Text = c.Name,
+								Value = c.Id.ToString(),
+								Selected = c.Id == model.CostPointId
+							})
+							.ToList();
 
-            return PartialView(GetSaleCostPointById(id));
-        }
+			ViewBag.SalePoints = GetSalePoints()
+										.Select(c => new SelectListItem()
+										{
+											Text = c.Name,
+											Value = c.Id.ToString(),
+											Selected = c.Id == model.SalePointId
+										})
+										.ToList();
 
-        [HttpPost]
-        public IActionResult EditSaleCostPoint(long id, SaleCostPoint SaleCostPoint)
-        {
-            if (ModelState.IsValid)
-            {
-                SaleCostPoint.State = BusinessEntity.Models.Base.Enums.ObjectState.Active;
+			return PartialView(GetSaleCostPointById(id));
+		}
 
-                var postResult = Helper.PostValueToSevice<SaleCostPoint>("PUT?id=" + SaleCostPoint.Id.ToString(), SaleCostPoint);
+		[HttpPost]
+		public IActionResult EditSaleCostPoint(long id, SaleCostPoint SaleCostPoint)
+		{
+			if (ModelState.IsValid)
+			{
+				SaleCostPoint.State = BusinessEntity.Models.Base.Enums.ObjectState.Active;
 
-                return Json(new { success = postResult.result, message = postResult.message });
-            }
+				var postResult = Helper.PostValueToSevice<SaleCostPoint>("PUT?id=" + SaleCostPoint.Id.ToString(), SaleCostPoint);
 
-            return Json(new { success = false, message = "Model Is Not Valid!" });
-        }
+				return Json(new { success = postResult.result, message = postResult.message });
+			}
 
-        public IActionResult DeleteSaleCostPoint(long id)
-        {
-            ViewData["title"] = Helper.GetEntityTile<SaleCostPoint>(EnumTitle.Delete);
+			return Json(new { success = false, message = "Model Is Not Valid!" });
+		}
 
-            return PartialView(GetSaleCostPointById(id));
-        }
+		public IActionResult DeleteSaleCostPoint(long id)
+		{
+			ViewData["title"] = Helper.GetEntityTile<SaleCostPoint>(EnumTitle.Delete);
 
-        [HttpPost]
-        public IActionResult DeleteSaleCostPoint(SaleCostPoint SaleCostPoint)
-        {
-            var postResult = Helper.PostValueToSevice<SaleCostPoint>("Delete?id=" + SaleCostPoint.Id.ToString(), SaleCostPoint);
+			return PartialView(GetSaleCostPointById(id));
+		}
 
-            return Json(new { success = postResult.result, message = postResult.message });
-        }
+		[HttpPost]
+		public IActionResult DeleteSaleCostPoint(SaleCostPoint SaleCostPoint)
+		{
+			var postResult = Helper.PostValueToSevice<SaleCostPoint>("Delete?id=" + SaleCostPoint.Id.ToString(), SaleCostPoint);
 
-        private SaleCostPoint GetSaleCostPointById(long id)
-        {
-            return (Helper.GetServiceResponse<SaleCostPoint>("GetById?id=" + id.ToString()).data as List<SaleCostPoint>)
-                .FirstOrDefault();
-        }
+			return Json(new { success = postResult.result, message = postResult.message });
+		}
 
-        private IEnumerable<SalePoint> GetSalePoints()
-        {
-            return Helper.GetServiceResponseList<SalePoint>("Get?PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1");
-        }
+		private SaleCostPoint GetSaleCostPointById(long id)
+		{
+			return (Helper.GetServiceResponse<SaleCostPoint>("GetById?id=" + id.ToString()).data as List<SaleCostPoint>)
+				.FirstOrDefault();
+		}
 
-        private CostPoint GetCostPointById(long id)
-        {
-            return (Helper.GetServiceResponse<CostPoint>("GetById?id=" + id.ToString()).data as List<CostPoint>)
-                .FirstOrDefault();
-        }
+		private IEnumerable<SalePoint> GetSalePoints()
+		{
+			return Helper.GetServiceResponseList<SalePoint>("Get?PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1");
+		}
 
-        private SalePoint GetSalePointById(long id)
-        {
-            return (Helper.GetServiceResponse<SalePoint>("GetById?id=" + id.ToString()).data as List<SalePoint>)
-                .FirstOrDefault();
-        }
+		private CostPoint GetCostPointById(long id)
+		{
+			return (Helper.GetServiceResponse<CostPoint>("GetById?id=" + id.ToString()).data as List<CostPoint>)
+				.FirstOrDefault();
+		}
 
-        private IEnumerable<CostPoint> GetCostPoints()
-        {
-            return Helper.GetServiceResponseList<CostPoint>("Get?PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1");
-        }
-    }
+		private SalePoint GetSalePointById(long id)
+		{
+			return (Helper.GetServiceResponse<SalePoint>("GetById?id=" + id.ToString()).data as List<SalePoint>)
+				.FirstOrDefault();
+		}
+
+		private IEnumerable<CostPoint> GetCostPoints()
+		{
+			return Helper.GetServiceResponseList<CostPoint>("Get?PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1");
+		}
+	}
 }

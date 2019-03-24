@@ -1,18 +1,17 @@
-﻿using CostControl.Entity.Models.Base;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace CostControl.Entity.Models.Security
+﻿namespace CostControl.Entity.Models.Security
 {
-    public class Role : SupperNameEntity<long>
-    {
-        [StringLength(25,
-            ErrorMessage = "Please enter a unique Code, it must be less than {0} characters.")]
-        public string Code { get; set; }
+	using System.Collections.Generic;
+	using System.ComponentModel.DataAnnotations;
+	using Entity.Models.Base;
 
-        public virtual ICollection<User> Users { get; set; }
+	public class Role : SupperNameEntity<long>
+	{
+		[StringLength(25,
+			ErrorMessage = "Please enter a unique Code, it must be less than {0} characters.")]
+		public string Code { get; set; }
 
-        public override string ToString() => $"{Name?.ToString()} ({Code?.ToString()})";
-    }
+		public virtual ICollection<User> Users { get; set; }
+
+		public override string ToString() => $"{Name?.ToString()} ({Code?.ToString()})";
+	}
 }

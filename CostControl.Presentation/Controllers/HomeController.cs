@@ -1,89 +1,89 @@
-﻿using CostControl.Presentation.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Diagnostics;
-using System.Net.Http;
-using System.Net.Http.Headers;
-
-namespace CostControl.Presentation.Controllers
+﻿namespace CostControl.Presentation.Controllers
 {
-    public class HomeController : BaseController
-    {
-        public IActionResult Index()
-        {
-            var username = HttpContext?.Session?.GetString("userName");
+	using System;
+	using System.Diagnostics;
+	using System.Net.Http;
+	using System.Net.Http.Headers;
+	using CostControl.Presentation.Models;
+	using Microsoft.AspNetCore.Http;
+	using Microsoft.AspNetCore.Mvc;
 
-            if (string.IsNullOrEmpty(username))
-                return RedirectToAction("Login", "User");
+	public class HomeController : BaseController
+	{
+		public IActionResult Index()
+		{
+			var username = HttpContext?.Session?.GetString("userName");
 
-            return View();
-        }
+			if (string.IsNullOrEmpty(username))
+				return RedirectToAction("Login", "User");
 
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
+			return View();
+		}
 
-            return View();
-        }
+		public IActionResult About()
+		{
+			ViewData["Message"] = "Your application description page.";
 
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
+			return View();
+		}
 
-            return View();
-        }
+		public IActionResult Contact()
+		{
+			ViewData["Message"] = "Your contact page.";
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+			return View();
+		}
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+		public IActionResult Privacy()
+		{
+			return View();
+		}
 
-        public IActionResult GetData()
-        {   
-            string str = string.Empty;
-            using (HttpClient client = new HttpClient())
-            {
-                client.BaseAddress = new Uri("http://localhost:5001/api/DataImport/");
+		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+		public IActionResult Error()
+		{
+			return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+		}
 
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue("nl-NL"));
+		public IActionResult GetData()
+		{
+			string str = string.Empty;
+			using (HttpClient client = new HttpClient())
+			{
+				client.BaseAddress = new Uri("http://localhost:5001/api/DataImport/");
 
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+				client.DefaultRequestHeaders.Clear();
+				client.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue("nl-NL"));
 
-                //HTTP GET
-                System.Threading.Tasks.Task<HttpResponseMessage> responseTask = client.GetAsync("GetData");
-                responseTask.Wait();
+				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                HttpResponseMessage result = responseTask.Result;
-                if (result.IsSuccessStatusCode)
-                {
-                    //var readTask = result.Content.ReadAsAsync<ServiceResponse<Ingredient>>();
+				//HTTP GET
+				System.Threading.Tasks.Task<HttpResponseMessage> responseTask = client.GetAsync("GetData");
+				responseTask.Wait();
 
-                    //readTask.Wait();
+				HttpResponseMessage result = responseTask.Result;
+				if (result.IsSuccessStatusCode)
+				{
+					//var readTask = result.Content.ReadAsAsync<ServiceResponse<Ingredient>>();
 
-                    //values = readTask.Result;
-                }
-                else //web api sent error response 
-                {
-                    //log response status here..
+					//readTask.Wait();
 
-                    //values = null;
+					//values = readTask.Result;
+				}
+				else //web api sent error response 
+				{
+					//log response status here..
 
-                    ModelState.AddModelError(string.Empty, "Server error. Please contact administrator.");
+					//values = null;
 
-                    str = "Server error. Please contact administrator.";
-                }
-            }
+					ModelState.AddModelError(string.Empty, "Server error. Please contact administrator.");
 
-            return RedirectToAction("Index");
-        }
+					str = "Server error. Please contact administrator.";
+				}
+			}
 
-    }
+			return RedirectToAction("Index");
+		}
+
+	}
 }

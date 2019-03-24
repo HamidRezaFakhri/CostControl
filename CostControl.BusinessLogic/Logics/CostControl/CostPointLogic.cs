@@ -1,12 +1,4 @@
-﻿using CostControl.BusinessLogic.Logics.Base;
-using CostControl.BusinessLogic.Mapper;
-using CostControl.Data.DAL;
-using CostControl.Data.Repository;
-using CostControl.Data.UnitOfWork;
-using CostControlBusinessEntity = CostControl.BusinessEntity.Models.CostControl;
-using CostControlEntity = CostControl.Entity.Models.CostControl;
-
-namespace CostControl.BusinessLogic.Logics.CostControl
+﻿namespace CostControl.BusinessLogic.Logics.CostControl
 {
 	using System;
 	using System.Collections.Generic;
@@ -17,22 +9,24 @@ namespace CostControl.BusinessLogic.Logics.CostControl
 	using AutoMapper;
 	using AutoMapper.Extensions.ExpressionMapping;
 	using Microsoft.EntityFrameworkCore.Query;
-
-	public class CostPointLogic : IGenericLogic<CostControlBusinessEntity.CostPoint>, IDisposable
+	using CostControlBusinessEntity = BusinessEntity.Models.CostControl;
+	using CostControlEntity = Entity.Models.CostControl;
+	
+	public class CostPointLogic : Base.IGenericLogic<CostControlBusinessEntity.CostPoint>, IDisposable
 	{
 		private MapperConfiguration CostPointMapperConfig { get; set; }
 
 		private IMapper CostPointIMapper { get; set; }
 
-		private readonly UnitOfWork _unitOfWork;
+		private readonly Data.UnitOfWork.UnitOfWork _unitOfWork;
 
-		protected IRepository<CostControlEntity.CostPoint> Repository;
+		protected Data.Repository.IRepository<CostControlEntity.CostPoint> Repository;
 
 		public CostPointLogic()
 		{
-			CostPointMapperConfig = new AutoMapperConfiguration().Configure();
+			CostPointMapperConfig = new BusinessLogic.Mapper.AutoMapperConfiguration().Configure();
 			CostPointIMapper = CostPointMapperConfig.CreateMapper();
-			_unitOfWork = new UnitOfWork(new CostControlDbContext());
+			_unitOfWork = new Data.UnitOfWork.UnitOfWork(new Data.DAL.CostControlDbContext());
 			Repository = _unitOfWork.GetRepository<CostControlEntity.CostPoint>();
 		}
 

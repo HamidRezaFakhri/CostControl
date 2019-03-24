@@ -1,21 +1,21 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace CostControl.BusinessEntity.Models.CostControl
+﻿namespace CostControl.BusinessEntity.Models.CostControl
 {
-    public class Sale : Base.Interfaces.IEntity<long>
-    {
-        public long Id { get; set; }
+	using System.ComponentModel.DataAnnotations;
 
-        public System.Guid? InstanceId { get; set; }
+	public class Sale : Base.Interfaces.IEntity<long>
+	{
+		public long Id { get; set; }
 
-        public Base.Enums.ObjectState State { get; set; }
+		public System.Guid? InstanceId { get; set; }
 
-        public long SaleCostPointId { get; set; }
+		public Base.Enums.ObjectState State { get; set; }
 
-        [Required(ErrorMessage = "کد اجباریست!")]
-        [Display(Name = "کد")]
-        public string Code { get; set; }
+		public long SaleCostPointId { get; set; }
 
-        public System.DateTime SaleDate { get; set; }
-    }
+		[Required(ErrorMessage = "کد اجباریست!")]
+		[Display(Name = "کد")]
+		public string Code { get; set; }
+
+		public System.DateTime SaleDate { get; set; }
+	}
 }

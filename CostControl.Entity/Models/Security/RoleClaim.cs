@@ -2,7 +2,5 @@
 
 namespace CostControl.Entity.Models.Security
 {
-    public class RoleClaim : SuperEntity<long>
-    {
-    }
+	public class RoleClaim : SuperEntity<long> { }
 }

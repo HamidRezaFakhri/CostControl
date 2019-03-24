@@ -1,32 +1,32 @@
-﻿using CostControl.Entity.Models.Security;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-
-namespace CostControl.Entity.Models.CostControl
+﻿namespace CostControl.Entity.Models.CostControl
 {
-    public class IntakeRemittance : Base.SuperEntity<long>
-    {
-        [Required]
-        public long SaleCostPointId { get; set; }
+	using System;
+	using System.Collections.Generic;
+	using System.ComponentModel.DataAnnotations;
+	using Entity.Models.Security;
 
-        public virtual SaleCostPoint SaleCostPoint { get; set; }
+	public class IntakeRemittance : Base.SuperEntity<long>
+	{
+		[Required]
+		public long SaleCostPointId { get; set; }
 
-        [Required]
-        public DateTime IntakeDate { get; set; }
+		public virtual SaleCostPoint SaleCostPoint { get; set; }
 
-        [StringLength(500, MinimumLength = 10,
-                ErrorMessage = "Please enter a vlid description, it must be greater than {2} characters and less than {1} characters.")]
-        public string Description { get; set; }
+		[Required]
+		public DateTime IntakeDate { get; set; }
 
-        [Required]
-        public DateTime RegisteredDate { get; set; } = DateTime.Now;
+		[StringLength(500, MinimumLength = 10,
+				ErrorMessage = "Please enter a vlid description, it must be greater than {2} characters and less than {1} characters.")]
+		public string Description { get; set; }
 
-        [Required]
-        public long RegisteredUserId { get; set; }
+		[Required]
+		public DateTime RegisteredDate { get; set; } = DateTime.Now;
 
-        public virtual User RegisteredUser { get; set; }
+		[Required]
+		public long RegisteredUserId { get; set; }
 
-        public virtual ICollection<IntakeRemittanceItem> IntakeRemittanceItems { get; set; }
-    }
+		public virtual User RegisteredUser { get; set; }
+
+		public virtual ICollection<IntakeRemittanceItem> IntakeRemittanceItems { get; set; }
+	}
 }

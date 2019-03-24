@@ -1,37 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
-using AutoMapper.Extensions.ExpressionMapping;
-using CostControl.BusinessLogic.Logics.Base;
-using CostControl.BusinessLogic.Mapper;
-using CostControl.Data.DAL;
-using CostControl.Data.Repository;
-using CostControl.Data.UnitOfWork;
-using Microsoft.EntityFrameworkCore.Query;
-using CostControlBusinessEntity = CostControl.BusinessEntity.Models.CostControl;
-using CostControlEntity = CostControl.Entity.Models.CostControl;
-
-namespace CostControl.BusinessLogic.Logics.CostControl
+﻿namespace CostControl.BusinessLogic.Logics.CostControl
 {
-	public class SaleCostPointLogic : IGenericLogic<CostControlBusinessEntity.SaleCostPoint>, IDisposable
+	using System;
+	using System.Collections.Generic;
+	using System.Linq;
+	using System.Linq.Expressions;
+	using System.Threading;
+	using System.Threading.Tasks;
+	using AutoMapper;
+	using AutoMapper.Extensions.ExpressionMapping;
+	using Microsoft.EntityFrameworkCore.Query;
+	using CostControlBusinessEntity = BusinessEntity.Models.CostControl;
+	using CostControlEntity = Entity.Models.CostControl;
+
+	public class SaleCostPointLogic : Base.IGenericLogic<CostControlBusinessEntity.SaleCostPoint>, IDisposable
 	{
 		private MapperConfiguration SaleCostPointMapperConfig { get; set; }
 
 		private IMapper SaleCostPointIMapper { get; set; }
 
-		private readonly UnitOfWork _unitOfWork;
+		private readonly Data.UnitOfWork.UnitOfWork _unitOfWork;
 
-		protected IRepository<CostControlEntity.SaleCostPoint> Repository;
+		protected Data.Repository.IRepository<CostControlEntity.SaleCostPoint> Repository;
 
 		public SaleCostPointLogic()
 		{
-			SaleCostPointMapperConfig = new AutoMapperConfiguration().Configure();
+			SaleCostPointMapperConfig = new BusinessLogic.Mapper.AutoMapperConfiguration().Configure();
 			SaleCostPointIMapper = SaleCostPointMapperConfig.CreateMapper();
-			_unitOfWork = new UnitOfWork(new CostControlDbContext());
+			_unitOfWork = new Data.UnitOfWork.UnitOfWork(new Data.DAL.CostControlDbContext());
 			Repository = _unitOfWork.GetRepository<CostControlEntity.SaleCostPoint>();
 		}
 

@@ -1,206 +1,206 @@
-﻿using CostControl.API.Models;
-using CostControl.BusinessEntity.Models.CostControl;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-
-namespace CostControl.Presentation.Controllers
+﻿namespace CostControl.Presentation.Controllers
 {
-    public class MenuItemController : BaseController
-    {
-        public IActionResult MenuItemList(string param)
-        {
-            ViewData["title"] = "MenuItem List";
+	using System;
+	using System.Collections.Generic;
+	using System.Linq;
+	using System.Net.Http;
+	using System.Net.Http.Headers;
+	using CostControl.API.Models;
+	using CostControl.BusinessEntity.Models.CostControl;
+	using Microsoft.AspNetCore.Mvc;
 
-            ServiceResponse<MenuItem> values = null;
+	public class MenuItemController : BaseController
+	{
+		public IActionResult MenuItemList(string param)
+		{
+			ViewData["title"] = "MenuItem List";
 
-            string str = string.Empty;
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri("http://localhost:5001/api/MenuItem/");
+			ServiceResponse<MenuItem> values = null;
 
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue("nl-NL"));
+			string str = string.Empty;
+			using (var client = new HttpClient())
+			{
+				client.BaseAddress = new Uri("http://localhost:5001/api/MenuItem/");
 
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+				client.DefaultRequestHeaders.Clear();
+				client.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue("nl-NL"));
 
-                //HTTP GET
-                var responseTask = client.GetAsync("Get?PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1");
-                responseTask.Wait();
+				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                var result = responseTask.Result;
-                if (result.IsSuccessStatusCode)
-                {
-                    var readTask = result.Content.ReadAsAsync<ServiceResponse<MenuItem>>();
+				//HTTP GET
+				var responseTask = client.GetAsync("Get?PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1");
+				responseTask.Wait();
 
-                    readTask.Wait();
+				var result = responseTask.Result;
+				if (result.IsSuccessStatusCode)
+				{
+					var readTask = result.Content.ReadAsAsync<ServiceResponse<MenuItem>>();
 
-                    values = readTask.Result;
-                }
-                else //web api sent error response 
-                {
-                    //log response status here..
+					readTask.Wait();
 
-                    values = null;
+					values = readTask.Result;
+				}
+				else //web api sent error response 
+				{
+					//log response status here..
 
-                    ModelState.AddModelError(string.Empty, "Server error. Please contact administrator.");
+					values = null;
 
-                    str = "Server error. Please contact administrator.";
-                }
-            }
+					ModelState.AddModelError(string.Empty, "Server error. Please contact administrator.");
 
-            //return PartialView("~/Views/MenuItem/MenuItemList.cshtml");
-            return View(values);
-        }
+					str = "Server error. Please contact administrator.";
+				}
+			}
 
-        public IActionResult AddMenuItem()
-        {
-            return PartialView();
-        }
+			//return PartialView("~/Views/MenuItem/MenuItemList.cshtml");
+			return View(values);
+		}
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult AddMenuItem(MenuItem MenuItem)
-        {
-            //https://johnthiriet.com/efficient-post-calls/
-            if (ModelState.IsValid)
-            {
-                using (var client = new HttpClient())
-                {
-                    client.BaseAddress = new Uri("http://localhost:5001/api/MenuItem/");
+		public IActionResult AddMenuItem()
+		{
+			return PartialView();
+		}
 
-                    var result = client.PostAsJsonAsync("POST", MenuItem);
-                    result.Wait();
-                    var res = result.Result;
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public IActionResult AddMenuItem(MenuItem MenuItem)
+		{
+			//https://johnthiriet.com/efficient-post-calls/
+			if (ModelState.IsValid)
+			{
+				using (var client = new HttpClient())
+				{
+					client.BaseAddress = new Uri("http://localhost:5001/api/MenuItem/");
 
-                    if (res.IsSuccessStatusCode)
-                    {
-                        var p1 = res.Content.ReadAsStringAsync();
-                        var p = res.Content.ReadAsStringAsync().Result;
-                    }
-                }
-            }
-            return Json(new { success = true, message = "Ok" });
-        }
+					var result = client.PostAsJsonAsync("POST", MenuItem);
+					result.Wait();
+					var res = result.Result;
 
-        public IActionResult EditMenuItem(long id)
-        {
-            return PartialView(GetMenuItemById(id));
-        }
+					if (res.IsSuccessStatusCode)
+					{
+						var p1 = res.Content.ReadAsStringAsync();
+						var p = res.Content.ReadAsStringAsync().Result;
+					}
+				}
+			}
+			return Json(new { success = true, message = "Ok" });
+		}
 
-        [HttpPost]
-        public IActionResult EditMenuItem(long id, MenuItem MenuItem)
-        {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    MenuItem.State = BusinessEntity.Models.Base.Enums.ObjectState.Active;
+		public IActionResult EditMenuItem(long id)
+		{
+			return PartialView(GetMenuItemById(id));
+		}
 
-                    using (var client = new HttpClient())
-                    {
-                        client.BaseAddress = new Uri("http://localhost:5001/api/MenuItem/");
+		[HttpPost]
+		public IActionResult EditMenuItem(long id, MenuItem MenuItem)
+		{
+			try
+			{
+				if (ModelState.IsValid)
+				{
+					MenuItem.State = BusinessEntity.Models.Base.Enums.ObjectState.Active;
 
-                        var result = client.PostAsJsonAsync("PUT?id=" + id.ToString(), MenuItem);
-                        result.Wait();
-                        var res = result.Result;
+					using (var client = new HttpClient())
+					{
+						client.BaseAddress = new Uri("http://localhost:5001/api/MenuItem/");
 
-                        if (res.IsSuccessStatusCode)
-                        {
-                            var p1 = res.Content.ReadAsStringAsync();
-                            var p = res.Content.ReadAsStringAsync().Result;
-                        }
-                    }
-                }
-                return Json(new { success = true, message = "Ok" });
-            }
-            catch (Exception ex)
-            {
-                return Json(new { success = false, message = ex.Message });
-            }
-        }
+						var result = client.PostAsJsonAsync("PUT?id=" + id.ToString(), MenuItem);
+						result.Wait();
+						var res = result.Result;
 
-        public IActionResult DeleteMenuItem(long id)
-        {
-            return PartialView(GetMenuItemById(id));
-        }
+						if (res.IsSuccessStatusCode)
+						{
+							var p1 = res.Content.ReadAsStringAsync();
+							var p = res.Content.ReadAsStringAsync().Result;
+						}
+					}
+				}
+				return Json(new { success = true, message = "Ok" });
+			}
+			catch (Exception ex)
+			{
+				return Json(new { success = false, message = ex.Message });
+			}
+		}
 
-        [HttpPost]
-        public IActionResult DeleteMenuItem(MenuItem MenuItem)
-        {
-            try
-            {
-                using (var client = new HttpClient())
-                {
-                    client.BaseAddress = new Uri("http://localhost:5001/api/MenuItem/");
+		public IActionResult DeleteMenuItem(long id)
+		{
+			return PartialView(GetMenuItemById(id));
+		}
 
-                    var result = client.PostAsJsonAsync("Delete?id=" + MenuItem.Id.ToString(), MenuItem);
-                    result.Wait();
-                    var res = result.Result;
+		[HttpPost]
+		public IActionResult DeleteMenuItem(MenuItem MenuItem)
+		{
+			try
+			{
+				using (var client = new HttpClient())
+				{
+					client.BaseAddress = new Uri("http://localhost:5001/api/MenuItem/");
 
-                    if (res.IsSuccessStatusCode)
-                    {
-                        var p1 = res.Content.ReadAsStringAsync();
-                        var p = res.Content.ReadAsStringAsync().Result;
-                    }
-                }
-                return Json(new { success = true, message = "Ok" });
-            }
-            catch (Exception ex)
-            {
-                return Json(new { success = false, message = ex.Message });
-            }
-        }
+					var result = client.PostAsJsonAsync("Delete?id=" + MenuItem.Id.ToString(), MenuItem);
+					result.Wait();
+					var res = result.Result;
 
-        private MenuItem GetMenuItemById(long id)
-        {
-            ServiceResponse<MenuItem> value = null;
-            string str = string.Empty;
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri("http://localhost:5001/api/MenuItem/");
+					if (res.IsSuccessStatusCode)
+					{
+						var p1 = res.Content.ReadAsStringAsync();
+						var p = res.Content.ReadAsStringAsync().Result;
+					}
+				}
+				return Json(new { success = true, message = "Ok" });
+			}
+			catch (Exception ex)
+			{
+				return Json(new { success = false, message = ex.Message });
+			}
+		}
 
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue("nl-NL"));
+		private MenuItem GetMenuItemById(long id)
+		{
+			ServiceResponse<MenuItem> value = null;
+			string str = string.Empty;
+			using (var client = new HttpClient())
+			{
+				client.BaseAddress = new Uri("http://localhost:5001/api/MenuItem/");
 
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+				client.DefaultRequestHeaders.Clear();
+				client.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue("nl-NL"));
 
-                //HTTP GET
-                var responseTask = client.GetAsync("GetById?id=" + id.ToString());
-                responseTask.Wait();
+				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                var result = responseTask.Result;
-                if (result.IsSuccessStatusCode)
-                {
-                    var readTask = result.Content.ReadAsAsync<ServiceResponse<MenuItem>>();
+				//HTTP GET
+				var responseTask = client.GetAsync("GetById?id=" + id.ToString());
+				responseTask.Wait();
 
-                    readTask.Wait();
+				var result = responseTask.Result;
+				if (result.IsSuccessStatusCode)
+				{
+					var readTask = result.Content.ReadAsAsync<ServiceResponse<MenuItem>>();
 
-                    value = readTask.Result;
+					readTask.Wait();
 
-                    return (value.data as List<MenuItem>).FirstOrDefault();
-                }
-                else //web api sent error response 
-                {
-                    //log response status here..
+					value = readTask.Result;
 
-                    value = null;
+					return (value.data as List<MenuItem>).FirstOrDefault();
+				}
+				else //web api sent error response 
+				{
+					//log response status here..
 
-                    ModelState.AddModelError(string.Empty, "Server error. Please contact administrator.");
+					value = null;
 
-                    str = "Server error. Please contact administrator.";
-                }
+					ModelState.AddModelError(string.Empty, "Server error. Please contact administrator.");
 
-                return null;
-            }
-        }
+					str = "Server error. Please contact administrator.";
+				}
 
-        public IActionResult PostMenuItem(string name)
-        {
-            return null;
-        }
-    }
+				return null;
+			}
+		}
+
+		public IActionResult PostMenuItem(string name)
+		{
+			return null;
+		}
+	}
 }

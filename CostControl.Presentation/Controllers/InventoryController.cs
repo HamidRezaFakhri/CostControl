@@ -1,82 +1,82 @@
-﻿using CostControl.BusinessEntity.Models.CostControl;
-using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace CostControl.Presentation.Controllers
+﻿namespace CostControl.Presentation.Controllers
 {
-    public class InventoryController : BaseController
-    {
-        public IActionResult InventoryList(string param)
-        {
-            ViewData["title"] = Helper.GetEntityTile<Inventory>(EnumTitle.List);
+	using System.Collections.Generic;
+	using System.Linq;
+	using CostControl.BusinessEntity.Models.CostControl;
+	using Microsoft.AspNetCore.Mvc;
 
-            return View(Helper.GetServiceResponse<Inventory>("Get?PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1"));
-        }
+	public class InventoryController : BaseController
+	{
+		public IActionResult InventoryList(string param)
+		{
+			ViewData["title"] = Helper.GetEntityTile<Inventory>(EnumTitle.List);
 
-        public IActionResult AddInventory()
-        {
-            ViewData["title"] = Helper.GetEntityTile<Inventory>(EnumTitle.Add);
+			return View(Helper.GetServiceResponse<Inventory>("Get?PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1"));
+		}
 
-            return PartialView();
-        }
+		public IActionResult AddInventory()
+		{
+			ViewData["title"] = Helper.GetEntityTile<Inventory>(EnumTitle.Add);
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult AddInventory(Inventory Inventory)
-        {
-            if (ModelState.IsValid)
-            {
-                var postResult = Helper.PostValueToSevice<Inventory>("POST", Inventory);
+			return PartialView();
+		}
 
-                return Json(new { success = postResult.result, message = postResult.message });
-            }
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public IActionResult AddInventory(Inventory Inventory)
+		{
+			if (ModelState.IsValid)
+			{
+				var postResult = Helper.PostValueToSevice<Inventory>("POST", Inventory);
 
-            return Json(new { success = false, message = "Model Is Not Vald!" });
-        }
+				return Json(new { success = postResult.result, message = postResult.message });
+			}
 
-        public IActionResult EditInventory(long id)
-        {
-            ViewData["title"] = Helper.GetEntityTile<Inventory>(EnumTitle.Edit);
+			return Json(new { success = false, message = "Model Is Not Vald!" });
+		}
 
-            return PartialView(GetInventoryById(id));
-        }
+		public IActionResult EditInventory(long id)
+		{
+			ViewData["title"] = Helper.GetEntityTile<Inventory>(EnumTitle.Edit);
 
-        [HttpPost]
-        public IActionResult EditInventory(long id, Inventory Inventory)
-        {
-            if (ModelState.IsValid)
-            {
-                Inventory.State = BusinessEntity.Models.Base.Enums.ObjectState.Active;
+			return PartialView(GetInventoryById(id));
+		}
 
-                var postResult = Helper.PostValueToSevice<Inventory>("PUT?id=" + Inventory.Id.ToString(), Inventory);
+		[HttpPost]
+		public IActionResult EditInventory(long id, Inventory Inventory)
+		{
+			if (ModelState.IsValid)
+			{
+				Inventory.State = BusinessEntity.Models.Base.Enums.ObjectState.Active;
 
-                return Json(new { success = postResult.result, message = postResult.message });
-            }
+				var postResult = Helper.PostValueToSevice<Inventory>("PUT?id=" + Inventory.Id.ToString(), Inventory);
 
-            return Json(new { success = false, message = "Model Is Not Valid!" });
-        }
+				return Json(new { success = postResult.result, message = postResult.message });
+			}
 
-        public IActionResult DeleteInventory(long id)
-        {
-            ViewData["title"] = Helper.GetEntityTile<Inventory>(EnumTitle.Delete);
+			return Json(new { success = false, message = "Model Is Not Valid!" });
+		}
 
-            return PartialView(GetInventoryById(id));
-        }
+		public IActionResult DeleteInventory(long id)
+		{
+			ViewData["title"] = Helper.GetEntityTile<Inventory>(EnumTitle.Delete);
 
-        [HttpPost]
-        public IActionResult DeleteInventory(Inventory Inventory)
-        {
-            var postResult = Helper.PostValueToSevice<Inventory>("Delete?id=" + Inventory.Id.ToString(), Inventory);
+			return PartialView(GetInventoryById(id));
+		}
 
-            return Json(new { success = postResult.result, message = postResult.message });
+		[HttpPost]
+		public IActionResult DeleteInventory(Inventory Inventory)
+		{
+			var postResult = Helper.PostValueToSevice<Inventory>("Delete?id=" + Inventory.Id.ToString(), Inventory);
 
-        }
+			return Json(new { success = postResult.result, message = postResult.message });
 
-        private Inventory GetInventoryById(long id)
-        {
-            return (Helper.GetServiceResponse<Inventory>("GetById?id=" + id.ToString()).data as List<Inventory>)
-                .FirstOrDefault();
-        }
-    }
+		}
+
+		private Inventory GetInventoryById(long id)
+		{
+			return (Helper.GetServiceResponse<Inventory>("GetById?id=" + id.ToString()).data as List<Inventory>)
+				.FirstOrDefault();
+		}
+	}
 }

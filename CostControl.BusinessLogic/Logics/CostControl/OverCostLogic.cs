@@ -1,37 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
-using AutoMapper.Extensions.ExpressionMapping;
-using CostControl.BusinessLogic.Logics.Base;
-using CostControl.BusinessLogic.Mapper;
-using CostControl.Data.DAL;
-using CostControl.Data.Repository;
-using CostControl.Data.UnitOfWork;
-using Microsoft.EntityFrameworkCore.Query;
-using CostControlBusinessEntity = CostControl.BusinessEntity.Models.CostControl;
-using CostControlEntity = CostControl.Entity.Models.CostControl;
-
-namespace CostControl.BusinessLogic.Logics.CostControl
+﻿namespace CostControl.BusinessLogic.Logics.CostControl
 {
-	public class OverCostLogic : IGenericLogic<CostControlBusinessEntity.OverCost>, IDisposable
+	using System;
+	using System.Collections.Generic;
+	using System.Linq;
+	using System.Linq.Expressions;
+	using System.Threading;
+	using System.Threading.Tasks;
+	using AutoMapper;
+	using AutoMapper.Extensions.ExpressionMapping;
+	using Microsoft.EntityFrameworkCore.Query;
+	using CostControlBusinessEntity = BusinessEntity.Models.CostControl;
+	using CostControlEntity = Entity.Models.CostControl;
+
+	public class OverCostLogic : Base.IGenericLogic<CostControlBusinessEntity.OverCost>, IDisposable
 	{
 		private MapperConfiguration OverCostMapperConfig { get; set; }
 
 		private IMapper OverCostIMapper { get; set; }
 
-		private readonly UnitOfWork _unitOfWork;
+		private readonly Data.UnitOfWork.UnitOfWork _unitOfWork;
 
-		protected IRepository<CostControlEntity.OverCost> Repository;
+		protected Data.Repository.IRepository<CostControlEntity.OverCost> Repository;
 
 		public OverCostLogic()
 		{
-			OverCostMapperConfig = new AutoMapperConfiguration().Configure();
+			OverCostMapperConfig = new BusinessLogic.Mapper.AutoMapperConfiguration().Configure();
 			OverCostIMapper = OverCostMapperConfig.CreateMapper();
-			_unitOfWork = new UnitOfWork(new CostControlDbContext());
+			_unitOfWork = new Data.UnitOfWork.UnitOfWork(new Data.DAL.CostControlDbContext());
 			Repository = _unitOfWork.GetRepository<CostControlEntity.OverCost>();
 		}
 

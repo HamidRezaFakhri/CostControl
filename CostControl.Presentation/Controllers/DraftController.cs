@@ -1,81 +1,81 @@
-﻿using CostControl.BusinessEntity.Models.CostControl;
-using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace CostControl.Presentation.Controllers
+﻿namespace CostControl.Presentation.Controllers
 {
-    public class DraftController : BaseController
-    {
-        public IActionResult DraftList(string param)
-        {
-            ViewData["title"] = Helper.GetEntityTile<Draft>(EnumTitle.List);
+	using System.Collections.Generic;
+	using System.Linq;
+	using CostControl.BusinessEntity.Models.CostControl;
+	using Microsoft.AspNetCore.Mvc;
 
-            return View(Helper.GetServiceResponse<Draft>("Get?PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1"));
-        }
+	public class DraftController : BaseController
+	{
+		public IActionResult DraftList(string param)
+		{
+			ViewData["title"] = Helper.GetEntityTile<Draft>(EnumTitle.List);
 
-        public IActionResult AddDraft()
-        {
-            ViewData["title"] = Helper.GetEntityTile<Draft>(EnumTitle.Add);
+			return View(Helper.GetServiceResponse<Draft>("Get?PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1"));
+		}
 
-            return PartialView();
-        }
+		public IActionResult AddDraft()
+		{
+			ViewData["title"] = Helper.GetEntityTile<Draft>(EnumTitle.Add);
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult AddDraft(Draft Draft)
-        {
-            if (ModelState.IsValid)
-            {
-                var postResult = Helper.PostValueToSevice<Draft>("POST", Draft);
+			return PartialView();
+		}
 
-                return Json(new { success = postResult.result, message = postResult.message });
-            }
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public IActionResult AddDraft(Draft Draft)
+		{
+			if (ModelState.IsValid)
+			{
+				var postResult = Helper.PostValueToSevice<Draft>("POST", Draft);
 
-            return Json(new { success = false, message = "Model Is Not Vald!" });
-        }
+				return Json(new { success = postResult.result, message = postResult.message });
+			}
 
-        public IActionResult EditDraft(long id)
-        {
-            ViewData["title"] = Helper.GetEntityTile<Draft>(EnumTitle.Edit);
+			return Json(new { success = false, message = "Model Is Not Vald!" });
+		}
 
-            return PartialView(GetDraftById(id));
-        }
+		public IActionResult EditDraft(long id)
+		{
+			ViewData["title"] = Helper.GetEntityTile<Draft>(EnumTitle.Edit);
 
-        [HttpPost]
-        public IActionResult EditDraft(long id, Draft Draft)
-        {
-            if (ModelState.IsValid)
-            {
-                Draft.State = BusinessEntity.Models.Base.Enums.ObjectState.Active;
+			return PartialView(GetDraftById(id));
+		}
 
-                var postResult = Helper.PostValueToSevice<Draft>("PUT?id=" + Draft.Id.ToString(), Draft);
+		[HttpPost]
+		public IActionResult EditDraft(long id, Draft Draft)
+		{
+			if (ModelState.IsValid)
+			{
+				Draft.State = BusinessEntity.Models.Base.Enums.ObjectState.Active;
 
-                return Json(new { success = postResult.result, message = postResult.message });
-            }
+				var postResult = Helper.PostValueToSevice<Draft>("PUT?id=" + Draft.Id.ToString(), Draft);
 
-            return Json(new { success = false, message = "Model Is Not Valid!" });
-        }
+				return Json(new { success = postResult.result, message = postResult.message });
+			}
 
-        public IActionResult DeleteDraft(long id)
-        {
-            ViewData["title"] = Helper.GetEntityTile<Draft>(EnumTitle.Delete);
+			return Json(new { success = false, message = "Model Is Not Valid!" });
+		}
 
-            return PartialView(GetDraftById(id));
-        }
+		public IActionResult DeleteDraft(long id)
+		{
+			ViewData["title"] = Helper.GetEntityTile<Draft>(EnumTitle.Delete);
 
-        [HttpPost]
-        public IActionResult DeleteDraft(Draft Draft)
-        {
-            var postResult = Helper.PostValueToSevice<Draft>("Delete?id=" + Draft.Id.ToString(), Draft);
+			return PartialView(GetDraftById(id));
+		}
 
-            return Json(new { success = postResult.result, message = postResult.message });
-        }
+		[HttpPost]
+		public IActionResult DeleteDraft(Draft Draft)
+		{
+			var postResult = Helper.PostValueToSevice<Draft>("Delete?id=" + Draft.Id.ToString(), Draft);
 
-        private Draft GetDraftById(long id)
-        {
-            return (Helper.GetServiceResponse<Draft>("GetById?id=" + id.ToString()).data as List<Draft>)
-                .FirstOrDefault();
-        }
-    }
+			return Json(new { success = postResult.result, message = postResult.message });
+		}
+
+		private Draft GetDraftById(long id)
+		{
+			return (Helper.GetServiceResponse<Draft>("GetById?id=" + id.ToString()).data as List<Draft>)
+				.FirstOrDefault();
+		}
+	}
 }

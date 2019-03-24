@@ -1,13 +1,13 @@
-﻿using CostControl.Entity.Models.Base;
-using System.ComponentModel.DataAnnotations;
-
-namespace CostControl.Entity.Models.CostControl
+﻿namespace CostControl.Entity.Models.CostControl
 {
-    public class Buffet : SuperEntity<long>
-    {
-        [Required]
-        public long SalePointId { get; set; }
+	using System.ComponentModel.DataAnnotations;
+	using Entity.Models.Base;
 
-        public virtual SalePoint SalePoint { get; set; }
-    }
+	public class Buffet : SuperEntity<long>
+	{
+		[Required]
+		public long SalePointId { get; set; }
+
+		public virtual SalePoint SalePoint { get; set; }
+	}
 }

@@ -1,37 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
-using AutoMapper.Extensions.ExpressionMapping;
-using CostControl.BusinessLogic.Logics.Base;
-using CostControl.BusinessLogic.Mapper;
-using CostControl.Data.DAL;
-using CostControl.Data.Repository;
-using CostControl.Data.UnitOfWork;
-using Microsoft.EntityFrameworkCore.Query;
-using SecurityBusinessEntity = CostControl.BusinessEntity.Models.Security;
-using SecurityEntity = CostControl.Entity.Models.Security;
-
-namespace CostControl.BusinessLogic.Logics.Security
+﻿namespace CostControl.BusinessLogic.Logics.Security
 {
-	public class RoleLogic : IGenericLogic<SecurityBusinessEntity.Role>, IDisposable
+	using System;
+	using System.Collections.Generic;
+	using System.Linq;
+	using System.Linq.Expressions;
+	using System.Threading;
+	using System.Threading.Tasks;
+	using AutoMapper;
+	using AutoMapper.Extensions.ExpressionMapping;
+	using Microsoft.EntityFrameworkCore.Query;
+	using SecurityBusinessEntity = BusinessEntity.Models.Security;
+	using SecurityEntity = Entity.Models.Security;
+
+	public class RoleLogic : Base.IGenericLogic<SecurityBusinessEntity.Role>, IDisposable
 	{
 		private MapperConfiguration RoleMapperConfig { get; set; }
 
 		private IMapper RoleIMapper { get; set; }
 
-		private readonly UnitOfWork _unitOfWork;
+		private readonly Data.UnitOfWork.UnitOfWork _unitOfWork;
 
-		protected IRepository<SecurityEntity.Role> Repository;
+		protected Data.Repository.IRepository<SecurityEntity.Role> Repository;
 
 		public RoleLogic()
 		{
-			RoleMapperConfig = new AutoMapperConfiguration().Configure();
+			RoleMapperConfig = new BusinessLogic.Mapper.AutoMapperConfiguration().Configure();
 			RoleIMapper = RoleMapperConfig.CreateMapper();
-			_unitOfWork = new UnitOfWork(new CostControlDbContext());
+			_unitOfWork = new Data.UnitOfWork.UnitOfWork(new Data.DAL.CostControlDbContext());
 			Repository = _unitOfWork.GetRepository<SecurityEntity.Role>();
 		}
 

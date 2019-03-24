@@ -1,9 +1,9 @@
-﻿using CostControl.Entity.Models.Base;
-
-namespace CostControl.Entity.Models.CostControl
+﻿namespace CostControl.Entity.Models.CostControl
 {
-    public class Setting : SuperEntity<int>
-    {
-        public decimal IngredientUsageRate { get; set; } = 70;
-    }
+	using Entity.Models.Base;
+
+	public class Setting : SuperEntity<int>
+	{
+		public decimal IngredientUsageRate { get; set; } = 70;
+	}
 }

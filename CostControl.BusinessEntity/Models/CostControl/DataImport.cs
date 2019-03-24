@@ -1,15 +1,15 @@
-﻿using System;
-
-namespace CostControl.BusinessEntity.Models.CostControl
+﻿namespace CostControl.BusinessEntity.Models.CostControl
 {
-    public class DataImport : Base.Interfaces.IEntity<long>
-    {
-        public long Id { get; set; }
+	using System;
 
-        public System.Guid? InstanceId { get; set; }
+	public class DataImport : Base.Interfaces.IEntity<long>
+	{
+		public long Id { get; set; }
 
-        public Base.Enums.ObjectState State { get; set; } = Base.Enums.ObjectState.Active;
+		public Guid? InstanceId { get; set; }
 
-        public DateTime ImportTime { get; set; }
-    }
+		public Base.Enums.ObjectState State { get; set; } = Base.Enums.ObjectState.Active;
+
+		public DateTime ImportTime { get; set; }
+	}
 }

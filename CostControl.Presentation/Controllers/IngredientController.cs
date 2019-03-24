@@ -1,81 +1,81 @@
-﻿using CostControl.BusinessEntity.Models.CostControl;
-using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace CostControl.Presentation.Controllers
+﻿namespace CostControl.Presentation.Controllers
 {
-    public class IngredientController : BaseController
-    {
-        public IActionResult IngredientList(string param)
-        {
-            ViewData["title"] = Helper.GetEntityTile<Ingredient>(EnumTitle.List);
+	using System.Collections.Generic;
+	using System.Linq;
+	using CostControl.BusinessEntity.Models.CostControl;
+	using Microsoft.AspNetCore.Mvc;
 
-            return View(Helper.GetServiceResponse<Ingredient>("Get?PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1"));
-        }
+	public class IngredientController : BaseController
+	{
+		public IActionResult IngredientList(string param)
+		{
+			ViewData["title"] = Helper.GetEntityTile<Ingredient>(EnumTitle.List);
 
-        public IActionResult AddIngredient()
-        {
-            ViewData["title"] = Helper.GetEntityTile<Ingredient>(EnumTitle.Add);
+			return View(Helper.GetServiceResponse<Ingredient>("Get?PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1"));
+		}
 
-            return PartialView();
-        }
+		public IActionResult AddIngredient()
+		{
+			ViewData["title"] = Helper.GetEntityTile<Ingredient>(EnumTitle.Add);
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult AddIngredient(Ingredient Ingredient)
-        {
-            if (ModelState.IsValid)
-            {
-                var postResult = Helper.PostValueToSevice<Ingredient>("POST", Ingredient);
+			return PartialView();
+		}
 
-                return Json(new { success = postResult.result, message = postResult.message });
-            }
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public IActionResult AddIngredient(Ingredient Ingredient)
+		{
+			if (ModelState.IsValid)
+			{
+				var postResult = Helper.PostValueToSevice<Ingredient>("POST", Ingredient);
 
-            return Json(new { success = false, message = "Model Is Not Vald!" });
-        }
+				return Json(new { success = postResult.result, message = postResult.message });
+			}
 
-        public IActionResult EditIngredient(long id)
-        {
-            ViewData["title"] = Helper.GetEntityTile<Ingredient>(EnumTitle.Edit);
+			return Json(new { success = false, message = "Model Is Not Vald!" });
+		}
 
-            return PartialView(GetIngredientById(id));
-        }
+		public IActionResult EditIngredient(long id)
+		{
+			ViewData["title"] = Helper.GetEntityTile<Ingredient>(EnumTitle.Edit);
 
-        [HttpPost]
-        public IActionResult EditIngredient(long id, Ingredient Ingredient)
-        {
-            if (ModelState.IsValid)
-            {
-                Ingredient.State = BusinessEntity.Models.Base.Enums.ObjectState.Active;
+			return PartialView(GetIngredientById(id));
+		}
 
-                var postResult = Helper.PostValueToSevice<Ingredient>("PUT?id=" + Ingredient.Id.ToString(), Ingredient);
+		[HttpPost]
+		public IActionResult EditIngredient(long id, Ingredient Ingredient)
+		{
+			if (ModelState.IsValid)
+			{
+				Ingredient.State = BusinessEntity.Models.Base.Enums.ObjectState.Active;
 
-                return Json(new { success = postResult.result, message = postResult.message });
-            }
+				var postResult = Helper.PostValueToSevice<Ingredient>("PUT?id=" + Ingredient.Id.ToString(), Ingredient);
 
-            return Json(new { success = false, message = "Model Is Not Valid!" });
-        }
+				return Json(new { success = postResult.result, message = postResult.message });
+			}
 
-        public IActionResult DeleteIngredient(long id)
-        {
-            ViewData["title"] = Helper.GetEntityTile<Ingredient>(EnumTitle.Delete);
+			return Json(new { success = false, message = "Model Is Not Valid!" });
+		}
 
-            return PartialView(GetIngredientById(id));
-        }
+		public IActionResult DeleteIngredient(long id)
+		{
+			ViewData["title"] = Helper.GetEntityTile<Ingredient>(EnumTitle.Delete);
 
-        [HttpPost]
-        public IActionResult DeleteIngredient(Ingredient Ingredient)
-        {
-            var postResult = Helper.PostValueToSevice<Ingredient>("Delete?id=" + Ingredient.Id.ToString(), Ingredient);
+			return PartialView(GetIngredientById(id));
+		}
 
-            return Json(new { success = postResult.result, message = postResult.message });
-        }
+		[HttpPost]
+		public IActionResult DeleteIngredient(Ingredient Ingredient)
+		{
+			var postResult = Helper.PostValueToSevice<Ingredient>("Delete?id=" + Ingredient.Id.ToString(), Ingredient);
 
-        private Ingredient GetIngredientById(long id)
-        {
-            return (Helper.GetServiceResponse<Ingredient>("GetById?id=" + id.ToString()).data as List<Ingredient>)
-                .FirstOrDefault();
-        }
-    }
+			return Json(new { success = postResult.result, message = postResult.message });
+		}
+
+		private Ingredient GetIngredientById(long id)
+		{
+			return (Helper.GetServiceResponse<Ingredient>("GetById?id=" + id.ToString()).data as List<Ingredient>)
+				.FirstOrDefault();
+		}
+	}
 }

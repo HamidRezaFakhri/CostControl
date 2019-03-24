@@ -1,8 +1,6 @@
-﻿using CostControl.Entity.Models.Base;
-
-namespace CostControl.Entity.Models.Security
+﻿namespace CostControl.Entity.Models.Security
 {
-    public class UserLogin : SuperEntity<long>
-    {
-    }
+	using Entity.Models.Base;
+
+	public class UserLogin : SuperEntity<long> { }
 }

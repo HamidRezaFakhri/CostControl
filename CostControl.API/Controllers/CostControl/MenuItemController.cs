@@ -1,12 +1,12 @@
-﻿using CostControl.API.Controllers.Base;
-using CostControl.BusinessEntity.Models.CostControl;
-using CostControl.BusinessLogic.Logics.CostControl;
-using Microsoft.AspNetCore.Mvc;
-
-namespace CostControl.API.Controllers.CostControl
+﻿namespace CostControl.API.Controllers.CostControl
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    [Produces("application/json")]
-    public class MenuItemController : BaseApiController<MenuItem, MenuItemLogic, long> { }
+	using API.Controllers.Base;
+	using BusinessEntity.Models.CostControl;
+	using BusinessLogic.Logics.CostControl;
+	using Microsoft.AspNetCore.Mvc;
+
+	[Route("api/[controller]")]
+	[ApiController]
+	[Produces("application/json")]
+	public class MenuItemController : BaseApiController<MenuItem, MenuItemLogic, long> { }
 }

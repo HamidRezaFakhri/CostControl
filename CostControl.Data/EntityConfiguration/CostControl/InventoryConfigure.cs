@@ -1,22 +1,22 @@
-﻿using CostControl.Data.EntityConfiguration.Base;
-using CostControl.Entity.Models.CostControl;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-namespace CostControl.Data.EntityConfiguration.CostControl
+﻿namespace CostControl.Data.EntityConfiguration.CostControl
 {
-    public class InventoryConfigure : BaseNamedEntityConfigure<Inventory, long>
-    {
-        public override void Configure(EntityTypeBuilder<Inventory> entityTypeBuilder)
-        {
-            base.Configure(entityTypeBuilder);
+	using Data.EntityConfiguration.Base;
+	using Entity.Models.CostControl;
+	using Microsoft.EntityFrameworkCore;
+	using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-            entityTypeBuilder
-                .HasIndex(e => e.Name)
-                .IsUnique();
+	public class InventoryConfigure : BaseNamedEntityConfigure<Inventory, long>
+	{
+		public override void Configure(EntityTypeBuilder<Inventory> entityTypeBuilder)
+		{
+			base.Configure(entityTypeBuilder);
 
-            entityTypeBuilder
-               .ToTable("Inventory", "dbo");
-        }
-    }
+			entityTypeBuilder
+				.HasIndex(e => e.Name)
+				.IsUnique();
+
+			entityTypeBuilder
+			   .ToTable("Inventory", "dbo");
+		}
+	}
 }

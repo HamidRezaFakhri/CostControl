@@ -1,29 +1,29 @@
-﻿using CostControl.Entity.Models.Base;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-
-namespace CostControl.Entity.Models.CostControl
+﻿namespace CostControl.Entity.Models.CostControl
 {
-    public class Depo : SuperEntity<long>
-    {
-        [Required]
-        public long SaleCostPointId { get; set; }
+	using System.Collections.Generic;
+	using System.ComponentModel.DataAnnotations;
+	using Entity.Models.Base;
 
-        public virtual SaleCostPoint SaleCostPoint { get; set; }
+	public class Depo : SuperEntity<long>
+	{
+		[Required]
+		public long SaleCostPointId { get; set; }
 
-        [Required]
-        public long IngredientId { get; set; }
+		public virtual SaleCostPoint SaleCostPoint { get; set; }
 
-        public virtual Ingredient Ingredient { get; set; }
+		[Required]
+		public long IngredientId { get; set; }
 
-        [Required]
-        public long ConsumptionUnitId { get; set; }
+		public virtual Ingredient Ingredient { get; set; }
 
-        public virtual ConsumptionUnit ConsumptionUnit { get; set; }
+		[Required]
+		public long ConsumptionUnitId { get; set; }
 
-        [Required]
-        public decimal Amount { get; set; }
+		public virtual ConsumptionUnit ConsumptionUnit { get; set; }
 
-        public virtual ICollection<Draft> Drafts { get; set; }
-    }
+		[Required]
+		public decimal Amount { get; set; }
+
+		public virtual ICollection<Draft> Drafts { get; set; }
+	}
 }

@@ -1,81 +1,81 @@
-﻿using CostControl.BusinessEntity.Models.CostControl;
-using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace CostControl.Presentation.Controllers
+﻿namespace CostControl.Presentation.Controllers
 {
-    public class OverCostTypeController : BaseController
-    {
-        public IActionResult OverCostTypeList(string param)
-        {
-            ViewData["title"] = Helper.GetEntityTile<OverCostType>(EnumTitle.List);
+	using System.Collections.Generic;
+	using System.Linq;
+	using CostControl.BusinessEntity.Models.CostControl;
+	using Microsoft.AspNetCore.Mvc;
 
-            return View(Helper.GetServiceResponse<OverCostType>("Get?PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1"));
-        }
+	public class OverCostTypeController : BaseController
+	{
+		public IActionResult OverCostTypeList(string param)
+		{
+			ViewData["title"] = Helper.GetEntityTile<OverCostType>(EnumTitle.List);
 
-        public IActionResult AddOverCostType()
-        {
-            ViewData["title"] = Helper.GetEntityTile<OverCostType>(EnumTitle.Add);
+			return View(Helper.GetServiceResponse<OverCostType>("Get?PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1"));
+		}
 
-            return PartialView();
-        }
+		public IActionResult AddOverCostType()
+		{
+			ViewData["title"] = Helper.GetEntityTile<OverCostType>(EnumTitle.Add);
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult AddOverCostType(OverCostType OverCostType)
-        {
-            if (ModelState.IsValid)
-            {
-                var postResult = Helper.PostValueToSevice<OverCostType>("POST", OverCostType);
+			return PartialView();
+		}
 
-                return Json(new { success = postResult.result, message = postResult.message });
-            }
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public IActionResult AddOverCostType(OverCostType OverCostType)
+		{
+			if (ModelState.IsValid)
+			{
+				var postResult = Helper.PostValueToSevice<OverCostType>("POST", OverCostType);
 
-            return Json(new { success = false, message = "Model Is Not Vald!" });
-        }
+				return Json(new { success = postResult.result, message = postResult.message });
+			}
 
-        public IActionResult EditOverCostType(long id)
-        {
-            ViewData["title"] = Helper.GetEntityTile<OverCostType>(EnumTitle.Edit);
+			return Json(new { success = false, message = "Model Is Not Vald!" });
+		}
 
-            return PartialView(GetOverCostTypeById(id));
-        }
+		public IActionResult EditOverCostType(long id)
+		{
+			ViewData["title"] = Helper.GetEntityTile<OverCostType>(EnumTitle.Edit);
 
-        [HttpPost]
-        public IActionResult EditOverCostType(long id, OverCostType OverCostType)
-        {
-            if (ModelState.IsValid)
-            {
-                OverCostType.State = BusinessEntity.Models.Base.Enums.ObjectState.Active;
+			return PartialView(GetOverCostTypeById(id));
+		}
 
-                var postResult = Helper.PostValueToSevice<OverCostType>("PUT?id=" + OverCostType.Id.ToString(), OverCostType);
+		[HttpPost]
+		public IActionResult EditOverCostType(long id, OverCostType OverCostType)
+		{
+			if (ModelState.IsValid)
+			{
+				OverCostType.State = BusinessEntity.Models.Base.Enums.ObjectState.Active;
 
-                return Json(new { success = postResult.result, message = postResult.message });
-            }
+				var postResult = Helper.PostValueToSevice<OverCostType>("PUT?id=" + OverCostType.Id.ToString(), OverCostType);
 
-            return Json(new { success = false, message = "Model Is Not Valid!" });
-        }
+				return Json(new { success = postResult.result, message = postResult.message });
+			}
 
-        public IActionResult DeleteOverCostType(long id)
-        {
-            ViewData["title"] = Helper.GetEntityTile<OverCostType>(EnumTitle.Delete);
+			return Json(new { success = false, message = "Model Is Not Valid!" });
+		}
 
-            return PartialView(GetOverCostTypeById(id));
-        }
+		public IActionResult DeleteOverCostType(long id)
+		{
+			ViewData["title"] = Helper.GetEntityTile<OverCostType>(EnumTitle.Delete);
 
-        [HttpPost]
-        public IActionResult DeleteOverCostType(OverCostType OverCostType)
-        {
-            var postResult = Helper.PostValueToSevice<OverCostType>("Delete?id=" + OverCostType.Id.ToString(), OverCostType);
+			return PartialView(GetOverCostTypeById(id));
+		}
 
-            return Json(new { success = postResult.result, message = postResult.message });
-        }
+		[HttpPost]
+		public IActionResult DeleteOverCostType(OverCostType OverCostType)
+		{
+			var postResult = Helper.PostValueToSevice<OverCostType>("Delete?id=" + OverCostType.Id.ToString(), OverCostType);
 
-        private OverCostType GetOverCostTypeById(long id)
-        {
-            return (Helper.GetServiceResponse<OverCostType>("GetById?id=" + id.ToString()).data as List<OverCostType>)
-                .FirstOrDefault();
-        }
-    }
+			return Json(new { success = postResult.result, message = postResult.message });
+		}
+
+		private OverCostType GetOverCostTypeById(long id)
+		{
+			return (Helper.GetServiceResponse<OverCostType>("GetById?id=" + id.ToString()).data as List<OverCostType>)
+				.FirstOrDefault();
+		}
+	}
 }

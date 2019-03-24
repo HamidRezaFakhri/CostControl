@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CostControl.Data.Migrations
 {
     [DbContext(typeof(CostControlDbContext))]
-    [Migration("20190302190820_init")]
+    [Migration("20190324175037_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -233,9 +233,10 @@ namespace CostControl.Data.Migrations
 
                     b.HasIndex("ConsumptionUnitId");
 
-                    b.HasIndex("DraftId");
-
                     b.HasIndex("IngredientId");
+
+                    b.HasIndex("DraftId", "IngredientId")
+                        .IsUnique();
 
                     b.ToTable("DraftItem","dbo");
                 });
@@ -468,6 +469,10 @@ namespace CostControl.Data.Migrations
 
                     b.HasIndex("SaleCostPointId");
 
+                    b.HasIndex("FromDate", "ToDate")
+                        .IsUnique()
+                        .HasFilter("[ToDate] IS NOT NULL");
+
                     b.ToTable("Menu","dbo");
                 });
 
@@ -543,6 +548,9 @@ namespace CostControl.Data.Migrations
                     b.HasIndex("RegisteredUserId1");
 
                     b.HasIndex("SaleCostPointId");
+
+                    b.HasIndex("StartDate", "EndDate")
+                        .IsUnique();
 
                     b.ToTable("OverCost","dbo");
                 });

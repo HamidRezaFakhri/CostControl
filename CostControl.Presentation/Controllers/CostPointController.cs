@@ -1,111 +1,111 @@
-﻿using CostControl.BusinessEntity.Models.CostControl;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace CostControl.Presentation.Controllers
+﻿namespace CostControl.Presentation.Controllers
 {
-    public class CostPointController : BaseController
-    {
-        public IActionResult CostPointList(string param)
-        {
-            ViewData["title"] = Helper.GetEntityTile<CostPoint>(EnumTitle.List);
+	using System.Collections.Generic;
+	using System.Linq;
+	using CostControl.BusinessEntity.Models.CostControl;
+	using Microsoft.AspNetCore.Mvc;
+	using Microsoft.AspNetCore.Mvc.Rendering;
 
-            var a = Helper.GetServiceResponse<CostPoint>("Get?PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1");
+	public class CostPointController : BaseController
+	{
+		public IActionResult CostPointList(string param)
+		{
+			ViewData["title"] = Helper.GetEntityTile<CostPoint>(EnumTitle.List);
 
-            return View(a);
-        }
+			var a = Helper.GetServiceResponse<CostPoint>("Get?PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1");
 
-        private IEnumerable<CostPointGroup> GetCostPointGroups()
-        {
-            return Helper.GetServiceResponseList<CostPointGroup>("Get?PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1");
-        }
+			return View(a);
+		}
 
-        public IActionResult AddCostPoint()
-        {
-            ViewData["title"] = Helper.GetEntityTile<CostPoint>(EnumTitle.Add);
+		private IEnumerable<CostPointGroup> GetCostPointGroups()
+		{
+			return Helper.GetServiceResponseList<CostPointGroup>("Get?PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1");
+		}
 
-            ViewBag.CostPointGroup = GetCostPointGroups()
-                                        .Select(c => new SelectListItem()
-                                        {
-                                            Text = c.Name,
-                                            Value = c.Id.ToString()
-                                        })
-                                        .ToList();
-            return PartialView();
-        }
+		public IActionResult AddCostPoint()
+		{
+			ViewData["title"] = Helper.GetEntityTile<CostPoint>(EnumTitle.Add);
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult AddCostPoint(CostPoint CostPoint)
-        {
-            if (ModelState.IsValid)
-            {
-                var postResult = Helper.PostValueToSevice<CostPoint>("POST", CostPoint);
+			ViewBag.CostPointGroup = GetCostPointGroups()
+										.Select(c => new SelectListItem()
+										{
+											Text = c.Name,
+											Value = c.Id.ToString()
+										})
+										.ToList();
+			return PartialView();
+		}
 
-                return Json(new { success = postResult.result, message = postResult.message });
-            }
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public IActionResult AddCostPoint(CostPoint CostPoint)
+		{
+			if (ModelState.IsValid)
+			{
+				var postResult = Helper.PostValueToSevice<CostPoint>("POST", CostPoint);
 
-            return Json(new { success = false, message = "Model Is Not Vald!" });
-        }
+				return Json(new { success = postResult.result, message = postResult.message });
+			}
 
-        public IActionResult EditCostPoint(long id)
-        {
-            ViewData["title"] = Helper.GetEntityTile<CostPoint>(EnumTitle.Edit);
+			return Json(new { success = false, message = "Model Is Not Vald!" });
+		}
 
-            ViewBag.CostPointGroup = GetCostPointGroups()
-                            .Select(c => new SelectListItem()
-                            {
-                                Text = c.Name,
-                                Value = c.Id.ToString(),
-                                Selected = c.Id == GetCostPointGroupById(id).Id
-                            })
-                            .ToList();
+		public IActionResult EditCostPoint(long id)
+		{
+			ViewData["title"] = Helper.GetEntityTile<CostPoint>(EnumTitle.Edit);
 
-            return PartialView(GetCostPointById(id));
-        }
+			ViewBag.CostPointGroup = GetCostPointGroups()
+							.Select(c => new SelectListItem()
+							{
+								Text = c.Name,
+								Value = c.Id.ToString(),
+								Selected = c.Id == GetCostPointGroupById(id).Id
+							})
+							.ToList();
 
-        private CostPointGroup GetCostPointGroupById(long id)
-        {
-            return (Helper.GetServiceResponse<CostPointGroup>("GetById?id=" + id.ToString()).data as List<CostPointGroup>)
-                .FirstOrDefault();
-        }
+			return PartialView(GetCostPointById(id));
+		}
 
-        [HttpPost]
-        public IActionResult EditCostPoint(long id, CostPoint CostPoint)
-        {
-            if (ModelState.IsValid)
-            {
-                CostPoint.State = BusinessEntity.Models.Base.Enums.ObjectState.Active;
+		private CostPointGroup GetCostPointGroupById(long id)
+		{
+			return (Helper.GetServiceResponse<CostPointGroup>("GetById?id=" + id.ToString()).data as List<CostPointGroup>)
+				.FirstOrDefault();
+		}
 
-                var postResult = Helper.PostValueToSevice<CostPoint>("PUT?id=" + CostPoint.Id.ToString(), CostPoint);
+		[HttpPost]
+		public IActionResult EditCostPoint(long id, CostPoint CostPoint)
+		{
+			if (ModelState.IsValid)
+			{
+				CostPoint.State = BusinessEntity.Models.Base.Enums.ObjectState.Active;
 
-                return Json(new { success = postResult.result, message = postResult.message });
-            }
+				var postResult = Helper.PostValueToSevice<CostPoint>("PUT?id=" + CostPoint.Id.ToString(), CostPoint);
 
-            return Json(new { success = false, message = "Model Is Not Valid!" });
-        }
+				return Json(new { success = postResult.result, message = postResult.message });
+			}
 
-        public IActionResult DeleteCostPoint(long id)
-        {
-            ViewData["title"] = Helper.GetEntityTile<CostPoint>(EnumTitle.Delete);
+			return Json(new { success = false, message = "Model Is Not Valid!" });
+		}
 
-            return PartialView(GetCostPointById(id));
-        }
+		public IActionResult DeleteCostPoint(long id)
+		{
+			ViewData["title"] = Helper.GetEntityTile<CostPoint>(EnumTitle.Delete);
 
-        [HttpPost]
-        public IActionResult DeleteCostPoint(CostPoint CostPoint)
-        {
-            var postResult = Helper.PostValueToSevice<CostPoint>("Delete?id=" + CostPoint.Id.ToString(), CostPoint);
+			return PartialView(GetCostPointById(id));
+		}
 
-            return Json(new { success = postResult.result, message = postResult.message });
-        }
+		[HttpPost]
+		public IActionResult DeleteCostPoint(CostPoint CostPoint)
+		{
+			var postResult = Helper.PostValueToSevice<CostPoint>("Delete?id=" + CostPoint.Id.ToString(), CostPoint);
 
-        private CostPoint GetCostPointById(long id)
-        {
-            return (Helper.GetServiceResponse<CostPoint>("GetById?id=" + id.ToString()).data as List<CostPoint>)
-                .FirstOrDefault();
-        }
-    }
+			return Json(new { success = postResult.result, message = postResult.message });
+		}
+
+		private CostPoint GetCostPointById(long id)
+		{
+			return (Helper.GetServiceResponse<CostPoint>("GetById?id=" + id.ToString()).data as List<CostPoint>)
+				.FirstOrDefault();
+		}
+	}
 }

@@ -1,29 +1,29 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace CostControl.BusinessEntity.Models.CostControl
+﻿namespace CostControl.BusinessEntity.Models.CostControl
 {
-    public class CostPoint : Base.Interfaces.IEntity<long>
-    {
-        public long Id { get; set; }
+	using System.ComponentModel.DataAnnotations;
 
-        public System.Guid? InstanceId { get; set; }
+	public class CostPoint : Base.Interfaces.IEntity<long>
+	{
+		public long Id { get; set; }
 
-        public Base.Enums.ObjectState State { get; set; } = Base.Enums.ObjectState.Active;
+		public System.Guid? InstanceId { get; set; }
 
-        [Required(ErrorMessage = "نام اجباریست!")]
-        [Display(Name = "نام")]
-        public string Name { get; set; }
+		public Base.Enums.ObjectState State { get; set; } = Base.Enums.ObjectState.Active;
 
-        [Required(ErrorMessage = "کد اجباریست!")]
-        [Display(Name = "کد")]
-        public string Code { get; set; }
+		[Required(ErrorMessage = "نام اجباریست!")]
+		[Display(Name = "نام")]
+		public string Name { get; set; }
 
-        [Required(ErrorMessage = "گروه مرکز هزینه اجباریست!")]
-        [Display(Name = "گروه مرکز هزینه")]
-        public long CostPointGroupId { get; set; }
+		[Required(ErrorMessage = "کد اجباریست!")]
+		[Display(Name = "کد")]
+		public string Code { get; set; }
 
-        public string CostPointGroupName { get; set; }
+		[Required(ErrorMessage = "گروه مرکز هزینه اجباریست!")]
+		[Display(Name = "گروه مرکز هزینه")]
+		public long CostPointGroupId { get; set; }
 
-        public CostPointGroup CostPointGroup { get; set; }
-    }
+		public string CostPointGroupName { get; set; }
+
+		public CostPointGroup CostPointGroup { get; set; }
+	}
 }
