@@ -31,8 +31,8 @@ namespace CostControl.Data.DAL
                 //optionsBuilder.UseLoggerFactory(log);
 
                 optionsBuilder
-                    .UseSqlServer(@"Data Source=.\SQLEXPRESS;Initial Catalog=CostControl;Trusted_Connection=false;
-                                    User ID=sa; Password=2129;MultipleActiveResultSets=true;")
+                    .UseSqlServer(@"Data Source=.\me;Initial Catalog=CostControl;Trusted_Connection=false;
+                                    User ID=sa; Password=2129123;MultipleActiveResultSets=true;")
                     //.UseLazyLoadingProxies()
                     //.ConfigureWarnings(warnings => warnings.Ignore(CoreEventId.DetachedLazyLoadingWarning))
                     .EnableSensitiveDataLogging();
