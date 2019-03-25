@@ -76,7 +76,7 @@
 		}
 
 		[HttpGet("GetById")/*, Route("{id:long}")*/]
-		public ActionResult<ServiceResponse<TEntity>> GetById(Key id)
+		public virtual ActionResult<ServiceResponse<TEntity>> GetById(Key id)
 		{
 			try
 			{
@@ -304,6 +304,7 @@
 			return
 				new ServiceResponse<TEntity>()
 				{
+					statusCode = HttpStatusCode.OK,
 					data = entities,
 					result = true,
 					messages = null,
@@ -319,27 +320,10 @@
 				};
 		}
 
-		private ActionResult<ServiceResponse<TEntity>> GenerateResponse
+		protected ActionResult<ServiceResponse<TEntity>> GenerateResponse
 			(Pagination paginate, TEntity entity)
-		{
-			return
-				new ServiceResponse<TEntity>()
-				{
-					statusCode = HttpStatusCode.OK,
-					data = new List<TEntity> { entity },
-					result = true,
-					messages = null,
-					totalRowCount = paginate != null ? paginate.TotalCount : 0,
-					pageSize = paginate != null ? paginate.PageSize : 0,
-					currentPage = paginate != null ? paginate.PageNumber : 0,
-					totalPage = paginate != null ? paginate.TotalPages : 0,
-					sortOrder = paginate != null ? paginate.SortOrder : null,
-					searchKey = paginate != null ? paginate.SearchKey : null,
-					hasPreviousPage = paginate != null ? paginate.HasPreviousPage : false,
-					hasNextPage = paginate != null ? paginate.HasNextPage : false
-				};
-		}
-
+		=> GenerateResponse(paginate, new List<TEntity> { entity });
+				
 		protected ActionResult<ServiceResponse<TEntity>> GenerateExceptionResponse(Exception exception, string defaultMessage)
 		{
 			var errMessage = (exception.InnerException?.Message ?? exception.Message) ?? defaultMessage;

@@ -18,7 +18,7 @@
 	public class SaleCostPointController : BaseApiController<SaleCostPoint, SaleCostPointLogic, long>
 	{
 		[HttpGet("Get")]
-		public override ActionResult<ServiceResponse<SaleCostPoint>> Get([FromQuery]Pagination paginate = null, string token = "")
+		public new ActionResult<ServiceResponse<SaleCostPoint>> Get([FromQuery]Pagination paginate = null, string token = "")
 		{
 			try
 			{
@@ -39,5 +39,23 @@
 				return GenerateExceptionResponse(e, "Exception!");
 			}
 		}
+
+		[HttpGet("GetById")]
+		public new ActionResult<ServiceResponse<SaleCostPoint>> GetById(long id)
+		{
+			try
+			{
+				return GenerateResponse(null, entity: PDKBusinessLogic.GetById(id,
+														includeProperties: new List<Expression<Func<IQueryable<SaleCostPoint>, IIncludableQueryable<SaleCostPoint, object>>>>{
+																					a => a.Include(b => b.SalePoint),
+																					a => a.Include(b => b.CostPoint)
+										}));
+			}
+			catch (Exception e)
+			{
+				return GenerateExceptionResponse(e, "Exception!");
+			}
+		}
+
 	}
 }

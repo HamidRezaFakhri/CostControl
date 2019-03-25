@@ -522,7 +522,7 @@
 
 		public int Commit()
 		{
-			var commit = Commit();
+			var commit = _unitOfWork.Commit();
 
 			if (commit < 0)
 				throw new Exception("Commit failed!");
