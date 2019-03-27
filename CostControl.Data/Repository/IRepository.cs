@@ -42,16 +42,16 @@
             bool disableTracking = false,
             bool eagerLoaging = false);
 
-        TEntity GetById(object id);
+        TEntity GetById<TKey>(TKey id);
 
-        TEntity GetById(object id,
+        TEntity GetById<TKey>(TKey id,
             ICollection<Expression<Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>>> includeProperties = null
             );
 
-        Task<TEntity> GetByIdAsync(object id,
+        Task<TEntity> GetByIdAsync<TKey>(TKey id,
             CancellationToken cancellationToken = default(CancellationToken));
 
-        Task<TEntity> GetByIdAsync(object id,
+        Task<TEntity> GetByIdAsync<TKey>(TKey id,
             ICollection<Expression<Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>>> includeProperties = null,
             CancellationToken cancellationToken = default(CancellationToken));
 

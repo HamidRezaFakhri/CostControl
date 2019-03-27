@@ -46,10 +46,10 @@
             try
             {
                 var aa = PDKBusinessLogic.GetById(id,
-                                                        includeProperties: new List<Expression<Func<IQueryable<SaleCostPoint>, IIncludableQueryable<SaleCostPoint, object>>>>{
-                                                                                    a => a.Include(b => b.SalePoint),
-                                                                                    a => a.Include(b => b.CostPoint)
-                                        });
+                                                    includeProperties: new List<Expression<Func<IQueryable<SaleCostPoint>, IIncludableQueryable<SaleCostPoint, object>>>>{
+                                                                                a => a.Include(b => b.SalePoint),
+                                                                                a => a.Include(b => b.CostPoint)
+                                                    });
 
                 return GenerateResponse(null, entity: aa);
             }

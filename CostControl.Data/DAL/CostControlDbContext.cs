@@ -28,8 +28,7 @@
 				//optionsBuilder.UseLoggerFactory(log);
 
 				optionsBuilder
-					.UseSqlServer(@"Data Source=.\SQLExpress;Initial Catalog=CostControl;Trusted_Connection=false;
-									User ID=sa; Password=2129;MultipleActiveResultSets=true;")
+					.UseSqlServer(@"Data Source=.;Initial Catalog=CostControl;Trusted_Connection=true;MultipleActiveResultSets=true;")
 					//.UseLazyLoadingProxies()
 					//.ConfigureWarnings(warnings => warnings.Ignore(CoreEventId.DetachedLazyLoadingWarning))
 					.EnableSensitiveDataLogging();

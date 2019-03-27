@@ -264,7 +264,7 @@
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public virtual TEntity GetById(object id)
+        public virtual TEntity GetById<TKey>(TKey id)
         => id == null ? null : DbSet.Find(id);
 
         /// <summary>
@@ -272,7 +272,7 @@
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public virtual TEntity GetById(object id,
+        public virtual TEntity GetById<TKey>(TKey id,
             ICollection<Expression<Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>>> includeProperties = null)
         {
             if (id == null)
@@ -280,13 +280,14 @@
                 return null;
             }
 
-            var query = DbSet.AsQueryable();
+            IQueryable<TEntity> query = DbSet;
 
             query = includeProperties
                 .Select(i => i.Compile())
                 .Aggregate(query, (list, next) => query = next(query));
 
-            return query.SingleOrDefault(/*e => (e as ISuperEntity<object>).Id == id*/);
+            return query.FirstOrDefault(q => (q as ISuperEntity<TKey>).Id.Equals(id));
+
             //https://stackoverflow.com/questions/29030472/dbset-doesnt-have-a-find-method-in-ef7
         }
 
@@ -296,7 +297,7 @@
         /// <param name="id"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public virtual async Task<TEntity> GetByIdAsync(object id,
+        public virtual async Task<TEntity> GetByIdAsync<TKey>(TKey id,
             CancellationToken cancellationToken = default(CancellationToken))
             => id == null ? null : await DbSet.FindAsync(cancellationToken, id);
 
@@ -306,7 +307,7 @@
         /// <param name="id"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public virtual async Task<TEntity> GetByIdAsync(object id,
+        public virtual async Task<TEntity> GetByIdAsync<TKey>(TKey id,
             ICollection<Expression<Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>>> includeProperties = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -321,7 +322,7 @@
                 .Select(i => i.Compile())
                 .Aggregate(query, (list, next) => query = next(query));
 
-            return await query.SingleOrDefaultAsync(e => (e as ISuperEntity<object>).Id == id);
+            return await query.FirstOrDefaultAsync(q => (q as ISuperEntity<TKey>).Id.Equals(id), cancellationToken);
         }
 
         /// <summary>
