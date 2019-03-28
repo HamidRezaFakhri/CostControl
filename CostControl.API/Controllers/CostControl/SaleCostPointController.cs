@@ -44,14 +44,12 @@
         public override/*new*/ ActionResult<ServiceResponse<SaleCostPoint>> GetById(long id)
         {
             try
-            {
-                var aa = PDKBusinessLogic.GetById(id,
-                                                    includeProperties: new List<Expression<Func<IQueryable<SaleCostPoint>, IIncludableQueryable<SaleCostPoint, object>>>>{
-                                                                                a => a.Include(b => b.SalePoint),
-                                                                                a => a.Include(b => b.CostPoint)
-                                                    });
-
-                return GenerateResponse(null, entity: aa);
+            {                
+                return GenerateResponse(null, entity: PDKBusinessLogic.GetById(id,
+                                                                includeProperties: new List<Expression<Func<IQueryable<SaleCostPoint>, IIncludableQueryable<SaleCostPoint, object>>>>{
+                                                                                            a => a.Include(b => b.SalePoint),
+                                                                                            a => a.Include(b => b.CostPoint)
+                                                                }));
             }
             catch (Exception e)
             {

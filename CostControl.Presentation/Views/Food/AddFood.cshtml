@@ -51,10 +51,18 @@
 		<div class="form-group">
 			@Html.LabelFor(model => model.ServeType, htmlAttributes: new { @class = "control-label col-md-12" })
 			<div class="col-md-12">
-				<select asp-for="ServeType" class="form-control"
-						asp-items="Html.GetEnumSelectList<CostControl.BusinessEntity.Models.CostControl.Enums.ServeType>()">
-					<option selected="selected" value="">انتخاب کنید ...</option>
-				</select>
+				@*<select asp-for="ServeType" class="form-control"
+				asp-items="Html.GetEnumSelectList<CostControl.BusinessEntity.Models.CostControl.Enums.ServeType>()">
+			<option selected="selected" value="">انتخاب کنید ...</option>
+		</select>*@
+
+				@Html.DropDownListFor(x => x.ServeType, new[]{
+									new SelectListItem(){ Text = "وعده اصلی", Value = "1"},
+									new SelectListItem(){ Text = "پیش غدا", Value = "2"},
+									new SelectListItem(){ Text = "دسر", Value = "3"},
+									new SelectListItem(){ Text = "وعده", Value = "4"}
+									}, "نحوه سرو را انتخاب کنید", new { @class = "form-control" })
+
 				@Html.ValidationMessageFor(model => model.ServeType, "", new { @class = "text-danger" })
 			</div>
 		</div>

@@ -232,14 +232,6 @@
 
 		public Repository<CostPoint> CostPoint => _costPoint ?? (_costPoint = new Repository<CostPoint>(_context));
 
-		private Repository<Sale> _sale;
-
-		public Repository<Sale> Sale => _sale ?? (_sale = new Repository<Sale>(_context));
-
-		private Repository<SaleItem> _saleItem;
-
-		public Repository<SaleItem> SaleItem => _saleItem ?? (_saleItem = new Repository<SaleItem>(_context));
-
 		private Repository<Buffet> _buffet;
 
 		public Repository<Buffet> Buffet => _buffet ?? (_buffet = new Repository<Buffet>(_context));

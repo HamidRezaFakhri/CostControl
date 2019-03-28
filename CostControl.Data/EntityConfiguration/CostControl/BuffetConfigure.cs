@@ -1,18 +1,22 @@
 ﻿namespace CostControl.Data.EntityConfiguration.CostControl
 {
-	using Data.EntityConfiguration.Base;
-	using Entity.Models.CostControl;
-	using Microsoft.EntityFrameworkCore;
-	using Microsoft.EntityFrameworkCore.Metadata.Builders;
+    using Data.EntityConfiguration.Base;
+    using Entity.Models.CostControl;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-	public class BuffetConfigure : BaseEntityConfigure<Buffet, long>
-	{
-		public override void Configure(EntityTypeBuilder<Buffet> entityTypeBuilder)
-		{
-			base.Configure(entityTypeBuilder);
+    public class BuffetConfigure : BaseEntityConfigure<Buffet, long>
+    {
+        public override void Configure(EntityTypeBuilder<Buffet> entityTypeBuilder)
+        {
+            base.Configure(entityTypeBuilder);
 
-			entityTypeBuilder
-			   .ToTable("Buffet", "dbo");
-		}
-	}
+            entityTypeBuilder
+                .Property(e => e.SaleCostPointId)
+                .IsRequired();
+
+            entityTypeBuilder
+               .ToTable("Buffet", "dbo");
+        }
+    }
 }

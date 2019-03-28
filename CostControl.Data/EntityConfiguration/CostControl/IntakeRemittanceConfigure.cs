@@ -1,26 +1,42 @@
 ﻿namespace CostControl.Data.EntityConfiguration.CostControl
 {
-	using Data.EntityConfiguration.Base;
-	using Entity.Models.CostControl;
-	using Microsoft.EntityFrameworkCore;
-	using Microsoft.EntityFrameworkCore.Metadata.Builders;
+    using System;
+    using Data.EntityConfiguration.Base;
+    using Entity.Models.CostControl;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-	public class IntakeRemittanceConfigure : BaseEntityConfigure<IntakeRemittance, long>
-	{
-		public override void Configure(EntityTypeBuilder<IntakeRemittance> entityTypeBuilder)
-		{
-			base.Configure(entityTypeBuilder);
-			
-			entityTypeBuilder
-				.Property(e => e.IntakeDate)
-				.HasColumnType("datetime");
+    public class IntakeRemittanceConfigure : BaseEntityConfigure<IntakeRemittance, long>
+    {
+        public override void Configure(EntityTypeBuilder<IntakeRemittance> entityTypeBuilder)
+        {
+            base.Configure(entityTypeBuilder);
 
-			entityTypeBuilder
-				.Property(e => e.RegisteredDate)
-				.HasColumnType("datetime");
+            entityTypeBuilder
+                .Property(e => e.SaleCostPointId)
+                .IsRequired();
 
-			entityTypeBuilder
-				.ToTable("IntakeRemittance", "dbo");
-		}
-	}
+            entityTypeBuilder
+                .Property(e => e.IntakeDate)
+                .IsRequired();
+
+            entityTypeBuilder
+                .Property(e => e.Description)
+                .HasMaxLength(500)
+                .IsRequired();
+
+            entityTypeBuilder
+                .Property(e => e.RegisteredDate)
+                .HasDefaultValue(DateTime.Now)
+                .HasDefaultValueSql("GETDATE()")
+                .IsRequired();
+
+            entityTypeBuilder
+                .Property(e => e.RegisteredUserId)
+                .IsRequired();
+
+            entityTypeBuilder
+                .ToTable("IntakeRemittance", "dbo");
+        }
+    }
 }

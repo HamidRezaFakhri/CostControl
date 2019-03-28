@@ -1,42 +1,33 @@
 ﻿namespace CostControl.Entity.Models.CostControl
 {
-	using System;
-	using System.Collections.Generic;
-	using System.ComponentModel.DataAnnotations;
-	using Entity.Models.Base;
+    using System;
+    using System.Collections.Generic;
+    using Entity.Models.Base;
 
-	public class Draft : SuperEntity<long>
-	{
-		[Required]
-		public long SaleCostPointId { get; set; }
+    public class Draft : SuperEntity<long>
+    {
+        public long SaleCostPointId { get; set; }
 
-		public virtual SaleCostPoint SaleCostPoint { get; set; }
+        public virtual SaleCostPoint SaleCostPoint { get; set; }
 
-		[Required]
-		public long InventoryId { get; set; }
+        public long InventoryId { get; set; }
 
-		public virtual Inventory Inventory { get; set; }
+        public virtual Inventory Inventory { get; set; }
 
-		public long DepoId { get; set; }
+        public long DepoId { get; set; }
 
-		public virtual Depo Depo { get; set; }
+        public virtual Depo Depo { get; set; }
 
-		[Required]
-		public DateTime DraftDate { get; set; } = DateTime.Now;
+        public DateTime DraftDate { get; set; }
 
-		[Required]
-		public DateTime RegisteredDate { get; set; } = DateTime.Now;
+        public DateTime RegisteredDate { get; set; }
 
-		[Required]
-		public long RegisteredUserId { get; set; }
+        public long RegisteredUserId { get; set; }
 
-		public virtual IncommingUser RegisteredUser { get; set; }
+        public virtual IncommingUser RegisteredUser { get; set; }
 
-		[Required]
-		public virtual ICollection<DraftItem> DraftItems { get; set; }
+        public virtual ICollection<DraftItem> DraftItems { get; set; }
 
-		[StringLength(500, MinimumLength = 10,
-			ErrorMessage = "Please enter a vlid description, it must be greater than {2} characters and less than {1} characters.")]
-		public string Description { get; set; }
-	}
+        public string Description { get; set; }
+    }
 }

@@ -131,7 +131,7 @@
 
 		public static string GetAPIAddress()
 		{
-			return "http://localhost:38004/api/";
+			return "http://localhost:5001/api/";
 		}
 
 		public static string GetAPIAddress(string controllerName)

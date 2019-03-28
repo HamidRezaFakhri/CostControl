@@ -15,7 +15,7 @@ namespace CostControl.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.2-servicing-10034")
+                .HasAnnotation("ProductVersion", "2.2.3-servicing-35854")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -25,13 +25,17 @@ namespace CostControl.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<long>("SalePointId");
+                    b.Property<long>("SaleCostPointId");
+
+                    b.Property<long?>("SalePointId");
 
                     b.Property<int>("State")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("1");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("SaleCostPointId");
 
                     b.HasIndex("SalePointId");
 
@@ -45,10 +49,11 @@ namespace CostControl.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Code")
-                        .HasMaxLength(25);
+                        .HasMaxLength(10);
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("NVARCHAR(250)")
                         .HasMaxLength(250)
                         .IsUnicode(true);
 
@@ -57,6 +62,10 @@ namespace CostControl.Data.Migrations
                         .HasDefaultValueSql("1");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique()
+                        .HasFilter("[Code] IS NOT NULL");
 
                     b.HasIndex("Name")
                         .IsUnique();
@@ -71,12 +80,13 @@ namespace CostControl.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Code")
-                        .HasMaxLength(25);
+                        .HasMaxLength(10);
 
                     b.Property<long>("CostPointGroupId");
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("NVARCHAR(250)")
                         .HasMaxLength(250)
                         .IsUnicode(true);
 
@@ -86,7 +96,12 @@ namespace CostControl.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CostPointGroupId");
+                    b.HasIndex("Code")
+                        .IsUnique()
+                        .HasFilter("[Code] IS NOT NULL");
+
+                    b.HasIndex("CostPointGroupId")
+                        .IsUnique();
 
                     b.HasIndex("Name")
                         .IsUnique();
@@ -101,10 +116,11 @@ namespace CostControl.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Code")
-                        .HasMaxLength(25);
+                        .HasMaxLength(10);
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("NVARCHAR(250)")
                         .HasMaxLength(250)
                         .IsUnicode(true);
 
@@ -113,6 +129,10 @@ namespace CostControl.Data.Migrations
                         .HasDefaultValueSql("1");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique()
+                        .HasFilter("[Code] IS NOT NULL");
 
                     b.HasIndex("Name")
                         .IsUnique();
@@ -127,7 +147,8 @@ namespace CostControl.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("ImportTime")
-                        .HasColumnType("DateTime");
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<int>("State")
                         .ValueGeneratedOnAdd()
@@ -144,7 +165,8 @@ namespace CostControl.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<decimal>("Amount");
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric(28,2)");
 
                     b.Property<long>("ConsumptionUnitId");
 
@@ -176,15 +198,19 @@ namespace CostControl.Data.Migrations
                     b.Property<long>("DepoId");
 
                     b.Property<string>("Description")
-                        .HasMaxLength(500);
+                        .HasColumnType("NVARCHAR(500)")
+                        .HasMaxLength(500)
+                        .IsUnicode(true);
 
                     b.Property<DateTime>("DraftDate")
-                        .HasColumnType("datetime");
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<long>("InventoryId");
 
                     b.Property<DateTime>("RegisteredDate")
-                        .HasColumnType("datetime");
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<long>("RegisteredUserId");
 
@@ -215,7 +241,8 @@ namespace CostControl.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<decimal>("Amount");
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric(28,2)");
 
                     b.Property<long>("ConsumptionUnitId");
 
@@ -246,7 +273,7 @@ namespace CostControl.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Code")
-                        .HasMaxLength(25);
+                        .HasMaxLength(10);
 
                     b.Property<string>("EnglishName")
                         .IsRequired()
@@ -254,10 +281,12 @@ namespace CostControl.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("NVARCHAR(250)")
                         .HasMaxLength(250)
                         .IsUnicode(true);
 
-                    b.Property<decimal>("Price");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric(28,2)");
 
                     b.Property<long>("SaleCostPointId");
 
@@ -268,6 +297,10 @@ namespace CostControl.Data.Migrations
                         .HasDefaultValueSql("1");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique()
+                        .HasFilter("[Code] IS NOT NULL");
 
                     b.HasIndex("Name")
                         .IsUnique();
@@ -305,11 +338,12 @@ namespace CostControl.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Code")
-                        .HasMaxLength(25);
+                        .HasMaxLength(10);
 
                     b.Property<string>("Description")
-                        .HasColumnType("NVarChar(250)")
-                        .HasMaxLength(250);
+                        .HasColumnType("NVARCHAR(500)")
+                        .HasMaxLength(500)
+                        .IsUnicode(true);
 
                     b.Property<string>("EnglishName")
                         .IsRequired()
@@ -317,6 +351,7 @@ namespace CostControl.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("NVARCHAR(250)")
                         .HasMaxLength(250)
                         .IsUnicode(true);
 
@@ -334,9 +369,12 @@ namespace CostControl.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Name", "Code")
+                    b.HasIndex("Code")
                         .IsUnique()
                         .HasFilter("[Code] IS NOT NULL");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("Ingredient","dbo");
                 });
@@ -348,15 +386,18 @@ namespace CostControl.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasMaxLength(500);
 
-                    b.Property<DateTime>("IntakeDate")
-                        .HasColumnType("datetime");
+                    b.Property<DateTime>("IntakeDate");
 
                     b.Property<DateTime>("RegisteredDate")
-                        .HasColumnType("datetime");
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<long>("RegisteredUserId");
+
+                    b.Property<int?>("RegisteredUserId1");
 
                     b.Property<long>("SaleCostPointId");
 
@@ -366,7 +407,7 @@ namespace CostControl.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RegisteredUserId");
+                    b.HasIndex("RegisteredUserId1");
 
                     b.HasIndex("SaleCostPointId");
 
@@ -379,7 +420,8 @@ namespace CostControl.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<decimal>("Amount");
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric(28,2)");
 
                     b.Property<long>("ConsumptionUnitId");
 
@@ -409,12 +451,15 @@ namespace CostControl.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Code")
-                        .HasMaxLength(25);
+                        .HasMaxLength(10);
 
-                    b.Property<bool>("IsWasted");
+                    b.Property<bool>("IsWasted")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("0");
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("NVARCHAR(250)")
                         .HasMaxLength(250)
                         .IsUnicode(true);
 
@@ -423,6 +468,10 @@ namespace CostControl.Data.Migrations
                         .HasDefaultValueSql("1");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique()
+                        .HasFilter("[Code] IS NOT NULL");
 
                     b.HasIndex("Name")
                         .IsUnique();
@@ -437,16 +486,20 @@ namespace CostControl.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Code")
-                        .HasMaxLength(25);
+                        .HasMaxLength(10);
 
-                    b.Property<decimal>("CostRatio");
+                    b.Property<decimal>("CostRatio")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("numeric(28,2)")
+                        .HasDefaultValueSql("0");
 
                     b.Property<string>("EnglishName")
                         .IsRequired()
                         .HasMaxLength(250);
 
                     b.Property<DateTime>("FromDate")
-                        .HasColumnType("datetime");
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -460,10 +513,16 @@ namespace CostControl.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("1");
 
-                    b.Property<DateTime?>("ToDate")
-                        .HasColumnType("datetime");
+                    b.Property<DateTime?>("ToDate");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique()
+                        .HasFilter("[Code] IS NOT NULL");
+
+                    b.HasIndex("EnglishName")
+                        .IsUnique();
 
                     b.HasIndex("SaleCostPointId");
 
@@ -480,7 +539,8 @@ namespace CostControl.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<decimal>("Amount");
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric(28,2)");
 
                     b.Property<long>("ConsumptionUnitId");
 
@@ -516,15 +576,15 @@ namespace CostControl.Data.Migrations
                     b.Property<string>("Description")
                         .HasMaxLength(500);
 
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime");
+                    b.Property<DateTime>("EndDate");
 
                     b.Property<byte>("OverCostTypeId");
 
                     b.Property<decimal>("Price");
 
                     b.Property<DateTime>("RegisteredDate")
-                        .HasColumnType("datetime");
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<long>("RegisteredUserId");
 
@@ -532,8 +592,7 @@ namespace CostControl.Data.Migrations
 
                     b.Property<long>("SaleCostPointId");
 
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime");
+                    b.Property<DateTime>("StartDate");
 
                     b.Property<int>("State")
                         .ValueGeneratedOnAdd()
@@ -560,10 +619,11 @@ namespace CostControl.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("FinancialCode")
-                        .HasMaxLength(25);
+                        .HasMaxLength(10);
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("NVARCHAR(250)")
                         .HasMaxLength(250)
                         .IsUnicode(true);
 
@@ -572,6 +632,10 @@ namespace CostControl.Data.Migrations
                         .HasDefaultValueSql("1");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FinancialCode")
+                        .IsUnique()
+                        .HasFilter("[FinancialCode] IS NOT NULL");
 
                     b.HasIndex("Name")
                         .IsUnique();
@@ -613,29 +677,6 @@ namespace CostControl.Data.Migrations
                     b.ToTable("Recipe","dbo");
                 });
 
-            modelBuilder.Entity("CostControl.Entity.Models.CostControl.Sale", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(25);
-
-                    b.Property<long>("SaleCostPointId");
-
-                    b.Property<DateTime>("SaleDate");
-
-                    b.Property<int>("State");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SaleCostPointId");
-
-                    b.ToTable("Sale");
-                });
-
             modelBuilder.Entity("CostControl.Entity.Models.CostControl.SaleCostPoint", b =>
                 {
                     b.Property<long>("Id")
@@ -660,35 +701,6 @@ namespace CostControl.Data.Migrations
                     b.ToTable("SaleCostPoint","dbo");
                 });
 
-            modelBuilder.Entity("CostControl.Entity.Models.CostControl.SaleItem", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Count");
-
-                    b.Property<long>("FoodId");
-
-                    b.Property<long>("IngredientId");
-
-                    b.Property<decimal>("Price");
-
-                    b.Property<long>("SaleId");
-
-                    b.Property<int>("State");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FoodId");
-
-                    b.HasIndex("IngredientId");
-
-                    b.HasIndex("SaleId");
-
-                    b.ToTable("SaleItem");
-                });
-
             modelBuilder.Entity("CostControl.Entity.Models.CostControl.SalePoint", b =>
                 {
                     b.Property<long>("Id")
@@ -696,16 +708,20 @@ namespace CostControl.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Code")
-                        .HasMaxLength(25);
+                        .IsRequired()
+                        .HasMaxLength(10);
 
                     b.Property<string>("EnglishName")
                         .IsRequired()
                         .HasMaxLength(250);
 
-                    b.Property<bool>("IsHall");
+                    b.Property<bool>("IsHall")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("0");
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("NVARCHAR(250)")
                         .HasMaxLength(250)
                         .IsUnicode(true);
 
@@ -714,6 +730,12 @@ namespace CostControl.Data.Migrations
                         .HasDefaultValueSql("1");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.HasIndex("EnglishName")
+                        .IsUnique();
 
                     b.HasIndex("Name")
                         .IsUnique();
@@ -727,7 +749,9 @@ namespace CostControl.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<decimal>("IngredientUsageRate");
+                    b.Property<decimal>("IngredientUsageRate")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("70");
 
                     b.Property<int>("State")
                         .ValueGeneratedOnAdd()
@@ -738,63 +762,16 @@ namespace CostControl.Data.Migrations
                     b.ToTable("Setting","dbo");
                 });
 
-            modelBuilder.Entity("CostControl.Entity.Models.Security.Role", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Code")
-                        .HasMaxLength(25);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(250);
-
-                    b.Property<int>("State");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Role");
-                });
-
-            modelBuilder.Entity("CostControl.Entity.Models.Security.User", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("CreatedDate");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<long>("RoleId");
-
-                    b.Property<int>("State");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("User");
-                });
-
             modelBuilder.Entity("CostControl.Entity.Models.CostControl.Buffet", b =>
                 {
-                    b.HasOne("CostControl.Entity.Models.CostControl.SalePoint", "SalePoint")
-                        .WithMany("Buffets")
-                        .HasForeignKey("SalePointId")
+                    b.HasOne("CostControl.Entity.Models.CostControl.SaleCostPoint", "SaleCostPoint")
+                        .WithMany()
+                        .HasForeignKey("SaleCostPointId")
                         .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("CostControl.Entity.Models.CostControl.SalePoint")
+                        .WithMany("Buffets")
+                        .HasForeignKey("SalePointId");
                 });
 
             modelBuilder.Entity("CostControl.Entity.Models.CostControl.CostPoint", b =>
@@ -873,10 +850,9 @@ namespace CostControl.Data.Migrations
 
             modelBuilder.Entity("CostControl.Entity.Models.CostControl.IntakeRemittance", b =>
                 {
-                    b.HasOne("CostControl.Entity.Models.Security.User", "RegisteredUser")
+                    b.HasOne("CostControl.Entity.Models.CostControl.IncommingUser", "RegisteredUser")
                         .WithMany()
-                        .HasForeignKey("RegisteredUserId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("RegisteredUserId1");
 
                     b.HasOne("CostControl.Entity.Models.CostControl.SaleCostPoint", "SaleCostPoint")
                         .WithMany("IntakeRemittances")
@@ -968,14 +944,6 @@ namespace CostControl.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
-            modelBuilder.Entity("CostControl.Entity.Models.CostControl.Sale", b =>
-                {
-                    b.HasOne("CostControl.Entity.Models.CostControl.SaleCostPoint", "SaleCostPoint")
-                        .WithMany("Sales")
-                        .HasForeignKey("SaleCostPointId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
             modelBuilder.Entity("CostControl.Entity.Models.CostControl.SaleCostPoint", b =>
                 {
                     b.HasOne("CostControl.Entity.Models.CostControl.CostPoint", "CostPoint")
@@ -986,32 +954,6 @@ namespace CostControl.Data.Migrations
                     b.HasOne("CostControl.Entity.Models.CostControl.SalePoint", "SalePoint")
                         .WithMany("SaleCostPoints")
                         .HasForeignKey("SalePointId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("CostControl.Entity.Models.CostControl.SaleItem", b =>
-                {
-                    b.HasOne("CostControl.Entity.Models.CostControl.Food", "Food")
-                        .WithMany("SaleItems")
-                        .HasForeignKey("FoodId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("CostControl.Entity.Models.CostControl.Ingredient", "Ingredient")
-                        .WithMany("SaleItems")
-                        .HasForeignKey("IngredientId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("CostControl.Entity.Models.CostControl.Sale", "Sale")
-                        .WithMany("SaleItems")
-                        .HasForeignKey("SaleId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("CostControl.Entity.Models.Security.User", b =>
-                {
-                    b.HasOne("CostControl.Entity.Models.Security.Role", "Role")
-                        .WithMany("Users")
-                        .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 #pragma warning restore 612, 618
