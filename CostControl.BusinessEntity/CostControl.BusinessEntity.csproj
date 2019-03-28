@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <Folder Include="Models\CostControl\Interfaces\" />
+    <Folder Include="Models\Security\" />
   </ItemGroup>
 
 </Project>

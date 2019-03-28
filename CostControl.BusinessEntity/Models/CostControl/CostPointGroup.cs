@@ -1,21 +1,28 @@
 ﻿namespace CostControl.BusinessEntity.Models.CostControl
 {
-	using System.ComponentModel.DataAnnotations;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using BusinessEntity.Validations;
 
-	public class CostPointGroup : Base.Interfaces.IEntity<long>
-	{
-		public long Id { get; set; }
+    public class CostPointGroup : BaseValidating, Base.Interfaces.IEntity<long>
+    {
+        public long Id { get; set; }
 
-		public System.Guid? InstanceId { get; set; }
+        public System.Guid? InstanceId { get; set; }
 
-		public Base.Enums.ObjectState State { get; set; } = Base.Enums.ObjectState.Active;
+        public Base.Enums.ObjectState State { get; set; } = Base.Enums.ObjectState.Active;
 
-		[Required(ErrorMessage = "نام اجباریست!")]
-		[Display(Name = "نام")]
-		public string Name { get; set; }
+        [Required(ErrorMessage = "نام اجباریست!")]
+        [Display(Name = "نام")]
+        public string Name { get; set; }
 
-		[Required(ErrorMessage = "کد اجباریست!")]
-		[Display(Name = "کد")]
-		public string Code { get; set; }
-	}
+        [Required(ErrorMessage = "کد اجباریست!")]
+        [Display(Name = "کد")]
+        public string Code { get; set; }
+
+        public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            return null;
+        }
+    }
 }

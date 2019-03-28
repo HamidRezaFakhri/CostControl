@@ -1,21 +1,30 @@
 ﻿namespace CostControl.BusinessEntity.Models.CostControl
 {
-	public class MenuItem : Base.Interfaces.IEntity<long>
-	{
-		public long Id { get; set; }
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using BusinessEntity.Validations;
 
-		public System.Guid? InstanceId { get; set; }
+    public class MenuItem : BaseValidating, Base.Interfaces.IEntity<long>
+    {
+        public long Id { get; set; }
 
-		public Base.Enums.ObjectState State { get; set; }
+        public System.Guid? InstanceId { get; set; }
 
-		public long MenuId { get; set; }
+        public Base.Enums.ObjectState State { get; set; }
 
-		public long FoodId { get; set; }
+        public long MenuId { get; set; }
 
-		public long IngredientId { get; set; }
+        public long FoodId { get; set; }
 
-		public decimal Amount { get; set; }
+        public long IngredientId { get; set; }
 
-		public long ConsumptionUnitId { get; set; }
-	}
+        public decimal Amount { get; set; }
+
+        public long ConsumptionUnitId { get; set; }
+
+        public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            return null;
+        }
+    }
 }

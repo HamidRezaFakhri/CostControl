@@ -18,7 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Logics\Security\" />
     <Folder Include="Profiles\Base\" />
+    <Folder Include="Profiles\Security\" />
   </ItemGroup>
 
 </Project>

@@ -160,14 +160,6 @@
 
 		#region Properties
 
-		//private Repository<Role> _roleRepository;
-
-		//public Repository<Role> RoleRepository => _roleRepository ?? (_roleRepository = new Repository<Role>(_context));
-
-		//private Repository<User> _userRepository;
-
-		//public Repository<User> UserRepository => _userRepository ?? (_userRepository = new Repository<User>(_context));
-
 		private Repository<IncommingUser> _incommingUser;
 
 		public Repository<IncommingUser> IncommingUser => _incommingUser ?? (_incommingUser = new Repository<IncommingUser>(_context));
