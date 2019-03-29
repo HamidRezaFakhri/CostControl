@@ -12,13 +12,18 @@
 
         public Base.Enums.ObjectState State { get; set; }
 
-        [Required(ErrorMessage = "درصد قابل استفاده اجباریست!")]
+        [Required]
         [Display(Name = "درصد قابل استفاده")]
         public decimal IngredientUsageRate { get; set; }
 
         public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            return null;
+            #region IngredientUsageRate validation rules
+            if (IngredientUsageRate <= 0 || IngredientUsageRate > 100)
+            {
+                yield return new ValidationResult(ValidationMessages.Range(nameof(IngredientUsageRate), 1, 100), new[] { nameof(IngredientUsageRate) });
+            }
+            #endregion
         }
     }
 }

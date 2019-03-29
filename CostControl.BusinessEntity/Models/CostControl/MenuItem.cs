@@ -12,12 +12,14 @@
 
         public Base.Enums.ObjectState State { get; set; }
 
+        [Required]
         public long MenuId { get; set; }
 
         public long FoodId { get; set; }
 
         public long IngredientId { get; set; }
 
+        [Required]
         public decimal Amount { get; set; }
 
         public long ConsumptionUnitId { get; set; }

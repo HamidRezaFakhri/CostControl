@@ -32,7 +32,19 @@
 
         public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            return null;
+            #region SalePointId validation rules
+            if (SalePointId <= 0)
+            {
+                yield return new ValidationResult(ValidationMessages.CanNotBeEmpty(nameof(SalePointId)), new[] { nameof(SalePointId) });
+            }
+            #endregion
+
+            #region CostPointId validation rules
+            if (CostPointId <= 0)
+            {
+                yield return new ValidationResult(ValidationMessages.CanNotBeEmpty(nameof(CostPointId)), new[] { nameof(CostPointId) });
+            }
+            #endregion
         }
     }
 }

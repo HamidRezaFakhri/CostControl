@@ -1,5 +1,6 @@
 ﻿namespace CostControl.BusinessEntity.Models.CostControl
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using BusinessEntity.Validations;
@@ -8,11 +9,12 @@
     {
         public long Id { get; set; }
 
-        public System.Guid? InstanceId { get; set; }
+        public Guid? InstanceId { get; set; }
 
         public Base.Enums.ObjectState State { get; set; }
 
         [Required]
+        [Display(Name = "مرکز فروش-مرکز هزینه")]
         public long SaleCostPointId { get; set; }
 
         public virtual SaleCostPoint SaleCostPoint { get; set; }
@@ -27,22 +29,44 @@
 
         public virtual Depo Depo { get; set; }
 
-        [Required(ErrorMessage = "تاریخ اجباریست!")]
+        [Required]
         [Display(Name = "تاریخ")]
-        public System.DateTime DraftDate { get; set; }
+        public DateTime DraftDate { get; set; }
 
-        public System.DateTime RegisteredDate { get; set; }
+        [Required]
+        [Display(Name = "تاریخ ثبت")]
+        public DateTime RegisteredDate { get; set; }
 
         public long RegisteredUserId { get; set; }
 
         public virtual IncommingUser RegisteredUser { get; set; }
 
         [Display(Name = "شرح")]
+        [DataType(DataType.MultilineText)]
         public string Description { get; set; }
 
         public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            return null;
+            #region SaleCostPoint validation rules
+            if (SaleCostPointId <= 0)
+            {
+                yield return new ValidationResult(ValidationMessages.CanNotBeEmpty(nameof(SaleCostPointId)), new[] { nameof(SaleCostPointId) });
+            }
+            #endregion
+
+            #region DraftDate validation rules
+            if (DraftDate == null || DraftDate == default(DateTime))
+            {
+                yield return new ValidationResult(ValidationMessages.CanNotBeEmpty(nameof(DraftDate)), new[] { nameof(DraftDate) });
+            }
+            #endregion
+
+            #region RegisteredDate validation rules
+            if (RegisteredDate == null || RegisteredDate == default(DateTime))
+            {
+                yield return new ValidationResult(ValidationMessages.CanNotBeEmpty(nameof(RegisteredDate)), new[] { nameof(RegisteredDate) });
+            }
+            #endregion
         }
     }
 }
