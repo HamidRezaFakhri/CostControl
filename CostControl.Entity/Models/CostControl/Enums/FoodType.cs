@@ -5,7 +5,7 @@
 	using System.ComponentModel.DataAnnotations;
 
 	[Flags]
-	public enum ServeType : byte
+	public enum FoodType : byte
 	{
 		[DisplayName("وعده اصلی")]
 		MainMeal = 1,
@@ -13,7 +13,9 @@
 		Appetizer,
 		[Display(Name = "دسر")]
 		Desert,
-		[Display(Name = "وعده")]
-		Meal
+		[Display(Name = "سالاد")]
+		Salan,
+		[Display(Name = "نوشیدنی")]
+		Beverage
 	}
 }

@@ -12,25 +12,30 @@
 
         public Base.Enums.ObjectState State { get; set; } = Base.Enums.ObjectState.Active;
 
-        [Required(ErrorMessage = "کد اجباریست!")]
+        [Required(ErrorMessage ="کد اجباریست!")]
+        [StringLength(25, MinimumLength = 1)]
         [Display(Name = "کد")]
         public string Code { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "نام/عنوان اجباریست!")]
+        [StringLength(250, MinimumLength = 3)]
+        //[CustomValidation()]
+        //[Range(1, 100)]
         [Display(Name = "نام/عنوان")]
         public string Name { get; set; }
 
         [Required]
+        [StringLength(250, MinimumLength = 3)]
         [Display(Name = "نام/عنوان لاتین")]
         public string EnglishName { get; set; }
-
+        
         [Display(Name = "سالن")]
         public bool IsHall { get; set; } = false;
 
         public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             #region Name validation rules
-            if (IsNullOrEmpty(Name))
+            if (string.IsNullOrEmpty(Name))
             {
                 yield return new ValidationResult(ValidationMessages.CanNotBeEmpty(nameof(Name)), new[] { nameof(Name) });
             }

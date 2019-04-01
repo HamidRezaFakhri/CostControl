@@ -86,7 +86,6 @@ namespace CostControl.Data.Migrations
                     Name = table.Column<string>(type: "NVARCHAR(250)", maxLength: 250, nullable: false),
                     Code = table.Column<string>(maxLength: 10, nullable: true),
                     EnglishName = table.Column<string>(maxLength: 250, nullable: false),
-                    Type = table.Column<byte>(nullable: false),
                     Price = table.Column<decimal>(nullable: false),
                     UsefullRatio = table.Column<decimal>(nullable: false, defaultValueSql: "70"),
                     Description = table.Column<string>(type: "NVARCHAR(500)", maxLength: 500, nullable: true)
@@ -297,7 +296,7 @@ namespace CostControl.Data.Migrations
                     SaleCostPointId = table.Column<long>(nullable: false),
                     Code = table.Column<string>(maxLength: 10, nullable: true),
                     EnglishName = table.Column<string>(maxLength: 250, nullable: false),
-                    ServeType = table.Column<byte>(nullable: false),
+                    FoodType = table.Column<byte>(nullable: false),
                     Price = table.Column<decimal>(type: "numeric(28,2)", nullable: false)
                 },
                 constraints: table =>
@@ -670,17 +669,10 @@ namespace CostControl.Data.Migrations
                 filter: "[Code] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CostPoint_CostPointGroupId",
+                name: "IX_CostPoint_CostPointGroupId_Name",
                 schema: "dbo",
                 table: "CostPoint",
-                column: "CostPointGroupId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CostPoint_Name",
-                schema: "dbo",
-                table: "CostPoint",
-                column: "Name",
+                columns: new[] { "CostPointGroupId", "Name" },
                 unique: true);
 
             migrationBuilder.CreateIndex(

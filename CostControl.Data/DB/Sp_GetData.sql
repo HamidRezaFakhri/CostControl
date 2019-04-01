@@ -239,7 +239,6 @@
 					Name,
 					Code,
 					EnglishName,
-					Type,
 					Price,
 					UsefullRatio
 				)
@@ -248,7 +247,6 @@
 			REPLACE(REPLACE(REPLACE(REPLACE(LTRIM(RTRIM(CAST(Name AS NVARCHAR(MAX)))), '  ', ' '), N'ك', N'ک'), N'ي', N'ی'), N'ئ', N'ی'),
 			NULLIF(LTRIM(RTRIM(Code)), ''),
 			ISNULL(LTRIM(RTRIM(LatinName)), ' '),
-			1,
 			0,
 			70
 		FROM
@@ -355,3 +353,111 @@
 --@jariorbaygani smallint               0 = جاری   ///
 --1 = بایگانی
 
+/*
+-- مرکز فروش
+SELECT fNameFarsi, fCode, fNameEng, isHall FROM [FB970506].dbo.MFB_POS
+
+-- گروه مرکز هزینه
+SELECT Name, Code FROM PouyaD.dbo.FinDetCg WHERE Leaf = 'T' AND Parent IS NULL
+
+-- مرکز هزینه
+SELECT Name, Code FROM PouyaD.dbo.FinDetCg WHERE Leaf = 'F' AND Parent IS NOT NULL
+
+-- ارتباط بین مرکز فروش و مرکز هزینه
+/*
+در برنامه
+Cost Control
+انجام می شود
+*/
+
+-- واحدهای مصرفی
+SELECT Name, '' Code FROM PouyaD.dbo.SckUntBd WHERE Leaf = 'F' AND Parent IS NULL
+
+-- انبارها
+SELECT Name FROM PouyaD.dbo.SckSecCg WHERE Leaf = 'F' AND [Index] = 1
+
+-- سرفصل هزینه های سربار
+/*
+در برنامه
+Cost Control
+انجام می شود
+*/
+
+-- هزینه های سربار دوره
+/*
+در برنامه
+Cost Control
+انجام می شود
+*/
+
+-- مواد خام
+SELECT Name, Code, LatinName FROM PouyaD.dbo.SckGdsCg WHERE GoodsGroup = '01' AND Leaf = 'F' AND Code LIKE '1%' 
+
+-- غذا
+SELECT Name, Code, LatinName FROM PouyaD.dbo.SckGdsCg WHERE GoodsGroup = '01' AND Leaf = 'F' AND Code LIKE '9%'
+/*
+قیمت و مرکز هزینه و فروش آن در برنامه
+Cost Control
+انجام می شود
+*/
+
+-- مواد تشکیل دهنده غذا
+/*
+در برنامه
+Cost Control
+انجام می شود
+*/
+
+-- فروش
+EXEC [FB970506].dbo.[STP_MFB_RestFroosh]
+	@opCode = -1,
+	@Dfrom = 13970102,
+	@Dto = 13970201,
+	@PCode = 555,
+	@PType = -1,
+	@fCodKolB = -1,
+	@fCodSarB = -1,
+	@jariorbaygani = 0
+
+-- حواله انبار
+--SELECT * FROM PouyaD.dbo.SckGd_St WHERE Stock = 1
+
+-- حواله مصرفی
+--SELECT * FROM PouyaD.dbo.SckVchPr
+--SELECT * FROM PouyaD.dbo.SckVchBk
+
+--EXEC dbo.USP_SckVchLs_Insert
+
+DECLARE
+	@FromDate DATE = '2017-08-15 00:00:00.000',
+	@ToDate DATE = '2017-08-15 00:00:00.000',
+	@Expence INT = 140013
+
+SELECT
+	L.[Date],
+	B.Goods,
+	B.FirstNumber,
+	B.Expence,
+	P.FirstCost,
+	P.FirstCost / B.FirstNumber Fee
+FROM
+	PouyaD.dbo.SckVchLs L
+	INNER JOIN
+	PouyaD.dbo.SckVchBk B
+ON
+	B.Parent = L.Serial
+	INNER JOIN
+	PouyaD.dbo.SckVchPr P
+ON
+	P.Parent = B.Serial
+WHERE
+	--Goods = '101001008'
+	Goods = '111003003'
+	AND
+	B.Expence = @Expence
+	AND
+	Date BETWEEN @FromDate AND @ToDate
+
+SELECT * FROM PouyaD.dbo.SckGdsCg WHERE Code = '111003003'
+
+*/

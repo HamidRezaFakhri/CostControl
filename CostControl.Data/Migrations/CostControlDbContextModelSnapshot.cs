@@ -100,10 +100,7 @@ namespace CostControl.Data.Migrations
                         .IsUnique()
                         .HasFilter("[Code] IS NOT NULL");
 
-                    b.HasIndex("CostPointGroupId")
-                        .IsUnique();
-
-                    b.HasIndex("Name")
+                    b.HasIndex("CostPointGroupId", "Name")
                         .IsUnique();
 
                     b.ToTable("CostPoint","dbo");
@@ -279,6 +276,8 @@ namespace CostControl.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(250);
 
+                    b.Property<byte>("FoodType");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("NVARCHAR(250)")
@@ -289,8 +288,6 @@ namespace CostControl.Data.Migrations
                         .HasColumnType("numeric(28,2)");
 
                     b.Property<long>("SaleCostPointId");
-
-                    b.Property<byte>("ServeType");
 
                     b.Property<int>("State")
                         .ValueGeneratedOnAdd()
@@ -360,8 +357,6 @@ namespace CostControl.Data.Migrations
                     b.Property<int>("State")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("1");
-
-                    b.Property<byte>("Type");
 
                     b.Property<decimal>("UsefullRatio")
                         .ValueGeneratedOnAdd()

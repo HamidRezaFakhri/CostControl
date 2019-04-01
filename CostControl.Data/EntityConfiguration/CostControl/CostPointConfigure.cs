@@ -5,11 +5,18 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-    public class CostPointConfigure : BaseNamedEntityConfigure<CostPoint, long>
+    public class CostPointConfigure : BaseEntityConfigure<CostPoint, long>
     {
         public override void Configure(EntityTypeBuilder<CostPoint> entityTypeBuilder)
         {
             base.Configure(entityTypeBuilder);
+
+            entityTypeBuilder
+                .Property(e => e.Name)
+                .HasMaxLength(250)
+                .HasColumnType("NVARCHAR(250)")
+                .IsRequired()
+                .IsUnicode();
 
             entityTypeBuilder
                 .HasIndex(e => e.Code)
@@ -20,7 +27,7 @@
                 .HasMaxLength(10);
 
             entityTypeBuilder
-                .HasIndex(e => e.CostPointGroupId)
+                .HasIndex(e => new { e.CostPointGroupId, e.Name })
                 .IsUnique();
 
             entityTypeBuilder

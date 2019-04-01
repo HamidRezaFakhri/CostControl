@@ -16,7 +16,7 @@
 
         //public RecipeType Type { get; set; } = RecipeType.Carnivorous;
 
-        public ServeType ServeType { get; set; }
+        public FoodType FoodType { get; set; }
 
         public decimal Price { get; set; }
 

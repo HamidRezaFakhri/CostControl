@@ -15,6 +15,7 @@
         public IEnumerable<ValidationResult> Validate()
         {
             var validationErrors = new List<ValidationResult>();
+            
             var ctx = new ValidationContext(this, null, null);
             Validator.TryValidateObject(this, ctx, validationErrors, true);
             return validationErrors;

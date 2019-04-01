@@ -97,7 +97,7 @@
 
             if (ToDate != null && ToDate > default(DateTime) && ToDate <= FromDate)
             {
-                yield return new ValidationResult(ValidationMessages.WrongSequence(nameof(FromDate), nameof(ToDate)), new[] { nameof(ToDate) });
+                yield return new ValidationResult(ValidationMessages.WrongSequence(nameof(FromDate), nameof(ToDate)), new[] { nameof(FromDate), nameof(ToDate) });
             }
             #endregion
 

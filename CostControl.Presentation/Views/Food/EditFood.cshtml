@@ -49,13 +49,13 @@
 
 		<div class="form-group col col-md-12">
 			<div class="form-group">
-				@Html.LabelFor(model => model.ServeType, htmlAttributes: new { @class = "control-label col-md-12" })
+				@Html.LabelFor(model => model.FoodType, htmlAttributes: new { @class = "control-label col-md-12" })
 				<div class="col-md-12">
-					<select asp-for="ServeType" class="form-control"
-							asp-items="Html.GetEnumSelectList<CostControl.BusinessEntity.Models.CostControl.Enums.ServeType>()">
+					<select asp-for="FoodType" class="form-control"
+							asp-items="Html.GetEnumSelectList<CostControl.BusinessEntity.Models.CostControl.Enums.FoodType>()">
 						<option selected="selected" value="">انتخاب کنید ...</option>
 					</select>
-					@Html.ValidationMessageFor(model => model.ServeType, "", new { @class = "text-danger" })
+					@Html.ValidationMessageFor(model => model.FoodType, "", new { @class = "text-danger" })
 				</div>
 			</div>
 

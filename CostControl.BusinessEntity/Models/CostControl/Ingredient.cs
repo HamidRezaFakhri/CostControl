@@ -23,11 +23,7 @@
         [Required]
         [Display(Name = "نام لاتین")]
         public string EnglishName { get; set; }
-
-        [Required]
-        [Display(Name = "نوع")]
-        public Enums.IngredientType Type { get; set; }
-
+        
         [Required]
         [Display(Name = "قیمت")]
         [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
@@ -77,13 +73,6 @@
             if (EnglishName?.Length > 100 || EnglishName?.Length < 3)
             {
                 yield return new ValidationResult(ValidationMessages.StringLengthRange(nameof(EnglishName), 3, 100), new[] { nameof(EnglishName) });
-            }
-            #endregion
-
-            #region Type validation rules
-            if (Type <= 0)
-            {
-                yield return new ValidationResult(ValidationMessages.CanNotBeEmpty(nameof(Type)), new[] { nameof(Type) });
             }
             #endregion
 

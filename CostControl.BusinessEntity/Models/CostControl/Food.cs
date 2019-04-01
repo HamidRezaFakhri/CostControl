@@ -30,8 +30,8 @@
 
         [Required]
         [Display(Name = "نحوه سرو")]
-        //[EnumDataType(typeof(ServeType))]
-        public byte ServeType { get; set; }
+        //[EnumDataType(typeof(FoodType))]
+        public byte FoodType { get; set; }
 
         [Required]
         [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
@@ -83,10 +83,10 @@
             }
             #endregion
 
-            #region ServeType validation rules
-            if (ServeType <= 0)
+            #region FoodType validation rules
+            if (FoodType <= 0)
             {
-                yield return new ValidationResult(ValidationMessages.CanNotBeEmpty(nameof(ServeType)), new[] { nameof(ServeType) });
+                yield return new ValidationResult(ValidationMessages.CanNotBeEmpty(nameof(FoodType)), new[] { nameof(FoodType) });
             }
             #endregion
 
