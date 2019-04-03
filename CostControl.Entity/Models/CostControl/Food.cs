@@ -6,7 +6,7 @@
 
     public class Food : SupperNameEntity<long>
     {
-        public long SaleCostPointId { get; set; }
+        public long? SaleCostPointId { get; set; }
 
         public virtual SaleCostPoint SaleCostPoint { get; set; }
 
@@ -18,7 +18,7 @@
 
         public FoodType FoodType { get; set; }
 
-        public decimal Price { get; set; }
+        //public decimal Price { get; set; }
 
         public virtual ICollection<Recipe> RecipeItems { get; set; }
 

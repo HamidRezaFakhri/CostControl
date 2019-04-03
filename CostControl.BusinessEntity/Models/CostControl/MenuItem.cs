@@ -19,9 +19,12 @@
 
         public long IngredientId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "مقدار اجباریست!")]
+        [Display(Name = "مقدار")]
         public decimal Amount { get; set; }
 
+        [Required(ErrorMessage = "واحد مصرفی اجباریست!")]
+        [Display(Name = "واحد مصرفی")]
         public long ConsumptionUnitId { get; set; }
 
         public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

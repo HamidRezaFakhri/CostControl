@@ -46,8 +46,12 @@
 			new EntityTitle{ TypeName = "SaleCostPoint", SingleTitle = "مرکز هزینه مرکز فروش", PluralTitle = "مراکز هزینه مراکز فروش"},
 			new EntityTitle{ TypeName = "OverCostType", SingleTitle = "سرفصل هزینه های سربار", PluralTitle = "سرفصل های هزینه های سربار"},
 			new EntityTitle{ TypeName = "OverCost", SingleTitle = "هزینه سربار", PluralTitle = "هزینه های سربار"},
-			new EntityTitle{ TypeName = "Inventory", SingleTitle = "انبار", PluralTitle = "انبارها"},
+			new EntityTitle{ TypeName = "IntakeRemittance", SingleTitle = "حواله مصرفی", PluralTitle = "حواله های مصرفی"},
 
+			//new EntityTitle{ TypeName = "IntakeRemittanceItem", SingleTitle = "انبار", PluralTitle = "انبارها"},
+			//new EntityTitle{ TypeName = "Menu", SingleTitle = "انبار", PluralTitle = "انبارها"},
+			//new EntityTitle{ TypeName = "MenuItem", SingleTitle = "انبار", PluralTitle = "انبارها"},
+			//new EntityTitle{ TypeName = "Buffet", SingleTitle = "انبار", PluralTitle = "انبارها"}
 		};
 
 		public static string GetEntityTile<T>(EnumTitle enumTitle) where T : IBaseEntity
@@ -128,12 +132,14 @@
 		private static readonly string deleteEntityTitle = "حذف ";
 
 		private static readonly string newEntityTitle = "جدید";
+		
+		private static readonly TimeSpan httpClientTimeout = new TimeSpan(0, 0, 30);
 
 		public static string GetAPIAddress()
 		{
 			return "http://localhost:5001/api/";
 		}
-
+		
 		public static string GetAPIAddress(string controllerName)
 		{
 			return string.IsNullOrEmpty(controllerName) ? GetAPIAddress() : GetAPIAddress() + $"{controllerName}/";
@@ -142,37 +148,49 @@
 		public static string GetAPIAddress(string controllerName, string actionName)
 		{
 			return string.IsNullOrEmpty(controllerName) ? GetAPIAddress() :
-(string.IsNullOrEmpty(actionName) ? GetAPIAddress(controllerName) : GetAPIAddress(controllerName) + $"{actionName}/");
+						(string.IsNullOrEmpty(actionName) ? GetAPIAddress(controllerName) : GetAPIAddress(controllerName) + $"{actionName}/");
 		}
 
 		public static ServiceResponse<T> GetServiceResponse<T>(string apiParams) where T : IBaseEntity
 		{
-			using (HttpClient client = new HttpClient())
+			try
 			{
-				client.BaseAddress = new Uri(GetAPIAddress(typeof(T).Name));
-
-				client.DefaultRequestHeaders.Clear();
-				client.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue("nl-NL"));
-
-				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-				System.Threading.Tasks.Task<HttpResponseMessage> responseTask = client.GetAsync(apiParams);
-				//EnsureSuccessStatusCode();
-				responseTask.Wait();
-
-				HttpResponseMessage result = responseTask.Result;
-				if (result.IsSuccessStatusCode)
+				using (HttpClient client = new HttpClient())
 				{
-					System.Threading.Tasks.Task<ServiceResponse<T>> readTask = result.Content.ReadAsAsync<ServiceResponse<T>>();
+					client.Timeout = httpClientTimeout;
+					client.BaseAddress = new Uri(GetAPIAddress(typeof(T).Name));
 
-					readTask.Wait();
+					client.DefaultRequestHeaders.Clear();
+					client.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue("nl-NL"));
 
-					return readTask.Result;
+					client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+					System.Threading.Tasks.Task<HttpResponseMessage> responseTask = client.GetAsync(apiParams);
+					//EnsureSuccessStatusCode();
+					responseTask.Wait();
+
+					HttpResponseMessage result = responseTask.Result;
+					if (result.IsSuccessStatusCode)
+					{
+						System.Threading.Tasks.Task<ServiceResponse<T>> readTask = result.Content.ReadAsAsync<ServiceResponse<T>>();
+
+						readTask.Wait();
+
+						return readTask.Result;
+					}
+					else
+					{
+						return null;
+					}
 				}
-				else
-				{
-					return null;
-				}
+			}
+			catch (OperationCanceledException)
+			{
+				return null;
+			}
+			catch (Exception)
+			{
+				return null;
 			}
 		}
 
@@ -180,6 +198,7 @@
 		{
 			using (HttpClient client = new HttpClient())
 			{
+				client.Timeout = httpClientTimeout;
 				client.BaseAddress = new Uri(GetAPIAddress(typeof(T).Name));
 
 				client.DefaultRequestHeaders.Clear();
@@ -213,6 +232,7 @@
 			{
 				using (HttpClient client = new HttpClient())
 				{
+					client.Timeout = httpClientTimeout;
 					client.BaseAddress = new Uri(GetAPIAddress(typeof(T).Name));
 
 					System.Threading.Tasks.Task<HttpResponseMessage> result = client.PostAsJsonAsync(actionName, value);

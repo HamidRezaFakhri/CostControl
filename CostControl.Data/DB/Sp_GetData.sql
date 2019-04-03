@@ -180,58 +180,7 @@
 		ON
 			U.Code = CU.Code
 
-
 		---------------------------------------------------------------------------------------
-			IF OBJECT_ID('tempdb..#Tmp') IS NOT NULL
-				DROP TABLE #Tmp
-
-			SELECT
-				REPLACE(REPLACE(REPLACE(REPLACE(LTRIM(RTRIM(CAST(Name AS NVARCHAR(MAX)))), '  ', ' '), N'ك', N'ک'), N'ي', N'ی'), N'ئ', N'ی') Name,
-				MIN(Code) Code
-			INTO
-				#Tmp
-			FROM
-				PouyaD.dbo.SckGdsCg
-			WHERE
-				REPLACE(REPLACE(REPLACE(REPLACE(LTRIM(RTRIM(CAST(Name AS NVARCHAR(MAX)))), '  ', ' '), N'ك', N'ک'), N'ي', N'ی'), N'ئ', N'ی')
-					IN
-						(
-							SELECT
-								REPLACE(REPLACE(REPLACE(REPLACE(LTRIM(RTRIM(CAST(Name AS NVARCHAR(MAX)))), '  ', ' '), N'ك', N'ک'), N'ي', N'ی'), N'ئ', N'ی')
-							FROM
-								PouyaD.dbo.SckGdsCg
-							GROUP BY
-								REPLACE(REPLACE(REPLACE(REPLACE(LTRIM(RTRIM(CAST(Name AS NVARCHAR(MAX)))), '  ', ' '), N'ك', N'ک'), N'ي', N'ی'), N'ئ', N'ی')
-							HAVING
-								COUNT(*) > 1
-						)
-			GROUP BY
-				REPLACE(REPLACE(REPLACE(REPLACE(LTRIM(RTRIM(CAST(Name AS NVARCHAR(MAX)))), '  ', ' '), N'ك', N'ک'), N'ي', N'ی'), N'ئ', N'ی')
-
-			IF OBJECT_ID('tempdb..#Tmp1') IS NOT NULL
-				DROP TABLE #Tmp1
-
-			SELECT
-				REPLACE(REPLACE(REPLACE(REPLACE(LTRIM(RTRIM(CAST(Name AS NVARCHAR(MAX)))), '  ', ' '), N'ك', N'ک'), N'ي', N'ی'), N'ئ', N'ی') Name,
-				Code
-			INTO
-				#Tmp1
-			FROM
-				PouyaD.dbo.SckGdsCg
-			WHERE
-				REPLACE(REPLACE(REPLACE(REPLACE(LTRIM(RTRIM(CAST(Name AS NVARCHAR(MAX)))), '  ', ' '), N'ك', N'ک'), N'ي', N'ی'), N'ئ', N'ی')
-					IN
-						(
-							SELECT
-								REPLACE(REPLACE(REPLACE(REPLACE(LTRIM(RTRIM(CAST(Name AS NVARCHAR(MAX)))), '  ', ' '), N'ك', N'ک'), N'ي', N'ی'), N'ئ', N'ی') Name
-							FROM
-								PouyaD.dbo.SckGdsCg
-							GROUP BY
-								REPLACE(REPLACE(REPLACE(REPLACE(LTRIM(RTRIM(CAST(Name AS NVARCHAR(MAX)))), '  ', ' '), N'ك', N'ک'), N'ي', N'ی'), N'ئ', N'ی')
-							HAVING
-								COUNT(*) > 1
-						)
-
 		INSERT INTO
 			dbo.Ingredient
 				(
@@ -239,24 +188,32 @@
 					Name,
 					Code,
 					EnglishName,
-					Price,
-					UsefullRatio
+					ConsumptionUnitId,
+					UsefullRatio,
+					Description
 				)
 		SELECT
 			1,
 			REPLACE(REPLACE(REPLACE(REPLACE(LTRIM(RTRIM(CAST(Name AS NVARCHAR(MAX)))), '  ', ' '), N'ك', N'ک'), N'ي', N'ی'), N'ئ', N'ی'),
 			NULLIF(LTRIM(RTRIM(Code)), ''),
-			ISNULL(LTRIM(RTRIM(LatinName)), ' '),
-			0,
-			70
+			LTRIM(RTRIM(LatinName)),
+			(
+				SELECT Id
+				FROM
+					dbo.ConsumptionUnit
+				WHERE
+					Name = REPLACE(REPLACE(REPLACE(REPLACE(LTRIM(RTRIM(CAST(FirstCountUnit AS NVARCHAR(MAX)))), '  ', ' '), N'ك', N'ک'), N'ي', N'ی'), N'ئ', N'ی')
+			),
+			70,
+			NULL
 		FROM
 			PouyaD.dbo.SckGdsCg
 		WHERE
-			LTRIM(RTRIM(Name)) <> ''
+			NULLIF(LTRIM(RTRIM(Name)), '') IS NOT NULL
 			AND
-			Leaf = 'F'
+			NULLIF(LTRIM(RTRIM(Code)), '') IS NOT NULL
 			AND
-			NULLIF(LTRIM(RTRIM(Code)), '')
+			LTRIM(RTRIM(Code))
 				NOT IN
 					(
 						SELECT Code
@@ -264,27 +221,106 @@
 							dbo.Ingredient
 					)
 			AND
-			Code
+			GoodsGroup = '01'
+			AND
+			Leaf = 'F'
+			AND
+			Code LIKE '1%'
+			AND
+			REPLACE(REPLACE(REPLACE(REPLACE(LTRIM(RTRIM(CAST(Name AS NVARCHAR(MAX)))), '  ', ' '), N'ك', N'ک'), N'ي', N'ی'), N'ئ', N'ی')
 				NOT IN
 					(
-						SELECT Code FROM #Tmp1
-						EXCEPT	
-						SELECT Code FROM #Tmp
+						SELECT
+							REPLACE(REPLACE(REPLACE(REPLACE(LTRIM(RTRIM(CAST(Name AS NVARCHAR(MAX)))), '  ', ' '), N'ك', N'ک'), N'ي', N'ی'), N'ئ', N'ی')
+						FROM
+							PouyaD.dbo.SckGdsCg
+						GROUP BY
+							REPLACE(REPLACE(REPLACE(REPLACE(LTRIM(RTRIM(CAST(Name AS NVARCHAR(MAX)))), '  ', ' '), N'ك', N'ک'), N'ي', N'ی'), N'ئ', N'ی'),
+							Parent
+						HAVING
+							COUNT(*) > 1
 					)
 
 		UPDATE
 			dbo.Ingredient
 		SET
 			Name = REPLACE(REPLACE(REPLACE(REPLACE(LTRIM(RTRIM(CAST(S.Name AS NVARCHAR(MAX)))), '  ', ' '), N'ك', N'ک'), N'ي', N'ی'), N'ئ', N'ی'),
-			EnglishName = ISNULL(LTRIM(RTRIM(LatinName)), ' ')
+			EnglishName = LTRIM(RTRIM(LatinName))
 		FROM
 			dbo.Ingredient I
 			INNER JOIN
 			PouyaD.dbo.SckGdsCg S
 		ON
-			S.Code = I.Code
+			LTRIM(RTRIM(S.Code)) = I.Code
+		WHERE
+			NULLIF(LTRIM(RTRIM(S.Code)), '') IS NOT NULL
 
 		---------------------------------------------------------------------------------------
+		INSERT INTO
+			dbo.Food
+				(
+					State,
+					Name,
+					SaleCostPointId,
+					Code,
+					EnglishName,
+					FoodType
+				)
+		SELECT
+			1,
+			REPLACE(REPLACE(REPLACE(REPLACE(LTRIM(RTRIM(CAST(Name AS NVARCHAR(MAX)))), '  ', ' '), N'ك', N'ک'), N'ي', N'ی'), N'ئ', N'ی'),
+			NULL,
+			NULLIF(LTRIM(RTRIM(Code)), ''),
+			LTRIM(RTRIM(LatinName)),
+			1
+		FROM
+			PouyaD.dbo.SckGdsCg
+		WHERE
+			NULLIF(LTRIM(RTRIM(Name)), '') IS NOT NULL
+			AND
+			NULLIF(LTRIM(RTRIM(Code)), '') IS NOT NULL
+			AND
+			LTRIM(RTRIM(Code))
+				NOT IN
+					(
+						SELECT Code
+						FROM
+							dbo.Food
+					)
+			AND
+			GoodsGroup = '01'
+			AND
+			Leaf = 'F'
+			AND
+			Code LIKE '9%'
+			AND
+			REPLACE(REPLACE(REPLACE(REPLACE(LTRIM(RTRIM(CAST(Name AS NVARCHAR(MAX)))), '  ', ' '), N'ك', N'ک'), N'ي', N'ی'), N'ئ', N'ی')
+				NOT IN
+					(
+						SELECT
+							REPLACE(REPLACE(REPLACE(REPLACE(LTRIM(RTRIM(CAST(Name AS NVARCHAR(MAX)))), '  ', ' '), N'ك', N'ک'), N'ي', N'ی'), N'ئ', N'ی')
+						FROM
+							PouyaD.dbo.SckGdsCg
+						GROUP BY
+							REPLACE(REPLACE(REPLACE(REPLACE(LTRIM(RTRIM(CAST(Name AS NVARCHAR(MAX)))), '  ', ' '), N'ك', N'ک'), N'ي', N'ی'), N'ئ', N'ی'),
+							Parent
+						HAVING
+							COUNT(*) > 1
+					)
+
+		UPDATE
+			dbo.Food
+		SET
+			Name = REPLACE(REPLACE(REPLACE(REPLACE(LTRIM(RTRIM(CAST(S.Name AS NVARCHAR(MAX)))), '  ', ' '), N'ك', N'ک'), N'ي', N'ی'), N'ئ', N'ی'),
+			EnglishName = LTRIM(RTRIM(LatinName))
+		FROM
+			dbo.Food F
+			INNER JOIN
+			PouyaD.dbo.SckGdsCg S
+		ON
+			LTRIM(RTRIM(S.Code)) = F.Code
+		WHERE
+			NULLIF(LTRIM(RTRIM(S.Code)), '') IS NOT NULL
 
 		---------------------------------------------------------------------------------------
 		INSERT INTO
@@ -306,6 +342,14 @@
 			Leaf = 'F'
 			AND
 			[Index] = 1
+			AND
+			REPLACE(REPLACE(REPLACE(REPLACE(LTRIM(RTRIM(CAST(Name AS NVARCHAR(MAX)))), '  ', ' '), N'ك', N'ک'), N'ي', N'ی'), N'ئ', N'ی')
+				NOT IN
+					(
+						SELECT Name
+						FROM
+							dbo.Inventory
+					)
 
 		---------------------------------------------------------------------------------------
 		--INSERT INTO

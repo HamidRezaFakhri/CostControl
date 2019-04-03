@@ -53,17 +53,20 @@
 		public IActionResult EditCostPoint(long id)
 		{
 			ViewData["title"] = Helper.GetEntityTile<CostPoint>(EnumTitle.Edit);
+			
+			var costPoint = GetCostPointById(id);
+			var costPointGroup = GetCostPointGroupById(costPoint.CostPointGroupId);
 
 			ViewBag.CostPointGroup = GetCostPointGroups()
 							.Select(c => new SelectListItem()
 							{
 								Text = c.Name,
 								Value = c.Id.ToString(),
-								Selected = c.Id == GetCostPointGroupById(id).Id
+								Selected = c.Id == costPointGroup.Id
 							})
 							.ToList();
 
-			return PartialView(GetCostPointById(id));
+			return PartialView(costPoint);
 		}
 
 		private CostPointGroup GetCostPointGroupById(long id)

@@ -11,7 +11,10 @@
 
     public class CostControlDbContext : DbContext
     {
-        //public CostControlDbContext(DbContextOptions options) : base(options) { }
+        //public CostControlDbContext(DbContextOptions options) : base(options)
+        //{
+        //    Database.SetCommandTimeout((int)TimeSpan.FromMinutes(5).TotalSeconds);
+        //}
 
         //private static ILoggerFactory LoggerFactory => new LoggerFactory().AddConsole(LogLevel.Trace);
 
@@ -28,7 +31,9 @@
                 //optionsBuilder.UseLoggerFactory(log);
 
                 optionsBuilder
-                    .UseSqlServer(@"Data Source=.\SQLExpress;Initial Catalog=CostControl;Trusted_Connection=true;MultipleActiveResultSets=true;")
+                    .UseSqlServer(@"Data Source=.\SQLExpress;Initial Catalog=CostControl;Trusted_Connection=true;Connection Timeout=60;MultipleActiveResultSets=true;",
+                                //opts => opts.CommandTimeout((int)TimeSpan.FromMinutes(10).TotalSeconds))
+                                opts => opts.CommandTimeout(120))
                     //.UseLazyLoadingProxies()
                     //.ConfigureWarnings(warnings => warnings.Ignore(CoreEventId.DetachedLazyLoadingWarning))
                     .EnableSensitiveDataLogging();

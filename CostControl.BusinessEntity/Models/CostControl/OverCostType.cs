@@ -12,12 +12,14 @@
 
         public Base.Enums.ObjectState State { get; set; } = Base.Enums.ObjectState.Active;
 
-        [Required]
+        [Required(ErrorMessage = "نام/عنوان اجباریست!")]
         [Display(Name = "نام/عنوان")]
+        [StringLength(250, MinimumLength = 3)]
         public string Name { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "کد اجباریست!")]
         [Display(Name = "کد")]
+        [StringLength(10, MinimumLength = 1)]
         public string FinancialCode { get; set; }
 
         public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
@@ -40,7 +42,7 @@
                 yield return new ValidationResult(ValidationMessages.CanNotBeEmpty(nameof(FinancialCode)), new[] { nameof(FinancialCode) });
             }
 
-            if (FinancialCode?.Length > 10 || FinancialCode?.Length < 3)
+            if (FinancialCode?.Length > 10 || FinancialCode?.Length < 1)
             {
                 yield return new ValidationResult(ValidationMessages.StringLengthRange(nameof(FinancialCode), 3, 10), new[] { nameof(FinancialCode) });
             }

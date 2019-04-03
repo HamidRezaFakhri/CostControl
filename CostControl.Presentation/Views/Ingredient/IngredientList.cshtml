@@ -44,7 +44,7 @@
 				<td>@item.Id</td>
 				<td id="td_Name">@item.Name</td>
 				<td id="td_Code">@item.Code</td>
-				<td id="td_Price">@item.Price.ToString("N")</td>
+				<td id="td_Price">@*@item.Price.ToString("N")*@0</td>
 				<td>
 					<a href="#" class="btn btn-sm btn-warning"
 					   onclick="EditEntityModal(@item.Id, '/Ingredient/EditIngredient/', '@editTitle (@item.Name)')">

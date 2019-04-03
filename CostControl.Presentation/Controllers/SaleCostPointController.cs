@@ -109,11 +109,8 @@
         }
 
         private SaleCostPoint GetSaleCostPointById(long id)
-        {
-            var a = (Helper.GetServiceResponse<SaleCostPoint>("GetById?id=" + id.ToString()).data as List<SaleCostPoint>)
+        => (Helper.GetServiceResponse<SaleCostPoint>("GetById?id=" + id.ToString()).data as List<SaleCostPoint>)
                 .FirstOrDefault();
-            return a;
-        }
 
         private IEnumerable<SalePoint> GetSalePoints()
         {

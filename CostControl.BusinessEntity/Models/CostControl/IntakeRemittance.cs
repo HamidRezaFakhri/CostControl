@@ -13,11 +13,11 @@
 
         public Base.Enums.ObjectState State { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "مرکز فروش-مرکز هزینه اجباریست!")]
         [Display(Name = "مرکز فروش-مرکز هزینه")]
         public long SaleCostPointId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "تاریخ حواله اجباریست!")]
         [Display(Name = "تاریخ حواله")]
         public DateTime IntakeDate { get; set; }
 
@@ -25,7 +25,7 @@
         [Display(Name = "شرح")]
         public string Description { get; set; }
 
-        public DateTime RegisteredDate { get; set; }
+        public DateTime RegisteredDate { get; set; } = DateTime.Now;
 
         public long RegisteredUserId { get; set; }
 

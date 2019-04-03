@@ -18,16 +18,19 @@
         [Display(Name = "مواد خام/اولیه")]
         public long IngredientId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "مقدار اجباریست!")]
         [Display(Name = "مقدار")]
+        [Range(0, 999999)]
         public decimal Amount { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "واحد مصرفی اجباریست!")]
         [Display(Name = "واحد مصرفی")]
+        [StringLength(250, MinimumLength = 3)]
         public long ConsumptionUnitId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "نرخ تبدیل اجباریست!")]
         [Display(Name = "نرخ تبدیل")]
+        [Range(0, 100)]
         public decimal ConvertionRate { get; set; }
 
         public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

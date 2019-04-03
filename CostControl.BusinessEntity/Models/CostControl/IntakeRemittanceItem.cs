@@ -12,26 +12,27 @@
 
         public Base.Enums.ObjectState State { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "حواله مصرف اجباریست!")]
         [Display(Name = "حواله مصرف")]
         public long IntakeRemittanceID { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "ماده خام اجباریست!")]
         [Display(Name = "ماده خام")]
         public long IngredientId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "مقدار اجباریست!")]
         [Display(Name = "مقدار")]
+        [Range(0, 999999999)]
         public decimal Amount { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "واحد مصرفی اجباریست!")]
         [Display(Name = "واحد مصرفی")]
         public long ConsumptionUnitId { get; set; }
 
         public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             #region IntakeRemittanceID validation rules
-            if(IntakeRemittanceID <= 0)
+            if (IntakeRemittanceID <= 0)
             {
                 yield return new ValidationResult(ValidationMessages.CanNotBeEmpty(nameof(IntakeRemittanceID)), new[] { nameof(IntakeRemittanceID) });
             }

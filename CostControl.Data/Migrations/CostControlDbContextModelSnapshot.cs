@@ -273,7 +273,6 @@ namespace CostControl.Data.Migrations
                         .HasMaxLength(10);
 
                     b.Property<string>("EnglishName")
-                        .IsRequired()
                         .HasMaxLength(250);
 
                     b.Property<byte>("FoodType");
@@ -284,10 +283,7 @@ namespace CostControl.Data.Migrations
                         .HasMaxLength(250)
                         .IsUnicode(true);
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("numeric(28,2)");
-
-                    b.Property<long>("SaleCostPointId");
+                    b.Property<long?>("SaleCostPointId");
 
                     b.Property<int>("State")
                         .ValueGeneratedOnAdd()
@@ -295,14 +291,11 @@ namespace CostControl.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Code")
+                    b.HasIndex("SaleCostPointId");
+
+                    b.HasIndex("Name", "Code")
                         .IsUnique()
                         .HasFilter("[Code] IS NOT NULL");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.HasIndex("SaleCostPointId");
 
                     b.ToTable("Food","dbo");
                 });
@@ -337,13 +330,14 @@ namespace CostControl.Data.Migrations
                     b.Property<string>("Code")
                         .HasMaxLength(10);
 
+                    b.Property<long>("ConsumptionUnitId");
+
                     b.Property<string>("Description")
                         .HasColumnType("NVARCHAR(500)")
                         .HasMaxLength(500)
                         .IsUnicode(true);
 
                     b.Property<string>("EnglishName")
-                        .IsRequired()
                         .HasMaxLength(250);
 
                     b.Property<string>("Name")
@@ -351,8 +345,6 @@ namespace CostControl.Data.Migrations
                         .HasColumnType("NVARCHAR(250)")
                         .HasMaxLength(250)
                         .IsUnicode(true);
-
-                    b.Property<decimal>("Price");
 
                     b.Property<int>("State")
                         .ValueGeneratedOnAdd()
@@ -364,12 +356,11 @@ namespace CostControl.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Code")
+                    b.HasIndex("ConsumptionUnitId");
+
+                    b.HasIndex("Name", "Code")
                         .IsUnique()
                         .HasFilter("[Code] IS NOT NULL");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
 
                     b.ToTable("Ingredient","dbo");
                 });
@@ -496,9 +487,7 @@ namespace CostControl.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("GETDATE()");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(250);
+                    b.Property<string>("Name");
 
                     b.Property<decimal>("Price");
 
@@ -839,7 +828,14 @@ namespace CostControl.Data.Migrations
                 {
                     b.HasOne("CostControl.Entity.Models.CostControl.SaleCostPoint", "SaleCostPoint")
                         .WithMany("Foods")
-                        .HasForeignKey("SaleCostPointId")
+                        .HasForeignKey("SaleCostPointId");
+                });
+
+            modelBuilder.Entity("CostControl.Entity.Models.CostControl.Ingredient", b =>
+                {
+                    b.HasOne("CostControl.Entity.Models.CostControl.ConsumptionUnit", "ConsumptionUnit")
+                        .WithMany()
+                        .HasForeignKey("ConsumptionUnitId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 

@@ -13,29 +13,29 @@
 
         public Base.Enums.ObjectState State { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "مرکز فروش-مرکز هزینه اجباریست!")]
         [Display(Name = "مرکز فروش-مرکز هزینه")]
         public long SaleCostPointId { get; set; }
 
         public virtual SaleCostPoint SaleCostPoint { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "سرفصل هزینه سربار اجباریست!")]
         [Display(Name = "سرفصل هزینه سربار")]
         public long OverCostTypeId { get; set; }
 
         public virtual OverCostType OverCostType { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "تاریخ شروع اجباریست!")]
         [Display(Name = "تاریخ شروع")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy/MM/dd}")]
         public DateTime StartDate { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "تاریخ پایان اجباریست!")]
         [Display(Name = "تاریخ پایان")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy/MM/dd}")]
         public DateTime EndDate { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "قیمت اجباریست!")]
         [Display(Name = "قیمت")]
         //[DataType(DataType.Currency)]
         [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
@@ -77,10 +77,12 @@
             {
                 yield return new ValidationResult(ValidationMessages.CanNotBeEmpty(nameof(EndDate)), new[] { nameof(EndDate) });
             }
+            #endregion
 
+            #region Dates
             if (EndDate <= StartDate)
             {
-                yield return new ValidationResult(ValidationMessages.WrongSequence(nameof(StartDate), nameof(EndDate)), new[] { nameof(EndDate) });
+                yield return new ValidationResult(ValidationMessages.WrongSequence(nameof(StartDate), nameof(EndDate)), new[] { nameof(StartDate), nameof(EndDate) });
             }
             #endregion
 

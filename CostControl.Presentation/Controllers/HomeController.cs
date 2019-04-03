@@ -4,6 +4,7 @@
 	using System.Diagnostics;
 	using System.Net.Http;
 	using System.Net.Http.Headers;
+	using CostControl.BusinessEntity.Models.CostControl;
 	using CostControl.Presentation.Models;
 	using Microsoft.AspNetCore.Http;
 	using Microsoft.AspNetCore.Mvc;
@@ -47,40 +48,42 @@
 
 		public IActionResult GetData()
 		{
-			string str = string.Empty;
-			using (HttpClient client = new HttpClient())
-			{
-				client.BaseAddress = new Uri("http://localhost:5001/api/DataImport/");
+			Helper.GetServiceResponse<DataImport>("GetData");
 
-				client.DefaultRequestHeaders.Clear();
-				client.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue("nl-NL"));
+   //         string str = string.Empty;
+			//using (HttpClient client = new HttpClient())
+			//{
+			//	client.BaseAddress = new Uri("http://localhost:5001/api/DataImport/");
 
-				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+			//	client.DefaultRequestHeaders.Clear();
+			//	client.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue("nl-NL"));
 
-				//HTTP GET
-				System.Threading.Tasks.Task<HttpResponseMessage> responseTask = client.GetAsync("GetData");
-				responseTask.Wait();
+			//	client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-				HttpResponseMessage result = responseTask.Result;
-				if (result.IsSuccessStatusCode)
-				{
-					//var readTask = result.Content.ReadAsAsync<ServiceResponse<Ingredient>>();
+			//	//HTTP GET
+			//	System.Threading.Tasks.Task<HttpResponseMessage> responseTask = client.GetAsync("GetData");
+			//	responseTask.Wait();
 
-					//readTask.Wait();
+			//	HttpResponseMessage result = responseTask.Result;
+			//	if (result.IsSuccessStatusCode)
+			//	{
+			//		//var readTask = result.Content.ReadAsAsync<ServiceResponse<Ingredient>>();
 
-					//values = readTask.Result;
-				}
-				else //web api sent error response 
-				{
-					//log response status here..
+			//		//readTask.Wait();
 
-					//values = null;
+			//		//values = readTask.Result;
+			//	}
+			//	else //web api sent error response 
+			//	{
+			//		//log response status here..
 
-					ModelState.AddModelError(string.Empty, "Server error. Please contact administrator.");
+			//		//values = null;
 
-					str = "Server error. Please contact administrator.";
-				}
-			}
+			//		ModelState.AddModelError(string.Empty, "Server error. Please contact administrator.");
+
+			//		str = "Server error. Please contact administrator.";
+			//	}
+			//}
 
 			return RedirectToAction("Index");
 		}

@@ -76,26 +76,6 @@ namespace CostControl.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Ingredient",
-                schema: "dbo",
-                columns: table => new
-                {
-                    Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
-                    Name = table.Column<string>(type: "NVARCHAR(250)", maxLength: 250, nullable: false),
-                    Code = table.Column<string>(maxLength: 10, nullable: true),
-                    EnglishName = table.Column<string>(maxLength: 250, nullable: false),
-                    Price = table.Column<decimal>(nullable: false),
-                    UsefullRatio = table.Column<decimal>(nullable: false, defaultValueSql: "70"),
-                    Description = table.Column<string>(type: "NVARCHAR(500)", maxLength: 500, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Ingredient", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Inventory",
                 schema: "dbo",
                 columns: table => new
@@ -159,6 +139,33 @@ namespace CostControl.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Setting", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Ingredient",
+                schema: "dbo",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
+                    Name = table.Column<string>(type: "NVARCHAR(250)", maxLength: 250, nullable: false),
+                    Code = table.Column<string>(maxLength: 10, nullable: true),
+                    EnglishName = table.Column<string>(maxLength: 250, nullable: true),
+                    ConsumptionUnitId = table.Column<long>(nullable: false),
+                    UsefullRatio = table.Column<decimal>(nullable: false, defaultValueSql: "70"),
+                    Description = table.Column<string>(type: "NVARCHAR(500)", maxLength: 500, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ingredient", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Ingredient_ConsumptionUnit_ConsumptionUnitId",
+                        column: x => x.ConsumptionUnitId,
+                        principalSchema: "dbo",
+                        principalTable: "ConsumptionUnit",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -293,11 +300,10 @@ namespace CostControl.Data.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     Name = table.Column<string>(type: "NVARCHAR(250)", maxLength: 250, nullable: false),
-                    SaleCostPointId = table.Column<long>(nullable: false),
+                    SaleCostPointId = table.Column<long>(nullable: true),
                     Code = table.Column<string>(maxLength: 10, nullable: true),
-                    EnglishName = table.Column<string>(maxLength: 250, nullable: false),
-                    FoodType = table.Column<byte>(nullable: false),
-                    Price = table.Column<decimal>(type: "numeric(28,2)", nullable: false)
+                    EnglishName = table.Column<string>(maxLength: 250, nullable: true),
+                    FoodType = table.Column<byte>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -353,7 +359,7 @@ namespace CostControl.Data.Migrations
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     State = table.Column<int>(nullable: false, defaultValueSql: "1"),
-                    Name = table.Column<string>(maxLength: 250, nullable: false),
+                    Name = table.Column<string>(nullable: true),
                     SaleCostPointId = table.Column<long>(nullable: false),
                     Code = table.Column<string>(maxLength: 10, nullable: true),
                     EnglishName = table.Column<string>(maxLength: 250, nullable: false),
@@ -752,40 +758,32 @@ namespace CostControl.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Food_Code",
-                schema: "dbo",
-                table: "Food",
-                column: "Code",
-                unique: true,
-                filter: "[Code] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Food_Name",
-                schema: "dbo",
-                table: "Food",
-                column: "Name",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Food_SaleCostPointId",
                 schema: "dbo",
                 table: "Food",
                 column: "SaleCostPointId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ingredient_Code",
+                name: "IX_Food_Name_Code",
                 schema: "dbo",
-                table: "Ingredient",
-                column: "Code",
+                table: "Food",
+                columns: new[] { "Name", "Code" },
                 unique: true,
                 filter: "[Code] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ingredient_Name",
+                name: "IX_Ingredient_ConsumptionUnitId",
                 schema: "dbo",
                 table: "Ingredient",
-                column: "Name",
-                unique: true);
+                column: "ConsumptionUnitId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ingredient_Name_Code",
+                schema: "dbo",
+                table: "Ingredient",
+                columns: new[] { "Name", "Code" },
+                unique: true,
+                filter: "[Code] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_IntakeRemittance_RegisteredUserId1",
@@ -1046,15 +1044,15 @@ namespace CostControl.Data.Migrations
                 schema: "dbo");
 
             migrationBuilder.DropTable(
-                name: "ConsumptionUnit",
-                schema: "dbo");
-
-            migrationBuilder.DropTable(
                 name: "Ingredient",
                 schema: "dbo");
 
             migrationBuilder.DropTable(
                 name: "SaleCostPoint",
+                schema: "dbo");
+
+            migrationBuilder.DropTable(
+                name: "ConsumptionUnit",
                 schema: "dbo");
 
             migrationBuilder.DropTable(

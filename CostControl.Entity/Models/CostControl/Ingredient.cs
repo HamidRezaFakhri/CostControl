@@ -9,7 +9,11 @@
 
         public string EnglishName { get; set; }
 
-        public decimal Price { get; set; }
+        public long ConsumptionUnitId { get; set; }
+
+        public ConsumptionUnit ConsumptionUnit { get; set; }
+
+        //public decimal Price { get; set; }
 
         public decimal UsefullRatio { get; set; }
 

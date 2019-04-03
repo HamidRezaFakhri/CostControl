@@ -12,11 +12,11 @@
 
         public Base.Enums.ObjectState State { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "نام/عنوان اجباریست!")]
         [Display(Name = "نام/عنوان")]
         public string Name { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "کد اجباریست!")]
         [Display(Name = "کد")]
         public string Code { get; set; }
 

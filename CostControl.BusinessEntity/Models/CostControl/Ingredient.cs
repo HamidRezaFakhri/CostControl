@@ -12,24 +12,29 @@
 
         public Base.Enums.ObjectState State { get; set; }
 
-        [Required]
-        [Display(Name = "نام")]
+        [Required(ErrorMessage = "نام/عنوان اجباریست!")]
+        [Display(Name = "نام/عنوان")]
         public string Name { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "کد اجباریست!")]
         [Display(Name = "کد")]
         public string Code { get; set; }
 
-        [Required]
+        //[Required]
         [Display(Name = "نام لاتین")]
         public string EnglishName { get; set; }
-        
-        [Required]
-        [Display(Name = "قیمت")]
-        [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
-        public decimal Price { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "واحد مصرفی اجباریست!")]
+        [Display(Name = "واحد مصرفی")]
+        public ConsumptionUnit ConsumptionUnit { get; set; }
+
+        //[Required(ErrorMessage = "قیمت اجباریست!")]
+        //[Display(Name = "قیمت")]
+        //[DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
+        //[Range(0, 9999999)]
+        //public decimal Price { get; set; }
+
+        [Required(ErrorMessage = "نرخ (درصد) اجباریست!")]
         [Display(Name = "نرخ (درصد)")]
         //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:P2}")]
         public decimal UsefullRatio { get; set; }
@@ -75,14 +80,7 @@
                 yield return new ValidationResult(ValidationMessages.StringLengthRange(nameof(EnglishName), 3, 100), new[] { nameof(EnglishName) });
             }
             #endregion
-
-            #region Price validation rules
-            if (Price <= 0)
-            {
-                yield return new ValidationResult(ValidationMessages.CanNotBeEmpty(nameof(Price)), new[] { nameof(Price) });
-            }
-            #endregion
-
+            
             #region UsefullRatio validation rules
             if (UsefullRatio <= 0)
             {

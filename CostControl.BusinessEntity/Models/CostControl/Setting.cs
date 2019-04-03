@@ -14,6 +14,7 @@
 
         [Required]
         [Display(Name = "درصد قابل استفاده")]
+        [Range(0, 100)]
         public decimal IngredientUsageRate { get; set; }
 
         public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

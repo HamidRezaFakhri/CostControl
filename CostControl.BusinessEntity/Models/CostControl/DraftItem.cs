@@ -12,20 +12,21 @@
 
         public Base.Enums.ObjectState State { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "حواله انبار اجباریست!")]
         [Display(Name = "حواله انبار")]
         public long DraftId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "مواد خام اجباریست!")]
         [Display(Name = "مواد خام")]
         public long IngredientId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "واحد مصرفی اجباریست!")]
         [Display(Name = "واحد مصرفی")]
         public long ConsumptionUnitId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "مقدار اجباریست!")]
         [Display(Name = "مقدار")]
+        [Range(0, 9999999)]
         public decimal Amount { get; set; }
 
         public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

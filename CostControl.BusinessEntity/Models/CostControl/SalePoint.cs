@@ -12,8 +12,8 @@
 
         public Base.Enums.ObjectState State { get; set; } = Base.Enums.ObjectState.Active;
 
-        [Required(ErrorMessage ="کد اجباریست!")]
-        [StringLength(25, MinimumLength = 1)]
+        [Required(ErrorMessage = "کد اجباریست!")]
+        [StringLength(10, MinimumLength = 1)]
         [Display(Name = "کد")]
         public string Code { get; set; }
 
@@ -28,7 +28,7 @@
         [StringLength(250, MinimumLength = 3)]
         [Display(Name = "نام/عنوان لاتین")]
         public string EnglishName { get; set; }
-        
+
         [Display(Name = "سالن")]
         public bool IsHall { get; set; } = false;
 

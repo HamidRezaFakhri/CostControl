@@ -78,7 +78,7 @@
 
 		private bool UserIsValid(string userName, string pass)
 		{
-			if (userName.Equals("Test") && pass.Equals("Test"))
+			if (userName.Equals("Admin") && pass.Equals("Admin"))
 			{
 				HttpContext.Session.SetString("userName", userName);
 				return true;

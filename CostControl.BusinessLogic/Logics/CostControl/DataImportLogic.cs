@@ -426,7 +426,7 @@
 
         public int GetData()
         {
-            return Repository.RunRawSql("EXEC dbo.Sp_GetData");
+            return Repository.RunRawSql("EXEC CostControl.dbo.Sp_GetData");
         }
 
         ~DataImportLogic()

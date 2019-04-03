@@ -12,31 +12,31 @@
 
         public Base.Enums.ObjectState State { get; set; }
 
-        [Required]
+        //[Required]
         [Display(Name = "مرکز فروش-مرکز هزینه")]
-        public long SaleCostPointId { get; set; }
+        public long? SaleCostPointId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "نام/عنوان اجباریست!")]
         [Display(Name = "نام/عنوان")]
         public string Name { get; set; }
 
-        [Required]
+        //[Required]
         [Display(Name = "نام لاتین")]
         public string EnglishName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "کد اجباریست!")]
         [Display(Name = "کد")]
         public string Code { get; set; }
 
-        [Required]
-        [Display(Name = "نحوه سرو")]
+        [Required(ErrorMessage = "نوع اجباریست!")]
+        [Display(Name = "نوع")]
         //[EnumDataType(typeof(FoodType))]
         public byte FoodType { get; set; }
 
-        [Required]
-        [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
-        [Display(Name = "قیمت")]
-        public decimal Price { get; set; }
+        //[Required(ErrorMessage = "قیمت اجباریست!")]
+        //[DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
+        //[Display(Name = "قیمت")]
+        //public decimal Price { get; set; }
 
         public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
@@ -87,13 +87,6 @@
             if (FoodType <= 0)
             {
                 yield return new ValidationResult(ValidationMessages.CanNotBeEmpty(nameof(FoodType)), new[] { nameof(FoodType) });
-            }
-            #endregion
-
-            #region Price validation rules
-            if (Price <= 0)
-            {
-                yield return new ValidationResult(ValidationMessages.CanNotBeEmpty(nameof(Price)), new[] { nameof(Price) });
             }
             #endregion
         }
