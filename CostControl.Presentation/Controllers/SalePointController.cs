@@ -11,7 +11,7 @@
         {
             ViewData["title"] = Helper.GetEntityTile<SalePoint>(EnumTitle.List);
 
-            return View(Helper.GetServiceResponse<SalePoint>("Get?PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1"));
+            return View(Helper.GetServiceResponse<SalePoint>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1"));
         }
 
         public IActionResult AddSalePoint()
@@ -74,7 +74,17 @@
                 return Json(new { success = postResult.result, message = postResult.message });
             }
 
-            return Json(new { success = false, message = "Model Is Not Valid!" });
+            return Json(new
+            {
+                model = SalePoint,
+                success = false,
+                message = ModelState
+                            .Values
+                            .FirstOrDefault(e => e.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+                            .Errors
+                            .FirstOrDefault()
+                            .ErrorMessage ?? "Model Is Not Vald!"
+            });
         }
 
         public IActionResult DeleteSalePoint(long id)

@@ -1,92 +1,89 @@
 ﻿namespace CostControl.Presentation.Controllers
 {
-	using System;
-	using System.Diagnostics;
-	using System.Net.Http;
-	using System.Net.Http.Headers;
-	using CostControl.BusinessEntity.Models.CostControl;
-	using CostControl.Presentation.Models;
-	using Microsoft.AspNetCore.Http;
-	using Microsoft.AspNetCore.Mvc;
+    using System.Diagnostics;
+    using CostControl.BusinessEntity.Models.CostControl;
+    using CostControl.Presentation.Models;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
 
-	public class HomeController : BaseController
-	{
-		public IActionResult Index()
-		{
-			var username = HttpContext?.Session?.GetString("userName");
+    public class HomeController : BaseController
+    {
+        public IActionResult Index()
+        {
+            var username = HttpContext?.Session?.GetString("userName");
 
-			if (string.IsNullOrEmpty(username))
-				return RedirectToAction("Login", "User");
+            if (string.IsNullOrEmpty(username))
+                return RedirectToAction("Login", "IncommingUser");
 
-			return View();
-		}
+            return View();
+        }
 
-		public IActionResult About()
-		{
-			ViewData["Message"] = "Your application description page.";
+        public IActionResult About()
+        {
+            ViewData["Message"] = "Your application description page.";
 
-			return View();
-		}
+            return View();
+        }
 
-		public IActionResult Contact()
-		{
-			ViewData["Message"] = "Your contact page.";
+        public IActionResult Contact()
+        {
+            ViewData["Message"] = "Your contact page.";
 
-			return View();
-		}
+            return View();
+        }
 
-		public IActionResult Privacy()
-		{
-			return View();
-		}
+        public IActionResult Privacy()
+        {
+            return View();
+        }
 
-		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-		public IActionResult Error()
-		{
-			return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-		}
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
 
-		public IActionResult GetData()
-		{
-			Helper.GetServiceResponse<DataImport>("GetData");
+        public IActionResult GetData()
+        {
+            Helper.GetServiceResponse<DataImport>("GetData");
 
-   //         string str = string.Empty;
-			//using (HttpClient client = new HttpClient())
-			//{
-			//	client.BaseAddress = new Uri("http://localhost:5001/api/DataImport/");
+            //         string str = string.Empty;
+            //using (HttpClient client = new HttpClient())
+            //{
+            //	client.BaseAddress = new Uri("http://localhost:5001/api/DataImport/");
 
-			//	client.DefaultRequestHeaders.Clear();
-			//	client.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue("nl-NL"));
+            //	client.DefaultRequestHeaders.Clear();
+            //	client.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue("nl-NL"));
 
-			//	client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //	client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-			//	//HTTP GET
-			//	System.Threading.Tasks.Task<HttpResponseMessage> responseTask = client.GetAsync("GetData");
-			//	responseTask.Wait();
+            //	//HTTP GET
+            //	System.Threading.Tasks.Task<HttpResponseMessage> responseTask = client.GetAsync("GetData");
+            //	responseTask.Wait();
 
-			//	HttpResponseMessage result = responseTask.Result;
-			//	if (result.IsSuccessStatusCode)
-			//	{
-			//		//var readTask = result.Content.ReadAsAsync<ServiceResponse<Ingredient>>();
+            //	HttpResponseMessage result = responseTask.Result;
+            //	if (result.IsSuccessStatusCode)
+            //	{
+            //		//var readTask = result.Content.ReadAsAsync<ServiceResponse<Ingredient>>();
 
-			//		//readTask.Wait();
+            //		//readTask.Wait();
 
-			//		//values = readTask.Result;
-			//	}
-			//	else //web api sent error response 
-			//	{
-			//		//log response status here..
+            //		//values = readTask.Result;
+            //	}
+            //	else //web api sent error response 
+            //	{
+            //		//log response status here..
 
-			//		//values = null;
+            //		//values = null;
 
-			//		ModelState.AddModelError(string.Empty, "Server error. Please contact administrator.");
+            //		ModelState.AddModelError(string.Empty, "Server error. Please contact administrator.");
 
-			//		str = "Server error. Please contact administrator.";
-			//	}
-			//}
+            //		str = "Server error. Please contact administrator.";
+            //	}
+            //}
 
-			return RedirectToAction("Index");
-		}
+            return RedirectToAction("Index");
+        }
 
-	}
+    }
 }

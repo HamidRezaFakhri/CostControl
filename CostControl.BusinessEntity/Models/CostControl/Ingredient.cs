@@ -14,29 +14,27 @@
 
         [Required(ErrorMessage = "نام/عنوان اجباریست!")]
         [Display(Name = "نام/عنوان")]
+        [StringLength(250, MinimumLength = 3,
+            ErrorMessage = "تعداد کاراکترها باید بیشتر از {2} و کمتر از {1} باشد.")]
         public string Name { get; set; }
 
         [Required(ErrorMessage = "کد اجباریست!")]
         [Display(Name = "کد")]
+        [StringLength(10, MinimumLength = 1,
+            ErrorMessage = "تعداد کاراکترها باید بیشتر از {2} و کمتر از {1} باشد.")]
         public string Code { get; set; }
-
-        //[Required]
+        
         [Display(Name = "نام لاتین")]
         public string EnglishName { get; set; }
 
         [Required(ErrorMessage = "واحد مصرفی اجباریست!")]
         [Display(Name = "واحد مصرفی")]
+        public long ConsumptionUnitId { get; set; }
+
         public ConsumptionUnit ConsumptionUnit { get; set; }
-
-        //[Required(ErrorMessage = "قیمت اجباریست!")]
-        //[Display(Name = "قیمت")]
-        //[DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
-        //[Range(0, 9999999)]
-        //public decimal Price { get; set; }
-
+        
         [Required(ErrorMessage = "نرخ (درصد) اجباریست!")]
         [Display(Name = "نرخ (درصد)")]
-        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:P2}")]
         public decimal UsefullRatio { get; set; }
 
         [Display(Name = "شرح")]
@@ -63,7 +61,7 @@
                 yield return new ValidationResult(ValidationMessages.CanNotBeEmpty(nameof(Code)), new[] { nameof(Code) });
             }
 
-            if (Code?.Length > 10 || Code?.Length < 3)
+            if (Code?.Length > 10 || Code?.Length < 1)
             {
                 yield return new ValidationResult(ValidationMessages.StringLengthRange(nameof(Code), 3, 10), new[] { nameof(Code) });
             }

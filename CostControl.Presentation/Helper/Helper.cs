@@ -94,7 +94,7 @@
 				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
 				//HTTP GET
-				System.Threading.Tasks.Task<HttpResponseMessage> responseTask = client.GetAsync("Get?PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1");
+				System.Threading.Tasks.Task<HttpResponseMessage> responseTask = client.GetAsync("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1");
 				responseTask.Wait();
 
 				HttpResponseMessage result = responseTask.Result;

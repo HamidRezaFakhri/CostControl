@@ -1,101 +1,121 @@
 ﻿namespace CostControl.Presentation.Controllers
 {
-	using System.Collections.Generic;
-	using System.Linq;
-	using CostControl.BusinessEntity.Models.CostControl;
-	using Microsoft.AspNetCore.Mvc;
-	using Microsoft.AspNetCore.Mvc.Rendering;
+    using System.Collections.Generic;
+    using System.Linq;
+    using CostControl.BusinessEntity.Models.CostControl;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Rendering;
 
-	public class FoodController : BaseController
-	{
-		public IActionResult FoodList(string param)
-		{
-			ViewData["title"] = Helper.GetEntityTile<Food>(EnumTitle.List);
+    public class FoodController : BaseController
+    {
+        public IActionResult FoodList(string param)
+        {
+            ViewData["title"] = Helper.GetEntityTile<Food>(EnumTitle.List);
 
-			return View(Helper.GetServiceResponse<Food>("Get?PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1"));
-		}
+            return View(Helper.GetServiceResponse<Food>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1"));
+        }
 
-		public IActionResult AddFood()
-		{
-			ViewData["title"] = Helper.GetEntityTile<Food>(EnumTitle.Add);
+        public IActionResult AddFood()
+        {
+            ViewData["title"] = Helper.GetEntityTile<Food>(EnumTitle.Add);
 
-			ViewBag.SaleCostPoint = Helper.GetServiceResponseList<SaleCostPoint>("Get?PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1")
-										.Select(c => new SelectListItem()
-										{
-											Text = $"{c.SalePointName} - {c.CostPointName}",
-											Value = c.Id.ToString()
-										})
-										.ToList();
+            ViewBag.SaleCostPoint = Helper.GetServiceResponseList<SaleCostPoint>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1")
+                                        .Select(c => new SelectListItem()
+                                        {
+                                            Text = $"{c.SalePointName} - {c.CostPointName}",
+                                            Value = c.Id.ToString()
+                                        })
+                                        .ToList();
 
-			return PartialView();
-		}
+            return PartialView();
+        }
 
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public IActionResult AddFood(Food Food)
-		{
-			if (ModelState.IsValid)
-			{
-				var postResult = Helper.PostValueToSevice<Food>("POST", Food);
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddFood(Food Food)
+        {
+            if (ModelState.IsValid)
+            {
+                var postResult = Helper.PostValueToSevice<Food>("POST", Food);
 
-				return Json(new { success = postResult.result, message = postResult.message });
-			}
+                return Json(new { success = postResult.result, message = postResult.message });
+            }
 
-			return Json(new { success = false, message = "Model Is Not Vald!" });
-		}
+            return Json(new
+            {
+                model = Food,
+                success = false,
+                message = ModelState
+                .Values
+                .FirstOrDefault(e => e.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+                .Errors
+                .FirstOrDefault()
+                .ErrorMessage ?? "Model Is Not Vald!"
+            });
+        }
 
-		public IActionResult EditFood(long id)
-		{
-			ViewData["title"] = Helper.GetEntityTile<Food>(EnumTitle.Edit);
+        public IActionResult EditFood(long id)
+        {
+            ViewData["title"] = Helper.GetEntityTile<Food>(EnumTitle.Edit);
 
-			var model = GetFoodById(id);
+            var model = GetFoodById(id);
 
-			ViewBag.SaleCostPoint = Helper.GetServiceResponseList<SaleCostPoint>("Get?PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1")
-							.Select(c => new SelectListItem()
-							{
-								Text = $"{c.SalePointName} - {c.CostPointName}",
-								Value = c.Id.ToString(),
-								Selected = c.Id == model.SaleCostPointId
-							})
-							.ToList();
+            ViewBag.SaleCostPoint = Helper.GetServiceResponseList<SaleCostPoint>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1")
+                            .Select(c => new SelectListItem()
+                            {
+                                Text = $"{c.SalePointName} - {c.CostPointName}",
+                                Value = c.Id.ToString(),
+                                Selected = c.Id == model.SaleCostPointId
+                            })
+                            .ToList();
 
-			return PartialView(GetFoodById(id));
-		}
+            return PartialView(GetFoodById(id));
+        }
 
-		[HttpPost]
-		public IActionResult EditFood(long id, Food Food)
-		{
-			if (ModelState.IsValid)
-			{
-				Food.State = BusinessEntity.Models.Base.Enums.ObjectState.Active;
+        [HttpPost]
+        public IActionResult EditFood(long id, Food Food)
+        {
+            if (ModelState.IsValid)
+            {
+                Food.State = BusinessEntity.Models.Base.Enums.ObjectState.Active;
 
-				var postResult = Helper.PostValueToSevice<Food>("PUT?id=" + Food.Id.ToString(), Food);
+                var postResult = Helper.PostValueToSevice<Food>("PUT?id=" + Food.Id.ToString(), Food);
 
-				return Json(new { success = postResult.result, message = postResult.message });
-			}
+                return Json(new { success = postResult.result, message = postResult.message });
+            }
 
-			return Json(new { success = false, message = "Model Is Not Valid!" });
-		}
+            return Json(new
+            {
+                model = Food,
+                success = false,
+                message = ModelState
+                .Values
+                .FirstOrDefault(e => e.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+                .Errors
+                .FirstOrDefault()
+                .ErrorMessage ?? "Model Is Not Vald!"
+            });
+        }
 
-		public IActionResult DeleteFood(long id)
-		{
-			ViewData["title"] = Helper.GetEntityTile<Food>(EnumTitle.Delete);
+        public IActionResult DeleteFood(long id)
+        {
+            ViewData["title"] = Helper.GetEntityTile<Food>(EnumTitle.Delete);
 
-			return PartialView(GetFoodById(id));
-		}
+            return PartialView(GetFoodById(id));
+        }
 
-		[HttpPost]
-		public IActionResult DeleteFood(Food Food)
-		{
-			var postResult = Helper.PostValueToSevice<Food>("Delete?id=" + Food.Id.ToString(), Food);
+        [HttpPost]
+        public IActionResult DeleteFood(Food Food)
+        {
+            var postResult = Helper.PostValueToSevice<Food>("Delete?id=" + Food.Id.ToString(), Food);
 
-			return Json(new { success = postResult.result, message = postResult.message });
-		}
+            return Json(new { success = postResult.result, message = postResult.message });
+        }
 
-		private Food GetFoodById(long id)
-		{
-			return (Helper.GetServiceResponse<Food>("GetById?id=" + id.ToString()).data as List<Food>)
-				.FirstOrDefault();
-		}
-	}
+        private Food GetFoodById(long id)
+        {
+            return (Helper.GetServiceResponse<Food>("GetById?id=" + id.ToString()).data as List<Food>)
+                .FirstOrDefault();
+        }
+    }
 }

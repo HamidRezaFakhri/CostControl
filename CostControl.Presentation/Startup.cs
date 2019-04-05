@@ -36,10 +36,7 @@ namespace CostControl.Presentation
             services.AddMvc(
                 config => {
                     config.ModelBinderProviders.Insert(0, new PersianDateModelBinderProvider());
-                    //config.ModelMetadataDetailsProviders.Add(new HumanizerMetadataProvider());
                     })
-                //options => { options.extention })
-                //.AddMvcOptions(m => m.ModelMetadataDetailsProviders.Add(new HumanizerMetadataProvider()))
                 .AddSessionStateTempDataProvider();//.SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -58,16 +55,12 @@ namespace CostControl.Presentation
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            //app.UseCookiePolicy();
+            app.UseCookiePolicy();
 
             app.UseSession();
 
             app.UseMvc(routes =>
             {
-                //routes.MapRoute(
-                //    name: "default",
-                //    template: "{controller=Home}/{action=Index}/{id?}");
-
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=IncommingUser}/{action=Login}/{id?}");

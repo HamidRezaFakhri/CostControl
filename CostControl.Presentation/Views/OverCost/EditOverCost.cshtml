@@ -1,7 +1,7 @@
 ﻿@model CostControl.BusinessEntity.Models.CostControl.OverCost
 @{
-	ViewData["Title"] = "ویرایش مرکز هزینه";
 	Layout = "~/Views/Shared/_Layout.cshtml";
+	var error = string.Empty;
 }
 
 @using (Html.BeginForm("EditOverCost", "OverCost", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return SubmitForm(this)" }))
@@ -71,6 +71,10 @@
 			</div>
 		</div>
 
+		<div id="errorContent" class="text-danger">
+
+		</div>
+
 		<div class="form-group col col-md-6">
 			<div class="form-group">
 				<div class="col-md-offset-2 col-md-10">
@@ -82,8 +86,12 @@
 	</div>
 }
 
-@section scripts{
+@section Scripts{
 	<script>
+		function displayErrorMessage(error) {
+			$("#errorContent").html(error);
+		}
+
 		$('#StartDate').click(function () {
 			PersianDatePicker.Show(this, '@System.DateTime.Now.Date.ToString("yyyy/MM/dd", new System.Globalization.CultureInfo("fa-IR"))');
 		});
@@ -93,22 +101,19 @@
 		});
 
 		function SubmitForm(form) {
-			debugger;
 			$.ajax({
 				type: "POST",
 				url: form.action,
 				data: $(form).serialize(),
 				success: function (data) {
-					debugger;
 					if (data.success) {
-						debugger;
-
 						$('body').removeClass('modal-open');
 						$('.modal-backdrop').remove();
 						$('#apModal').hide();
 
 						getData('OverCostList', 'OverCost');
 					} else {
+						displayErrorMessage(data.message);
 						return false;
 					}
 				}
@@ -117,5 +122,3 @@
 		}
 	</script>
 }
-
-

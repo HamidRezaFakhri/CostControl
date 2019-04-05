@@ -1,5 +1,5 @@
 ﻿@{
-	ViewData["Title"] = "Home Page";
+	ViewData["Title"] = "صفحه اصلی";
 	//Layout = "~/Views/Shared/_LayoutWithMenu.cshtml";
 	Layout = "~/Views/Shared/_CostControl_Layout.cshtml";
 }
@@ -69,6 +69,7 @@
 		$(document).ajaxStart(function () {
 			$("#wait").css("display", "block");
 		});
+
 		$(document).ajaxComplete(function () {
 			$("#wait").css("display", "none");
 		});

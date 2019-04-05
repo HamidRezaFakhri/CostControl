@@ -66,7 +66,7 @@
                 yield return new ValidationResult(ValidationMessages.CanNotBeEmpty(nameof(Code)), new[] { nameof(Code) });
             }
 
-            if (Code?.Length > 10 || Code?.Length < 3)
+            if (Code?.Length > 10 || Code?.Length < 1)
             {
                 yield return new ValidationResult(ValidationMessages.StringLengthRange(nameof(Code), 3, 10), new[] { nameof(Code) });
             }

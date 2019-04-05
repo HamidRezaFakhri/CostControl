@@ -11,13 +11,28 @@
 	<!-- Main CSS-->
 	<link rel="stylesheet" type="text/css" href="~/css/main.css">
 	<!-- Font-icon css-->
-	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	@*<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">*@
+
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-grid.css" />
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-reboot.css" />
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-rtl.css" />
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/font-awesome.min.css" />
+	@*<link rel="stylesheet" href="~/css/preloader.css" />
+		<link rel="stylesheet" href="~/css/site.css" />*@
+	<link rel="stylesheet" href="~/css/style.css" />
+
+	<link href="~/lib/DataTables/css/jquery.dataTables.css" rel="stylesheet" />
+	<link href="~/lib/DataTables/css/dataTables.bootstrap4.css" rel="stylesheet" />
+
+	<link href="~/lib/PersianCalendar/css/PersianDatePicker.css" rel="stylesheet" />
 
 </head>
 <body class="app sidebar-mini rtl">
 	<!-- Navbar-->
 	<header class="app-header">
-		<a class="app-header__logo" href="index.html">Cost Control</a>
+		<a asp-controller="Home" asp-action="Index" class="app-header__logo">Cost Control</a>
+
 		<!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
 		<!-- Navbar Right Menu-->
 		<ul class="app-nav">
@@ -27,7 +42,8 @@
 				<ul class="dropdown-menu settings-menu dropdown-menu-right">
 					<li><a class="dropdown-item" href="#"><i class="fa fa-cog fa-lg"></i> تنظیمات</a></li>
 					<li><a class="dropdown-item" href="#"><i class="fa fa-user fa-lg"></i> پروفایل</a></li>
-					<li><a class="dropdown-item" href="page-login.html"><i class="fa fa-sign-out fa-lg"></i>خروج</a></li>
+					@*<li><a class="dropdown-item" href="page-login.html"><i class="fa fa-sign-out fa-lg"></i>خروج</a></li>*@
+					<li><a asp-controller="IncommingUser" asp-action="Logout" class="dropdown-item">خروج<i class="fa fa-sign-out fa-lg"></i></a></li>
 				</ul>
 			</li>
 		</ul>
@@ -56,21 +72,19 @@
 					<li><a id="ConsumptionUnit" class="treeview-item" href="#"><i class="icon fa fa-circle-o"></i>واحد های مصرفی</a></li>
 					<li><a id="Ingredient" class="treeview-item" href="#"><i class="icon fa fa-circle-o"></i>انبار مواد خام</a></li>
 					<li><a id="Food" class="treeview-item" href="#"><i class="icon fa fa-circle-o"></i>دستور غذا</a></li>
-					<li><a id="Menu" class="treeview-item" href="#"><i class="icon fa fa-circle-o"></i>منو</a></li>
-					@*<li><a id="Sale" class="treeview-item" href="#"><i class="icon fa fa-circle-o"></i>فروش</a></li>*@
+					@*<li><a id="Menu" class="treeview-item" href="#"><i class="icon fa fa-circle-o"></i>منو</a></li>*@
 					<li><a id="Inventory" class="treeview-item" href="#"><i class="icon fa fa-circle-o"></i>انبار</a></li>
-					<li><a id="Draft" class="treeview-item" href="#"><i class="icon fa fa-circle-o"></i>حواله انبار</a></li>
+					@*<li><a id="Draft" class="treeview-item" href="#"><i class="icon fa fa-circle-o"></i>حواله انبار</a></li>*@
 					<li><a id="IntakeRemittance" class="treeview-item" href="#"><i class="icon fa fa-circle-o"></i>حواله مصرفی</a></li>
-					<li><a id="Setting" class="treeview-item" href="#"><i class="icon fa fa-circle-o"></i>تنظیمات</a></li>
+					@*<li><a id="Setting" class="treeview-item" href="#"><i class="icon fa fa-circle-o"></i>تنظیمات</a></li>*@
 				</ul>
 			</li>
 			<li class="treeview">
 				<a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-edit"></i><span class="app-menu__label">گزارشات</span><i class="treeview-indicator fa fa-angle-right"></i></a>
 				<ul class="treeview-menu">
-					<li><a class="treeview-item" href="form-components.html"><i class="icon fa fa-circle-o"></i> Form Components</a></li>
-					<li><a class="treeview-item" href="form-custom.html"><i class="icon fa fa-circle-o"></i> Custom Components</a></li>
-					<li><a class="treeview-item" href="form-samples.html"><i class="icon fa fa-circle-o"></i> Form Samples</a></li>
-					<li><a class="treeview-item" href="form-notifications.html"><i class="icon fa fa-circle-o"></i> Form Notifications</a></li>
+					<li><a class="treeview-item" href="form-components.html"><i class="icon fa fa-circle-o"></i> مصارف عمده</a></li>
+					<li><a class="treeview-item" href="form-custom.html"><i class="icon fa fa-circle-o"></i> فروش رستوران</a></li>
+					<li><a class="treeview-item" href="form-samples.html"><i class="icon fa fa-circle-o"></i> Net Cost</a></li>
 				</ul>
 			</li>
 			<li><a class="app-menu__item" href="charts.html"><i class="app-menu__icon fa fa-pie-chart"></i><span class="app-menu__label">بروز رسانی</span></a></li>
@@ -78,12 +92,12 @@
 	</aside>
 
 	<main class="app-content">
-		@*<div class="app-title">
+		<div class="app-title">
 			<div>
-				<h1><i class="fa fa-th-list"></i> Data Table</h1>
-				<p>Table to display analytical data effectively</p>
+				<h1 id="pageTitle"><i class="fa fa-th-list"></i> @ViewData["title"]</h1>
+				@*<p>Table to display analytical data effectively</p>*@
 			</div>
-		</div>*@
+		</div>
 		<div class="row">
 			<div class="col-md-12">
 				<div class="tile">
@@ -104,6 +118,12 @@
 	<script src="~/js/plugins/pace.min.js"></script>
 	<!-- Page specific javascripts-->
 	<script type="text/javascript" src="~/js/plugins/chart.js"></script>
+
+	<script src="~/lib/DataTables/js/jquery.dataTables.js"></script>
+	<script src="~/lib/DataTables/js/dataTables.bootstrap4.js"></script>
+	<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+	<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+	<script src="~/lib/PersianCalendar/js/PersianDatePicker.js"></script>
 
 	@RenderSection("Scripts", required: false)
 </body>

@@ -1,6 +1,7 @@
 ﻿@model CostControl.BusinessEntity.Models.CostControl.SaleCostPoint
 @{
 	Layout = "~/Views/Shared/_Layout.cshtml";
+	var error = string.Empty;
 }
 
 @using (Html.BeginForm("AddSaleCostPoint", "SaleCostPoint", FormMethod.Post, new { name = "frmAddSaleCostPoint", id = "frmAddSaleCostPoint", enctype = "multipart/form-data", onsubmit = "return SubmitForm(this)" }))
@@ -27,6 +28,10 @@
 			</div>
 		</div>
 
+		<div id="errorContent" class="text-danger">
+
+		</div>
+
 		<div class="form-group">
 			<div class="col-md-offset-2 col-md-10">
 				<input type="submit" value="ثبت" class="btn btn-success" />
@@ -36,21 +41,23 @@
 	</div>
 }
 
-@section scripts{
+@section Scripts{
 	<script>
+		function displayErrorMessage(error) {
+			$("#errorContent").html(error);
+		}
 
 		function SubmitForm(form) {
-			debugger;
 			$.ajax({
 				type: "POST",
 				url: form.action,
 				data: $(form).serialize(),
 				success: function (data) {
-					debugger;
 					if (data.success) {
 						$('#apModal').modal('hide');
 						getData('SaleCostPointList', 'SaleCostPoint');
 					} else {
+						displayErrorMessage(data.message);
 						return false;
 					}
 				}

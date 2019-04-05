@@ -1,6 +1,7 @@
 ﻿@model CostControl.BusinessEntity.Models.CostControl.Recipe
 @{
 	Layout = "~/Views/Shared/_Layout.cshtml";
+	var error = string.Empty;
 
 	var parentId = Model.FoodId;
 }
@@ -48,6 +49,10 @@
 			</div>
 		</div>
 
+		<div id="errorContent" class="text-danger">
+
+		</div>
+
 		<div class="form-group">
 			<div class="col-md-offset-2 col-md-10">
 				<input type="submit" value="ثبت" class="btn btn-success" />
@@ -57,11 +62,13 @@
 	</div>
 }
 
-@section scripts{
+@section Scripts{
 	<script>
-		function SubmitForm(form) {
-			debugger;
+		function displayErrorMessage(error) {
+			$("#errorContent").html(error);
+		}
 
+		function SubmitForm(form) {
 			var Recipe =
 				{
 					FoodId: @Model.FoodId,
@@ -76,7 +83,6 @@
 				url: form.action,
 				data: $(form).serialize(),
 				success: function (data) {
-					debugger;
 					if (data.success) {
 						$('body').removeClass('modal-open');
 						$('.modal-backdrop').remove();
@@ -84,6 +90,7 @@
 
 						getData('RecipeList', 'Recipe', 1, @Model.FoodId);
 					} else {
+						displayErrorMessage(data.message);
 						return false;
 					}
 				}

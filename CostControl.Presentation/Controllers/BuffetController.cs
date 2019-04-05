@@ -28,7 +28,7 @@
 				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
 				//HTTP GET
-				var responseTask = client.GetAsync("Get?PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1");
+				var responseTask = client.GetAsync("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1");
 				responseTask.Wait();
 
 				var result = responseTask.Result;

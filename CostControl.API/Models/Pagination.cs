@@ -4,7 +4,7 @@
 
 	public class Pagination : IPagination/*<TEntity> : IEntity*/
 	{
-		private int MaxPageSize { get; set; } = 500;
+		private int MaxPageSize { get; set; } = 1000;
 
 		public int PageNumber { get; set; } = 1; //Current page number, page index
 

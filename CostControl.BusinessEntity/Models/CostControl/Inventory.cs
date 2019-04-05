@@ -14,10 +14,14 @@
 
         [Required(ErrorMessage = "نام/عنوان اجباریست!")]
         [Display(Name = "نام/عنوان")]
+        [StringLength(250, MinimumLength = 3,
+            ErrorMessage = "تعداد کاراکترها باید بیشتر از {2} و کمتر از {1} باشد.")]
         public string Name { get; set; }
 
         [Required(ErrorMessage = "کد اجباریست!")]
         [Display(Name = "کد")]
+        [StringLength(10, MinimumLength = 1,
+            ErrorMessage = "تعداد کاراکترها باید بیشتر از {2} و کمتر از {1} باشد.")]
         public string Code { get; set; }
 
         [Display(Name = "انبار ضایعات")]
@@ -43,7 +47,7 @@
                 yield return new ValidationResult(ValidationMessages.CanNotBeEmpty(nameof(Code)), new[] { nameof(Code) });
             }
 
-            if (Code?.Length > 10 || Code?.Length < 3)
+            if (Code?.Length > 10 || Code?.Length < 1)
             {
                 yield return new ValidationResult(ValidationMessages.StringLengthRange(nameof(Code), 3, 10), new[] { nameof(Code) });
             }

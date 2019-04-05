@@ -47,11 +47,9 @@
 		[HttpPost]
 		public IActionResult Login(string userName, string pass)
 		{
-			if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(pass) || !UserIsValid(userName, pass))
+			if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(pass) || !IsUserValid(userName, pass))
 			{
-				return View("~/Views/IncommingUser/Login.cshtml", "نام کاربری و یا کلمه عبور اشتباه می باشد!" +
-							Environment.NewLine +
-							"و یا مجوز استفاده از این بخش را ندارید");
+				return View("~/Views/IncommingUser/Login.cshtml", "نام کاربری و یا کلمه عبور اشتباه می باشد!");
 			}
 
 			//using (HttpClient client = new HttpClient())
@@ -76,7 +74,7 @@
 			return RedirectToAction("Index", "Home");
 		}
 
-		private bool UserIsValid(string userName, string pass)
+		private bool IsUserValid(string userName, string pass)
 		{
 			if (userName.Equals("Admin") && pass.Equals("Admin"))
 			{

@@ -7,32 +7,24 @@
 	var deleteTitle = Helper.GetEntityTile<CostControl.BusinessEntity.Models.CostControl.CostPointGroup>(EnumTitle.Delete);
 }
 
-<h2>@ViewData["title"]</h2>
-
 <div class="row well">
 	<div class="col-md-6">
 		<div class="btn-group" data-toggle="modal">
-			<a id="btnAddCostPointGroup" href="#" class="btn btn-primary" \
+			<a id="btnAddCostPointGroup" href="#" class="btn btn-primary"
 			   onclick='createEntityModal("/CostPointGroup/AddCostPointGroup", "@addTitle")'>
 				<span class="fa fa-plus"> <i> جدید</i></span>
 			</a>
 
 		</div>
 	</div>
-	<div class="col-md-6">
-		@Html.TextBox("txtSearch", "", new { placeholder = "جستجو ...", @class = "form-input col-md-8" })
-		<button id="btnSearch" class="btn btn-light" type="button" onclick="search()">
-			<i class="fa fa-search"><span>&nbsp;جستجو</span></i>
-		</button>
-	</div>
 </div>
 
-<table id="CostPointGroupslist" class="table table-bordered table-striped">
+<table id="CostPointGroupslist" class="table table-bordered table-striped table-hover">
 	<thead>
 		<tr>
-			<th><a id="Id" href="#">شناسه</a></th>
-			<th><a id="CostPointGroupName" href="#">نام</a></th>
-			<th><a id="code" href="#">کد</a></th>
+			<th>شناسه</th>
+			<th>نام</th>
+			<th>کد</th>
 			<th></th>
 		</tr>
 	</thead>
@@ -60,15 +52,13 @@
 	</tbody>
 </table>
 
-<ul class="pagination justify-content-center" style="margin:20px 0">
-	<li class="page-item disabled"><a class="page-link" href="#">قبلی</a></li>
-
-	@for (int i = 1; i < (Model.totalPage + 2); i++)
-	{
-		<li class="page-item @(Model.currentPage == i ? "active" : "")">
-			<a asp-controller="Words" asp-action="Index" asp-route-pageNumber="@i" class="page-link">@i</a>
-		</li>
-	}
-
-	<li class="page-item"><a class="page-link" href="#">بعدی</a></li>
-</ul>
+<script>
+	$(document).ready(function () {
+		$('#pageTitle').html('@ViewData["title"]');
+		$('#CostPointGroupslist').dataTable({
+			"language": {
+				"url": "/lib/DataTables/i18n/Persian.lang.json"
+			}
+		});
+	});
+</script>

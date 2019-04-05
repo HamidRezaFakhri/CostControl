@@ -1,102 +1,101 @@
 ﻿@model CostControl.BusinessEntity.Models.CostControl.Food
 @{
 	Layout = "~/Views/Shared/_Layout.cshtml";
+	var error = string.Empty;
 }
 
 @using (Html.BeginForm("AddFood", "Food", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return SubmitForm(this)" }))
 {
 	@Html.AntiForgeryToken()
 
-<div class="form-horizontal row">
-	@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+	<div class="form-horizontal row">
+		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-	<div class="form-group col col-md-6">
-		<div class="form-group">
-			@Html.LabelFor(model => model.SaleCostPointId, htmlAttributes: new { @class = "control-label col-md-12" })
-			<div class="col-md-12">
-				@Html.DropDownListFor(model => model.SaleCostPointId, ViewBag.SaleCostPoint as IEnumerable<SelectListItem>,
-						"انتخاب کنید ...", htmlAttributes: new { @class = "form-control" })
-				@Html.ValidationMessageFor(model => model.SaleCostPointId, "", new { @class = "text-danger" })
+		<div class="form-group col col-md-6">
+			<div class="form-group">
+				@Html.LabelFor(model => model.SaleCostPointId, htmlAttributes: new { @class = "control-label col-md-12" })
+				<div class="col-md-12">
+					@Html.DropDownListFor(model => model.SaleCostPointId, ViewBag.SaleCostPoint as IEnumerable<SelectListItem>,
+							"انتخاب کنید ...", htmlAttributes: new { @class = "form-control" })
+					@Html.ValidationMessageFor(model => model.SaleCostPointId, "", new { @class = "text-danger" })
+				</div>
+			</div>
+
+			<div class="form-group">
+				@Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+				<div class="col-md-12">
+					@Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+					@Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+				</div>
 			</div>
 		</div>
 
-		<div class="form-group">
-			@Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-			<div class="col-md-12">
-				@Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-				@Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+		<div class="form-group col col-md-6">
+			<div class="form-group">
+				@Html.LabelFor(model => model.Code, htmlAttributes: new { @class = "control-label col-md-2" })
+				<div class="col-md-12">
+					@Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control" } })
+					@Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
+				</div>
 			</div>
-		</div>
-	</div>
 
-	<div class="form-group col col-md-6">
-		<div class="form-group">
-			@Html.LabelFor(model => model.Code, htmlAttributes: new { @class = "control-label col-md-2" })
-			<div class="col-md-12">
-				@Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control" } })
-				@Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
-			</div>
-		</div>
-
-		<div class="form-group">
-			@Html.LabelFor(model => model.EnglishName, htmlAttributes: new { @class = "control-label col-md-12" })
-			<div class="col-md-12">
-				@Html.EditorFor(model => model.EnglishName, new { htmlAttributes = new { @class = "form-control" } })
-				@Html.ValidationMessageFor(model => model.EnglishName, "", new { @class = "text-danger" })
-			</div>
-		</div>
-	</div>
-
-	<div class="form-group col col-md-12">
-		<div class="form-group">
-			@Html.LabelFor(model => model.FoodType, htmlAttributes: new { @class = "control-label col-md-12" })
-			<div class="col-md-12">
-				@*<select asp-for="FoodType" class="form-control"
-				asp-items="Html.GetEnumSelectList<CostControl.BusinessEntity.Models.CostControl.Enums.FoodType>()">
-			<option selected="selected" value="">انتخاب کنید ...</option>
-		</select>*@
-
-				@Html.DropDownListFor(x => x.FoodType, new[]{
-									new SelectListItem(){ Text = "وعده اصلی", Value = "1"},
-									new SelectListItem(){ Text = "پیش غدا", Value = "2"},
-									new SelectListItem(){ Text = "دسر", Value = "3"},
-									new SelectListItem(){ Text = "سالاد", Value = "4"}
-									}, "نوع را انتخاب کنید", new { @class = "form-control" })
-
-				@Html.ValidationMessageFor(model => model.FoodType, "", new { @class = "text-danger" })
+			<div class="form-group">
+				@Html.LabelFor(model => model.EnglishName, htmlAttributes: new { @class = "control-label col-md-12" })
+				<div class="col-md-12">
+					@Html.EditorFor(model => model.EnglishName, new { htmlAttributes = new { @class = "form-control" } })
+					@Html.ValidationMessageFor(model => model.EnglishName, "", new { @class = "text-danger" })
+				</div>
 			</div>
 		</div>
 
-		@*<div class="form-group">
-			@Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
-			<div class="col-md-12">
-				@Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
-				@Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
-			</div>
-		</div>*@
-	</div>
+		<div class="form-group col col-md-12">
+			<div class="form-group">
+				@Html.LabelFor(model => model.FoodType, htmlAttributes: new { @class = "control-label col-md-12" })
+				<div class="col-md-12">
+					@*<select asp-for="FoodType" class="form-control"
+								asp-items="Html.GetEnumSelectList<CostControl.BusinessEntity.Models.CostControl.Enums.FoodType>()">
+							<option selected="selected" value="">انتخاب کنید ...</option>
+						</select>*@
 
-	<div class="form-group col col-md-6">
-		<div class="form-group">
-			<div class="col-md-offset-2 col-md-10">
-				<input type="submit" value="ثبت" class="btn btn-success" />
-				<input id="btnCancel" type="button" class="btn btn-default" data-dismiss="modal" value="انصراف" />
+					@Html.DropDownListFor(x => x.FoodType, new[]{
+										new SelectListItem(){ Text = "وعده اصلی", Value = "1"},
+										new SelectListItem(){ Text = "پیش غدا", Value = "2"},
+										new SelectListItem(){ Text = "دسر", Value = "3"},
+										new SelectListItem(){ Text = "سالاد", Value = "4"}
+										}, "نوع را انتخاب کنید", new { @class = "form-control" })
+
+					@Html.ValidationMessageFor(model => model.FoodType, "", new { @class = "text-danger" })
+				</div>
+			</div>
+		</div>
+
+		<div id="errorContent" class="text-danger">
+
+		</div>
+
+		<div class="form-group col col-md-6">
+			<div class="form-group">
+				<div class="col-md-offset-2 col-md-10">
+					<input type="submit" value="ثبت" class="btn btn-success" />
+					<input id="btnCancel" type="button" class="btn btn-default" data-dismiss="modal" value="انصراف" />
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
 }
 
-@section scripts{
+@section Scripts{
 	<script>
+		function displayErrorMessage(error) {
+			$("#errorContent").html(error);
+		}
+
 		function SubmitForm(form) {
-			debugger;
 			$.ajax({
 				type: "POST",
 				url: form.action,
 				data: $(form).serialize(),
 				success: function (data) {
-					debugger;
 					if (data.success) {
 						$('body').removeClass('modal-open');
 						$('.modal-backdrop').remove();
@@ -104,6 +103,7 @@
 
 						getData('FoodList', 'Food');
 					} else {
+						displayErrorMessage(data.message);
 						return false;
 					}
 				}

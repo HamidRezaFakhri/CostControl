@@ -12,7 +12,7 @@
         {
             ViewData["title"] = Helper.GetEntityTile<SaleCostPoint>(EnumTitle.List);
 
-            return View(Helper.GetServiceResponse<SaleCostPoint>("Get?PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1"));
+            return View(Helper.GetServiceResponse<SaleCostPoint>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1"));
         }
 
         public IActionResult AddSaleCostPoint()
@@ -48,7 +48,17 @@
                 return Json(new { success = postResult.result, message = postResult.message });
             }
 
-            return Json(new { success = false, message = "Model Is Not Vald!" });
+            return Json(new
+            {
+                model = SaleCostPoint,
+                success = false,
+                message = ModelState
+                .Values
+                .FirstOrDefault(e => e.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+                .Errors
+                .FirstOrDefault()
+                .ErrorMessage ?? "Model Is Not Vald!"
+            });
         }
 
         public IActionResult EditSaleCostPoint(long id)
@@ -90,7 +100,17 @@
                 return Json(new { success = postResult.result, message = postResult.message });
             }
 
-            return Json(new { success = false, message = "Model Is Not Valid!" });
+            return Json(new
+            {
+                model = SaleCostPoint,
+                success = false,
+                message = ModelState
+                .Values
+                .FirstOrDefault(e => e.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+                .Errors
+                .FirstOrDefault()
+                .ErrorMessage ?? "Model Is Not Vald!"
+            });
         }
 
         public IActionResult DeleteSaleCostPoint(long id)
@@ -114,7 +134,7 @@
 
         private IEnumerable<SalePoint> GetSalePoints()
         {
-            return Helper.GetServiceResponseList<SalePoint>("Get?PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1");
+            return Helper.GetServiceResponseList<SalePoint>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1");
         }
 
         private CostPoint GetCostPointById(long id)
@@ -131,7 +151,7 @@
 
         private IEnumerable<CostPoint> GetCostPoints()
         {
-            return Helper.GetServiceResponseList<CostPoint>("Get?PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1");
+            return Helper.GetServiceResponseList<CostPoint>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1");
         }
     }
 }

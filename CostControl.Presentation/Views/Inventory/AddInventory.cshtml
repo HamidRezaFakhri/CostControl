@@ -1,6 +1,7 @@
 ﻿@model CostControl.BusinessEntity.Models.CostControl.Inventory
 @{
 	Layout = "~/Views/Shared/_Layout.cshtml";
+	var error = string.Empty;
 }
 
 @using (Html.BeginForm("AddInventory", "Inventory", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return SubmitForm(this)" }))
@@ -33,6 +34,10 @@
 			</div>
 		</div>
 
+		<div id="errorContent" class="text-danger">
+
+		</div>
+
 		<div class="form-group">
 			<div class="col-md-offset-2 col-md-10">
 				<input type="submit" value="ثبت" class="btn btn-success" />
@@ -42,20 +47,23 @@
 	</div>
 }
 
-@section scripts{
+@section Scripts{
 	<script>
+		function displayErrorMessage(error) {
+			$("#errorContent").html(error);
+		}
+
 		function SubmitForm(form) {
-			debugger;
 			$.ajax({
 				type: "POST",
 				url: form.action,
 				data: $(form).serialize(),
 				success: function (data) {
-					debugger;
 					if (data.success) {
 						$('#apModal').modal('hide');
 						getData('InventoryList', 'Inventory');
 					} else {
+						displayErrorMessage(data.message);
 						return false;
 					}
 				}

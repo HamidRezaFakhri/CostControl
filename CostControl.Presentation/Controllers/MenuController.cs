@@ -12,14 +12,14 @@
 		{
 			ViewData["title"] = Helper.GetEntityTile<Menu>(EnumTitle.List);
 
-			return View(Helper.GetServiceResponse<Menu>("Get?PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1"));
+			return View(Helper.GetServiceResponse<Menu>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1"));
 		}
 
 		public IActionResult AddMenu()
 		{
 			ViewData["title"] = Helper.GetEntityTile<Menu>(EnumTitle.Add);
 
-			ViewBag.SaleCostPoint = Helper.GetServiceResponseList<SaleCostPoint>("Get?PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1")
+			ViewBag.SaleCostPoint = Helper.GetServiceResponseList<SaleCostPoint>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1")
 										.Select(c => new SelectListItem()
 										{
 											Text = $"{c.SalePointName} - {c.CostPointName}",
@@ -50,7 +50,7 @@
 
 			var model = GetMenuById(id);
 
-			ViewBag.SaleCostPoint = Helper.GetServiceResponseList<SaleCostPoint>("Get?PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1")
+			ViewBag.SaleCostPoint = Helper.GetServiceResponseList<SaleCostPoint>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1")
 										.Select(c => new SelectListItem()
 										{
 											Text = $"{c.SalePointName} - {c.CostPointName}",

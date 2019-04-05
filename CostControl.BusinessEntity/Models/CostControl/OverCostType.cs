@@ -14,12 +14,14 @@
 
         [Required(ErrorMessage = "نام/عنوان اجباریست!")]
         [Display(Name = "نام/عنوان")]
-        [StringLength(250, MinimumLength = 3)]
+        [StringLength(250, MinimumLength = 3,
+            ErrorMessage = "تعداد کاراکترها باید بیشتر از {2} و کمتر از {1} باشد.")]
         public string Name { get; set; }
 
         [Required(ErrorMessage = "کد اجباریست!")]
         [Display(Name = "کد")]
-        [StringLength(10, MinimumLength = 1)]
+        [StringLength(10, MinimumLength = 1,
+            ErrorMessage = "تعداد کاراکترها باید بیشتر از {2} و کمتر از {1} باشد.")]
         public string FinancialCode { get; set; }
 
         public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

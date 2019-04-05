@@ -11,7 +11,7 @@
 		{
 			ViewData["title"] = Helper.GetEntityTile<Setting>(EnumTitle.List);
 
-			return View(Helper.GetServiceResponse<Setting>("Get?PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1"));
+			return View(Helper.GetServiceResponse<Setting>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1"));
 		}
 
 		public IActionResult AddSetting()

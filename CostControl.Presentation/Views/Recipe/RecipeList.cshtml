@@ -1,145 +1,64 @@
 ﻿@model CostControl.API.Models.ServiceResponse<CostControl.BusinessEntity.Models.CostControl.Recipe>
 
 @{
-    Layout = null;
-    var addTitle = Helper.GetEntityTile<CostControl.BusinessEntity.Models.CostControl.Recipe>(EnumTitle.Add);
-    var editTitle = Helper.GetEntityTile<CostControl.BusinessEntity.Models.CostControl.Recipe>(EnumTitle.Edit);
-    var deleteTitle = Helper.GetEntityTile<CostControl.BusinessEntity.Models.CostControl.Recipe>(EnumTitle.Delete);
+	Layout = null;
+	var addTitle = Helper.GetEntityTile<CostControl.BusinessEntity.Models.CostControl.Recipe>(EnumTitle.Add);
+	var editTitle = Helper.GetEntityTile<CostControl.BusinessEntity.Models.CostControl.Recipe>(EnumTitle.Edit);
+	var deleteTitle = Helper.GetEntityTile<CostControl.BusinessEntity.Models.CostControl.Recipe>(EnumTitle.Delete);
 }
 
-<h2>@ViewData["title"]</h2>
-
 <div class="row well">
-    <div class="col-md-6">
-        <div class="btn-group" data-toggle="modal">
-            <a id="btnAddRecipe" href="#" class="btn btn-primary"
-               onclick='create(@ViewBag.ParentId)'>
-                <span class="fa fa-plus"> <i> جدید</i></span>
-            </a>
+	<div class="col-md-6">
+		<div class="btn-group" data-toggle="modal">
+			<a id="btnAddRecipe" href="#" class="btn btn-primary"
+			   onclick='create(@ViewBag.ParentId)'>
+				<span class="fa fa-plus"> <i> جدید</i></span>
+			</a>
 
-        </div>
-    </div>
-    <div class="col-md-6">
-        @Html.TextBox("txtSearch", "", new { placeholder = "جستجو ...", @class = "form-input col-md-8" })
-        <button id="btnSearch" class="btn btn-light" type="button" onclick="search()">
-            <i class="fa fa-search"><span>&nbsp;جستجو</span></i>
-        </button>
-    </div>
+		</div>
+	</div>
 </div>
 
-<table id="Recipeslist" class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th><a id="Id" href="#">شناسه</a></th>
-            <th><a id="RecipeName" href="#">مواد خوراکی</a></th>
-            <th><a id="code" href="#">مقدار</a></th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody id="setRecipeList">
-        @foreach (CostControl.BusinessEntity.Models.CostControl.Recipe item in Model.data)
-        {
-            <tr id="tr_@item.Id">
-                <td>@item.Id</td>
-                <td>@item.IngredientId</td>
-                <td>@item.Amount</td>
-                <td>
-                    <a href="#" class="btn btn-sm btn-warning"
-                       onclick="EditEntityModal(@item.Id, '/Recipe/EditRecipe/', '@editTitle (@item.Id)')">
-                        <i class="fa fa-edit"><span> ویرایش </span></i>
-                    </a>
+<table id="Recipeslist" class="table table-bordered table-striped table-hover">
+	<thead>
+		<tr>
+			<th>شناسه</th>
+			<th>ماده خوراکی</th>
+			<th>مقدار</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody id="setRecipeList">
+		@foreach (CostControl.BusinessEntity.Models.CostControl.Recipe item in Model.data)
+		{
+			<tr id="tr_@item.Id">
+				<td>@item.Id</td>
+				<td>@item.IngredientId</td>
+				<td>@item.Amount</td>
+				<td>
+					<a href="#" class="btn btn-sm btn-warning"
+					   onclick="EditEntityModal(@item.Id, '/Recipe/EditRecipe/', '@editTitle (@item.Id)')">
+						<i class="fa fa-edit"><span> ویرایش </span></i>
+					</a>
 
-                    <span> | </span>
-                    <a class="btn btn-sm btn-danger"
-                       onclick="DeleteEntityModal(@item.Id, '/Recipe/DeleteRecip/', '@deleteTitle', '@item.Id')">
-                        <i class="fa fa-trash"><span> حذف </span></i>
-                    </a>
-                </td>
-            </tr>
-        }
-    </tbody>
+					<span> | </span>
+					<a class="btn btn-sm btn-danger"
+					   onclick="DeleteEntityModal(@item.Id, '/Recipe/DeleteRecip/', '@deleteTitle', '@item.Id')">
+						<i class="fa fa-trash"><span> حذف </span></i>
+					</a>
+				</td>
+			</tr>
+		}
+	</tbody>
 </table>
 
-<ul class="pagination justify-content-center" style="margin:20px 0">
-    <li class="page-item disabled"><a class="page-link" href="#">قبلی</a></li>
-
-    @for (int i = 1; i < (Model.totalPage + 2); i++)
-    {
-        <li class="page-item @(Model.currentPage == i ? "active" : "")">
-            <a asp-controller="Words" asp-action="Index" asp-route-pageNumber="@i" class="page-link">@i</a>
-        </li>
-    }
-
-    @*<li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item active"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>*@
-    <li class="page-item"><a class="page-link" href="#">بعدی</a></li>
-</ul>
-
 <script>
-    function create(parentId) {
-        $.ajax({
-            url: "/Recipe/AddRecipe/" + parentId,
-            type: "GET",
-            data: {}
-            //cache: false,
-            //processData: false,
-            //contentType: false,
-        })
-            .done(function (result) {
-                $('#apSecondModal').modal('show');
-
-                $('#modalBodySecond').html(result);
-            });
-    }
-
-    function edit(id) {
-        $.ajax({
-            url: "/Recipe/EditRecipe/" + id,
-            type: "GET",
-            data: {}
-        }).done(function (result) {
-            $('#apSecondModal').modal('show');
-
-            $('#modalBody').html(result);
-        });
-    }
-
-    function mydelete(id) {
-        $.ajax({
-            url: "/Recipe/DeleteRecipe/" + id,
-            type: "GET",
-            data: {}
-        }).done(function (result) {
-            $('#apSecondModal').modal('show');
-
-            $('#modalBody').html(result);
-        });
-    }
-
-    function onComplete() {
-        debugger;
-        //form.preventDefault();
-        $('#apSecondModal').modal('toggle');
-        alert('ddddddd');
-        //$.ajax({
-        //	url: "/Recipe/AddRecipe",
-        //	type: "POST",
-        //	data: { form }
-        //}).done(function (result) {
-        //	debugger;
-        //	$('#apModal').modal('toggle');
-        //	alert('ddddddd');
-        //	getData('RecipeList', 'Recipe');
-        //});
-
-        //window.location.href = "/Home/Index";
-
-        return false;
-    }
-
-    function onBegin() {
-        alert('begin');
-    }
+	$(document).ready(function () {
+		$('#pageTitle').html('@ViewData["title"]');
+		$('#Recipeslist').dataTable({
+			"language": {
+				"url": "/lib/DataTables/i18n/Persian.lang.json"
+			}
+		});
+	});
 </script>
-

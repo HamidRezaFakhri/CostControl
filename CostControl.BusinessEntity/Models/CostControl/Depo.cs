@@ -11,21 +11,20 @@
         public System.Guid? InstanceId { get; set; }
 
         public Base.Enums.ObjectState State { get; set; }
-
-        [Required]
+        
+        [Required(ErrorMessage = "مرکز فروش-مرکز هزینه اجباریست!")]
         [Display(Name = "مرکز فروش-مرکز هزینه")]
         public long SaleCostPointId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "ماده خام اجباریست!")]
         [Display(Name = "ماده خام")]
         public long IngredientId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "واحد مصرفی اجباریست!")]
         [Display(Name = "واحد مصرفی")]
         public long ConsumptionUnitId { get; set; }
-
-        [DataType(DataType.Currency)]
-        [Required]
+        
+        [Required(ErrorMessage = "مقدار اجباریست!")]
         [Display(Name = "مقدار")]
         public decimal Amount { get; set; }
 

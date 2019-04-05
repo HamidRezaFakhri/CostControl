@@ -1,6 +1,6 @@
 ﻿@model CostControl.BusinessEntity.Models.CostControl.Buffet
 @{
-	Layout = "~/Views/Shared/_Layout.cshtml";
+	Layout = null;
 }
 
 @using (Html.BeginForm("DeleteBuffet", "Buffet", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return SubmitForm(this)" }))
@@ -11,25 +11,26 @@
 		<div>
 			<h3>آیا اطمینان در حذف دارید؟</h3>
 		</div>
+
+		<br />
+
 		<div class="form-group">
 			<div class="col-md-offset-2 col-md-10">
-				<input type="submit" value="حذف" class="btn btn-success" />
+				<input type="submit" value="حذف" class="btn btn-danger" />
 				<input id="btnCancel" type="button" class="btn btn-default" data-dismiss="modal" value="انصراف" />
 			</div>
 		</div>
 	</div>
 }
 
-@section scripts{
+@section Scripts{
 	<script>
 		function SubmitForm(form) {
-			debugger;
 			$.ajax({
 				type: "POST",
 				url: form.action,
 				data: $(form).serialize(),
 				success: function (data) {
-					debugger;
 					if (data.success) {
 						$('body').removeClass('modal-open');
 						$('.modal-backdrop').remove();

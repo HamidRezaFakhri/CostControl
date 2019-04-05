@@ -20,19 +20,29 @@
 
 		<link href="~/lib/PersianCalendar/css/PersianDatePicker.css" rel="stylesheet" />
 
-		<script src="~/lib/jquery/dist/jquery.js"></script>
-		<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-		<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
-		<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
-		<script src="~/lib/PersianCalendar/js/PersianDatePicker.js"></script>
-		@*<link rel="stylesheet" href="~/css/responsive.css" />
+		<link rel="stylesheet" href="~/css/responsive.css" />
 
 		<link rel="stylesheet" href="~/lib/linericon/style.css">
 		<link rel="stylesheet" href="~/lib/owl-carousel/owl.carousel.min.css">
 		<link rel="stylesheet" href="~/lib/lightbox/simpleLightbox.css">
 		<link rel="stylesheet" href="~/lib/nice-select/css/nice-select.css">
 		<link rel="stylesheet" href="~/lib/animate-css/animate.css">
-		<link rel="stylesheet" href="~/lib/flaticon/flaticon.css">*@
+		<link rel="stylesheet" href="~/lib/flaticon/flaticon.css">
+
+		<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+		<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-grid.css" />
+		<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-reboot.css" />
+		<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-rtl.css" />
+		<link rel="stylesheet" href="~/lib/bootstrap/dist/css/font-awesome.min.css" />
+		@*<link rel="stylesheet" href="~/css/preloader.css" />
+		<link rel="stylesheet" href="~/css/site.css" />*@
+		<link rel="stylesheet" href="~/css/style.css" />
+
+		<link href="~/lib/DataTables/css/jquery.dataTables.css" rel="stylesheet" />
+		<link href="~/lib/DataTables/css/dataTables.bootstrap4.css" rel="stylesheet" />
+
+		<link href="~/lib/PersianCalendar/css/PersianDatePicker.css" rel="stylesheet" />
+
 	</environment>
 	<environment exclude="Development">
 		<link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/4.1.1/css/bootstrap.min.css"
@@ -70,6 +80,23 @@
 		</script>
 		<script src="~/js/site.min.js" asp-append-version="true"></script>
 	</environment>
+
+	<script src="~/lib/jquery/dist/jquery.js"></script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+	<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+	<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+	<script src="~/lib/PersianCalendar/js/PersianDatePicker.js"></script>
+
+	<!-- Essential javascripts for application to work-->
+	<script src="~/js/popper.min.js"></script>
+	<script src="~/js/main.js"></script>
+	<!-- The javascript plugin to display page loading on top-->
+	<script src="~/js/plugins/pace.min.js"></script>
+	<!-- Page specific javascripts-->
+	<script type="text/javascript" src="~/js/plugins/chart.js"></script>
+
+	<script src="~/lib/DataTables/js/jquery.dataTables.js"></script>
+	<script src="~/lib/DataTables/js/dataTables.bootstrap4.js"></script>
 
 	@RenderSection("Scripts", required: false)
 

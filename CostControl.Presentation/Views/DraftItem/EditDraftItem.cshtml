@@ -1,7 +1,7 @@
 ﻿@model CostControl.BusinessEntity.Models.CostControl.DraftItem
 @{
-	ViewData["Title"] = "ویرایش مرکز فروش";
 	Layout = "~/Views/Shared/_Layout.cshtml";
+	var error = string.Empty;
 }
 
 @using (Html.BeginForm("EditDraftItem", "DraftItem", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return SubmitForm(this)" }))
@@ -10,6 +10,10 @@
 
 	<div class="form-horizontal">
 		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+		<div id="errorContent" class="text-danger">
+
+		</div>
 
 		<div class="form-group">
 			<div class="col-md-offset-2 col-md-10">
@@ -20,38 +24,23 @@
 	</div>
 }
 
-@section scripts{
-	@*<script language="javascript" type="text/javascript">
-		$(function () {
-			debugger;
-				$("form").submit(function (e) {
-					$.post($(this).attr("action"),
-						$(this).serialize(),
-						function (data) {
-							$("#result").html(data);
-						});
-					e.preventDefault();
-				});
-			});
-		</script>*@
+@section Scripts{
 	<script>
+
 		function SubmitForm(form) {
-			debugger;
 			$.ajax({
 				type: "POST",
 				url: form.action,
 				data: $(form).serialize(),
 				success: function (data) {
-					debugger;
 					if (data.success) {
-						debugger;
-						
 						$('body').removeClass('modal-open');
 						$('.modal-backdrop').remove();
 						$('#apModal').hide();
 
 						getData('DraftItemList', 'DraftItem');
 					} else {
+						displayErrorMessage(data.message);
 						return false;
 					}
 				}
@@ -60,5 +49,3 @@
 		}
 	</script>
 }
-
-

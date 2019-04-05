@@ -6,7 +6,7 @@
 
 @using (Html.BeginForm("AddSalePoint", "SalePoint", FormMethod.Post, new { name = "frmAddSalePoint", id = "frmAddSalePoint", enctype = "multipart/form-data", onsubmit = "return SubmitForm(this)" }))
 {
-	@Html.AntiForgeryToken()
+@Html.AntiForgeryToken()
 
 <div class="form-horizontal">
 	@Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -41,7 +41,7 @@
 			@Html.ValidationMessageFor(model => model.IsHall, "", new { @class = "text-danger" })
 		</div>
 	</div>
-	
+
 	<div id="errorContent" class="text-danger">
 
 	</div>
@@ -55,13 +55,13 @@
 </div>
 }
 
-@section scripts{
+@section Scripts{
 	<script>
 
 		function displayErrorMessage(error) {
 			$("#errorContent").html(error);
 			//for (var err in error) {
-				//$('#errorContent').append(err + '<br />');
+			//$('#errorContent').append(err + '<br />');
 			//}
 
 			//$.each(errors, function (idx, validationError) {
@@ -70,13 +70,11 @@
 		}
 
 		function SubmitForm(form) {
-			debugger;
 			$.ajax({
 				type: "POST",
 				url: form.action,
 				data: $(form).serialize(),
 				success: function (data) {
-					debugger;
 					if (data.success) {
 						$('#apModal').modal('hide');
 						getData('SalePointList', 'SalePoint');

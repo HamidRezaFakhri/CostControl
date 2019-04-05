@@ -1,0 +1,39 @@
+﻿@{
+	var clas = System.Globalization.CultureInfo.CurrentUICulture.Name.Contains("fa") ? "rtl" : " ";
+}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+	<title>نرم افزار مدیریت هزینه ها</title>
+
+	<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+
+	@*<script src="~/lib/jquery/dist/jquery.js"></script>
+		<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+		<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+		<script src="~/lib/PersianCalendar/js/PersianDatePicker.js"></script>
+
+		<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+			<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-grid.css" />
+			<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-reboot.css" />
+			<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-rtl.css" />
+			<link rel="stylesheet" href="~/lib/bootstrap/dist/css/font-awesome.min.css" />
+			<link rel="stylesheet" href="~/css/preloader.css" />
+			<link rel="stylesheet" href="~/css/style.css" />
+
+			<link href="~/lib/PersianCalendar/css/PersianDatePicker.css" rel="stylesheet" />*@
+</head>
+
+<body class="rtl">
+
+	<div class="container body-content">
+		@RenderBody()
+	</div>
+
+	@RenderSection("Scripts", required: false)
+
+</body>
+</html>

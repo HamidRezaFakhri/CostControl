@@ -7,8 +7,6 @@
 	var deleteTitle = Helper.GetEntityTile<CostControl.BusinessEntity.Models.CostControl.OverCost>(EnumTitle.Delete);
 }
 
-<h2>@ViewData["title"]</h2>
-
 <div class="row well">
 	<div class="col-md-6">
 		<div class="btn-group" data-toggle="modal">
@@ -19,62 +17,54 @@
 
 		</div>
 	</div>
-	<div class="col-md-6">
-		@Html.TextBox("txtSearch", "", new { placeholder = "جستجو ...", @class = "form-input col-md-8" })
-		<button id="btnSearch" class="btn btn-light" type="button" onclick="search()">
-			<i class="fa fa-search"><span>&nbsp;جستجو</span></i>
-		</button>
-	</div>
 </div>
 
-<table id="OverCostslist" class="table table-bordered table-striped">
+<table id="OverCostslist" class="table table-bordered table-striped table-hover">
 	<thead>
 		<tr>
-			<th><a id="overCostType" href="#">گروه</a></th>
-			<th><a id="startDate" href="#">از تاریخ</a></th>
-			<th><a id="endDate" href="#">تا تاریخ</a></th>
-			<th><a id="price" href="#">مبلغ</a></th>
-			<th><a id="saleCostPoint" href="#">مرکز هزینه</a></th>
-			<th><a id="overCostType" href="#">سرفصل</a></th>
+			<th>شناسه</th>
+			<th>از تاریخ</th>
+			<th>تا تاریخ</th>
+			<th>مبلغ</th>
+			<th>مرکز هزینه</th>
+			<th>سرفصل</th>
 			<th></th>
 		</tr>
 	</thead>
 	<tbody id="setOverCostList">
 		@foreach (var item in Model.data)
 		{
-		<tr id="tr_@item.Id">
-			<td id="td_OverCostType">@item.OverCostTypeId</td>
-			<td id="td_StartDate">@item.StartDate.Date.ToString("yyyy/MM/dd", new System.Globalization.CultureInfo("fa-IR"))</td>
-			<td id="td_EndtDate">@item.EndDate.Date.ToString("yyyy/MM/dd", new System.Globalization.CultureInfo("fa-IR"))</td>
-			<td id="td_Price">@item.Price.ToString("N")</td>
-			<td id="td_SaleCostPoint">@item.SaleCostPoint.SalePointName @item.SaleCostPoint.CostPointName</td>
-			<td id="td_OverCostType">@item.OverCostType.Name</td>
-			<td>
-				<a href="#" class="btn btn-sm btn-warning"
-				   onclick="EditEntityModal(@item.Id, '/OverCost/EditOverCost/', '@editTitle')">
-					<i class="fa fa-edit"><span> ویرایش </span></i>
-				</a>
+			<tr id="tr_@item.Id">
+				<td id="td_OverCostType">@item.Id</td>
+				<td id="td_StartDate">@item.StartDate.Date.ToString("yyyy/MM/dd", new System.Globalization.CultureInfo("fa-IR"))</td>
+				<td id="td_EndtDate">@item.EndDate.Date.ToString("yyyy/MM/dd", new System.Globalization.CultureInfo("fa-IR"))</td>
+				<td id="td_Price">@item.Price.ToString("N")</td>
+				<td id="td_SaleCostPoint">@item.SaleCostPoint.SalePointName @item.SaleCostPoint.CostPointName</td>
+				<td id="td_OverCostType">@item.OverCostType.Name</td>
+				<td>
+					<a href="#" class="btn btn-sm btn-warning"
+					   onclick="EditEntityModal(@item.Id, '/OverCost/EditOverCost/', '@editTitle')">
+						<i class="fa fa-edit"><span> ویرایش </span></i>
+					</a>
 
-				<span> | </span>
-				<a class="btn btn-sm btn-danger"
-				   onclick="DeleteEntityModal(@item.Id, '/OverCost/DeleteOverCost/', '@deleteTitle', '@item.Id')">
-					<i class="fa fa-trash"><span> حذف </span></i>
-				</a>
-			</td>
-		</tr>
+					<span> | </span>
+					<a class="btn btn-sm btn-danger"
+					   onclick="DeleteEntityModal(@item.Id, '/OverCost/DeleteOverCost/', '@deleteTitle', '@item.Id')">
+						<i class="fa fa-trash"><span> حذف </span></i>
+					</a>
+				</td>
+			</tr>
 		}
 	</tbody>
 </table>
 
-<ul class="pagination justify-content-center" style="margin:20px 0">
-	<li class="page-item disabled"><a class="page-link" href="#">قبلی</a></li>
-
-	@for (int i = 1; i < (Model.totalPage + 2); i++)
-	{
-		<li class="page-item @(Model.currentPage == i ? "active" : "")">
-			<a asp-controller="Words" asp-action="Index" asp-route-pageNumber="@i" class="page-link">@i</a>
-		</li>
-	}
-
-	<li class="page-item"><a class="page-link" href="#">بعدی</a></li>
-</ul>
+<script>
+	$(document).ready(function () {
+		$('#pageTitle').html('@ViewData["title"]');
+		$('#OverCostslist').dataTable({
+			"language": {
+				"url": "/lib/DataTables/i18n/Persian.lang.json"
+			}
+		});
+	});
+</script>

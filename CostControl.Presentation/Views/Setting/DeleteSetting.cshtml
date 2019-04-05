@@ -23,16 +23,14 @@
 	</div>
 }
 
-@section scripts{
+@section Scripts{
 	<script>
 		function SubmitForm(form) {
-			debugger;
 			$.ajax({
 				type: "POST",
 				url: form.action,
 				data: $(form).serialize(),
 				success: function (data) {
-					debugger;
 					if (data.success) {
 						$('body').removeClass('modal-open');
 						$('.modal-backdrop').remove();
