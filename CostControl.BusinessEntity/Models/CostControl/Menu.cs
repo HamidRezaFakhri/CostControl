@@ -40,8 +40,8 @@
         [Display(Name = "نرخ")]
         public decimal CostRatio { get; set; }
 
-        [Required]
-        [Range(0, 9999999)]
+        [Required(ErrorMessage ="قیمت اجباریست!")]
+        [Range(minimum: 0d, maximum: 9999999d, ErrorMessage = "مقدار وارد شده باید بین {1} و {2} باشد")]
         [Display(Name = "قیمت")]
         [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
         public decimal Price { get; set; }

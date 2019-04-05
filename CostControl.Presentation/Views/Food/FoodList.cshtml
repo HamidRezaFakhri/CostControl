@@ -25,40 +25,59 @@
 			<th>شناسه</th>
 			<th>نام</th>
 			<th>کد</th>
+			<th>مرکز فروش- هزینه</th>
+			<th>نوع</th>
 			<th></th>
 		</tr>
 	</thead>
 	<tbody id="setFoodList">
 		@foreach (var item in Model.data)
 		{
-			<tr id="tr_@item.Id">
-				<td>@item.Id</td>
-				<td id="td_Name">@item.Name</td>
-				<td id="td_Code">@item.Code</td>
-				<td>
-					<a href="#" class="btn btn-sm btn-warning"
-					   onclick="EditEntityModal(@item.Id, '/Food/EditFood/', '@editTitle (@item.Name)')">
-						<i class="fa fa-edit"><span> ویرایش </span></i>
-					</a>
+		<tr id="tr_@item.Id">
+			<td>@item.Id</td>
+			<td id="td_Name">@item.Name</td>
+			<td id="td_Code">@item.Code</td>
+			<td id="td_SaleCostPoint">@item.SaleCostPointId</td>
+			<td id="td_FoodType">@item.FoodType</td>
 
-					<span> | </span>
-					<a href="#" class="btn btn-sm btn-outline-dark"
-					   onclick="details(@item.Id)">
-						<i class="fa fa-plus"> <span> اقلام </span> </i>
-					</a>
+			<td>
+				<a href="#" class="btn btn-sm btn-warning"
+				   onclick="EditEntityModal(@item.Id, '/Food/EditFood/', '@editTitle (@item.Name)')">
+					<i class="fa fa-edit"><span> ویرایش </span></i>
+				</a>
 
-					<span> | </span>
-					<a href="#" class="btn btn-sm btn-danger"
-					   onclick="DeleteEntityModal(@item.Id, '/Food/DeleteFood/', '@deleteTitle', '@item.Name')">
-						<i class="fa fa-trash"><span> حذف </span></i>
-					</a>
-				</td>
-			</tr>
+				<span> | </span>
+				<a href="#" class="btn btn-sm btn-outline-dark"
+				   onclick="details(@item.Id, '@item.Name')">
+					<i class="fa fa-plus"> <span> اقلام </span> </i>
+				</a>
+
+				<span> | </span>
+				<a href="#" class="btn btn-sm btn-danger"
+				   onclick="DeleteEntityModal(@item.Id, '/Food/DeleteFood/', '@deleteTitle', '@item.Name')">
+					<i class="fa fa-trash"><span> حذف </span></i>
+				</a>
+			</td>
+		</tr>
 		}
 	</tbody>
 </table>
 
 <script>
+	function details(id, title) {
+		$.ajax({
+			url: "/Recipe/RecipeList/" + id,
+			type: "GET",
+			data: {}
+		}).done(function (result) {
+			$('#modalDialog').addClass('modal-lg');
+				$('#apModal').modal('toggle');
+				$("#apModalLabel").html('اقلام خوراکی : ' + title);
+
+				$('#modalBody').html(result);
+			});
+	}
+
 	$(document).ready(function () {
 		$('#pageTitle').html('@ViewData["title"]');
 		$('#Foodslist').dataTable({

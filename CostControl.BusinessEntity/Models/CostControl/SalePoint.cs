@@ -22,7 +22,6 @@
         [StringLength(250, MinimumLength = 3,
             ErrorMessage = "تعداد کاراکترها باید بیشتر از {2} و کمتر از {1} باشد.")]
         //[CustomValidation()]
-        //[Range(1, 100)]
         [Display(Name = "نام/عنوان")]
         public string Name { get; set; }
 

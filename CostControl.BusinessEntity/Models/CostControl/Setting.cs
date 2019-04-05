@@ -12,9 +12,9 @@
 
         public Base.Enums.ObjectState State { get; set; }
 
-        [Required]
+        [Required(ErrorMessage ="درصد قابل استفاده اجباریست!")]
         [Display(Name = "درصد قابل استفاده")]
-        [Range(0, 100)]
+        [Range(minimum: 0d, maximum: 100d, ErrorMessage = "مقدار وارد شده باید بین {1} و {2} باشد")]
         public decimal IngredientUsageRate { get; set; }
 
         public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

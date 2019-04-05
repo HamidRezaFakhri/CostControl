@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using BusinessEntity.Validations;
+    using global::CostControl.BusinessEntity.Models.CostControl.Enums;
 
     public class Food : BaseValidating, Base.Interfaces.IEntity<long>
     {
@@ -32,8 +33,8 @@
 
         [Required(ErrorMessage = "نوع اجباریست!")]
         [Display(Name = "نوع")]
-        //[EnumDataType(typeof(FoodType))]
-        public byte FoodType { get; set; }
+        [EnumDataType(typeof(FoodType))]
+        public FoodType FoodType { get; set; }
 
         //[Required(ErrorMessage = "قیمت اجباریست!")]
         //[DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]

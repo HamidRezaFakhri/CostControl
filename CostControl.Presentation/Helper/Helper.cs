@@ -47,6 +47,7 @@
 			new EntityTitle{ TypeName = "OverCostType", SingleTitle = "سرفصل هزینه های سربار", PluralTitle = "سرفصل های هزینه های سربار"},
 			new EntityTitle{ TypeName = "OverCost", SingleTitle = "هزینه سربار", PluralTitle = "هزینه های سربار"},
 			new EntityTitle{ TypeName = "IntakeRemittance", SingleTitle = "حواله مصرفی", PluralTitle = "حواله های مصرفی"},
+			new EntityTitle{ TypeName = "Inventory", SingleTitle = "انبار", PluralTitle = "انبارها"},
 
 			//new EntityTitle{ TypeName = "IntakeRemittanceItem", SingleTitle = "انبار", PluralTitle = "انبارها"},
 			//new EntityTitle{ TypeName = "Menu", SingleTitle = "انبار", PluralTitle = "انبارها"},
@@ -132,14 +133,14 @@
 		private static readonly string deleteEntityTitle = "حذف ";
 
 		private static readonly string newEntityTitle = "جدید";
-		
+
 		private static readonly TimeSpan httpClientTimeout = new TimeSpan(0, 0, 30);
 
 		public static string GetAPIAddress()
 		{
 			return "http://localhost:5001/api/";
 		}
-		
+
 		public static string GetAPIAddress(string controllerName)
 		{
 			return string.IsNullOrEmpty(controllerName) ? GetAPIAddress() : GetAPIAddress() + $"{controllerName}/";

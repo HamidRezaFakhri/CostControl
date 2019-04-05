@@ -20,7 +20,7 @@
 
         [Required(ErrorMessage = "مقدار اجباریست!")]
         [Display(Name = "مقدار")]
-        [Range(0, 999999)]
+        [Range(minimum: 0d, maximum: 999999d, ErrorMessage ="مقدار وارد شده باید بین {1} و {2} باشد")]
         public decimal Amount { get; set; }
 
         [Required(ErrorMessage = "واحد مصرفی اجباریست!")]
@@ -30,7 +30,7 @@
 
         [Required(ErrorMessage = "نرخ تبدیل اجباریست!")]
         [Display(Name = "نرخ تبدیل")]
-        [Range(0, 100)]
+        [Range(minimum: 0d, maximum: 100d, ErrorMessage = "مقدار وارد شده باید بین {1} و {2} باشد")]
         public decimal ConvertionRate { get; set; }
 
         public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

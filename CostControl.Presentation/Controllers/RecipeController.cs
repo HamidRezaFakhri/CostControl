@@ -239,7 +239,7 @@
                     .FirstOrDefault(e => e.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
                     .Errors
                     .FirstOrDefault()
-                    .ErrorMessage ?? "Model Is Not Vald!"
+                    .ErrorMessage ?? ex?.Message ?? "Model Is Not Vald!"
                 });
             }
         }

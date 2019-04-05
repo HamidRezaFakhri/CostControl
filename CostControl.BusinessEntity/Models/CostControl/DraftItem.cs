@@ -26,7 +26,7 @@
 
         [Required(ErrorMessage = "مقدار اجباریست!")]
         [Display(Name = "مقدار")]
-        [Range(0, 9999999)]
+        [Range(minimum: 0d, maximum: 9999999d, ErrorMessage = "مقدار وارد شده باید بین {1} و {2} باشد")]
         public decimal Amount { get; set; }
 
         public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
