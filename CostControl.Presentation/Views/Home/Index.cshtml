@@ -83,8 +83,7 @@
 		});
 
 		$('#Ingredient').click(function () {
-			$("#board").html("در حال بارگذاری ...");
-			$('#board').load('@Url.Action("IngredientList", "Ingredient")');
+			getData('IngredientList', 'Ingredient');
 		});
 
 		$('#OverCostType').click(function () {
@@ -159,7 +158,6 @@
 		});
 
 		function createEntityModal(uri, title, modalLevel = 0) {
-			debugger;
 			$.ajax({
 				url: uri,
 				Type: "GET",
@@ -173,6 +171,7 @@
 				function (result) {
 					if (modalLevel === 0) {
 						$("#commands").addClass("d-none");
+						$('#modalDialog').removeClass('modal-lg');
 						//$("#apModalLabel").html("افزودن " + ((title === 'undefined' || jQuery.trim(title) == '') ? '' : title) + ' جدید');
 						$("#apModalLabel").html(title);
 						$("#modalBody").html(result);
@@ -189,7 +188,6 @@
 		}
 
 		function EditEntityModal(id, uri, title) {
-			debugger;
 			$.ajax({
 				url: uri + id,
 				Type: "GET",
@@ -208,7 +206,6 @@
 		}
 
 		function DeleteEntityModal(id, uri, title, itemtext/*, callback*/) {
-			debugger;
 			$.ajax({
 				url: uri + id,
 				Type: "GET",
@@ -218,7 +215,6 @@
 				}
 			}).done(
 				function (result) {
-					debugger;
 					//$("#commands").removeClass("d-none");
 					//$("#apModalLabel").html("حذف " + ((title === 'undefined' || jQuery.trim(title) == '') ? '' : title));
 					$("#apModalLabel").html(title);
@@ -226,62 +222,16 @@
 					//$("#modalBody").html('آیا اطمینان در حذف دارید  "' + '\'' + itemtext + '\'');
 					$("#apModal").modal('show');
 				});
-
-			//debugger;
-			//$("#commands").removeClass("d-none");
-   //         //$("#apModalLabel").html("حذف " + ((title === 'undefined' || jQuery.trim(title) == '') ? '' : title));
-			//$("#apModalLabel").html(title);
-			//$("#modalBody").html('آیا اطمینان در حذف دارید  "' + '\'' + itemtext + '\'');
-			//$("#apModal").modal('show');
-			//$("#btnSave").click(function () {
-			//	//callback(id);
-
-   //             $.ajax({
-   //                 url: uri + id,
-   //                 type: "GET",
-   //                 data: {}
-   //             }).done(function (result) {
-   //                 $('#apModal').modal('show');
-
-   //                 $('#modalBody').html(result);
-   //             });
-
-			//	//$("#apModal").modal("hide");
-			//});
 		}
 
-		//$("#apModal").on("hidden.bs.modal", function () {
-		//	alert('hi');
-		//});
-
-		//$(document).on('hide.bs.modal', '#apModal', function () {
-		//	alert('fff');
-		//	//Do stuff here
-		//});
-
-		//$('#apModal')
-		//	.on('hide', function () {
-		//		console.log('hide rrrrrrrrrrrrrrrrrrrrrrrr');
-		//	})
-		//	.on('hidden', function () {
-		//		console.log('hidden rrrrrrrrrrrrrrrrrrrrrrrr');
-		//	})
-		//	.on('show', function () {
-		//		console.log('show rrrrrrrrrrrrrrrrrrrrrrrr');
-		//	})
-		//	.on('shown', function () {
-		//		console.log('shown rrrrrrrrrrrrrrrrrrrrrrrr')
-		//	});
-
 		function getData(actionName, controllerName, level = 0, param) {
-			//$('#board').load('@Url.Action("SalePointList", "SalePoint")');
+			$("#board").html("در حال بارگذاری ...");
 
 			var _param = '';
 
 			if (param !== '' && param !== 'undefined' /*&& !isNaN(param)*/)
 				_param = '/' + param;
-
-			debugger;
+			
 			$.ajax({
 				url: "/" + controllerName + "/" + actionName + "?param=uyuyu" /*_param*/,
 				type: "GET",

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CostControl.Data.Migrations
 {
     [DbContext(typeof(CostControlDbContext))]
-    [Migration("20190403045722_init")]
+    [Migration("20190405230601_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -638,10 +638,7 @@ namespace CostControl.Data.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("numeric(28, 2)");
 
-                    b.Property<long>("ConsumptionUnitId");
-
-                    b.Property<decimal>("ConvertionRate")
-                        .HasColumnType("numeric(28, 2)");
+                    b.Property<long?>("ConsumptionUnitId");
 
                     b.Property<long>("FoodId");
 
@@ -921,10 +918,9 @@ namespace CostControl.Data.Migrations
 
             modelBuilder.Entity("CostControl.Entity.Models.CostControl.Recipe", b =>
                 {
-                    b.HasOne("CostControl.Entity.Models.CostControl.ConsumptionUnit", "ConsumptionUnit")
+                    b.HasOne("CostControl.Entity.Models.CostControl.ConsumptionUnit")
                         .WithMany("RecipeItems")
-                        .HasForeignKey("ConsumptionUnitId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("ConsumptionUnitId");
 
                     b.HasOne("CostControl.Entity.Models.CostControl.Food", "Food")
                         .WithMany("RecipeItems")

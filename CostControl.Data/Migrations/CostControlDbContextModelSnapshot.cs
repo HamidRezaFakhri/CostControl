@@ -636,10 +636,7 @@ namespace CostControl.Data.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("numeric(28, 2)");
 
-                    b.Property<long>("ConsumptionUnitId");
-
-                    b.Property<decimal>("ConvertionRate")
-                        .HasColumnType("numeric(28, 2)");
+                    b.Property<long?>("ConsumptionUnitId");
 
                     b.Property<long>("FoodId");
 
@@ -919,10 +916,9 @@ namespace CostControl.Data.Migrations
 
             modelBuilder.Entity("CostControl.Entity.Models.CostControl.Recipe", b =>
                 {
-                    b.HasOne("CostControl.Entity.Models.CostControl.ConsumptionUnit", "ConsumptionUnit")
+                    b.HasOne("CostControl.Entity.Models.CostControl.ConsumptionUnit")
                         .WithMany("RecipeItems")
-                        .HasForeignKey("ConsumptionUnitId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("ConsumptionUnitId");
 
                     b.HasOne("CostControl.Entity.Models.CostControl.Food", "Food")
                         .WithMany("RecipeItems")

@@ -485,8 +485,7 @@ namespace CostControl.Data.Migrations
                     FoodId = table.Column<long>(nullable: false),
                     IngredientId = table.Column<long>(nullable: false),
                     Amount = table.Column<decimal>(type: "numeric(28, 2)", nullable: false),
-                    ConsumptionUnitId = table.Column<long>(nullable: false),
-                    ConvertionRate = table.Column<decimal>(type: "numeric(28, 2)", nullable: false)
+                    ConsumptionUnitId = table.Column<long>(nullable: true)
                 },
                 constraints: table =>
                 {

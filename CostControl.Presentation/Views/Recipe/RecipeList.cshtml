@@ -7,23 +7,12 @@
 	var deleteTitle = Helper.GetEntityTile<CostControl.BusinessEntity.Models.CostControl.Recipe>(EnumTitle.Delete);
 }
 
-<div class="row well">
-	<div class="col-md-6">
-		<div class="btn-group" data-toggle="modal">
-			<a id="btnAddRecipe" href="#" class="btn btn-primary"
-			   onclick='create(@ViewBag.ParentId)'>
-				<span class="fa fa-plus"> <i> جدید</i></span>
-			</a>
-
-		</div>
-	</div>
-</div>
-
 <table id="Recipeslist" class="table table-bordered table-striped table-hover">
 	<thead>
 		<tr>
 			<th>شناسه</th>
-			<th>ماده خوراکی</th>
+			<th>قلم خوراکی</th>
+			<th>واحد مصرفی</th>
 			<th>مقدار</th>
 			<th></th>
 		</tr>
@@ -33,6 +22,7 @@
 		{
 			<tr id="tr_@item.Id">
 				<td>@item.Id</td>
+				<td>@item.IngredientId</td>
 				<td>@item.IngredientId</td>
 				<td>@item.Amount</td>
 				<td>

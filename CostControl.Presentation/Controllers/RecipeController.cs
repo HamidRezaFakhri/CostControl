@@ -14,150 +14,21 @@
     {
         public IActionResult RecipeList(long id, string param)
         {
-            ViewData["title"] = "فهرست اقلام غذایی";
-
+            ViewData["title"] = Helper.GetEntityTile<Recipe>(EnumTitle.List);
             ViewBag.ParentId = id;
 
-            ServiceResponse<Recipe> values = null;
-
-            string str = string.Empty;
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri("http://localhost:5001/api/Recipe/");
-
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue("nl-NL"));
-
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                //HTTP GET
-                var responseTask = client.GetAsync($"GetByParent?parentId={id.ToString()}&PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1");
-                responseTask.Wait();
-
-                var result = responseTask.Result;
-                if (result.IsSuccessStatusCode)
-                {
-                    var readTask = result.Content.ReadAsAsync<ServiceResponse<Recipe>>();
-
-                    readTask.Wait();
-
-                    values = readTask.Result;
-                }
-                else //web api sent error response 
-                {
-                    //log response status here..
-
-                    values = null;
-
-                    ModelState.AddModelError(string.Empty, "Server error. Please contact administrator.");
-
-                    str = "Server error. Please contact administrator.";
-                }
-            }
-
-            //return PartialView("~/Views/Recipe/RecipeList.cshtml");
-            return View(values);
-        }
-
-        private IEnumerable<ConsumptionUnit> GetConsumptionUnits()
-        {
-            ServiceResponse<ConsumptionUnit> values = null;
-
-            string str = string.Empty;
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri("http://localhost:5001/api/ConsumptionUnit/");
-
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue("nl-NL"));
-
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                //HTTP GET
-                var responseTask = client.GetAsync($"Get?PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1");
-                responseTask.Wait();
-
-                var result = responseTask.Result;
-                if (result.IsSuccessStatusCode)
-                {
-                    var readTask = result.Content.ReadAsAsync<ServiceResponse<ConsumptionUnit>>();
-
-                    readTask.Wait();
-
-                    values = readTask.Result;
-
-                    return values.data;
-                }
-                else //web api sent error response 
-                {
-                    //log response status here..
-
-                    values = null;
-
-                    ModelState.AddModelError(string.Empty, "Server error. Please contact administrator.");
-
-                    str = "Server error. Please contact administrator.";
-
-                    return null;
-                }
-            }
+            return View(Helper.GetServiceResponse<Recipe>
+                    ($"GetByParent?parentId={id.ToString()}&PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1"));
         }
 
         private IEnumerable<Ingredient> GetIngredients()
         {
-            ServiceResponse<Ingredient> values = null;
-
-            string str = string.Empty;
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri("http://localhost:5001/api/Ingredient/");
-
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue("nl-NL"));
-
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                //HTTP GET
-                var responseTask = client.GetAsync($"Get?PageNumber=1&PageSize=10&searchKey=null&SortOrder=id&token=1");
-                responseTask.Wait();
-
-                var result = responseTask.Result;
-                if (result.IsSuccessStatusCode)
-                {
-                    var readTask = result.Content.ReadAsAsync<ServiceResponse<Ingredient>>();
-
-                    readTask.Wait();
-
-                    values = readTask.Result;
-
-                    return values.data;
-                }
-                else //web api sent error response 
-                {
-                    //log response status here..
-
-                    values = null;
-
-                    ModelState.AddModelError(string.Empty, "Server error. Please contact administrator.");
-
-                    str = "Server error. Please contact administrator.";
-
-                    return null;
-                }
-            }
+            return Helper.GetServiceResponseList<Ingredient>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1");
         }
-
 
         public IActionResult AddRecipe(long id)
         {
             ViewBag.Ingredients = GetIngredients()
-                                        .Select(c => new SelectListItem()
-                                        {
-                                            Text = c.Name,
-                                            Value = c.Id.ToString()
-                                        })
-                                        .ToList();
-            ViewBag.ConsumptionUnits = GetConsumptionUnits()
                                         .Select(c => new SelectListItem()
                                         {
                                             Text = c.Name,
@@ -174,8 +45,7 @@
         {
             Recipe.Id = 0;
             Recipe.State = BusinessEntity.Models.Base.Enums.ObjectState.Active;
-
-            //https://johnthiriet.com/efficient-post-calls/
+            
             if (ModelState.IsValid)
             {
                 using (var client = new HttpClient())
@@ -278,45 +148,8 @@
 
         private Recipe GetRecipeById(long id)
         {
-            ServiceResponse<Recipe> value = null;
-            string str = string.Empty;
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri("http://localhost:5001/api/Recipe/");
-
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue("nl-NL"));
-
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                //HTTP GET
-                var responseTask = client.GetAsync("GetById?id=" + id.ToString());
-                responseTask.Wait();
-
-                var result = responseTask.Result;
-                if (result.IsSuccessStatusCode)
-                {
-                    var readTask = result.Content.ReadAsAsync<ServiceResponse<Recipe>>();
-
-                    readTask.Wait();
-
-                    value = readTask.Result;
-
-                    return (value.data as List<Recipe>).FirstOrDefault();
-                }
-                else //web api sent error response 
-                {
-                    //log response status here..
-
-                    value = null;
-
-                    ModelState.AddModelError(string.Empty, "Server error. Please contact administrator.");
-
-                    str = "Server error. Please contact administrator.";
-                }
-
-                return null;
-            }
+            return (Helper.GetServiceResponse<Recipe>("GetById?id=" + id.ToString()).data as List<Recipe>)
+                 .FirstOrDefault();
         }
 
         public IActionResult PostRecipe(string name)

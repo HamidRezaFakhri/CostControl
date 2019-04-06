@@ -25,15 +25,6 @@
                 .IsRequired();
 
             entityTypeBuilder
-                .Property(e => e.ConsumptionUnitId)
-                .IsRequired();
-            
-            entityTypeBuilder
-                .Property(e => e.ConvertionRate)
-                .IsRequired()
-                .HasColumnType("numeric(28, 2)");
-
-            entityTypeBuilder
                 .HasIndex(e => new { e.FoodId, e.IngredientId })
                 .IsUnique();
 

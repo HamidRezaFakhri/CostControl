@@ -13,11 +13,5 @@
         public virtual Ingredient Ingredient { get; set; }
 
         public decimal Amount { get; set; }
-
-        public long ConsumptionUnitId { get; set; }
-
-        public virtual ConsumptionUnit ConsumptionUnit { get; set; }
-
-        public decimal ConvertionRate { get; set; }
     }
 }
