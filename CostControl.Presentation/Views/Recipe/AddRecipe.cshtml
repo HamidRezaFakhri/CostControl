@@ -56,7 +56,7 @@
 @section Scripts{
 	<script>
 		$(document).ready(function () {
-			$('#ingredientList').load('@Url.Action("RecipeList", "Recipe")');
+			$('#ingredientList').load('@Url.Action("RecipeList", "Recipe", new {id = Model.FoodId, param="" })');
 		});
 
 		function displayErrorMessage(error) {
@@ -64,24 +64,15 @@
 		}
 
 		function SubmitForm(form) {
-			var Recipe =
-			{
-				FoodId: @Model.FoodId,
-				IngredientId: @Model.IngredientId,
-				Amount: @Model.Amount
-				};
-
 			$.ajax({
 				type: "POST",
 				url: form.action,
 				data: $(form).serialize(),
 				success: function (data) {
+					refreshList();
+					
 					if (data.success) {
-						//$('body').removeClass('modal-open');
-						//$('.modal-backdrop').remove();
-						//$('#apSecondModal').hide();
 
-						//getData('RecipeList', 'Recipe', 1, @Model.FoodId);
 						return false;
 					} else {
 						displayErrorMessage(data.message);
@@ -90,7 +81,13 @@
 				}
 			});
 
+			refreshList();
+
 			return false;
+		}
+
+		function refreshList() {
+			$('#ingredientList').load('@Url.Action("RecipeList", "Recipe", new {id = Model.FoodId, param="" })');
 		}
 	</script>
 }

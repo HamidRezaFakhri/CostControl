@@ -14,9 +14,11 @@
 
         [Display(Name = "خوراک")]
         public long FoodId { get; set; }
-
+        
         [Display(Name = "مواد خام/اولیه")]
         public long IngredientId { get; set; }
+
+        public Ingredient Ingredient { get; set; }
 
         [Required(ErrorMessage = "مقدار اجباریست!")]
         [Display(Name = "مقدار")]

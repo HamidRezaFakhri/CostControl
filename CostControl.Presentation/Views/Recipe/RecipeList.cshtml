@@ -22,16 +22,10 @@
 		{
 			<tr id="tr_@item.Id">
 				<td>@item.Id</td>
-				<td>@item.IngredientId</td>
-				<td>@item.IngredientId</td>
+				<td>@item.Ingredient.Name</td>
+				<td>@item.Ingredient.ConsumptionUnit.Name</td>
 				<td>@item.Amount</td>
 				<td>
-					<a href="#" class="btn btn-sm btn-warning"
-					   onclick="EditEntityModal(@item.Id, '/Recipe/EditRecipe/', '@editTitle (@item.Id)')">
-						<i class="fa fa-edit"><span> ویرایش </span></i>
-					</a>
-
-					<span> | </span>
 					<a class="btn btn-sm btn-danger"
 					   onclick="DeleteEntityModal(@item.Id, '/Recipe/DeleteRecip/', '@deleteTitle', '@item.Id')">
 						<i class="fa fa-trash"><span> حذف </span></i>
