@@ -27,7 +27,7 @@
 				<td>@item.Amount</td>
 				<td>
 					<a class="btn btn-sm btn-danger"
-					   onclick="DeleteEntityModal(@item.Id, '/Recipe/DeleteRecip/', '@deleteTitle', '@item.Id')">
+					   onclick="DeleteRecipeModal(@item.Id, '/Recipe/DeleteRecipe/', '@deleteTitle', '@item.Id')">
 						<i class="fa fa-trash"><span> حذف </span></i>
 					</a>
 				</td>
@@ -40,4 +40,21 @@
 	$(document).ready(function () {
 
 	});
+
+	function DeleteRecipeModal(id, uri, title, itemtext) {
+		debugger;
+		$.ajax({
+			url: uri + id,
+			Type: "GET",
+			data: {},
+			error: function (err) {
+				alert(err.status + "<--------->" + err.statusCode);
+			}
+		}).done(
+			function (result) {
+				$("#apModalLabelSecond").html(title);
+				$("#modalBodySecond").html(result);
+				$("#apSecondModal").modal('show');
+			});
+	}
 </script>

@@ -9,7 +9,7 @@
 
 	<div>
 		<div>
-			<h3>آیا اطمینان در حذف دارید؟</h3>
+			<h3> "@Model.Ingredient.Name" <br /> آیا اطمینان در حذف دارید؟</h3>
 		</div>
 
 		<br />
@@ -32,10 +32,9 @@
 				data: $(form).serialize(),
 				success: function (data) {
 					if (data.success) {
-						$('body').removeClass('modal-open');
-						$('.modal-backdrop').remove();
-						$('#apModal').hide();
-						getData('RecipeList', 'Recipe');
+						//$('#apSecondModal').hide();
+						$('#apSecondModal').modal('toggle');
+						$('#ingredientList').load('@Url.Action("RecipeList", "Recipe", new {id = Model.FoodId, param="" })');
 					} else {
 						return false;
 					}

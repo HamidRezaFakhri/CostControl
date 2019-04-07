@@ -4,8 +4,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Net.Http;
-    using System.Net.Http.Headers;
-    using CostControl.API.Models;
     using CostControl.BusinessEntity.Models.CostControl;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
@@ -45,7 +43,7 @@
         {
             Recipe.Id = 0;
             Recipe.State = BusinessEntity.Models.Base.Enums.ObjectState.Active;
-            
+
             if (ModelState.IsValid)
             {
                 using (var client = new HttpClient())

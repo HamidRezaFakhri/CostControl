@@ -33,6 +33,8 @@ namespace CostControl.Presentation
                 options.IdleTimeout = TimeSpan.FromMinutes(20);//You can set Time   
             });
 
+            services.AddAntiforgery();
+            
             services.AddMvc(
                 config => {
                     config.ModelBinderProviders.Insert(0, new PersianDateModelBinderProvider());
@@ -55,10 +57,10 @@ namespace CostControl.Presentation
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseCookiePolicy();
+            //app.UseCookiePolicy();
 
             app.UseSession();
-
+            
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
