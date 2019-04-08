@@ -34,7 +34,22 @@ namespace CostControl.Presentation
             });
 
             services.AddAntiforgery();
-            
+
+            services
+                .AddMvcCore()
+                .AddCors(options =>
+                {
+                    options.AddPolicy("AllowSpecificOrigin", builder =>
+                    {
+                        builder.AllowAnyOrigin();
+                        //.WithOrigins("https://localhost:44395/");
+
+                        builder.AllowCredentials();
+                        builder.AllowAnyHeader();
+                        builder.AllowAnyMethod();
+                    });
+                });
+
             services.AddMvc(
                 config => {
                     config.ModelBinderProviders.Insert(0, new PersianDateModelBinderProvider());
@@ -60,7 +75,9 @@ namespace CostControl.Presentation
             //app.UseCookiePolicy();
 
             app.UseSession();
-            
+
+            app.UseCors("AllowSpecificOrigin");
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

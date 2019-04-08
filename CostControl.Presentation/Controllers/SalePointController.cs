@@ -1,5 +1,6 @@
 ﻿namespace CostControl.Presentation.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using CostControl.BusinessEntity.Models.CostControl;
@@ -9,6 +10,10 @@
     {
         public IActionResult SalePointList(string param, int pageNumber, int pageSize)
         {
+            Helper.Log(param + Environment.NewLine +
+                        pageNumber.ToString() + Environment.NewLine +
+                        pageSize.ToString());
+
             ViewData["title"] = Helper.GetEntityTile<SalePoint>(EnumTitle.List);
 
             return View(Helper.GetServiceResponse<SalePoint>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1"));
@@ -16,6 +21,8 @@
 
         public IActionResult AddSalePoint()
         {
+            Helper.Log("Sale Point Add");
+
             ViewData["title"] = Helper.GetEntityTile<SalePoint>(EnumTitle.Add);
 
             return PartialView();
@@ -25,6 +32,8 @@
         [ValidateAntiForgeryToken]
         public IActionResult AddSalePoint(SalePoint SalePoint)
         {
+            Helper.Log("Entity: " + SalePoint.ToString());
+
             if (ModelState.IsValid)
             {
                 var postResult = Helper.PostValueToSevice<SalePoint>("POST", SalePoint);

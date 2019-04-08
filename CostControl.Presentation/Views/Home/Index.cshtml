@@ -159,7 +159,7 @@
 
 		function createEntityModal(uri, title, modalLevel = 0) {
 			$.ajax({
-				url: uri,
+				url: '@Helper.GetPresentationAddress()' + uri,
 				Type: "GET",
 				//headers: {
 				//	'Content-Type': 'application/x-www-form-urlencoded'
@@ -189,7 +189,7 @@
 
 		function EditEntityModal(id, uri, title) {
 			$.ajax({
-				url: uri + id,
+				url: '@Helper.GetPresentationAddress()' + uri + id,
 				Type: "GET",
 				data: {},
 				error: function (err) {
@@ -207,7 +207,7 @@
 
 		function DeleteEntityModal(id, uri, title, itemtext/*, callback*/) {
 			$.ajax({
-				url: uri + id,
+				url: '@Helper.GetPresentationAddress()' + uri + id,
 				Type: "GET",
 				data: {},
 				error: function (err) {
@@ -233,7 +233,7 @@
 				_param = '/' + param;
 			
 			$.ajax({
-				url: "/" + controllerName + "/" + actionName + "?param=uyuyu" /*_param*/,
+				url: '@Helper.GetPresentationAddress()' + controllerName + "/" + actionName + "?param=uyuyu" /*_param*/,
 				type: "GET",
 				data: {}
 			}).done(function (result) {

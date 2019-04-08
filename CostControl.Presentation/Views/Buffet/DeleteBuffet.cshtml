@@ -1,6 +1,6 @@
 ﻿@model CostControl.BusinessEntity.Models.CostControl.Buffet
 @{
-	Layout = null;
+	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @using (Html.BeginForm("DeleteBuffet", "Buffet", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return SubmitForm(this)" }))

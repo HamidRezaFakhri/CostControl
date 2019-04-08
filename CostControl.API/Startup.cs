@@ -41,8 +41,7 @@ namespace CostControl.API
                         builder.AllowAnyMethod();
                     });
                 });
-
-
+            
             //// Auto Mapper Configurations
             //var mappingConfig = new MapperConfiguration(mc =>
             //{
