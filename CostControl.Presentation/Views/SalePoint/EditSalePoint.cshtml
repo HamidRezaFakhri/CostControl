@@ -2,10 +2,9 @@
 @{
 	Layout = "~/Views/Shared/_Layout.cshtml";
 	var error = string.Empty;
-	var url = @Helper.GetPresentationAddress() + "/SalePoint/EditSalePoint";
 }
 
-@using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return SubmitForm(this)", @action = "http://79.175.155.6/SalePoint/EditSalePoint" }))
+@using (Html.BeginForm("EditSalePoint", "SalePoint", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return SubmitForm(this)" }))
 {
 	@Html.AntiForgeryToken()
 

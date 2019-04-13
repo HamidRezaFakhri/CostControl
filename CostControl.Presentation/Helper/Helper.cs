@@ -138,14 +138,16 @@
 
 		public static string GetAPIAddress()
 		{
-			return "http://79.175.155.6:5001/api/";
+			//return "http://79.175.155.6:5001/api/";
 			//return "http://localhost/CostControl.API/api/";
+			return "http://localhost:5001/api/";
 		}
 
 		public static string GetPresentationAddress()
 		{
-			return "http://79.175.155.6:80/";
+			//return "http://79.175.155.6:80/";
 			//return "http://localhost/CostControl.Presentation/";
+			return "http://localhost:5974/";
 		}
 
 		public static string GetAPIAddress(string controllerName)

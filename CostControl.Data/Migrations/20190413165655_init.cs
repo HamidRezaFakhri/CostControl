@@ -791,10 +791,11 @@ namespace CostControl.Data.Migrations
                 column: "RegisteredUserId1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_IntakeRemittance_SaleCostPointId",
+                name: "IX_IntakeRemittance_SaleCostPointId_IntakeDate",
                 schema: "dbo",
                 table: "IntakeRemittance",
-                column: "SaleCostPointId");
+                columns: new[] { "SaleCostPointId", "IntakeDate" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_IntakeRemittanceItem_ConsumptionUnitId",
@@ -809,10 +810,11 @@ namespace CostControl.Data.Migrations
                 column: "IngredientId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_IntakeRemittanceItem_IntakeRemittanceID",
+                name: "IX_IntakeRemittanceItem_IntakeRemittanceID_IngredientId",
                 schema: "dbo",
                 table: "IntakeRemittanceItem",
-                column: "IntakeRemittanceID");
+                columns: new[] { "IntakeRemittanceID", "IngredientId" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Inventory_Code",

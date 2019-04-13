@@ -2,6 +2,7 @@
 
 @{
 	Layout = null;
+
 	var addTitle = Helper.GetEntityTile<CostControl.BusinessEntity.Models.CostControl.CostPointGroup>(EnumTitle.Add);
 	var editTitle = Helper.GetEntityTile<CostControl.BusinessEntity.Models.CostControl.CostPointGroup>(EnumTitle.Edit);
 	var deleteTitle = Helper.GetEntityTile<CostControl.BusinessEntity.Models.CostControl.CostPointGroup>(EnumTitle.Delete);
@@ -56,9 +57,28 @@
 	$(document).ready(function () {
 		$('#pageTitle').html('@ViewData["title"]');
 		$('#CostPointGroupslist').dataTable({
+			"processing": true,
 			"language": {
 				"url": "/lib/DataTables/i18n/Persian.lang.json"
-			}
+			},
+			//dom: 'Bfrtip',
+			//buttons: [
+			//	'copy', 'csv', 'excel', 'pdf', 'print'
+			//]
+			"dom": 'lBfrtip',
+			"buttons": [
+				{
+					extend: 'collection',
+					text: 'Export',
+					buttons: [
+						'copy',
+						'excel',
+						'csv',
+						'pdf',
+						'print'
+					]
+				}
+			]
 		});
 	});
 </script>

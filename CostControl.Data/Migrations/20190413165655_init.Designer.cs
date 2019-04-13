@@ -10,14 +10,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CostControl.Data.Migrations
 {
     [DbContext(typeof(CostControlDbContext))]
-    [Migration("20190405230601_init")]
+    [Migration("20190413165655_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.3-servicing-35854")
+                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -375,7 +375,8 @@ namespace CostControl.Data.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(500);
+                        .HasMaxLength(500)
+                        .IsUnicode(true);
 
                     b.Property<DateTime>("IntakeDate");
 
@@ -397,7 +398,8 @@ namespace CostControl.Data.Migrations
 
                     b.HasIndex("RegisteredUserId1");
 
-                    b.HasIndex("SaleCostPointId");
+                    b.HasIndex("SaleCostPointId", "IntakeDate")
+                        .IsUnique();
 
                     b.ToTable("IntakeRemittance","dbo");
                 });
@@ -427,7 +429,8 @@ namespace CostControl.Data.Migrations
 
                     b.HasIndex("IngredientId");
 
-                    b.HasIndex("IntakeRemittanceID");
+                    b.HasIndex("IntakeRemittanceID", "IngredientId")
+                        .IsUnique();
 
                     b.ToTable("IntakeRemittanceItem","dbo");
                 });

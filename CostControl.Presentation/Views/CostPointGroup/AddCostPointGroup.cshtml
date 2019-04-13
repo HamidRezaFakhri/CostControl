@@ -1,6 +1,7 @@
 ﻿@model CostControl.BusinessEntity.Models.CostControl.CostPointGroup
 @{
 	Layout = "~/Views/Shared/_Layout.cshtml";
+	var error = string.Empty;
 }
 
 @using (Html.BeginForm("AddCostPointGroup", "CostPointGroup", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return SubmitForm(this)" }))

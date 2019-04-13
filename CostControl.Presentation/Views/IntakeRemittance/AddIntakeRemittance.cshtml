@@ -1,15 +1,35 @@
-﻿@model CostControl.BusinessEntity.Models.CostControl.IntakeRemittance
+﻿@model CostControl.BusinessEntity.Models.CostControl.IntakeRemittanceDate
 @{
 	Layout = "~/Views/Shared/_Layout.cshtml";
 	var error = string.Empty;
 }
 
-@using (Html.BeginForm("AddIntakeRemittance", "IntakeRemittance", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return SubmitForm(this)" }))
+@using (Html.BeginForm("CheckIntakeRemittance", "IntakeRemittance", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return SubmitForm(this)" }))
 {
 	@Html.AntiForgeryToken()
 
 	<div class="form-horizontal">
 		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+		<div class="form-group">
+
+			<div class="form-group">
+				<input id="IntakeDate" type="text" />
+				@*@Html.LabelFor(model => model.IntakeDate, htmlAttributes: new { @class = "control-label col-md-5" })
+				<div class="col-md-12">
+					@Html.EditorFor(model => model.IntakeDate,
+						new { htmlAttributes = new { @class = "form-control" } })
+					@Html.ValidationMessageFor(model => model.IntakeDate, "", new { @class = "text-danger" })
+				</div>*@
+			</div>
+		</div>
+
+		@*<div class="form-group">
+				@Html.LabelFor(a => a, htmlAttributes: new { @class = "control-label col-md-5" })
+				<div class="col-md-12">
+					<input type="text" id="IntakeDate"/>
+				</div>
+			</div>*@
 
 		<div id="errorContent" class="text-danger">
 
@@ -30,19 +50,26 @@
 			$("#errorContent").html(error);
 		}
 
+		$('#IntakeDate').click(function () {
+			PersianDatePicker.Show(this, '@System.DateTime.Now.Date.ToString("yyyy/MM/dd", new System.Globalization.CultureInfo("fa-IR"))');
+		});
+		
 		function SubmitForm(form) {
 			$.ajax({
 				type: "POST",
 				url: form.action,
-				data: $(form).serialize(),
+				data: $('#IntakeDate').val(),//$(form).serialize(),
 				success: function (data) {
 					if (data.success) {
 						$('#apModal').modal('hide');
-						getData('IntakeRemittanceList', 'IntakeRemittance');
+						//getData('IntakeRemittanceList', 'IntakeRemittance');
 					} else {
 						displayErrorMessage(data.message);
 						return false;
 					}
+				},
+				error: function(jqXHR, textStatus, errorThrown) {
+					alert(errorThrown);
 				}
 			});
 

@@ -29,6 +29,10 @@
                 .IsRequired();
 
             entityTypeBuilder
+                .HasIndex(e => new { e.IntakeRemittanceID, e.IngredientId })
+                .IsUnique();
+
+            entityTypeBuilder
                .ToTable("IntakeRemittanceItem", "dbo");
         }
     }
