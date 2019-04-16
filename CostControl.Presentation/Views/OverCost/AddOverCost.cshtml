@@ -55,7 +55,7 @@
 			<div class="form-group">
 				@Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
 				<div class="col-md-12">
-					@Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
+					@Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control js-date" } })
 					@Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
 				</div>
 			</div>
@@ -70,6 +70,8 @@
 				</div>
 			</div>
 		</div>
+
+		@*<input type="text" class="js-date" maxlength="30" />*@
 
 		<div id="errorContent" class="text-danger">
 
@@ -88,6 +90,39 @@
 
 @section Scripts{
 	<script>
+		var input = document.querySelectorAll('.js-date')[0];
+		//var input = $('#Price');
+
+		var dateInputMask = function dateInputMask(elm) {
+			elm.addEventListener('keypress', function (e) {
+				if (e.keyCode < 47 || e.keyCode > 57) {
+					e.preventDefault();
+				}
+
+				var len = elm.value.length;
+
+				// If we're at a particular place, let the user type the slash
+				// i.e., 12/12/1212
+				if (len !== 1 || len !== 3) {
+					if (e.keyCode == 47) {
+						e.preventDefault();
+					}
+				}
+				debugger;
+				// If they don't add the slash, do it for them...
+				if ((len + 1) % 4 === 0) {
+					elm.value += ',';
+				}
+
+				// If they don't add the slash, do it for them...
+				//if (len === 5) {
+				//	elm.value += '/';
+				//}
+			});
+		};
+
+		dateInputMask(input);
+
 		function displayErrorMessage(error) {
 			$("#errorContent").html(error);
 		}

@@ -1,4 +1,4 @@
-﻿@model CostControl.BusinessEntity.Models.CostControl.IntakeRemittanceDate
+﻿
 @{
 	Layout = "~/Views/Shared/_Layout.cshtml";
 	var error = string.Empty;
@@ -14,7 +14,7 @@
 		<div class="form-group">
 
 			<div class="form-group">
-				<input id="IntakeDate" type="text" />
+				<input id="IntakeDate" name="IntakeDate" type="text" class = "form-control"/>
 				@*@Html.LabelFor(model => model.IntakeDate, htmlAttributes: new { @class = "control-label col-md-5" })
 				<div class="col-md-12">
 					@Html.EditorFor(model => model.IntakeDate,
@@ -23,13 +23,6 @@
 				</div>*@
 			</div>
 		</div>
-
-		@*<div class="form-group">
-				@Html.LabelFor(a => a, htmlAttributes: new { @class = "control-label col-md-5" })
-				<div class="col-md-12">
-					<input type="text" id="IntakeDate"/>
-				</div>
-			</div>*@
 
 		<div id="errorContent" class="text-danger">
 
@@ -58,7 +51,7 @@
 			$.ajax({
 				type: "POST",
 				url: form.action,
-				data: $('#IntakeDate').val(),//$(form).serialize(),
+				data: $(form).serialize(),
 				success: function (data) {
 					if (data.success) {
 						$('#apModal').modal('hide');

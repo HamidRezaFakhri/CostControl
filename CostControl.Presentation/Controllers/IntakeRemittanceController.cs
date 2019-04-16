@@ -24,7 +24,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CheckIntakeRemittance(IntakeRemittanceDate IntakeDate)
+        public IActionResult CheckIntakeRemittance(/*IntakeRemittanceDate*/DateTime IntakeDate)
         {
             return null;
         }

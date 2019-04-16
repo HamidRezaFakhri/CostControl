@@ -7,6 +7,6 @@
     {
         [Required(ErrorMessage = "تاریخ حواله اجباریست!")]
         [Display(Name = "تاریخ حواله")]
-        public DateTime IntakeDate { get; set; }
+        public string IntakeDate { get; set; }
     }
 }
