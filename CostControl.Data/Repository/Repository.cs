@@ -6,6 +6,7 @@
     using System.Linq.Expressions;
     using System.Threading;
     using System.Threading.Tasks;
+    using CostControl.Data.UnitOfWork;
     using CostControl.Entity.Models.Base.Enums;
     using CostControl.Entity.Models.Base.Interfaces;
     using Microsoft.EntityFrameworkCore;
@@ -20,15 +21,15 @@
         //public class Repository<TEntity> where TEntity : class
     {
         //private readonly OrderBy<TEntity> DefaultOrderBy = new OrderBy<TEntity>(qry => qry.OrderBy(e => e.Id));
+        
+        private readonly IUnitOfWork _unitOfWork = null;
 
-        protected internal DbContext Context = null;
-
-        protected internal DbSet<TEntity> DbSet;
+        //protected internal DbSet<TEntity> DbSet;
         //internal IDbSet<TEntity> dbSet;
-        private readonly string _errorMessage = string.Empty;
-
         //internal IObjectSet<TEntity> dbSet;
 
+        private readonly string _errorMessage = string.Empty;
+        
         public Repository() { }
 
         /// <summary>
@@ -36,10 +37,10 @@
         /// Initializes a new instance of the <see cref="Repository{TEntity}"/> class.
         /// </summary>
         /// <param name="context">The context.</param>
-        public Repository(DbContext context)
+        public Repository(IUnitOfWork unitOfWork)
         {
-            Context = context;
-            DbSet = context?.Set<TEntity>();
+            _unitOfWork = unitOfWork;
+            //DbSet = unitOfWork?.Context?.Set<TEntity>();
         }
 
         //protected IDbFactory DbFactory
@@ -62,7 +63,7 @@
         /// <returns></returns>
         public virtual IEnumerable<TEntity> GetWithRawSql(string query,
             params object[] parameters)
-            => DbSet.FromSql(query, parameters);
+            => _unitOfWork?.Context?.Set<TEntity>().FromSql(query, parameters);
 
         /// <summary>
         /// generic method for Entities by raw sql Async
@@ -71,15 +72,15 @@
         public virtual async Task<IEnumerable<TEntity>> GetWithRawSqlAsync(string query,
             CancellationToken cancellationToken = default(CancellationToken),
             params object[] parameters)
-            => await DbSet.FromSql(query, parameters).ToListAsync(cancellationToken);
+            => await _unitOfWork?.Context?.Set<TEntity>().FromSql(query, parameters).ToListAsync(cancellationToken);
 
         public virtual int RunRawSql(string query,
             params object[] parameters)
-            => Context.Database.ExecuteSqlCommand(query, parameters);
+            => _unitOfWork.Context.Database.ExecuteSqlCommand(query, parameters);
 
         public virtual async Task<int> RunRawSqlAsync(string query,
             CancellationToken cancellationToken = default(CancellationToken), params object[] parameters)
-            => await Context.Database.ExecuteSqlCommandAsync(query, cancellationToken, parameters);
+            => await _unitOfWork.Context.Database.ExecuteSqlCommandAsync(query, cancellationToken, parameters);
         //{
         //    using (var dbContextTransaction = Context.Database.BeginTransaction(/*System.Data.IsolationLevel.Snapshot*/))
         //    {
@@ -147,7 +148,7 @@
             bool disableTracking = false,
             bool eagerLoaging = false)
         {
-            IQueryable<TEntity> query = DbSet;
+            IQueryable<TEntity> query = _unitOfWork.Context.Set<TEntity>();
 
             if (filter != null)
             {
@@ -233,31 +234,31 @@
                         .ToListAsync(cancellationToken);
 
         public virtual TEntity SingleOrDefault(Expression<Func<TEntity, bool>> filter = null)
-            => filter == null ? DbSet.SingleOrDefault() : DbSet.SingleOrDefault(filter);
+            => filter == null ? _unitOfWork?.Context?.Set<TEntity>().SingleOrDefault() : _unitOfWork?.Context?.Set<TEntity>().SingleOrDefault(filter);
 
         public virtual async Task<TEntity> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> filter = null,
             CancellationToken cancellationToken = default(CancellationToken))
             => filter == null
-                ? await DbSet.SingleOrDefaultAsync(cancellationToken)
-                : await DbSet.SingleOrDefaultAsync(filter, cancellationToken);
+                ? await _unitOfWork?.Context?.Set<TEntity>().SingleOrDefaultAsync(cancellationToken)
+                : await _unitOfWork?.Context?.Set<TEntity>().SingleOrDefaultAsync(filter, cancellationToken);
 
         public virtual TEntity FirstOrDefault(Expression<Func<TEntity, bool>> filter = null)
-            => filter == null ? DbSet.FirstOrDefault() : DbSet.FirstOrDefault(filter);
+            => filter == null ? _unitOfWork?.Context?.Set<TEntity>().FirstOrDefault() : _unitOfWork?.Context?.Set<TEntity>().FirstOrDefault(filter);
 
         public virtual async Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> filter = null,
             CancellationToken cancellationToken = default(CancellationToken))
             => filter == null
-                ? await DbSet.FirstOrDefaultAsync(cancellationToken)
-                : await DbSet.FirstOrDefaultAsync(filter, cancellationToken);
+                ? await _unitOfWork?.Context?.Set<TEntity>().FirstOrDefaultAsync(cancellationToken)
+                : await _unitOfWork?.Context?.Set<TEntity>().FirstOrDefaultAsync(filter, cancellationToken);
 
         public virtual TEntity LastOrDefault(Expression<Func<TEntity, bool>> filter = null)
-        => filter == null ? DbSet.LastOrDefault() : DbSet.LastOrDefault(filter);
+        => filter == null ? _unitOfWork?.Context?.Set<TEntity>().LastOrDefault() : _unitOfWork?.Context?.Set<TEntity>().LastOrDefault(filter);
 
         public virtual async Task<TEntity> LastOrDefaultAsync(Expression<Func<TEntity, bool>> filter = null,
             CancellationToken cancellationToken = default(CancellationToken))
             => filter == null
-                ? await DbSet.LastOrDefaultAsync(cancellationToken)
-                : await DbSet.LastOrDefaultAsync(filter, cancellationToken);
+                ? await _unitOfWork?.Context?.Set<TEntity>().LastOrDefaultAsync(cancellationToken)
+                : await _unitOfWork?.Context?.Set<TEntity>().LastOrDefaultAsync(filter, cancellationToken);
 
         /// <summary>
         /// Generic get method on the basis of id for Entities.
@@ -265,7 +266,7 @@
         /// <param name="id"></param>
         /// <returns></returns>
         public virtual TEntity GetById<TKey>(TKey id)
-        => id == null ? null : DbSet.Find(id);
+        => id == null ? null : _unitOfWork?.Context?.Set<TEntity>().Find(id);
 
         /// <summary>
         /// Generic get method on the basis of id for Entities.
@@ -280,7 +281,7 @@
                 return null;
             }
 
-            IQueryable<TEntity> query = DbSet;
+            IQueryable<TEntity> query = _unitOfWork.Context.Set<TEntity>();
 
             query = includeProperties
                 .Select(i => i.Compile())
@@ -299,7 +300,7 @@
         /// <returns></returns>
         public virtual async Task<TEntity> GetByIdAsync<TKey>(TKey id,
             CancellationToken cancellationToken = default(CancellationToken))
-            => id == null ? null : await DbSet.FindAsync(cancellationToken, id);
+            => id == null ? null : await _unitOfWork?.Context?.Set<TEntity>().FindAsync(cancellationToken, id);
 
         /// <summary>
         /// Generic get method on the basis of id for Entities as async
@@ -316,7 +317,7 @@
                 return null;
             }
 
-            IQueryable<TEntity> query = DbSet;
+            IQueryable<TEntity> query = _unitOfWork.Context.Set<TEntity>();
 
             query = includeProperties
                 .Select(i => i.Compile())
@@ -339,9 +340,11 @@
                     throw new ArgumentNullException(nameof(entity));
                 }
 
-                Context.Entry(entity).State = EntityState.Added;
-
-                //Context.Add(entity);
+                _unitOfWork.Context.Entry(entity).State = EntityState.Added;
+                
+                //_unitOfWork.Context.Set<TEntity>().Attach(entity);
+                
+                //UnitOfWork.Context.Set<TEntity>().Add(entity);
 
                 return entity;
             }
@@ -360,7 +363,7 @@
                     throw new ArgumentNullException(nameof(entities));
                 }
 
-                DbSet.AddRange(entities);
+                _unitOfWork?.Context?.Set<TEntity>().AddRange(entities);
                 return entities;
             }
             catch (Exception dbEx)
@@ -380,7 +383,7 @@
                 throw new ArgumentNullException();
             }
 
-            return Remove(DbSet.Find(id));
+            return Remove(_unitOfWork?.Context?.Set<TEntity>().Find(id));
         }
 
         /// <summary>
@@ -404,7 +407,7 @@
                 //}
                 //DbSet.Remove(entity);
 
-                Context.Entry(entity).State = EntityState.Deleted;
+                _unitOfWork.Context.Entry(entity).State = EntityState.Deleted;
                 //Context.Remove(entity);
                 return entity;
             }
@@ -429,13 +432,15 @@
 
             var delList = new List<TEntity>();
 
-            DbSet
+            _unitOfWork
+                .Context
+                .Set<TEntity>()
                 .Where<TEntity>(filter)
                 .ToList()
                 .ForEach(entity =>
                     {
                         //DbSet.Remove(obj);
-                        Context.Entry(entity).State = EntityState.Deleted;
+                        _unitOfWork.Context.Entry(entity).State = EntityState.Deleted;
                         delList.Add(entity);
                     }
                 );
@@ -484,7 +489,7 @@
 
                 //}
 
-                Context.Entry(entity).State = EntityState.Modified;
+                _unitOfWork.Context.Entry(entity).State = EntityState.Modified;
                 //Context.Update(entity);
 
                 //DbSet.Attach(entity);
@@ -502,7 +507,7 @@
         {
             foreach (var entity in entities)
             {
-                Context.Entry(entity).State = EntityState.Modified;
+                _unitOfWork.Context.Entry(entity).State = EntityState.Modified;
             }
 
             return entities;
@@ -514,7 +519,7 @@
 
             foreach (var entity in entities)
             {
-                Context.Entry(entity).State = EntityState.Modified;
+                _unitOfWork.Context.Entry(entity).State = EntityState.Modified;
             }
 
             return entities;
@@ -526,7 +531,7 @@
         /// <param name="primaryKey"></param>
         /// <returns></returns>
         public virtual TEntity Exists(params object[] primaryKey)
-            => DbSet.Find(primaryKey);
+            => _unitOfWork?.Context?.Set<TEntity>().Find(primaryKey);
 
         /// <summary>
         /// Generic method to check if entity exists async
@@ -536,10 +541,10 @@
         /// <returns></returns>
         public virtual async Task<TEntity> ExistsAsync(CancellationToken cancellationToken = default(CancellationToken),
             params object[] primaryKey)
-            => await DbSet.FindAsync(cancellationToken, primaryKey);
+            => await _unitOfWork?.Context?.Set<TEntity>().FindAsync(cancellationToken, primaryKey);
 
         public virtual int Count(Expression<Func<TEntity, bool>> filter = null)
-            => filter == null ? DbSet.Count() : DbSet.Count(filter);
+            => (filter == null ? _unitOfWork?.Context?.Set<TEntity>().Count() : _unitOfWork?.Context?.Set<TEntity>().Count(filter)) ?? 0;
 
         /// <summary>
         /// Generic count for entities async
@@ -549,29 +554,29 @@
         /// <returns></returns>
         public virtual async Task<int> CountAsync(Expression<Func<TEntity, bool>> filter = null,
             CancellationToken cancellationToken = default(CancellationToken))
-            => await DbSet.CountAsync(filter, cancellationToken);
+            => await _unitOfWork?.Context?.Set<TEntity>().CountAsync(filter, cancellationToken);
 
         public virtual bool Exists(Expression<Func<TEntity, bool>> filter = null)
-            => DbSet.Any(filter);
+            => _unitOfWork?.Context?.Set<TEntity>().Any(filter) ?? false;
 
         public virtual async Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> filter = null,
             CancellationToken cancellationToken = default(CancellationToken))
-            => await DbSet.AnyAsync(filter, cancellationToken);
+            => await _unitOfWork?.Context?.Set<TEntity>().AnyAsync(filter, cancellationToken);
 
         public bool Any(Expression<Func<TEntity, bool>> filter = null)
-        => DbSet.Any(filter);
+        => _unitOfWork?.Context?.Set<TEntity>().Any(filter) ?? false;
 
         public virtual async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> filter = null,
             CancellationToken cancellationToken = default(CancellationToken))
-        => await DbSet.AnyAsync(filter, cancellationToken);
+        => await _unitOfWork?.Context?.Set<TEntity>().AnyAsync(filter, cancellationToken);
 
         public virtual async Task LoadPropertyAsync(TEntity item,
             Expression<Func<TEntity, object>> property,
             CancellationToken cancellationToken = default(CancellationToken))
-        => await Context.Entry(item).Reference(property).LoadAsync(cancellationToken);
+        => await _unitOfWork.Context.Entry(item).Reference(property).LoadAsync(cancellationToken);
 
         public void SetUnchanged(TEntity entity)
-        => Context.Entry<TEntity>(entity).State = EntityState.Unchanged;
+        => _unitOfWork.Context.Entry<TEntity>(entity).State = EntityState.Unchanged;
 
         ///// <summary>
         ///// method to delete is there any changes or not
@@ -594,7 +599,7 @@
             {
                 if (disposing)
                 {
-                    Context?.Dispose();
+                    _unitOfWork?.Dispose();
                 }
             }
             _disposed = true;

@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using CostControl.BusinessLogic.Mapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -25,10 +24,9 @@ namespace CostControl.API
                 .AddJsonFormatters()
                 .AddFormatterMappings()
                 .AddAuthorization()
-               .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services
-                .AddMvcCore()
                 .AddCors(options =>
                 {
                     options.AddPolicy("AllowSpecificOrigin", builder =>
@@ -41,7 +39,7 @@ namespace CostControl.API
                         builder.AllowAnyMethod();
                     });
                 });
-            
+
             //// Auto Mapper Configurations
             //var mappingConfig = new MapperConfiguration(mc =>
             //{
@@ -53,8 +51,8 @@ namespace CostControl.API
 
             //OR 
             services.AddAutoMapper();
-
-            services.AddMvc();
+            
+            //services.AddMvc();
 
             //services.AddAuthentication("Bearer")
             //    .AddIdentityServerAuthentication(options =>

@@ -31,6 +31,15 @@
             Repository = _unitOfWork.GetRepository<CostControlEntity.SalePoint>();
         }
 
+        public SalePointLogic(IMapper salePointIMapper, Data.UnitOfWork.IUnitOfWork unitOfWork,
+            Data.Repository.IRepository<CostControlEntity.SalePoint> repository)
+        {
+            SalePointIMapper = salePointIMapper;
+            //_unitOfWork = unitOfWork;
+            Repository = repository;//No need
+            //Logger
+        }
+
         //private Expression<Func<TDestination, TProperty>> GetMappedSelector<TSource, TDestination, TProperty>(Expression<Func<TSource, TProperty>> selector)
         //{
         //    var map = SalePointMapperConfig.FindTypeMapFor<TSource, TDestination>();

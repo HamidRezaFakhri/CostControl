@@ -1,42 +1,45 @@
 ﻿namespace CostControl.Data.UnitOfWork
 {
-	using System;
-	using System.Data;
-	using System.Threading;
-	using System.Threading.Tasks;
+    using System;
+    using System.Data;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Microsoft.EntityFrameworkCore;
 
-	public interface IUnitOfWork : IDisposable
-	{
-		//IRepository<TEntity> Repository<TEntity>() where TEntity : class, IBaseEntity, new();
+    public interface IUnitOfWork : IDisposable
+    {
+        //IRepository<TEntity> Repository<TEntity>() where TEntity : class, IBaseEntity, new();
 
-		/// <summary>
-		/// Commit and save all changes
-		/// </summary>
-		int Commit();
+        DbContext Context { get; }
 
-		/// <summary>
-		/// Commit and save all changes async
-		/// </summary>
-		Task<int> CommitAsync(CancellationToken cancellationToken = default(CancellationToken));
+        /// <summary>
+        /// Commit and save all changes
+        /// </summary>
+        int Commit();
 
-		/// <summary>
-		/// Discards all changes that has not been commited
-		/// </summary>
-		void RollBack();
+        /// <summary>
+        /// Commit and save all changes async
+        /// </summary>
+        Task<int> CommitAsync(CancellationToken cancellationToken = default(CancellationToken));
 
-		/// <summary>
-		/// Discards all changes that has not been commited async
-		/// </summary>
-		Task RollBackAsync(CancellationToken cancellationToken = default(CancellationToken));
+        /// <summary>
+        /// Discards all changes that has not been commited
+        /// </summary>
+        void RollBack();
 
-		int ExecuteSqlCommand(string commandText, params object[] parameters);
+        /// <summary>
+        /// Discards all changes that has not been commited async
+        /// </summary>
+        Task RollBackAsync(CancellationToken cancellationToken = default(CancellationToken));
 
-		Task<int> ExecuteSqlCommandAsync(string commandText,
-			CancellationToken cancellationToken = default(CancellationToken),
-			params object[] parameters);
+        int ExecuteSqlCommand(string commandText, params object[] parameters);
 
-		//bool IsInTransaction { get; }
+        Task<int> ExecuteSqlCommandAsync(string commandText,
+            CancellationToken cancellationToken = default(CancellationToken),
+            params object[] parameters);
 
-		void BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.Unspecified);
-	}
+        //bool IsInTransaction { get; }
+
+        void BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.Unspecified);
+    }
 }

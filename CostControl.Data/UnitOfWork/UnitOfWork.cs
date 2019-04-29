@@ -13,7 +13,7 @@
 
 	public class UnitOfWork : IUnitOfWork
 	{
-		private readonly DbContext _context = null;
+		public DbContext Context { get; }
 
 		private IDbContextTransaction _dbContextTransaction;
 
@@ -79,7 +79,7 @@
 
 		public UnitOfWork(DbContext context)
 		{
-			_context = context;
+			Context = context;
 		}
 
 		//private Dictionary<string, object> repositories;
@@ -124,7 +124,7 @@
 
 		public virtual Repository<TEntity> GetRepository<TEntity>() where TEntity : class, IBaseEntity, new()
 		{
-			var temp = new Repository<TEntity>(_context);
+			var temp = new Repository<TEntity>(this);
 			return (from property in GetType().GetProperties()
 					where property.PropertyType == temp.GetType()
 					select property.GetValue(this) as Repository<TEntity>)
@@ -162,83 +162,84 @@
 
 		private Repository<IncommingUser> _incommingUser;
 
-		public Repository<IncommingUser> IncommingUser => _incommingUser ?? (_incommingUser = new Repository<IncommingUser>(_context));
+		public Repository<IncommingUser> IncommingUser => _incommingUser ?? (_incommingUser = new Repository<IncommingUser>(this));
 
 		private Repository<SalePoint> _salePoint;
 
-		public Repository<SalePoint> SalePoint => _salePoint ?? (_salePoint = new Repository<SalePoint>(_context));
+		public Repository<SalePoint> SalePoint => _salePoint ?? (_salePoint = new Repository<SalePoint>(this));
 
 		private Repository<SaleCostPoint> _saleCostPoint;
 
-		public Repository<SaleCostPoint> SaleCostPoint => _saleCostPoint ?? (_saleCostPoint = new Repository<SaleCostPoint>(_context));
+		public Repository<SaleCostPoint> SaleCostPoint => _saleCostPoint ?? (_saleCostPoint = new Repository<SaleCostPoint>(this));
 
 		private Repository<CostPointGroup> _costPointGroup;
 
-		public Repository<CostPointGroup> CostPointGroup => _costPointGroup ?? (_costPointGroup = new Repository<CostPointGroup>(_context));
+		public Repository<CostPointGroup> CostPointGroup => _costPointGroup ?? (_costPointGroup = new Repository<CostPointGroup>(this));
 
 		private Repository<OverCostType> _overCostType;
 
-		public Repository<OverCostType> OverCostType => _overCostType ?? (_overCostType = new Repository<OverCostType>(_context));
+		public Repository<OverCostType> OverCostType => _overCostType ?? (_overCostType = new Repository<OverCostType>(this));
 
 		private Repository<OverCost> _overCost;
 
-		public Repository<OverCost> OverCost => _overCost ?? (_overCost = new Repository<OverCost>(_context));
+		public Repository<OverCost> OverCost => _overCost ?? (_overCost = new Repository<OverCost>(this));
 
 		private Repository<ConsumptionUnit> _consumptionUnit;
 
-		public Repository<ConsumptionUnit> ConsumptionUnit => _consumptionUnit ?? (_consumptionUnit = new Repository<ConsumptionUnit>(_context));
+		public Repository<ConsumptionUnit> ConsumptionUnit => _consumptionUnit ?? (_consumptionUnit = new Repository<ConsumptionUnit>(this));
 
 		private Repository<Inventory> _inventory;
 
-		public Repository<Inventory> Inventory => _inventory ?? (_inventory = new Repository<Inventory>(_context));
+		public Repository<Inventory> Inventory => _inventory ?? (_inventory = new Repository<Inventory>(this));
 
 		private Repository<Ingredient> _ingredient;
 
-		public Repository<Ingredient> Ingredient => _ingredient ?? (_ingredient = new Repository<Ingredient>(_context));
+		public Repository<Ingredient> Ingredient => _ingredient ?? (_ingredient = new Repository<Ingredient>(this));
 
 		private Repository<Food> _recipe;
 
-		public Repository<Food> Recipe => _recipe ?? (_recipe = new Repository<Food>(_context));
+		public Repository<Food> Recipe => _recipe ?? (_recipe = new Repository<Food>(this));
 
 		private Repository<Recipe> _recipeItem;
 
-		public Repository<Recipe> RecipeItem => _recipeItem ?? (_recipeItem = new Repository<Recipe>(_context));
+		public Repository<Recipe> RecipeItem => _recipeItem ?? (_recipeItem = new Repository<Recipe>(this));
 
 		private Repository<Menu> _menu;
 
-		public Repository<Menu> Menu => _menu ?? (_menu = new Repository<Menu>(_context));
+		public Repository<Menu> Menu => _menu ?? (_menu = new Repository<Menu>(this));
 
 		private Repository<MenuItem> _menuItem;
 
-		public Repository<MenuItem> MenuItem => _menuItem ?? (_menuItem = new Repository<MenuItem>(_context));
+		public Repository<MenuItem> MenuItem => _menuItem ?? (_menuItem = new Repository<MenuItem>(this));
 
 		private Repository<Draft> _draft;
 
-		public Repository<Draft> Draft => _draft ?? (_draft = new Repository<Draft>(_context));
+		public Repository<Draft> Draft => _draft ?? (_draft = new Repository<Draft>(this));
 
 		private Repository<DraftItem> _draftItem;
 
-		public Repository<DraftItem> DraftItem => _draftItem ?? (_draftItem = new Repository<DraftItem>(_context));
+		public Repository<DraftItem> DraftItem => _draftItem ?? (_draftItem = new Repository<DraftItem>(this));
 
 		private Repository<CostPoint> _costPoint;
 
-		public Repository<CostPoint> CostPoint => _costPoint ?? (_costPoint = new Repository<CostPoint>(_context));
+		public Repository<CostPoint> CostPoint => _costPoint ?? (_costPoint = new Repository<CostPoint>(this));
 
 		private Repository<Buffet> _buffet;
 
-		public Repository<Buffet> Buffet => _buffet ?? (_buffet = new Repository<Buffet>(_context));
+		public Repository<Buffet> Buffet => _buffet ?? (_buffet = new Repository<Buffet>(this));
 
 		private Repository<Setting> _setting;
 
-		public Repository<Setting> Setting => _setting ?? (_setting = new Repository<Setting>(_context));
+		public Repository<Setting> Setting => _setting ?? (_setting = new Repository<Setting>(this));
 
 		private Repository<IntakeRemittance> _intakeRemittance;
 
-		public Repository<IntakeRemittance> IntakeRemittance => _intakeRemittance ?? (_intakeRemittance = new Repository<IntakeRemittance>(_context));
+		public Repository<IntakeRemittance> IntakeRemittance => _intakeRemittance ?? (_intakeRemittance = new Repository<IntakeRemittance>(this));
 
 		private Repository<DataImport> _dataImport;
 
-		public Repository<DataImport> DataImport => _dataImport ?? (_dataImport = new Repository<DataImport>(_context));
+		public Repository<DataImport> DataImport => _dataImport ?? (_dataImport = new Repository<DataImport>(this));
+
 		#endregion
 
 		//private Repository<TEntity> entities;
@@ -268,7 +269,7 @@
 
 			try
 			{
-				return _context.SaveChanges();
+				return Context.SaveChanges();
 			}
 			/* EF core
 			catch (DbEntityValidationException e)
@@ -305,6 +306,11 @@
 				RollBack();
 				throw e.InnerException ?? e;
 			}
+			finally
+			{
+				if (Context.Database.CurrentTransaction != null)
+					Context.Database.CommitTransaction();
+			}
 		}
 
 		//public async Task SaveAsync(CancellationToken cancellationToken = default(CancellationToken))
@@ -322,7 +328,7 @@
 
 			cancellationToken.ThrowIfCancellationRequested();
 
-			return await _context.SaveChangesAsync(cancellationToken);
+			return await Context.SaveChangesAsync(cancellationToken);
 
 			//int result = default(int);
 			//using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
@@ -335,11 +341,14 @@
 
 		public virtual void RollBack()
 		{
-			_context
+			Context
 				.ChangeTracker
 				.Entries()
 				.ToList()
 				.ForEach(x => x.Reload());
+
+			if (Context.Database.CurrentTransaction != null)
+				Context.Database.RollbackTransaction();
 
 			//foreach (var entry in context.ChangeTracker.Entries()
 			//  .Where(e => e.State != EntityState.Unchanged))
@@ -359,6 +368,8 @@
 
 		public virtual async Task RollBackAsync(CancellationToken cancellationToken = default(CancellationToken))
 		{
+			cancellationToken.ThrowIfCancellationRequested();
+
 			throw await new Task<Exception>(() => new NotImplementedException(), cancellationToken);
 
 			////Code Analysis doesn’t flag the following method
@@ -382,18 +393,20 @@
 		public virtual async Task<int> ExecuteSqlCommandAsync(string commandText,
 			CancellationToken cancellationToken = default(CancellationToken), params object[] parameters)
 		{
-			return await _context.Database.ExecuteSqlCommandAsync(commandText, parameters, cancellationToken);
+			cancellationToken.ThrowIfCancellationRequested();
+
+			return await Context.Database.ExecuteSqlCommandAsync(commandText, parameters, cancellationToken);
 		}
 
 		public virtual int ExecuteSqlCommand(string commandText, params object[] parameters)
 		{
-			return _context.Database.ExecuteSqlCommand(commandText, parameters);
+			return Context.Database.ExecuteSqlCommand(commandText, parameters);
 		}
 
 		public virtual void BeginTransaction(System.Data.IsolationLevel isolationLevel = System.Data.IsolationLevel.Unspecified)
 		{
 			if (_dbContextTransaction == null)
-				_dbContextTransaction = _context.Database.BeginTransaction(isolationLevel);
+				_dbContextTransaction = Context.Database.BeginTransaction(isolationLevel);
 
 			//if (_dbContextTransaction != null)
 			//    _dbContextTransaction.Commit();
@@ -413,7 +426,7 @@
 				if (disposing)
 				{
 					Debug.WriteLine("UnitOfWork is being disposed");
-					_context?.Dispose();
+					Context?.Dispose();
 				}
 			}
 			_disposed = true;
