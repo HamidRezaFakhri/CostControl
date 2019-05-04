@@ -16,8 +16,8 @@
 				cfg.AddExpressionMapping();
 				cfg.ValidateInlineMaps = false;
 
-                //cfg.EnableNullPropagationForQueryMapping = true;
-                //cfg.Advanced.AllowAdditiveTypeMapCreation = true;
+				//cfg.EnableNullPropagationForQueryMapping = true;
+				//cfg.Advanced.AllowAdditiveTypeMapCreation = true;
 
 				//cfg.ValueTransformers
 
