@@ -19,21 +19,10 @@
         {
             ViewData["title"] = Helper.GetEntityTile<SaleCostPoint>(EnumTitle.Add);
 
-            ViewBag.CostPoints = GetCostPoints()
-                            .Select(c => new SelectListItem()
-                            {
-                                Text = c.Name,
-                                Value = c.Id.ToString()
-                            })
-                            .ToList();
+            ViewBag.CostPoints = GetCostPointList();
 
-            ViewBag.SalePoints = GetSalePoints()
-                                        .Select(c => new SelectListItem()
-                                        {
-                                            Text = c.Name,
-                                            Value = c.Id.ToString()
-                                        })
-                                        .ToList();
+            ViewBag.SalePoints = GetSalePointList();
+
             return PartialView();
         }
 
@@ -67,25 +56,11 @@
 
             var model = GetSaleCostPointById(id);
 
-            ViewBag.CostPoints = GetCostPoints()
-                            .Select(c => new SelectListItem()
-                            {
-                                Text = c.Name,
-                                Value = c.Id.ToString(),
-                                Selected = c.Id == model.CostPointId
-                            })
-                            .ToList();
+            ViewBag.CostPoints = GetCostPointList(model.CostPointId);
 
-            ViewBag.SalePoints = GetSalePoints()
-                                        .Select(c => new SelectListItem()
-                                        {
-                                            Text = c.Name,
-                                            Value = c.Id.ToString(),
-                                            Selected = c.Id == model.SalePointId
-                                        })
-                                        .ToList();
+            ViewBag.SalePoints = GetSalePointList(model.SalePointId);
 
-            return PartialView(GetSaleCostPointById(id));
+            return PartialView(model);
         }
 
         [HttpPost]
@@ -132,11 +107,6 @@
         => (Helper.GetServiceResponse<SaleCostPoint>("GetById?id=" + id.ToString()).data as List<SaleCostPoint>)
                 .FirstOrDefault();
 
-        private IEnumerable<SalePoint> GetSalePoints()
-        {
-            return Helper.GetServiceResponseList<SalePoint>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1");
-        }
-
         private CostPoint GetCostPointById(long id)
         {
             return (Helper.GetServiceResponse<CostPoint>("GetById?id=" + id.ToString()).data as List<CostPoint>)
@@ -149,9 +119,32 @@
                 .FirstOrDefault();
         }
 
+        private IEnumerable<SalePoint> GetSalePoints()
+        => Helper.GetServiceResponseList<SalePoint>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1");
+
+        private IEnumerable<SelectListItem> GetSalePointList(long? selected = null)
+        => GetSalePoints()
+                .OrderBy(o => o.Name)
+                .Select(c => new SelectListItem()
+                {
+                    Text = c.Name,
+                    Value = c.Id.ToString(),
+                    Selected = selected == null ? false : c.Id == selected
+                })
+                .ToList();
+
         private IEnumerable<CostPoint> GetCostPoints()
-        {
-            return Helper.GetServiceResponseList<CostPoint>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1");
-        }
+        => Helper.GetServiceResponseList<CostPoint>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1");
+        
+        private IEnumerable<SelectListItem> GetCostPointList(long? selected = null)
+        => GetCostPoints()
+                .OrderBy(o => o.Name)
+                .Select(c => new SelectListItem()
+                {
+                    Text = c.Name,
+                    Value = c.Id.ToString(),
+                    Selected = selected == null ? false : c.Id == selected
+                })
+                .ToList();
     }
 }

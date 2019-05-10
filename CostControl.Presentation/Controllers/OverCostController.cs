@@ -17,27 +17,35 @@
             return View(Helper.GetServiceResponse<OverCost>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1"));
         }
 
+        private IEnumerable<SelectListItem> GetSaleCostPointGroupList(long? selected = null)
+        => Helper.GetServiceResponseList<SaleCostPoint>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1")
+                .OrderBy(o => o.SalePointName)
+                .Select(c => new SelectListItem()
+                {
+                    Text = $"{c.SalePointName} - {c.CostPointName}",
+                    Value = c.Id.ToString(),
+                    Selected = selected == null ? false : c.Id == selected
+                })
+                .ToList();
+
+        private IEnumerable<SelectListItem> GetOverCostTypeList(long? selected = null)
+        => Helper.GetServiceResponseList<OverCostType>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1")
+                .OrderBy(o => o.Name)
+                .Select(c => new SelectListItem()
+                {
+                    Text = c.Name,
+                    Value = c.Id.ToString(),
+                    Selected = selected == null ? false : c.Id == selected
+                })
+                .ToList();
+
         public IActionResult AddOverCost()
         {
             ViewData["title"] = Helper.GetEntityTile<OverCost>(EnumTitle.Add);
 
-            ViewBag.OverCostType = Helper.GetServiceResponseList<OverCostType>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1")
-                                        .Select(c => new SelectListItem()
-                                        {
-                                            Text = c.Name,
-                                            Value = c.Id.ToString()
-                                        })
-                                        .ToList();
-
-
-
-            ViewBag.SaleCostPoint = Helper.GetServiceResponseList<SaleCostPoint>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1")
-                                        .Select(c => new SelectListItem()
-                                        {
-                                            Text = $"{c.SalePointName} - {c.CostPointName}",
-                                            Value = c.Id.ToString()
-                                        })
-                                        .ToList();
+            ViewBag.OverCostType = GetOverCostTypeList();
+            
+            ViewBag.SaleCostPoint = GetSaleCostPointGroupList();
 
             return PartialView();
         }
@@ -83,23 +91,9 @@
             model.EndDate = Convert.ToDateTime(model.EndDate.Date
                                     .ToString("yyyy/MM/dd", new CultureInfo("fa-IR")));
 
-            ViewBag.OverCostType = Helper.GetServiceResponseList<OverCostType>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1")
-                            .Select(c => new SelectListItem()
-                            {
-                                Text = c.Name,
-                                Value = c.Id.ToString(),
-                                Selected = c.Id == model.OverCostTypeId
-                            })
-                            .ToList();
+            ViewBag.OverCostType = GetOverCostTypeList(model.OverCostTypeId);
 
-            ViewBag.SaleCostPoint = Helper.GetServiceResponseList<SaleCostPoint>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1")
-                                        .Select(c => new SelectListItem()
-                                        {
-                                            Text = $"{c.SalePointName} - {c.CostPointName}",
-                                            Value = c.Id.ToString(),
-                                            Selected = c.Id == model.SaleCostPointId
-                                        })
-                                        .ToList();
+            ViewBag.SaleCostPoint = GetSaleCostPointGroupList(model.SaleCostPointId);
 
             return PartialView(model);
         }

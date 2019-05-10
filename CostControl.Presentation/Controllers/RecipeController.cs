@@ -18,19 +18,22 @@
         }
 
         private IEnumerable<Ingredient> GetIngredients()
-        {
-            return Helper.GetServiceResponseList<Ingredient>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1");
-        }
+        => Helper.GetServiceResponseList<Ingredient>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1");
+
+        private IEnumerable<SelectListItem> GetIngredienList(long? selected = null)
+        => GetIngredients()
+                .OrderBy(o => o.Name)
+                .Select(c => new SelectListItem()
+                {
+                    Text = c.Name,
+                    Value = c.Id.ToString(),
+                    Selected = selected == null ? false : c.Id == selected
+                })
+                .ToList();
 
         public IActionResult AddRecipe(long id)
         {
-            ViewBag.Ingredients = GetIngredients()
-                                        .Select(c => new SelectListItem()
-                                        {
-                                            Text = c.Name,
-                                            Value = c.Id.ToString()
-                                        })
-                                        .ToList();
+            ViewBag.Ingredients = GetIngredienList();
 
             return PartialView(new Recipe { FoodId = id });
         }
@@ -66,7 +69,11 @@
         {
             ViewData["title"] = Helper.GetEntityTile<Recipe>(EnumTitle.Edit);
 
-            return PartialView(GetRecipeById(id));
+            var model = GetRecipeById(id);
+
+            ViewBag.Ingredients = GetIngredienList(model.Id);
+
+            return PartialView(model);
         }
 
         [HttpPost]

@@ -37,16 +37,10 @@
 				<td id="td_Name">@item.Name</td>
 				<td id="td_Code">@item.Code</td>
 				<td>
-					<a href="#" class="btn btn-sm btn-warning"
-					   onclick="EditEntityModal(@item.Id, '/CostPointGroup/EditCostPointGroup/', '@editTitle (@item.Name)')">
-						<i class="fa fa-edit"><span> ویرایش </span></i>
-					</a>
-
-					<span> | </span>
-					<a class="btn btn-sm btn-danger"
+					<span class="btn btn-sm btn-danger"
 					   onclick="DeleteEntityModal(@item.Id, '/CostPointGroup/DeleteCostPointGroup/', '@deleteTitle', '@item.Name')">
 						<i class="fa fa-trash"><span> حذف </span></i>
-					</a>
+					</span>
 				</td>
 			</tr>
 		}
@@ -56,6 +50,7 @@
 <script>
 	$(document).ready(function () {
 		$('#pageTitle').html('@ViewData["title"]');
+
 		$('#CostPointGroupslist').dataTable({
 			"processing": true,
 			"language": {
@@ -65,20 +60,20 @@
 			//buttons: [
 			//	'copy', 'csv', 'excel', 'pdf', 'print'
 			//]
-			"dom": 'lBfrtip',
-			"buttons": [
-				{
-					extend: 'collection',
-					text: 'Export',
-					buttons: [
-						'copy',
-						'excel',
-						'csv',
-						'pdf',
-						'print'
-					]
-				}
-			]
+			//"dom": 'lBfrtip',
+			//"buttons": [
+			//	{
+			//		extend: 'collection',
+			//		text: 'Export',
+			//		buttons: [
+			//			'copy',
+			//			'excel',
+			//			'csv',
+			//			'pdf',
+			//			'print'
+			//		]
+			//	}
+			//]
 		});
 	});
 </script>

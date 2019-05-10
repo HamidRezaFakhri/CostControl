@@ -16,17 +16,20 @@
 				@Html.LabelFor(model => model.SaleCostPointId, htmlAttributes: new { @class = "control-label col-md-12" })
 				<div class="col-md-12">
 					@Html.DropDownListFor(model => model.SaleCostPointId, ViewBag.SaleCostPoint as IEnumerable<SelectListItem>,
-							"انتخاب کنید ...", htmlAttributes: new { @class = "form-control" })
+							"انتخاب کنید ...", htmlAttributes: new { @class = "selectpicker form-control" })
 					@Html.ValidationMessageFor(model => model.SaleCostPointId, "", new { @class = "text-danger" })
 				</div>
 			</div>
 
 			<div class="form-group">
-				@Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-5" })
+				@*@Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-5" })
 				<div class="col-md-12">
 					@Html.EditorFor(model => model.StartDate,
 						new { htmlAttributes = new { @class = "form-control" } })
 					@Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+				</div>*@
+				<div class="col-md-12">
+					<input id="StartDate" name="IntakeDate" type="text" class="form-control" />
 				</div>
 			</div>
 		</div>
@@ -36,17 +39,20 @@
 				@Html.LabelFor(model => model.OverCostTypeId, htmlAttributes: new { @class = "control-label col-md-12" })
 				<div class="col-md-12">
 					@Html.DropDownListFor(model => model.OverCostTypeId, ViewBag.OverCostType as IEnumerable<SelectListItem>,
-							"انتخاب کنید ...", htmlAttributes: new { @class = "form-control" })
+							"انتخاب کنید ...", htmlAttributes: new { @class = "selectpicker form-control" })
 					@Html.ValidationMessageFor(model => model.OverCostTypeId, "", new { @class = "text-danger" })
 				</div>
 			</div>
 
 			<div class="form-group">
-				@Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-5" })
+				@*@Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-5" })
+		<div class="col-md-12">
+			@Html.EditorFor(model => model.EndDate,
+				new { htmlAttributes = new { @class = "form-control" } })
+			@Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+		</div>*@
 				<div class="col-md-12">
-					@Html.EditorFor(model => model.EndDate,
-						new { htmlAttributes = new { @class = "form-control" } })
-					@Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+					<input id="EndDate" name="IntakeDate" type="text" class="form-control" />
 				</div>
 			</div>
 		</div>

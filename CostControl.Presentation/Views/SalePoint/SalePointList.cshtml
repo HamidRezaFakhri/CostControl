@@ -44,16 +44,10 @@
 						   value="@item.IsHall" disabled />
 				</td>
 				<td>
-					<a href="#" class="btn btn-sm btn-warning"
-					   onclick="EditEntityModal(@item.Id, '/SalePoint/EditSalePoint/', '@editTitle (@item.Name)')">
-						<i class="fa fa-edit"><span> ویرایش </span></i>
-					</a>
-
-					<span> | </span>
-					<a class="btn btn-sm btn-danger"
+					<span class="btn btn-sm btn-danger"
 					   onclick="DeleteEntityModal(@item.Id, '/SalePoint/DeleteSalePoint/', '@deleteTitle', '@item.Name')">
 						<i class="fa fa-trash"><span> حذف </span></i>
-					</a>
+					</span>
 				</td>
 			</tr>
 		}

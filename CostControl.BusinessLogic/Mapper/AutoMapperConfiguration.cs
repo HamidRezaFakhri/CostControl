@@ -1,63 +1,64 @@
 ﻿namespace CostControl.BusinessLogic.Mapper
 {
-	using AutoMapper;
-	using AutoMapper.EquivalencyExpression;
-	using AutoMapper.Extensions.ExpressionMapping;
-	using CostControl.BusinessLogic.Profiles.CostControl;
+    using AutoMapper;
+    using AutoMapper.EquivalencyExpression;
+    using AutoMapper.Extensions.ExpressionMapping;
+    using CostControl.BusinessLogic.Profiles.CostControl;
 
-	public class AutoMapperConfiguration
-	{
-		public MapperConfiguration Configure()
-		{
-			MapperConfiguration config = new MapperConfiguration(cfg =>
-			{
-				cfg.AddCollectionMappers();
-				cfg.AllowNullCollections = true;
-				cfg.AddExpressionMapping();
-				cfg.ValidateInlineMaps = false;
+    public class AutoMapperConfiguration
+    {
+        public MapperConfiguration Configure()
+        {
+            //var aaa = new MapperConfigurationExpression();
+            //aaa.AddProfile<SalePointProfile>();
+            //aaa.CreateMap<SalePoint, SalePointDto>();
 
-				//cfg.EnableNullPropagationForQueryMapping = true;
-				//cfg.Advanced.AllowAdditiveTypeMapCreation = true;
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddCollectionMappers();
+                cfg.AllowNullCollections = true;
+                cfg.AddExpressionMapping();
+                cfg.ValidateInlineMaps = false;
 
-				//cfg.ValueTransformers
+                //cfg.EnableNullPropagationForQueryMapping = true;
+                //cfg.Advanced.AllowAdditiveTypeMapCreation = true;
 
-				//cfg.ConstructServicesUsing();
+                //cfg.ValueTransformers
 
-				//cfg.AddProfile<ClientMappingProfile>();
+                //cfg.ConstructServicesUsing();
 
-				cfg.AddProfile<BuffetProfile>();
-				cfg.AddProfile<ConsumptionUnitProfile>();
-				cfg.AddProfile<CostPointGroupProfile>();
-				cfg.AddProfile<CostPointProfile>();
-				cfg.AddProfile<DataImportProfile>();
-				cfg.AddProfile<DepoProfile>();
-				cfg.AddProfile<DraftProfile>();
-				cfg.AddProfile<DraftItemProfile>();
-				cfg.AddProfile<FoodProfile>();
-				cfg.AddProfile<IncommingUserProfile>();
-				cfg.AddProfile<IngredientProfile>();
-				cfg.AddProfile<IntakeRemittanceProfile>();
-				cfg.AddProfile<IntakeRemittanceItemProfile>();
-				cfg.AddProfile<InventoryProfile>();
-				cfg.AddProfile<MenuProfile>();
-				cfg.AddProfile<MenuItemProfile>();
-				cfg.AddProfile<OverCostTypeProfile>();
-				cfg.AddProfile<OverCostProfile>();
-				cfg.AddProfile<RecipeProfile>();
-				cfg.AddProfile<SaleCostPointProfile>();
-				cfg.AddProfile<SalePointProfile>();
-				cfg.AddProfile<SettingProfile>();
+                //cfg.AddProfile<ClientMappingProfile>();
 
-				//cfg.AddProfile<RoleProfile>();
+                cfg.AddProfile<BuffetProfile>();
+                cfg.AddProfile<ConsumptionUnitProfile>();
+                cfg.AddProfile<CostPointGroupProfile>();
+                cfg.AddProfile<CostPointProfile>();
+                cfg.AddProfile<DataImportProfile>();
+                cfg.AddProfile<DepoProfile>();
+                cfg.AddProfile<DraftProfile>();
+                cfg.AddProfile<DraftItemProfile>();
+                cfg.AddProfile<FoodProfile>();
+                cfg.AddProfile<IncommingUserProfile>();
+                cfg.AddProfile<IngredientProfile>();
+                cfg.AddProfile<IntakeRemittanceProfile>();
+                cfg.AddProfile<IntakeRemittanceItemProfile>();
+                cfg.AddProfile<InventoryProfile>();
+                cfg.AddProfile<MenuProfile>();
+                cfg.AddProfile<MenuItemProfile>();
+                cfg.AddProfile<OverCostTypeProfile>();
+                cfg.AddProfile<OverCostProfile>();
+                cfg.AddProfile<RecipeProfile>();
+                cfg.AddProfile<SaleCostPointProfile>();
+                cfg.AddProfile<SalePointProfile>();
+                cfg.AddProfile<SettingProfile>();
 
-				//cfg.AddProfiles(typeof(ClientMappingProfile).Assembly);
+                //cfg.AddProfiles(typeof(ClientMappingProfile).Assembly);
+            });
 
-			});
+            // Test Mapping and Configuration Validation
+            config.AssertConfigurationIsValid();
 
-			// Test Mapping and Configuration Validation
-			config.AssertConfigurationIsValid();
-
-			return config;
-		}
-	}
+            return config;
+        }
+    }
 }

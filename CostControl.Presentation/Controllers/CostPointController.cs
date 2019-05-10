@@ -16,21 +16,25 @@
         }
 
         private IEnumerable<CostPointGroup> GetCostPointGroups()
-        {
-            return Helper.GetServiceResponseList<CostPointGroup>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1");
-        }
+        => Helper.GetServiceResponseList<CostPointGroup>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1");
+
+        private IEnumerable<SelectListItem> GetCostPointGroupList(long? selected = null)
+        => GetCostPointGroups()
+                .OrderBy(o => o.Name)
+                .Select(c => new SelectListItem()
+                {
+                    Text = c.Name,
+                    Value = c.Id.ToString(),
+                    Selected = selected == null ? false : c.Id == selected
+                })
+                .ToList();
 
         public IActionResult AddCostPoint()
         {
             ViewData["title"] = Helper.GetEntityTile<CostPoint>(EnumTitle.Add);
 
-            ViewBag.CostPointGroup = GetCostPointGroups()
-                                        .Select(c => new SelectListItem()
-                                        {
-                                            Text = c.Name,
-                                            Value = c.Id.ToString()
-                                        })
-                                        .ToList();
+            ViewBag.CostPointGroup = GetCostPointGroupList();
+
             return PartialView();
         }
 
@@ -65,14 +69,7 @@
             var costPoint = GetCostPointById(id);
             var costPointGroup = GetCostPointGroupById(costPoint.CostPointGroupId);
 
-            ViewBag.CostPointGroup = GetCostPointGroups()
-                            .Select(c => new SelectListItem()
-                            {
-                                Text = c.Name,
-                                Value = c.Id.ToString(),
-                                Selected = c.Id == costPointGroup.Id
-                            })
-                            .ToList();
+            ViewBag.CostPointGroup = GetCostPointGroupList(costPointGroup.Id);
 
             return PartialView(costPoint);
         }

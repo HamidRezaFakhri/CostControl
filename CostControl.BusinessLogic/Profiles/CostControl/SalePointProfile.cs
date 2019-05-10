@@ -13,14 +13,14 @@
                 //.ForMember(dest => dest.Users, opt => opt.MapFrom(src => src.Users))
                 .ReverseMap();
 
-            CreateMap<Entity.Models.Base.SupperNameEntity<long>, BusinessEntity.Models.CostControl.SalePoint>(MemberList.None)
-                .ForMember(o => o.Name, opt => opt.MapFrom(src => src.Name));
+            //CreateMap<Entity.Models.Base.SupperNameEntity<long>, BusinessEntity.Models.CostControl.SalePoint>(MemberList.None)
+            //    .ForMember(o => o.Name, opt => opt.MapFrom(src => src.Name));
 
-            CreateMap<Entity.Models.Base.SupperNameEntity<long>, BusinessEntity.Models.CostControl.SalePoint>(MemberList.None)
-                    .AfterMap((s, d) =>
-                    {
-                        s.Name = d.Name;
-                    });
+            //CreateMap<Entity.Models.Base.SupperNameEntity<long>, BusinessEntity.Models.CostControl.SalePoint>(MemberList.None)
+            //        .AfterMap((s, d) =>
+            //        {
+            //            s.Name = d.Name;
+            //        });
 
             //Mapper.CreateMap<DomainClass, Child>();
             //Mapper.CreateMap<DomainClass, Parent>()

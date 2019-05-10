@@ -1,101 +1,99 @@
 ﻿namespace CostControl.Presentation.Controllers
 {
-	using System.Collections.Generic;
-	using System.Linq;
-	using CostControl.BusinessEntity.Models.CostControl;
-	using Microsoft.AspNetCore.Mvc;
-	using Microsoft.AspNetCore.Mvc.Rendering;
+    using System.Collections.Generic;
+    using System.Linq;
+    using CostControl.BusinessEntity.Models.CostControl;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Rendering;
 
-	public class MenuController : BaseController
-	{
-		public IActionResult MenuList(string param)
-		{
-			ViewData["title"] = Helper.GetEntityTile<Menu>(EnumTitle.List);
+    public class MenuController : BaseController
+    {
+        public IActionResult MenuList(string param)
+        {
+            ViewData["title"] = Helper.GetEntityTile<Menu>(EnumTitle.List);
 
-			return View(Helper.GetServiceResponse<Menu>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1"));
-		}
+            return View(Helper.GetServiceResponse<Menu>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1"));
+        }
 
-		public IActionResult AddMenu()
-		{
-			ViewData["title"] = Helper.GetEntityTile<Menu>(EnumTitle.Add);
+        private IEnumerable<SelectListItem> GetSaleCostPointGroupList(long? selected = null)
+        => Helper.GetServiceResponseList<SaleCostPoint>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1")
+                .OrderBy(o => o.SalePointName)
+                .Select(c => new SelectListItem()
+                {
+                    Text = $"{c.SalePointName} - {c.CostPointName}",
+                    Value = c.Id.ToString(),
+                    Selected = selected == null ? false : c.Id == selected
+                })
+                .ToList();
 
-			ViewBag.SaleCostPoint = Helper.GetServiceResponseList<SaleCostPoint>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1")
-										.Select(c => new SelectListItem()
-										{
-											Text = $"{c.SalePointName} - {c.CostPointName}",
-											Value = c.Id.ToString()
-										})
-										.ToList();
+        public IActionResult AddMenu()
+        {
+            ViewData["title"] = Helper.GetEntityTile<Menu>(EnumTitle.Add);
 
-			return PartialView();
-		}
+            ViewBag.SaleCostPoint = GetSaleCostPointGroupList();
 
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public IActionResult AddMenu(Menu Menu)
-		{
-			if (ModelState.IsValid)
-			{
-				var postResult = Helper.PostValueToSevice<Menu>("POST", Menu);
+            return PartialView();
+        }
 
-				return Json(new { success = postResult.result, message = postResult.message });
-			}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddMenu(Menu Menu)
+        {
+            if (ModelState.IsValid)
+            {
+                var postResult = Helper.PostValueToSevice<Menu>("POST", Menu);
 
-			return Json(new { success = false, message = "Model Is Not Vald!" });
-		}
+                return Json(new { success = postResult.result, message = postResult.message });
+            }
 
-		public IActionResult EditMenu(long id)
-		{
-			ViewData["title"] = Helper.GetEntityTile<Menu>(EnumTitle.Edit);
+            return Json(new { success = false, message = "Model Is Not Vald!" });
+        }
 
-			var model = GetMenuById(id);
+        public IActionResult EditMenu(long id)
+        {
+            ViewData["title"] = Helper.GetEntityTile<Menu>(EnumTitle.Edit);
 
-			ViewBag.SaleCostPoint = Helper.GetServiceResponseList<SaleCostPoint>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1")
-										.Select(c => new SelectListItem()
-										{
-											Text = $"{c.SalePointName} - {c.CostPointName}",
-											Value = c.Id.ToString(),
-											Selected = c.Id == model.SaleCostPointId
-										})
-										.ToList();
+            var model = GetMenuById(id);
 
-			return PartialView(model);
-		}
+            ViewBag.SaleCostPoint = GetSaleCostPointGroupList(model.SaleCostPointId);
 
-		[HttpPost]
-		public IActionResult EditMenu(long id, Menu Menu)
-		{
-			if (ModelState.IsValid)
-			{
-				Menu.State = BusinessEntity.Models.Base.Enums.ObjectState.Active;
+            return PartialView(model);
+        }
 
-				var postResult = Helper.PostValueToSevice<Menu>("PUT?id=" + Menu.Id.ToString(), Menu);
+        [HttpPost]
+        public IActionResult EditMenu(long id, Menu Menu)
+        {
+            if (ModelState.IsValid)
+            {
+                Menu.State = BusinessEntity.Models.Base.Enums.ObjectState.Active;
 
-				return Json(new { success = postResult.result, message = postResult.message });
-			}
+                var postResult = Helper.PostValueToSevice<Menu>("PUT?id=" + Menu.Id.ToString(), Menu);
 
-			return Json(new { success = false, message = "Model Is Not Valid!" });
-		}
+                return Json(new { success = postResult.result, message = postResult.message });
+            }
 
-		public IActionResult DeleteMenu(long id)
-		{
-			ViewData["title"] = Helper.GetEntityTile<Menu>(EnumTitle.Delete);
+            return Json(new { success = false, message = "Model Is Not Valid!" });
+        }
 
-			return PartialView(GetMenuById(id));
-		}
+        public IActionResult DeleteMenu(long id)
+        {
+            ViewData["title"] = Helper.GetEntityTile<Menu>(EnumTitle.Delete);
 
-		[HttpPost]
-		public IActionResult DeleteMenu(Menu Menu)
-		{
-			var postResult = Helper.PostValueToSevice<Menu>("Delete?id=" + Menu.Id.ToString(), Menu);
+            return PartialView(GetMenuById(id));
+        }
 
-			return Json(new { success = postResult.result, message = postResult.message });
-		}
+        [HttpPost]
+        public IActionResult DeleteMenu(Menu Menu)
+        {
+            var postResult = Helper.PostValueToSevice<Menu>("Delete?id=" + Menu.Id.ToString(), Menu);
 
-		private Menu GetMenuById(long id)
-		{
-			return (Helper.GetServiceResponse<Menu>("GetById?id=" + id.ToString()).data as List<Menu>)
-				.FirstOrDefault();
-		}
-	}
+            return Json(new { success = postResult.result, message = postResult.message });
+        }
+
+        private Menu GetMenuById(long id)
+        {
+            return (Helper.GetServiceResponse<Menu>("GetById?id=" + id.ToString()).data as List<Menu>)
+                .FirstOrDefault();
+        }
+    }
 }

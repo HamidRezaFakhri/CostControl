@@ -27,12 +27,12 @@
 
         [Required(ErrorMessage = "تاریخ شروع اجباریست!")]
         [Display(Name = "تاریخ شروع")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy/MM/dd}")]
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy/MM/dd}")]
         public DateTime StartDate { get; set; }
 
         [Required(ErrorMessage = "تاریخ پایان اجباریست!")]
         [Display(Name = "تاریخ پایان")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy/MM/dd}")]
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy/MM/dd}")]
         public DateTime EndDate { get; set; }
 
         [Required(ErrorMessage = "قیمت اجباریست!")]

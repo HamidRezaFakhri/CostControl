@@ -41,22 +41,16 @@
 			<td id="td_FoodType">@item.FoodType</td>
 
 			<td>
-				<a href="#" class="btn btn-sm btn-warning"
-				   onclick="EditEntityModal(@item.Id, '/Food/EditFood/', '@editTitle (@item.Name)')">
-					<i class="fa fa-edit"><span> ویرایش </span></i>
-				</a>
-
-				<span> | </span>
 				<a href="#" class="btn btn-sm btn-outline-dark"
 				   onclick="details(@item.Id, '@item.Name')">
 					<i class="fa fa-plus"> <span> اقلام </span> </i>
 				</a>
 
 				<span> | </span>
-				<a href="#" class="btn btn-sm btn-danger"
+				<span href="#" class="btn btn-sm btn-danger"
 				   onclick="DeleteEntityModal(@item.Id, '/Food/DeleteFood/', '@deleteTitle', '@item.Name')">
 					<i class="fa fa-trash"><span> حذف </span></i>
-				</a>
+				</span>
 			</td>
 		</tr>
 		}

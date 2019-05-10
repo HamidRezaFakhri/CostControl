@@ -15,17 +15,22 @@
             return View(Helper.GetServiceResponse<Food>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1"));
         }
 
+        private IEnumerable<SelectListItem> GetSaleCostPointGroupList(long? selected = null)
+        => Helper.GetServiceResponseList<SaleCostPoint>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1")
+                .OrderBy(o => o.SalePointName)
+                .Select(c => new SelectListItem()
+                {
+                    Text = $"{c.SalePointName} - {c.CostPointName}",
+                    Value = c.Id.ToString(),
+                    Selected = selected == null ? false : c.Id == selected
+                })
+                .ToList();
+
         public IActionResult AddFood()
         {
             ViewData["title"] = Helper.GetEntityTile<Food>(EnumTitle.Add);
 
-            ViewBag.SaleCostPoint = Helper.GetServiceResponseList<SaleCostPoint>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1")
-                                        .Select(c => new SelectListItem()
-                                        {
-                                            Text = $"{c.SalePointName} - {c.CostPointName}",
-                                            Value = c.Id.ToString()
-                                        })
-                                        .ToList();
+            ViewBag.SaleCostPoint = GetSaleCostPointGroupList();
 
             return PartialView();
         }
@@ -60,16 +65,9 @@
 
             var model = GetFoodById(id);
 
-            ViewBag.SaleCostPoint = Helper.GetServiceResponseList<SaleCostPoint>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1")
-                            .Select(c => new SelectListItem()
-                            {
-                                Text = $"{c.SalePointName} - {c.CostPointName}",
-                                Value = c.Id.ToString(),
-                                Selected = c.Id == model.SaleCostPointId
-                            })
-                            .ToList();
+            ViewBag.SaleCostPoint = GetSaleCostPointGroupList(model.SaleCostPointId);
 
-            return PartialView(GetFoodById(id));
+            return PartialView(model);
         }
 
         [HttpPost]

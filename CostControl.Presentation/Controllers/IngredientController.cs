@@ -19,21 +19,25 @@
         {
             ViewData["title"] = Helper.GetEntityTile<Ingredient>(EnumTitle.Add);
 
-            ViewBag.ConsumptionUnit = GetConsumptionUnits()
-                                        .Select(c => new SelectListItem()
-                                        {
-                                            Text = c.Name,
-                                            Value = c.Id.ToString()
-                                        })
-                                        .ToList();
+            ViewBag.ConsumptionUnit = GetConsumptionUnitList();
 
             return PartialView();
         }
 
         private IEnumerable<ConsumptionUnit> GetConsumptionUnits()
-        {
-            return Helper.GetServiceResponseList<ConsumptionUnit>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1");
-        }
+        => Helper.GetServiceResponseList<ConsumptionUnit>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1");
+
+        private IEnumerable<SelectListItem> GetConsumptionUnitList(long? selected = null)
+        =>
+            GetConsumptionUnits()
+                .OrderBy(o => o.Name)
+                .Select(c => new SelectListItem()
+                {
+                    Text = c.Name,
+                    Value = c.Id.ToString(),
+                    Selected = selected == null ? false : c.Id == selected
+                })
+                .ToList();
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -66,14 +70,7 @@
             var ingredient = GetIngredientById(id);
             var consumptionUnit = GetConsumptionUnitById(ingredient.ConsumptionUnitId);
 
-            ViewBag.ConsumptionUnit = GetConsumptionUnits()
-                                        .Select(c => new SelectListItem()
-                                        {
-                                            Text = c.Name,
-                                            Value = c.Id.ToString(),
-                                            Selected = c.Id == consumptionUnit.Id
-                                        })
-                                        .ToList();
+            ViewBag.ConsumptionUnit = GetConsumptionUnitList(consumptionUnit.Id);
 
             return PartialView(ingredient);
         }
