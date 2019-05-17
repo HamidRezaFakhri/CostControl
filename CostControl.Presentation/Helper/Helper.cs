@@ -42,7 +42,7 @@
 			new EntityTitle{ TypeName = "DraftItem", SingleTitle = "ردیف حواله انبار", PluralTitle = "ردیف های حواله انبار"},
 			new EntityTitle{ TypeName = "Food", SingleTitle = "دستور غذایی", PluralTitle = "دستورهای غذایی"},
 			new EntityTitle{ TypeName = "Recipe", SingleTitle = "قلم دستور غذایی", PluralTitle = "اقلام دستور غذایی"},
-			new EntityTitle{ TypeName = "Ingredient", SingleTitle = "ماده اولیه", PluralTitle = "انبار مواد خام"},
+			new EntityTitle{ TypeName = "Ingredient", SingleTitle = "ماده اولیه", PluralTitle = "مواد خام"},
 			new EntityTitle{ TypeName = "SaleCostPoint", SingleTitle = "مرکز هزینه مرکز فروش", PluralTitle = "مراکز هزینه مراکز فروش"},
 			new EntityTitle{ TypeName = "OverCostType", SingleTitle = "سرفصل هزینه های سربار", PluralTitle = "سرفصل های هزینه های سربار"},
 			new EntityTitle{ TypeName = "OverCost", SingleTitle = "هزینه سربار", PluralTitle = "هزینه های سربار"},

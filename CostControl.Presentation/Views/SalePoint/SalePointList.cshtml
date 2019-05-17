@@ -45,7 +45,7 @@
 				</td>
 				<td>
 					<span class="btn btn-sm btn-danger"
-					   onclick="DeleteEntityModal(@item.Id, '/SalePoint/DeleteSalePoint/', '@deleteTitle', '@item.Name')">
+						  onclick="DeleteEntityModal(@item.Id, '/SalePoint/DeleteSalePoint/', '@deleteTitle', '@item.Name')">
 						<i class="fa fa-trash"><span> حذف </span></i>
 					</span>
 				</td>
@@ -55,8 +55,8 @@
 </table>
 
 <script>
-		$(document).ready(function () {
-			$('#pageTitle').html('@ViewData["title"]');
+	$(document).ready(function () {
+		$('#pageTitle').html('@ViewData["title"]');
 			$('#SalePointslist').dataTable({
 				"language": {
 					"url": "/lib/DataTables/i18n/Persian.lang.json"
