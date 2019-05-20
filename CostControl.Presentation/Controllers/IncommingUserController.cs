@@ -52,23 +52,6 @@
 				return View("~/Views/IncommingUser/Login.cshtml", "نام کاربری و یا کلمه عبور اشتباه می باشد!");
 			}
 
-			//using (HttpClient client = new HttpClient())
-			//{
-			//    client.BaseAddress = new Uri("http://localhost:5001/api/incomminguser/AddIncommingUser/");
-
-			//    List<IncommingUser> users = GetuserList().ToList();
-
-			//    System.Threading.Tasks.Task<HttpResponseMessage> result = client.PostAsJsonAsync("POST", users);
-			//    result.Wait();
-			//    HttpResponseMessage res = result.Result;
-
-			//    //if (res.IsSuccessStatusCode)
-			//    //{
-			//    //    System.Threading.Tasks.Task<string> p1 = res.Content.ReadAsStringAsync();
-			//    //    string p = res.Content.ReadAsStringAsync().Result;
-			//    //}
-			//}
-
 			HttpContext.Session.SetInt32("IUI", 1);
 
 			return RedirectToAction("Index", "Home");
@@ -76,11 +59,22 @@
 
 		private bool IsUserValid(string userName, string pass)
 		{
-			if (userName.Equals("Admin") && pass.Equals("Admin"))
+			using (HttpClient client = new HttpClient())
 			{
-				HttpContext.Session.SetString("userName", userName);
-				return true;
+				client.BaseAddress = new Uri($"{Helper.GetAuthenticationAddress()}isAuthorized?pUserID={userName}&pPassword={pass}");
+
+				//List<IncommingUser> users = GetuserList().ToList();
+
+				var result = client.GetStringAsync("");
+				result.Wait();
+
+				if (result.Result.Trim().ToLower() == "true")
+				{
+					HttpContext.Session.SetString("userName", userName);
+					return true;
+				}
 			}
+
 			return false;
 		}
 

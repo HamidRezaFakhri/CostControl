@@ -150,6 +150,9 @@
 			return "http://localhost:5974/";
 		}
 
+		public static string GetAuthenticationAddress()
+		=> "http://localhost:55689/api/um/";
+
 		public static string GetAPIAddress(string controllerName)
 		{
 			return string.IsNullOrEmpty(controllerName) ? GetAPIAddress() : GetAPIAddress() + $"{controllerName}/";

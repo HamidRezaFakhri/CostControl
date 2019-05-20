@@ -32,7 +32,7 @@
 
                 optionsBuilder
                     //.UseSqlServer(@"Data Source=79.175.155.6;Initial Catalog=CostControl;Trusted_Connection=false;user id = sa;password=Cost#Point@98;Connection Timeout=300;MultipleActiveResultSets=true;",
-                    .UseSqlServer(@"Data Source=.\SQLEXPRESS;Initial Catalog=CostControl;Trusted_Connection=false;user id = sa;password=2129;Connection Timeout=300;MultipleActiveResultSets=true;",
+                    .UseSqlServer(@"Data Source=.;Initial Catalog=CostControl;Trusted_Connection=false;user id = sa;password=2129;Connection Timeout=300;MultipleActiveResultSets=true;",
                                 //opts => opts.CommandTimeout((int)TimeSpan.FromMinutes(10).TotalSeconds))
                                 opts => opts.CommandTimeout(120))
                     //.UseLazyLoadingProxies()
