@@ -3,6 +3,7 @@
 	using System;
 	using System.Collections.Generic;
 	using System.ComponentModel.DataAnnotations;
+	using System.Globalization;
 	using System.Linq;
 	using System.Net.Http;
 	using System.Net.Http.Headers;
@@ -138,20 +139,33 @@
 
 		public static string GetAPIAddress()
 		{
-			//return "http://79.175.155.6:5001/api/";
+			return "http://79.175.155.6:5001/api/";
 			//return "http://localhost/CostControl.API/api/";
-			return "http://localhost:5001/api/";
+			//return "http://localhost:5001/api/";
 		}
 
 		public static string GetPresentationAddress()
 		{
-			//return "http://79.175.155.6:80/";
+			return "http://79.175.155.6:80/";
 			//return "http://localhost/CostControl.Presentation/";
-			return "http://localhost:5974/";
+			//return "http://localhost:5974/";
 		}
 
 		public static string GetAuthenticationAddress()
-		=> "http://localhost:55689/api/um/";
+		//=> "http://127.0.0.1:89/api/um/";
+		=> "http://79.175.155.6:89/api/um/";
+
+
+		public static string ConverToPersian(this DateTime datetime)
+		{
+			var pDate = new PersianCalendar();
+			var pMonth = pDate.GetMonth(datetime);
+			var pMonthString = pMonth < 10 ? "0" + pMonth.ToString() : pMonth.ToString();
+			var pDay = pDate.GetDayOfMonth(datetime);
+			var pDayString = pDay < 10 ? "0" + pDay.ToString() : pDay.ToString();
+
+			return $"{pDate.GetYear(datetime)}/{pMonthString}/{pDayString}";
+		}
 
 		public static string GetAPIAddress(string controllerName)
 		{

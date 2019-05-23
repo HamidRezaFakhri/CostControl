@@ -50,7 +50,7 @@ namespace CostControl.API
             //services.AddSingleton(mapper);
 
             //OR 
-            services.AddAutoMapper();
+            //services.AddAutoMapper();
             
             //services.AddMvc();
 

@@ -21,7 +21,7 @@
                 modelName = "model";
             }
 
-            ValueProviderResult valueProviderResult = bindingContext.ValueProvider.GetValue(modelName);
+            var valueProviderResult = bindingContext.ValueProvider.GetValue(modelName);
 
             //var a = bindingContext.HttpContext.Request.Body;
             //var modelElementType = bindingContext.ModelMetadata.ElementType;

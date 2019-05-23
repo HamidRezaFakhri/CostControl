@@ -36,8 +36,8 @@
 		{
 			<tr id="tr_@item.Id">
 				<td id="td_OverCostType">@item.Id</td>
-				<td id="td_StartDate">@item.StartDate.Date.ToString("yyyy/MM/dd", new System.Globalization.CultureInfo("fa-IR"))</td>
-				<td id="td_EndtDate">@item.EndDate.Date.ToString("yyyy/MM/dd", new System.Globalization.CultureInfo("fa-IR"))</td>
+				<td id="td_StartDate">@item.StartDate.ConverToPersian()</td>
+				<td id="td_EndtDate">@item.EndDate.ConverToPersian()</td>
 				<td id="td_Price">@item.Price.ToString("N")</td>
 				<td id="td_SaleCostPoint">@item.SaleCostPoint.SalePointName @item.SaleCostPoint.CostPointName</td>
 				<td id="td_OverCostType">@item.OverCostType.Name</td>

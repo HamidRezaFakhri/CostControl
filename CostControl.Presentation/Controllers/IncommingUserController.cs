@@ -59,23 +59,30 @@
 
 		private bool IsUserValid(string userName, string pass)
 		{
-			using (HttpClient client = new HttpClient())
+			try
 			{
-				client.BaseAddress = new Uri($"{Helper.GetAuthenticationAddress()}isAuthorized?pUserID={userName}&pPassword={pass}");
-
-				//List<IncommingUser> users = GetuserList().ToList();
-
-				var result = client.GetStringAsync("");
-				result.Wait();
-
-				if (result.Result.Trim().ToLower() == "true")
+				using (HttpClient client = new HttpClient())
 				{
-					HttpContext.Session.SetString("userName", userName);
-					return true;
-				}
-			}
+					client.BaseAddress = new Uri($"{Helper.GetAuthenticationAddress()}isAuthorized?pUserID={userName}&pPassword={pass}");
 
-			return false;
+					//List<IncommingUser> users = GetuserList().ToList();
+
+					var result = client.GetStringAsync("");
+					result.Wait();
+
+					if (result.Result.Trim().ToLower() == "true")
+					{
+						HttpContext.Session.SetString("userName", userName);
+						return true;
+					}
+				}
+
+				return false;
+			}
+			catch
+			{
+				return false;
+			}
 		}
 
 		private IEnumerable<IncommingUser> GetuserList()

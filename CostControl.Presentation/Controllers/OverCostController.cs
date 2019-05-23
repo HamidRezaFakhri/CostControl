@@ -85,12 +85,6 @@
 
             OverCost model = GetOverCostById(id);
 
-            model.StartDate = Convert.ToDateTime(model.StartDate.Date
-                                    .ToString("yyyy/MM/dd", new CultureInfo("fa-IR")));
-
-            model.EndDate = Convert.ToDateTime(model.EndDate.Date
-                                    .ToString("yyyy/MM/dd", new CultureInfo("fa-IR")));
-
             ViewBag.OverCostType = GetOverCostTypeList(model.OverCostTypeId);
 
             ViewBag.SaleCostPoint = GetSaleCostPointGroupList(model.SaleCostPointId);

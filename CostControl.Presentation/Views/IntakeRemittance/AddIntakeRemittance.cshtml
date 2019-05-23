@@ -44,7 +44,7 @@
 		}
 
 		$('#IntakeDate').click(function () {
-			PersianDatePicker.Show(this, '@System.DateTime.Now.Date.ToString("yyyy/MM/dd", new System.Globalization.CultureInfo("fa-IR"))');
+			PersianDatePicker.Show(this, '@System.DateTime.Now.ConverToPersian()');
 		});
 		
 		function SubmitForm(form) {

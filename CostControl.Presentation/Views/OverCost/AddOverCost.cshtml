@@ -23,13 +23,13 @@
 
 			<div class="form-group">
 				@*@Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-5" })
+					<div class="col-md-12">
+						@Html.EditorFor(model => model.StartDate,
+							new { htmlAttributes = new { @class = "form-control" } })
+						@Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+					</div>*@
 				<div class="col-md-12">
-					@Html.EditorFor(model => model.StartDate,
-						new { htmlAttributes = new { @class = "form-control" } })
-					@Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
-				</div>*@
-				<div class="col-md-12">
-					<input id="StartDate" name="IntakeDate" type="text" class="form-control" />
+					<input id="StartDate" name="StartDate" type="text" class="form-control" placeholder="1398/01/01" autocomplete="off" />
 				</div>
 			</div>
 		</div>
@@ -46,13 +46,13 @@
 
 			<div class="form-group">
 				@*@Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-5" })
-		<div class="col-md-12">
-			@Html.EditorFor(model => model.EndDate,
-				new { htmlAttributes = new { @class = "form-control" } })
-			@Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
-		</div>*@
+					<div class="col-md-12">
+						@Html.EditorFor(model => model.EndDate,
+							new { htmlAttributes = new { @class = "form-control" } })
+						@Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+					</div>*@
 				<div class="col-md-12">
-					<input id="EndDate" name="IntakeDate" type="text" class="form-control" />
+					<input id="EndDate" name="EndDate" type="text" class="form-control" placeholder="1398/01/01" autocomplete="off" />
 				</div>
 			</div>
 		</div>
@@ -96,7 +96,7 @@
 
 @section Scripts{
 	<script>
-		var input = document.querySelectorAll('.js-date')[0];
+		//var input = document.querySelectorAll('.js-date')[0];
 		//var input = $('#Price');
 
 		var dateInputMask = function dateInputMask(elm) {
@@ -127,18 +127,18 @@
 			});
 		};
 
-		dateInputMask(input);
+		//dateInputMask(input);
 
 		function displayErrorMessage(error) {
 			$("#errorContent").html(error);
 		}
 
 		$('#StartDate').click(function () {
-			PersianDatePicker.Show(this, '@System.DateTime.Now.Date.ToString("yyyy/MM/dd", new System.Globalization.CultureInfo("fa-IR"))');
+			PersianDatePicker.Show(this, '@System.DateTime.Now.ConverToPersian()');
 		});
 
 		$('#EndDate').click(function () {
-			PersianDatePicker.Show(this, '@System.DateTime.Now.Date.ToString("yyyy/MM/dd", new System.Globalization.CultureInfo("fa-IR"))');
+			PersianDatePicker.Show(this, '@System.DateTime.Now.ConverToPersian()');
 		});
 
 		//dir="ltr"

@@ -24,9 +24,7 @@
 			<div class="form-group">
 				@Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-5" })
 				<div class="col-md-12">
-					@Html.EditorFor(model => model.StartDate,
-						new { htmlAttributes = new { @class = "form-control" } })
-					@Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+					<input id="StartDate" name="StartDate" type="text" class="form-control" placeholder="1398/01/01" autocomplete="off" value="@Model.StartDate.ConverToPersian()"/>
 				</div>
 			</div>
 		</div>
@@ -44,9 +42,7 @@
 			<div class="form-group">
 				@Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-5" })
 				<div class="col-md-12">
-					@Html.EditorFor(model => model.EndDate,
-						new { htmlAttributes = new { @class = "form-control" } })
-					@Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+					<input id="EndDate" name="EndDate" type="text" class="form-control" placeholder="1398/01/01" autocomplete="off" value="@Model.EndDate.ConverToPersian()" />
 				</div>
 			</div>
 		</div>
@@ -93,11 +89,11 @@
 		}
 
 		$('#StartDate').click(function () {
-			PersianDatePicker.Show(this, '@System.DateTime.Now.Date.ToString("yyyy/MM/dd", new System.Globalization.CultureInfo("fa-IR"))');
+			PersianDatePicker.Show(this, '@System.DateTime.Now.ConverToPersian()');
 		});
 
 		$('#EndDate').click(function () {
-			PersianDatePicker.Show(this, '@System.DateTime.Now.Date.ToString("yyyy/MM/dd", new System.Globalization.CultureInfo("fa-IR"))');
+			PersianDatePicker.Show(this, '@System.DateTime.Now.ConverToPersian()');
 		});
 
 		function SubmitForm(form) {
