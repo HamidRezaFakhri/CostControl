@@ -5,8 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\Security\" />
-    <Folder Include="wwwroot\" />
+    <Compile Remove="Controllers\Security\**" />
+    <Compile Remove="wwwroot\**" />
+    <Content Remove="Controllers\Security\**" />
+    <Content Remove="wwwroot\**" />
+    <EmbeddedResource Remove="Controllers\Security\**" />
+    <EmbeddedResource Remove="wwwroot\**" />
+    <None Remove="Controllers\Security\**" />
+    <None Remove="wwwroot\**" />
   </ItemGroup>
 
   <ItemGroup>

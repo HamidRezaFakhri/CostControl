@@ -1,0 +1,83 @@
+﻿@model IEnumerable<dynamic>
+
+@{
+	Layout = null;
+}
+
+<script>
+	function insert(code) {
+		debugger;
+		$.ajax({
+			type: "POST",
+			url: '@Helper.GetPresentationAddress()SalePoint/AddSalePointExternal',
+			contentType: 'application/json',
+			//data: JSON.stringify({code:'code'}),
+			data: {},
+			success: function (data) {
+				if (data.success) {
+					$('body').removeClass('modal-open');
+					$('.modal-backdrop').remove();
+					$('#apModal').hide();
+					getData('SalePointList', 'SalePoint');
+				} else {
+					return false;
+				}
+			//},
+			//	error: function (err) {
+			//		alert(err.status + "<--------->" + err.statusCode);
+			//}
+		}).done(
+			function (result) {
+				alert('kkkk');
+			}
+		);
+
+		alert(code);
+		$("#apModal").modal("hide");
+	}
+
+</script>
+
+<table id="SalePointsExternallist" class="table table-bordered table-striped table-hover">
+	<thead>
+		<tr>
+			<th>نام</th>
+			<th>کد</th>
+			<th>نام لاتین</th>
+			<th>سالن</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody id="setSalePointList">
+		@foreach (var item in Model)
+		{
+			<tr id="tr_@item.code">
+				<td id="td_Name">@item.name</td>
+				<td id="td_Code">@item.code</td>
+				<td id="td_EnglishName">@item.englishName</td>
+				<td id="td_IsHall">
+					<input checked="@item.isHall" id="isHall"
+						   name="isHall" type="checkbox"
+						   value="@item.isHall" disabled />
+				</td>
+				<td>
+					<span class="btn btn-sm btn-outline-info"
+						  onclick="insert('@item.code');">
+						<i class="fa fa-angle-double-down"><span> درج </span></i>
+					</span>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+<script>
+	$(document).ready(function () {
+		$('#pageTitle').html('@ViewData["title"]');
+			$('#SalePointsExternallist').dataTable({
+				"language": {
+					"url": "/lib/DataTables/i18n/Persian.lang.json"
+				}
+			});
+		});
+</script>

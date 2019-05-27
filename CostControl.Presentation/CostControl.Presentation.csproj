@@ -172,6 +172,9 @@
     <Content Update="Views\SaleCostPoint\SaleCostPointList.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\SalePoint\AddSalePointExternal.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Setting\AddSetting.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

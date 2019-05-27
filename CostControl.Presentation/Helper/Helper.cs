@@ -139,21 +139,21 @@
 
 		public static string GetAPIAddress()
 		{
-			return "http://79.175.155.6:5001/api/";
+			//return "http://79.175.155.6:5001/api/";
 			//return "http://localhost/CostControl.API/api/";
-			//return "http://localhost:5001/api/";
+			return "http://localhost:5001/api/";
 		}
 
 		public static string GetPresentationAddress()
 		{
-			return "http://79.175.155.6:80/";
+			//return "http://79.175.155.6:80/";
 			//return "http://localhost/CostControl.Presentation/";
-			//return "http://localhost:5974/";
+			return "http://localhost:5974/";
 		}
 
 		public static string GetAuthenticationAddress()
-		//=> "http://127.0.0.1:89/api/um/";
-		=> "http://79.175.155.6:89/api/um/";
+		=> "http://127.0.0.1:89/api/um/";
+		//=> "http://79.175.155.6:89/api/um/";
 
 
 		public static string ConverToPersian(this DateTime datetime)
@@ -182,7 +182,7 @@
 		{
 			try
 			{
-				using (HttpClient client = new HttpClient())
+				using (var client = new HttpClient())
 				{
 					client.Timeout = httpClientTimeout;
 					client.BaseAddress = new Uri(GetAPIAddress(typeof(T).Name));
@@ -192,14 +192,15 @@
 
 					client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-					System.Threading.Tasks.Task<HttpResponseMessage> responseTask = client.GetAsync(apiParams);
+					var responseTask = client.GetAsync(apiParams);
 					//EnsureSuccessStatusCode();
 					responseTask.Wait();
 
-					HttpResponseMessage result = responseTask.Result;
+					var result = responseTask.Result;
+
 					if (result.IsSuccessStatusCode)
 					{
-						System.Threading.Tasks.Task<ServiceResponse<T>> readTask = result.Content.ReadAsAsync<ServiceResponse<T>>();
+						var readTask = result.Content.ReadAsAsync<ServiceResponse<T>>();
 
 						readTask.Wait();
 

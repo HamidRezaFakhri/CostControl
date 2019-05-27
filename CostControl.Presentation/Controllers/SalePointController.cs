@@ -1,112 +1,156 @@
 ﻿namespace CostControl.Presentation.Controllers
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using CostControl.BusinessEntity.Models.CostControl;
-    using Microsoft.AspNetCore.Mvc;
+	using System;
+	using System.Collections.Generic;
+	using System.Linq;
+	using System.Net.Http;
+	using System.Net.Http.Headers;
+	using CostControl.BusinessEntity.Models.CostControl;
+	using Microsoft.AspNetCore.Mvc;
 
-    public class SalePointController : BaseController
-    {
-        public IActionResult SalePointList(string param, int pageNumber, int pageSize)
-        {
-            ViewData["title"] = Helper.GetEntityTile<SalePoint>(EnumTitle.List);
+	public class SalePointController : BaseController
+	{
+		public IActionResult SalePointList(string param, int pageNumber, int pageSize)
+		{
+			ViewData["title"] = Helper.GetEntityTile<SalePoint>(EnumTitle.List);
 
-            return View(Helper.GetServiceResponse<SalePoint>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1"));
-        }
+			return View(Helper.GetServiceResponse<SalePoint>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1"));
+		}
 
-        public IActionResult AddSalePoint()
-        {
-            ViewData["title"] = Helper.GetEntityTile<SalePoint>(EnumTitle.Add);
+		public IActionResult AddSalePoint()
+		{
+			ViewData["title"] = Helper.GetEntityTile<SalePoint>(EnumTitle.Add);
 
-            return PartialView();
-        }
+			return PartialView();
+		}
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult AddSalePoint(SalePoint SalePoint)
-        {
-            if (ModelState.IsValid)
-            {
-                var postResult = Helper.PostValueToSevice<SalePoint>("POST", SalePoint);
+		public IActionResult AddSalePointExternal()
+		{
+			ViewData["title"] = Helper.GetEntityTile<SalePoint>(EnumTitle.Add);
 
-                return Json(new { success = postResult.result, message = postResult.message });
-            }
+			using (var client = new HttpClient())
+			{
+				client.Timeout = new TimeSpan(0, 0, 30);
+				client.BaseAddress = new Uri(Helper.GetAPIAddress("SalePoint"));
 
-            //foreach (var error in SalePoint.Validate())
-            //{
-            //    foreach (var memberName in error.MemberNames)
-            //        ModelState.AddModelError(memberName, error.ErrorMessage);
-            //}
+				client.DefaultRequestHeaders.Clear();
+				client.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue("nl-NL"));
 
-            //ModelState.AddModelError("Code", "sdrgsdfgsdfg");
-            
-            return Json(new
-            {
-                model = SalePoint,
-                success = false,
-                message = ModelState
-                            .Values
-                            .FirstOrDefault(e => e.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
-                            .Errors
-                            .FirstOrDefault()
-                            .ErrorMessage ?? "Model Is Not Vald!",
-                //errors = ModelState.Keys.SelectMany(k => ModelState[k].Errors)
-                //                .Select(m => m.ErrorMessage).ToArray()
-            });
-        }
+				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-        public IActionResult EditSalePoint(long id)
-        {
-            ViewData["title"] = Helper.GetEntityTile<SalePoint>(EnumTitle.Edit);
+				var responseTask = client.GetAsync("GetExternalData");
+				//EnsureSuccessStatusCode();
+				responseTask.Wait();
 
-            return PartialView(GetSalePointById(id));
-        }
+				var result = responseTask.Result;
 
-        [HttpPost]
-        public IActionResult EditSalePoint(long id, SalePoint SalePoint)
-        {
-            if (ModelState.IsValid)
-            {
-                SalePoint.State = BusinessEntity.Models.Base.Enums.ObjectState.Active;
+				if (result.IsSuccessStatusCode)
+				{
+					var readTask = result.Content.ReadAsAsync<IEnumerable<dynamic>>();
 
-                var postResult = Helper.PostValueToSevice<SalePoint>("PUT?id=" + SalePoint.Id.ToString(), SalePoint);
+					readTask.Wait();
 
-                return Json(new { success = postResult.result, message = postResult.message });
-            }
+					return PartialView(readTask.Result);
+				}
+				else
+				{
+					return PartialView(null);
+				}
+			}
+		}
 
-            return Json(new
-            {
-                model = SalePoint,
-                success = false,
-                message = ModelState
-                            .Values
-                            .FirstOrDefault(e => e.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
-                            .Errors
-                            .FirstOrDefault()
-                            .ErrorMessage ?? "Model Is Not Vald!"
-            });
-        }
+		[HttpPost]
+		//[ValidateAntiForgeryToken]
+		public string AddSalePointExternal([FromBody]string code)
+		{
+			return "jkhkjhkkjh" + code;
+		}
 
-        public IActionResult DeleteSalePoint(long id)
-        {
-            ViewData["title"] = Helper.GetEntityTile<SalePoint>(EnumTitle.Delete);
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public IActionResult AddSalePoint(SalePoint SalePoint)
+		{
+			if (ModelState.IsValid)
+			{
+				var postResult = Helper.PostValueToSevice<SalePoint>("POST", SalePoint);
 
-            return PartialView(GetSalePointById(id));
-        }
+				return Json(new { success = postResult.result, message = postResult.message });
+			}
 
-        [HttpPost]
-        public IActionResult DeleteSalePoint(SalePoint SalePoint)
-        {
-            var postResult = Helper.PostValueToSevice<SalePoint>("Delete?id=" + SalePoint.Id.ToString(), SalePoint);
+			//foreach (var error in SalePoint.Validate())
+			//{
+			//    foreach (var memberName in error.MemberNames)
+			//        ModelState.AddModelError(memberName, error.ErrorMessage);
+			//}
 
-            return Json(new { success = postResult.result, message = postResult.message });
-        }
+			//ModelState.AddModelError("Code", "sdrgsdfgsdfg");
+			
+			return Json(new
+			{
+				model = SalePoint,
+				success = false,
+				message = ModelState
+							.Values
+							.FirstOrDefault(e => e.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+							.Errors
+							.FirstOrDefault()
+							.ErrorMessage ?? "Model Is Not Vald!",
+				//errors = ModelState.Keys.SelectMany(k => ModelState[k].Errors)
+				//                .Select(m => m.ErrorMessage).ToArray()
+			});
+		}
 
-        private SalePoint GetSalePointById(long id)
-        {
-            return (Helper.GetServiceResponse<SalePoint>("GetById?id=" + id.ToString()).data as List<SalePoint>)
-                .FirstOrDefault();
-        }
-    }
+		public IActionResult EditSalePoint(long id)
+		{
+			ViewData["title"] = Helper.GetEntityTile<SalePoint>(EnumTitle.Edit);
+
+			return PartialView(GetSalePointById(id));
+		}
+
+		[HttpPost]
+		public IActionResult EditSalePoint(long id, SalePoint SalePoint)
+		{
+			if (ModelState.IsValid)
+			{
+				SalePoint.State = BusinessEntity.Models.Base.Enums.ObjectState.Active;
+
+				var postResult = Helper.PostValueToSevice<SalePoint>("PUT?id=" + SalePoint.Id.ToString(), SalePoint);
+
+				return Json(new { success = postResult.result, message = postResult.message });
+			}
+
+			return Json(new
+			{
+				model = SalePoint,
+				success = false,
+				message = ModelState
+							.Values
+							.FirstOrDefault(e => e.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+							.Errors
+							.FirstOrDefault()
+							.ErrorMessage ?? "Model Is Not Vald!"
+			});
+		}
+
+		public IActionResult DeleteSalePoint(long id)
+		{
+			ViewData["title"] = Helper.GetEntityTile<SalePoint>(EnumTitle.Delete);
+
+			return PartialView(GetSalePointById(id));
+		}
+
+		[HttpPost]
+		public IActionResult DeleteSalePoint(SalePoint SalePoint)
+		{
+			var postResult = Helper.PostValueToSevice<SalePoint>("Delete?id=" + SalePoint.Id.ToString(), SalePoint);
+
+			return Json(new { success = postResult.result, message = postResult.message });
+		}
+
+		private SalePoint GetSalePointById(long id)
+		{
+			return (Helper.GetServiceResponse<SalePoint>("GetById?id=" + id.ToString()).data as List<SalePoint>)
+				.FirstOrDefault();
+		}
+	}
 }

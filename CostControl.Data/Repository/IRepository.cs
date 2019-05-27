@@ -1,125 +1,127 @@
 ﻿namespace CostControl.Data.Repository
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Linq.Expressions;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using CostControl.Entity.Models.Base.Interfaces;
-    using Microsoft.EntityFrameworkCore.Query;
+	using System;
+	using System.Collections.Generic;
+	using System.Linq;
+	using System.Linq.Expressions;
+	using System.Threading;
+	using System.Threading.Tasks;
+	using CostControl.Entity.Models.Base.Interfaces;
+	using Microsoft.EntityFrameworkCore.Query;
 
-    public interface IRepository<TEntity> where TEntity : class, IBaseEntity, new()
-    {
-        IEnumerable<TEntity> GetWithRawSql(string query, params object[] parameters);
+	public interface IRepository<TEntity> where TEntity : class, IBaseEntity, new()
+	{
+		IEnumerable<TEntity> GetWithRawSql(string query, params object[] parameters);
 
-        Task<IEnumerable<TEntity>> GetWithRawSqlAsync(string query,
-            CancellationToken cancellationToken = default(CancellationToken),
-            params object[] parameters);
+		Task<IEnumerable<TEntity>> GetWithRawSqlAsync(string query,
+			CancellationToken cancellationToken = default(CancellationToken),
+			params object[] parameters);
 
-        int RunRawSql(string query, params object[] parameters);
+		int RunRawSql(string query, params object[] parameters);
 
-        Task<int> RunRawSqlAsync(string query,
-            CancellationToken cancellationToken = default(CancellationToken),
-            params object[] parameters);
+		IEnumerable<dynamic> GetRawSql(string query);
 
-        IEnumerable<TEntity> Get(
-            Expression<Func<TEntity, bool>> filter = null,
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-            ICollection<Expression<Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>>> includeProperties = null,
-            int? page = null,
-            int? pageSize = null,
-            bool disableTracking = false,
-            bool eagerLoaging = false);
+		Task<int> RunRawSqlAsync(string query,
+			CancellationToken cancellationToken = default(CancellationToken),
+			params object[] parameters);
 
-        Task<IEnumerable<TEntity>> GetAsync(
-            Expression<Func<TEntity, bool>> filter = null,
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-            ICollection<Expression<Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>>> includeProperties = null,
-            int? page = null,
-            int? pageSize = null,
-            CancellationToken cancellationToken = default(CancellationToken),
-            bool disableTracking = false,
-            bool eagerLoaging = false);
+		IEnumerable<TEntity> Get(
+			Expression<Func<TEntity, bool>> filter = null,
+			Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+			ICollection<Expression<Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>>> includeProperties = null,
+			int? page = null,
+			int? pageSize = null,
+			bool disableTracking = false,
+			bool eagerLoaging = false);
 
-        TEntity GetById<TKey>(TKey id);
+		Task<IEnumerable<TEntity>> GetAsync(
+			Expression<Func<TEntity, bool>> filter = null,
+			Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+			ICollection<Expression<Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>>> includeProperties = null,
+			int? page = null,
+			int? pageSize = null,
+			CancellationToken cancellationToken = default(CancellationToken),
+			bool disableTracking = false,
+			bool eagerLoaging = false);
 
-        TEntity GetById<TKey>(TKey id,
-            ICollection<Expression<Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>>> includeProperties = null
-            );
+		TEntity GetById<TKey>(TKey id);
 
-        Task<TEntity> GetByIdAsync<TKey>(TKey id,
-            CancellationToken cancellationToken = default(CancellationToken));
+		TEntity GetById<TKey>(TKey id,
+			ICollection<Expression<Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>>> includeProperties = null
+			);
 
-        Task<TEntity> GetByIdAsync<TKey>(TKey id,
-            ICollection<Expression<Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>>> includeProperties = null,
-            CancellationToken cancellationToken = default(CancellationToken));
+		Task<TEntity> GetByIdAsync<TKey>(TKey id,
+			CancellationToken cancellationToken = default(CancellationToken));
 
-        TEntity SingleOrDefault(Expression<Func<TEntity, bool>> filter = null);
+		Task<TEntity> GetByIdAsync<TKey>(TKey id,
+			ICollection<Expression<Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>>> includeProperties = null,
+			CancellationToken cancellationToken = default(CancellationToken));
 
-        Task<TEntity> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> filter = null,
-            CancellationToken cancellationToken = default(CancellationToken));
+		TEntity SingleOrDefault(Expression<Func<TEntity, bool>> filter = null);
 
-        TEntity FirstOrDefault(Expression<Func<TEntity, bool>> filter = null);
+		Task<TEntity> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> filter = null,
+			CancellationToken cancellationToken = default(CancellationToken));
 
-        Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> filter = null,
-            CancellationToken cancellationToken = default(CancellationToken));
+		TEntity FirstOrDefault(Expression<Func<TEntity, bool>> filter = null);
 
-        TEntity LastOrDefault(Expression<Func<TEntity, bool>> filter = null);
+		Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> filter = null,
+			CancellationToken cancellationToken = default(CancellationToken));
 
-        Task<TEntity> LastOrDefaultAsync(Expression<Func<TEntity, bool>> filter = null,
-            CancellationToken cancellationToken = default(CancellationToken));
+		TEntity LastOrDefault(Expression<Func<TEntity, bool>> filter = null);
 
-        //TODO:
-        //Min, Max, Sum, Average, Contains, ToList, ToArray, ToDictionary, Load, ForEach
+		Task<TEntity> LastOrDefaultAsync(Expression<Func<TEntity, bool>> filter = null,
+			CancellationToken cancellationToken = default(CancellationToken));
 
-        TEntity Add(TEntity entity);
+		//TODO:
+		//Min, Max, Sum, Average, Contains, ToList, ToArray, ToDictionary, Load, ForEach
 
-        IEnumerable<TEntity> AddRange(IEnumerable<TEntity> entities);
+		TEntity Add(TEntity entity);
 
-        TEntity Remove(object id);
+		IEnumerable<TEntity> AddRange(IEnumerable<TEntity> entities);
 
-        TEntity Remove(TEntity entity);
+		TEntity Remove(object id);
 
-        IEnumerable<TEntity> RemoveFiltered(Expression<Func<TEntity, bool>> filter);
+		TEntity Remove(TEntity entity);
 
-        Task<IEnumerable<TEntity>> RemoveFilteredAsync(Expression<Func<TEntity, bool>> filter,
-            CancellationToken cancellationToken = default(CancellationToken));
+		IEnumerable<TEntity> RemoveFiltered(Expression<Func<TEntity, bool>> filter);
 
-        IEnumerable<TEntity> RemoveRange(IEnumerable<TEntity> entities);
+		Task<IEnumerable<TEntity>> RemoveFilteredAsync(Expression<Func<TEntity, bool>> filter,
+			CancellationToken cancellationToken = default(CancellationToken));
 
-        IEnumerable<TEntity> RemoveRange(IEnumerable<object> ids);
+		IEnumerable<TEntity> RemoveRange(IEnumerable<TEntity> entities);
 
-        TEntity Update(TEntity entity);
+		IEnumerable<TEntity> RemoveRange(IEnumerable<object> ids);
 
-        IEnumerable<TEntity> UpdateRange(IEnumerable<TEntity> entities);
+		TEntity Update(TEntity entity);
 
-        IEnumerable<TEntity> UpdateFiltered(Expression<Func<TEntity, bool>> filter);
+		IEnumerable<TEntity> UpdateRange(IEnumerable<TEntity> entities);
 
-        int Count(Expression<Func<TEntity, bool>> filter = null);
+		IEnumerable<TEntity> UpdateFiltered(Expression<Func<TEntity, bool>> filter);
 
-        Task<int> CountAsync(Expression<Func<TEntity, bool>> filter = null,
-            CancellationToken cancellationToken = default(CancellationToken));
+		int Count(Expression<Func<TEntity, bool>> filter = null);
 
-        TEntity Exists(params object[] primaryKey);
+		Task<int> CountAsync(Expression<Func<TEntity, bool>> filter = null,
+			CancellationToken cancellationToken = default(CancellationToken));
 
-        Task<TEntity> ExistsAsync(CancellationToken cancellationToken = default(CancellationToken),
-            params object[] primaryKey);
+		TEntity Exists(params object[] primaryKey);
 
-        bool Exists(Expression<Func<TEntity, bool>> filter = null);
+		Task<TEntity> ExistsAsync(CancellationToken cancellationToken = default(CancellationToken),
+			params object[] primaryKey);
 
-        Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> filter = null,
-            CancellationToken cancellationToken = default(CancellationToken));
+		bool Exists(Expression<Func<TEntity, bool>> filter = null);
 
-        bool Any(Expression<Func<TEntity, bool>> filter = null);
+		Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> filter = null,
+			CancellationToken cancellationToken = default(CancellationToken));
 
-        Task<bool> AnyAsync(Expression<Func<TEntity, bool>> filter = null,
-            CancellationToken cancellationToken = default(CancellationToken));
+		bool Any(Expression<Func<TEntity, bool>> filter = null);
 
-        Task LoadPropertyAsync(TEntity item,
-            Expression<Func<TEntity, object>> property,
-            CancellationToken cancellationToken = default(CancellationToken));
+		Task<bool> AnyAsync(Expression<Func<TEntity, bool>> filter = null,
+			CancellationToken cancellationToken = default(CancellationToken));
 
-        void SetUnchanged(TEntity entity);
-    }
+		Task LoadPropertyAsync(TEntity item,
+			Expression<Func<TEntity, object>> property,
+			CancellationToken cancellationToken = default(CancellationToken));
+
+		void SetUnchanged(TEntity entity);
+	}
 }

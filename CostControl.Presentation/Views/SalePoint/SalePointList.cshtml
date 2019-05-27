@@ -3,16 +3,23 @@
 @{
 	Layout = null;
 
-	var addTitle = Helper.GetEntityTile<CostControl.BusinessEntity.Models.CostControl.SalePoint>(EnumTitle.Add);
-	var editTitle = Helper.GetEntityTile<CostControl.BusinessEntity.Models.CostControl.SalePoint>(EnumTitle.Edit);
-	var deleteTitle = Helper.GetEntityTile<CostControl.BusinessEntity.Models.CostControl.SalePoint>(EnumTitle.Delete);
+	var addTitle = (Helper.GetEntityTile<CostControl.BusinessEntity.Models.CostControl.SalePoint>(EnumTitle.Add));
+	var editTitle = (Helper.GetEntityTile<CostControl.BusinessEntity.Models.CostControl.SalePoint>(EnumTitle.Edit));
+	var deleteTitle = (Helper.GetEntityTile<CostControl.BusinessEntity.Models.CostControl.SalePoint>(EnumTitle.Delete));
 }
+
+<script>
+	function addNew() {
+		$('#btnAddSalePoint').hide();
+		createEntityModal("/SalePoint/AddSalePointExternal", '@addTitle');
+	}
+</script>
 
 <div class="row well">
 	<div class="col-md-6">
 		<div class="btn-group" data-toggle="modal">
 			<a id="btnAddSalePoint" href="#" class="btn btn-primary"
-			   onclick='createEntityModal("/SalePoint/AddSalePoint", "@addTitle")'>
+			   onclick='addNew();'>
 				<span class="fa fa-plus"> <i> جدید</i></span>
 			</a>
 		</div>
@@ -55,6 +62,10 @@
 </table>
 
 <script>
+	$(document).ajaxComplete(function () {
+		$('#btnAddSalePoint').show();
+	});
+
 	$(document).ready(function () {
 		$('#pageTitle').html('@ViewData["title"]');
 			$('#SalePointslist').dataTable({

@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Logics\Security\**" />
+    <EmbeddedResource Remove="Logics\Security\**" />
+    <None Remove="Logics\Security\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="8.1.0" />
     <PackageReference Include="AutoMapper.Collection" Version="5.0.0" />
     <PackageReference Include="AutoMapper.Collection.EntityFrameworkCore" Version="0.2.0" />
@@ -18,7 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Logics\Security\" />
     <Folder Include="Profiles\Base\" />
     <Folder Include="Profiles\Security\" />
   </ItemGroup>

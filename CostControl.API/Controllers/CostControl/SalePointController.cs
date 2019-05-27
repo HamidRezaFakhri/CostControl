@@ -1,6 +1,7 @@
 ﻿namespace CostControl.API.Controllers.CostControl
 {
 	using System;
+	using System.Collections.Generic;
 	using API.Controllers.Base;
 	using API.Models;
 	using BusinessEntity.Models.CostControl;
@@ -26,6 +27,19 @@
 			catch (Exception e)
 			{
 				return GenerateExceptionResponse(e, "Exception!");
+			}
+		}
+
+		[HttpGet("GetExternalData")]
+		public IEnumerable<dynamic> GetExternalData()
+		{
+			try
+			{
+				return (PDKBusinessLogic as SalePointLogic).GetExternalData();
+			}
+			catch (Exception e)
+			{
+				throw new Exception("Exception!", e);
 			}
 		}
 	}
