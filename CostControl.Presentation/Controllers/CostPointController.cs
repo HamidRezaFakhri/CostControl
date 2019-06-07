@@ -1,129 +1,157 @@
 ﻿namespace CostControl.Presentation.Controllers
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using CostControl.BusinessEntity.Models.CostControl;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Mvc.Rendering;
+	using System;
+	using System.Collections.Generic;
+	using System.Linq;
+	using CostControl.BusinessEntity.Models.CostControl;
+	using Microsoft.AspNetCore.Mvc;
+	using Microsoft.AspNetCore.Mvc.Rendering;
 
-    public class CostPointController : BaseController
-    {
-        public IActionResult CostPointList(string param)
-        {
-            ViewData["title"] = Helper.GetEntityTile<CostPoint>(EnumTitle.List);
+	public class CostPointController : BaseController
+	{
+		public IActionResult CostPointList(string param)
+		{
+			ViewData["title"] = Helper.GetEntityTitle<CostPoint>(EnumTitle.List);
 
-            return View(Helper.GetServiceResponse<CostPoint>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1"));
-        }
+			return View(Helper.GetServiceResponse<CostPoint>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1"));
+		}
 
-        private IEnumerable<CostPointGroup> GetCostPointGroups()
-        => Helper.GetServiceResponseList<CostPointGroup>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1");
+		public IActionResult AddCostPointExternal()
+		{
+			ViewData["title"] = Helper.GetEntityTitle<CostPoint>(EnumTitle.Import);
 
-        private IEnumerable<SelectListItem> GetCostPointGroupList(long? selected = null)
-        => GetCostPointGroups()
-                .OrderBy(o => o.Name)
-                .Select(c => new SelectListItem()
-                {
-                    Text = c.Name,
-                    Value = c.Id.ToString(),
-                    Selected = selected == null ? false : c.Id == selected
-                })
-                .ToList();
+			return PartialView(Helper.GetServiceResponseList("CostPoint", "GetExternalData"));
+		}
 
-        public IActionResult AddCostPoint()
-        {
-            ViewData["title"] = Helper.GetEntityTile<CostPoint>(EnumTitle.Add);
+		[HttpPost]
+		public IActionResult AddCostPointExternal(string id)
+		{
+			try
+			{
+				var postResult = Helper.PostValueToSevice<CostPoint>("AddExternalData?id=" + id.ToString(), null);
 
-            ViewBag.CostPointGroup = GetCostPointGroupList();
+				return Json(new { success = postResult.result, message = postResult.message });
+			}
+			catch (Exception ex)
+			{
+				return Json(new
+				{
+					model = id,
+					success = false,
+					message = "External Insertaion Error!" + Environment.NewLine + ex.Message
+				});
+			}
+		}
 
-            return PartialView();
-        }
+		private IEnumerable<CostPointGroup> GetCostPointGroups()
+		=> Helper.GetServiceResponseList<CostPointGroup>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1");
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult AddCostPoint(CostPoint CostPoint)
-        {
-            if (ModelState.IsValid)
-            {
-                var postResult = Helper.PostValueToSevice<CostPoint>("POST", CostPoint);
+		private IEnumerable<SelectListItem> GetCostPointGroupList(long? selected = null)
+		=> GetCostPointGroups()
+				.OrderBy(o => o.Name)
+				.Select(c => new SelectListItem()
+				{
+					Text = c.Name,
+					Value = c.Id.ToString(),
+					Selected = selected == null ? false : c.Id == selected
+				})
+				.ToList();
 
-                return Json(new { success = postResult.result, message = postResult.message });
-            }
+		public IActionResult AddCostPoint()
+		{
+			ViewData["title"] = Helper.GetEntityTitle<CostPoint>(EnumTitle.Add);
 
-            return Json(new
-            {
-                model = CostPoint,
-                success = false,
-                message = ModelState
-                .Values
-                .FirstOrDefault(e => e.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
-                .Errors
-                .FirstOrDefault()
-                .ErrorMessage ?? "Model Is Not Vald!"
-            });
-        }
+			ViewBag.CostPointGroup = GetCostPointGroupList();
 
-        public IActionResult EditCostPoint(long id)
-        {
-            ViewData["title"] = Helper.GetEntityTile<CostPoint>(EnumTitle.Edit);
+			return PartialView();
+		}
 
-            var costPoint = GetCostPointById(id);
-            var costPointGroup = GetCostPointGroupById(costPoint.CostPointGroupId);
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public IActionResult AddCostPoint(CostPoint CostPoint)
+		{
+			if (ModelState.IsValid)
+			{
+				var postResult = Helper.PostValueToSevice<CostPoint>("POST", CostPoint);
 
-            ViewBag.CostPointGroup = GetCostPointGroupList(costPointGroup.Id);
+				return Json(new { success = postResult.result, message = postResult.message });
+			}
 
-            return PartialView(costPoint);
-        }
+			return Json(new
+			{
+				model = CostPoint,
+				success = false,
+				message = ModelState
+				.Values
+				.FirstOrDefault(e => e.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+				.Errors
+				.FirstOrDefault()
+				.ErrorMessage ?? "Model Is Not Vald!"
+			});
+		}
 
-        private CostPointGroup GetCostPointGroupById(long id)
-        {
-            return (Helper.GetServiceResponse<CostPointGroup>("GetById?id=" + id.ToString()).data as List<CostPointGroup>)
-                .FirstOrDefault();
-        }
+		public IActionResult EditCostPoint(long id)
+		{
+			ViewData["title"] = Helper.GetEntityTitle<CostPoint>(EnumTitle.Edit);
 
-        [HttpPost]
-        public IActionResult EditCostPoint(long id, CostPoint CostPoint)
-        {
-            if (ModelState.IsValid)
-            {
-                CostPoint.State = BusinessEntity.Models.Base.Enums.ObjectState.Active;
+			var costPoint = GetCostPointById(id);
+			var costPointGroup = GetCostPointGroupById(costPoint.CostPointGroupId);
 
-                var postResult = Helper.PostValueToSevice<CostPoint>("PUT?id=" + CostPoint.Id.ToString(), CostPoint);
+			ViewBag.CostPointGroup = GetCostPointGroupList(costPointGroup.Id);
 
-                return Json(new { success = postResult.result, message = postResult.message });
-            }
+			return PartialView(costPoint);
+		}
 
-            return Json(new
-            {
-                model = CostPoint,
-                success = false,
-                message = ModelState
-                .Values
-                .FirstOrDefault(e => e.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
-                .Errors
-                .FirstOrDefault()
-                .ErrorMessage ?? "Model Is Not Vald!"
-            });
-        }
+		private CostPointGroup GetCostPointGroupById(long id)
+		{
+			return (Helper.GetServiceResponse<CostPointGroup>("GetById?id=" + id.ToString()).data as List<CostPointGroup>)
+				.FirstOrDefault();
+		}
 
-        public IActionResult DeleteCostPoint(long id)
-        {
-            ViewData["title"] = Helper.GetEntityTile<CostPoint>(EnumTitle.Delete);
+		[HttpPost]
+		public IActionResult EditCostPoint(long id, CostPoint CostPoint)
+		{
+			if (ModelState.IsValid)
+			{
+				CostPoint.State = BusinessEntity.Models.Base.Enums.ObjectState.Active;
 
-            return PartialView(GetCostPointById(id));
-        }
+				var postResult = Helper.PostValueToSevice<CostPoint>("PUT?id=" + CostPoint.Id.ToString(), CostPoint);
 
-        [HttpPost]
-        public IActionResult DeleteCostPoint(CostPoint CostPoint)
-        {
-            var postResult = Helper.PostValueToSevice<CostPoint>("Delete?id=" + CostPoint.Id.ToString(), CostPoint);
+				return Json(new { success = postResult.result, message = postResult.message });
+			}
 
-            return Json(new { success = postResult.result, message = postResult.message });
-        }
+			return Json(new
+			{
+				model = CostPoint,
+				success = false,
+				message = ModelState
+				.Values
+				.FirstOrDefault(e => e.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+				.Errors
+				.FirstOrDefault()
+				.ErrorMessage ?? "Model Is Not Vald!"
+			});
+		}
 
-        private CostPoint GetCostPointById(long id)
-        {
-            return (Helper.GetServiceResponse<CostPoint>("GetById?id=" + id.ToString()).data as List<CostPoint>)
-                .FirstOrDefault();
-        }
-    }
+		public IActionResult DeleteCostPoint(long id)
+		{
+			ViewData["title"] = Helper.GetEntityTitle<CostPoint>(EnumTitle.Delete);
+
+			return PartialView(GetCostPointById(id));
+		}
+
+		[HttpPost]
+		public IActionResult DeleteCostPoint(CostPoint CostPoint)
+		{
+			var postResult = Helper.PostValueToSevice<CostPoint>("Delete?id=" + CostPoint.Id.ToString(), CostPoint);
+
+			return Json(new { success = postResult.result, message = postResult.message });
+		}
+
+		private CostPoint GetCostPointById(long id)
+		{
+			return (Helper.GetServiceResponse<CostPoint>("GetById?id=" + id.ToString()).data as List<CostPoint>)
+				.FirstOrDefault();
+		}
+	}
 }

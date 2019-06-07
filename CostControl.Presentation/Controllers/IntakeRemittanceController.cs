@@ -10,14 +10,14 @@
     {
         public IActionResult IntakeRemittanceList(string param)
         {
-            ViewData["title"] = Helper.GetEntityTile<IntakeRemittance>(EnumTitle.List);
+            ViewData["title"] = Helper.GetEntityTitle<IntakeRemittance>(EnumTitle.List);
 
             return View(Helper.GetServiceResponse<IntakeRemittance>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1"));
         }
 
         public IActionResult AddIntakeRemittance()
         {
-            ViewData["title"] = Helper.GetEntityTile<IntakeRemittance>(EnumTitle.Add);
+            ViewData["title"] = Helper.GetEntityTitle<IntakeRemittance>(EnumTitle.Add);
 
             return PartialView();
         }
@@ -55,7 +55,7 @@
 
         public IActionResult EditIntakeRemittance(long id)
         {
-            ViewData["title"] = Helper.GetEntityTile<IntakeRemittance>(EnumTitle.Edit);
+            ViewData["title"] = Helper.GetEntityTitle<IntakeRemittance>(EnumTitle.Edit);
 
             return PartialView(GetIntakeRemittanceById(id));
         }
@@ -87,7 +87,7 @@
 
         public IActionResult DeleteIntakeRemittance(long id)
         {
-            ViewData["title"] = Helper.GetEntityTile<SalePoint>(EnumTitle.Delete);
+            ViewData["title"] = Helper.GetEntityTitle<SalePoint>(EnumTitle.Delete);
 
             return PartialView(GetIntakeRemittanceById(id));
         }

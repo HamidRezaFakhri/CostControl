@@ -11,7 +11,7 @@
 @*<div class="loader"></div>*@
 
 @*<div id="wait"
-		 style="display:none;width:69px;height:89px;border:1px solid black;position:absolute;top:50%;left:50%;padding:2px;">
+		   style="display:none;width:69px;height:89px;border:1px solid black;position:absolute;top:50%;left:50%;padding:2px;">
 		<img src='~/images/demo_wait.gif' width="64" height="64" />
 		<br>Please wait, Loading...
 	</div>*@
@@ -157,6 +157,45 @@
 			$("#board").load("http://localhost:4130/Help");
 		});
 
+		function insert(code, externalControllerName) {
+			var postData = {
+				id: code,
+			};
+
+			var controlerName = externalControllerName;
+			var actionNanme = 'Add' + externalControllerName + 'External';
+			var list = externalControllerName + 'List';
+			//'@Helper.GetPresentationAddress()SalePoint/AddSalePointExternal/' + code
+
+			var addUrl = '@Helper.GetPresentationAddress()' + controlerName + '/' + actionNanme + '/' + code;
+
+			debugger;
+			$.ajax({
+				type: "POST",
+				url: addUrl,
+				dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
+				data: {},
+				success: function (data) {
+					if (data.success) {
+						$('body').removeClass('modal-open');
+						$('.modal-backdrop').remove();
+						$('#apModal').hide();
+						getData(list, controlerName);
+						return true;
+					} else {
+						return false;
+					}
+				}
+				//},
+				//	error: function (err) {
+				//		alert(err.status + "<--------->" + err.statusCode);
+				//}
+			}).done(
+				function (result) {
+				});
+		}
+
 		function createEntityModal(uri, title, modalLevel = 0) {
 			$.ajax({
 				url: '@Helper.GetPresentationAddress()' + uri,
@@ -231,7 +270,7 @@
 
 			if (param !== '' && param !== 'undefined' /*&& !isNaN(param)*/)
 				_param = '/' + param;
-			
+
 			$.ajax({
 				url: '@Helper.GetPresentationAddress()' + controllerName + "/" + actionName + "?param=uyuyu" /*_param*/,
 				type: "GET",

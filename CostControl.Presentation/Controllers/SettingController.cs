@@ -9,14 +9,14 @@
 	{
 		public IActionResult SettingList(string param)
 		{
-			ViewData["title"] = Helper.GetEntityTile<Setting>(EnumTitle.List);
+			ViewData["title"] = Helper.GetEntityTitle<Setting>(EnumTitle.List);
 
 			return View(Helper.GetServiceResponse<Setting>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1"));
 		}
 
 		public IActionResult AddSetting()
 		{
-			ViewData["title"] = Helper.GetEntityTile<Setting>(EnumTitle.Add);
+			ViewData["title"] = Helper.GetEntityTitle<Setting>(EnumTitle.Add);
 
 			return PartialView();
 		}
@@ -37,7 +37,7 @@
 
 		public IActionResult EditSetting(long id)
 		{
-			ViewData["title"] = Helper.GetEntityTile<Setting>(EnumTitle.Edit);
+			ViewData["title"] = Helper.GetEntityTitle<Setting>(EnumTitle.Edit);
 
 			return PartialView(GetSettingById(id));
 		}
@@ -59,7 +59,7 @@
 
 		public IActionResult DeleteSetting(long id)
 		{
-			ViewData["title"] = Helper.GetEntityTile<Setting>(EnumTitle.Delete);
+			ViewData["title"] = Helper.GetEntityTitle<Setting>(EnumTitle.Delete);
 
 			return PartialView(GetSettingById(id));
 		}

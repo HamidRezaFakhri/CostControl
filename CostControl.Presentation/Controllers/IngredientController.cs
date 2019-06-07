@@ -10,14 +10,14 @@
     {
         public IActionResult IngredientList(string param)
         {
-            ViewData["title"] = Helper.GetEntityTile<Ingredient>(EnumTitle.List);
+            ViewData["title"] = Helper.GetEntityTitle<Ingredient>(EnumTitle.List);
 
             return View(Helper.GetServiceResponse<Ingredient>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1"));
         }
 
         public IActionResult AddIngredient()
         {
-            ViewData["title"] = Helper.GetEntityTile<Ingredient>(EnumTitle.Add);
+            ViewData["title"] = Helper.GetEntityTitle<Ingredient>(EnumTitle.Add);
 
             ViewBag.ConsumptionUnit = GetConsumptionUnitList();
 
@@ -65,7 +65,7 @@
 
         public IActionResult EditIngredient(long id)
         {
-            ViewData["title"] = Helper.GetEntityTile<Ingredient>(EnumTitle.Edit);
+            ViewData["title"] = Helper.GetEntityTitle<Ingredient>(EnumTitle.Edit);
 
             var ingredient = GetIngredientById(id);
             var consumptionUnit = GetConsumptionUnitById(ingredient.ConsumptionUnitId);
@@ -108,7 +108,7 @@
 
         public IActionResult DeleteIngredient(long id)
         {
-            ViewData["title"] = Helper.GetEntityTile<Ingredient>(EnumTitle.Delete);
+            ViewData["title"] = Helper.GetEntityTitle<Ingredient>(EnumTitle.Delete);
 
             return PartialView(GetIngredientById(id));
         }

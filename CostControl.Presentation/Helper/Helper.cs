@@ -18,7 +18,8 @@
 		List,
 		Add,
 		Edit,
-		Delete
+		Delete,
+		Import
 	}
 
 	public class EntityTitle
@@ -56,7 +57,7 @@
 			//new EntityTitle{ TypeName = "Buffet", SingleTitle = "انبار", PluralTitle = "انبارها"}
 		};
 
-		public static string GetEntityTile<T>(EnumTitle enumTitle) where T : IBaseEntity
+		public static string GetEntityTitle<T>(EnumTitle enumTitle) where T : IBaseEntity
 		{
 			EntityTitle entity = EntityTitles.SingleOrDefault(e => e.TypeName.Equals(typeof(T).Name));
 
@@ -77,51 +78,10 @@
 					return $"{editEntityTitle}{entity.SingleTitle}";
 				case EnumTitle.Delete:
 					return $"{deleteEntityTitle}{entity.SingleTitle}";
+				case EnumTitle.Import:
+					return $"{insertEntityTitle}{entity.SingleTitle}";
 				default:
 					return entity.SingleTitle;
-			}
-		}
-
-		public static List<SaleCostPoint> GetSaleCostPoint()
-		{
-			ServiceResponse<SaleCostPoint> value = null;
-			string str = string.Empty;
-			using (HttpClient client = new HttpClient())
-			{
-				client.BaseAddress = new Uri(GetAPIAddress() + "SaleCostPoint/");
-
-				client.DefaultRequestHeaders.Clear();
-				client.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue("nl-NL"));
-
-				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-				//HTTP GET
-				System.Threading.Tasks.Task<HttpResponseMessage> responseTask = client.GetAsync("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1");
-				responseTask.Wait();
-
-				HttpResponseMessage result = responseTask.Result;
-				if (result.IsSuccessStatusCode)
-				{
-					System.Threading.Tasks.Task<ServiceResponse<SaleCostPoint>> readTask = result.Content.ReadAsAsync<ServiceResponse<SaleCostPoint>>();
-
-					readTask.Wait();
-
-					value = readTask.Result;
-
-					return value.data as List<SaleCostPoint>;
-				}
-				else //web api sent error response 
-				{
-					//log response status here..
-
-					value = null;
-
-					//ModelState.AddModelError(string.Empty, "Server error. Please contact administrator.");
-
-					str = "Server error. Please contact administrator.";
-				}
-
-				return null;
 			}
 		}
 
@@ -134,6 +94,8 @@
 		private static readonly string deleteEntityTitle = "حذف ";
 
 		private static readonly string newEntityTitle = "جدید";
+
+		private static readonly string insertEntityTitle = "درج ";
 
 		private static readonly TimeSpan httpClientTimeout = new TimeSpan(0, 0, 30);
 
@@ -154,7 +116,6 @@
 		public static string GetAuthenticationAddress()
 		=> "http://127.0.0.1:89/api/um/";
 		//=> "http://79.175.155.6:89/api/um/";
-
 
 		public static string ConverToPersian(this DateTime datetime)
 		{
@@ -224,7 +185,7 @@
 
 		public static IEnumerable<T> GetServiceResponseList<T>(string apiParams) where T : IBaseEntity
 		{
-			using (HttpClient client = new HttpClient())
+			using (var client = new HttpClient())
 			{
 				client.Timeout = httpClientTimeout;
 				client.BaseAddress = new Uri(GetAPIAddress(typeof(T).Name));
@@ -234,13 +195,13 @@
 
 				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-				System.Threading.Tasks.Task<HttpResponseMessage> responseTask = client.GetAsync(apiParams);
+				var responseTask = client.GetAsync(apiParams);
 				responseTask.Wait();
 
-				HttpResponseMessage result = responseTask.Result;
+				var result = responseTask.Result;
 				if (result.IsSuccessStatusCode)
 				{
-					System.Threading.Tasks.Task<ServiceResponse<T>> readTask = result.Content.ReadAsAsync<ServiceResponse<T>>();
+					var readTask = result.Content.ReadAsAsync<ServiceResponse<T>>();
 
 					readTask.Wait();
 
@@ -253,23 +214,55 @@
 			}
 		}
 
+		public static IEnumerable<dynamic> GetServiceResponseList(string apiName, string apiParams)
+		{
+			using (var client = new HttpClient())
+			{
+				client.Timeout = httpClientTimeout;
+				client.BaseAddress = new Uri(GetAPIAddress(apiName));
+
+				client.DefaultRequestHeaders.Clear();
+				client.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue("nl-NL"));
+
+				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+				var responseTask = client.GetAsync(apiParams);
+				responseTask.Wait();
+
+				var result = responseTask.Result;
+				if (result.IsSuccessStatusCode)
+				{
+					var readTask = result.Content.ReadAsAsync<IEnumerable<dynamic>>();
+
+					readTask.Wait();
+
+					return readTask.Result;
+				}
+				else
+				{
+					return null;
+				}
+			}
+		}
+
+
 		public static (bool result, string message) PostValueToSevice<T>(string actionName, T value) where T : IBaseEntity
 		{
 			//https://johnthiriet.com/efficient-post-calls/
 			try
 			{
-				using (HttpClient client = new HttpClient())
+				using (var client = new HttpClient())
 				{
 					client.Timeout = httpClientTimeout;
 					client.BaseAddress = new Uri(GetAPIAddress(typeof(T).Name));
 
-					System.Threading.Tasks.Task<HttpResponseMessage> result = client.PostAsJsonAsync(actionName, value);
+					var result = client.PostAsJsonAsync(actionName, value);
 					result.Wait();
 					HttpResponseMessage res = result.Result;
 
 					if (res.IsSuccessStatusCode)
 					{
-						System.Threading.Tasks.Task<string> p1 = res.Content.ReadAsStringAsync();
+						var p1 = res.Content.ReadAsStringAsync();
 						string p = res.Content.ReadAsStringAsync().Result;
 
 						return (true, "Ok");

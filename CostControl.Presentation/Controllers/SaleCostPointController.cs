@@ -10,14 +10,14 @@
     {
         public IActionResult SaleCostPointList(string param, int pageNumber, int pageSize)
         {
-            ViewData["title"] = Helper.GetEntityTile<SaleCostPoint>(EnumTitle.List);
+            ViewData["title"] = Helper.GetEntityTitle<SaleCostPoint>(EnumTitle.List);
 
             return View(Helper.GetServiceResponse<SaleCostPoint>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1"));
         }
 
         public IActionResult AddSaleCostPoint()
         {
-            ViewData["title"] = Helper.GetEntityTile<SaleCostPoint>(EnumTitle.Add);
+            ViewData["title"] = Helper.GetEntityTitle<SaleCostPoint>(EnumTitle.Add);
 
             ViewBag.CostPoints = GetCostPointList();
 
@@ -52,7 +52,7 @@
 
         public IActionResult EditSaleCostPoint(long id)
         {
-            ViewData["title"] = Helper.GetEntityTile<SaleCostPoint>(EnumTitle.Edit);
+            ViewData["title"] = Helper.GetEntityTitle<SaleCostPoint>(EnumTitle.Edit);
 
             var model = GetSaleCostPointById(id);
 
@@ -90,7 +90,7 @@
 
         public IActionResult DeleteSaleCostPoint(long id)
         {
-            ViewData["title"] = Helper.GetEntityTile<SaleCostPoint>(EnumTitle.Delete);
+            ViewData["title"] = Helper.GetEntityTitle<SaleCostPoint>(EnumTitle.Delete);
 
             return PartialView(GetSaleCostPointById(id));
         }

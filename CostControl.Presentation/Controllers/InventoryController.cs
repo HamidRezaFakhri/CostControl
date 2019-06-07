@@ -9,14 +9,14 @@
     {
         public IActionResult InventoryList(string param)
         {
-            ViewData["title"] = Helper.GetEntityTile<Inventory>(EnumTitle.List);
+            ViewData["title"] = Helper.GetEntityTitle<Inventory>(EnumTitle.List);
 
             return View(Helper.GetServiceResponse<Inventory>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1"));
         }
 
         public IActionResult AddInventory()
         {
-            ViewData["title"] = Helper.GetEntityTile<Inventory>(EnumTitle.Add);
+            ViewData["title"] = Helper.GetEntityTitle<Inventory>(EnumTitle.Add);
 
             return PartialView();
         }
@@ -47,7 +47,7 @@
 
         public IActionResult EditInventory(long id)
         {
-            ViewData["title"] = Helper.GetEntityTile<Inventory>(EnumTitle.Edit);
+            ViewData["title"] = Helper.GetEntityTitle<Inventory>(EnumTitle.Edit);
 
             return PartialView(GetInventoryById(id));
         }
@@ -79,7 +79,7 @@
 
         public IActionResult DeleteInventory(long id)
         {
-            ViewData["title"] = Helper.GetEntityTile<Inventory>(EnumTitle.Delete);
+            ViewData["title"] = Helper.GetEntityTitle<Inventory>(EnumTitle.Delete);
 
             return PartialView(GetInventoryById(id));
         }

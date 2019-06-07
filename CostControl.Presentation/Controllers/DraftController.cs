@@ -9,14 +9,14 @@
     {
         public IActionResult DraftList(string param)
         {
-            ViewData["title"] = Helper.GetEntityTile<Draft>(EnumTitle.List);
+            ViewData["title"] = Helper.GetEntityTitle<Draft>(EnumTitle.List);
 
             return View(Helper.GetServiceResponse<Draft>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1"));
         }
 
         public IActionResult AddDraft()
         {
-            ViewData["title"] = Helper.GetEntityTile<Draft>(EnumTitle.Add);
+            ViewData["title"] = Helper.GetEntityTitle<Draft>(EnumTitle.Add);
 
             return PartialView();
         }
@@ -47,7 +47,7 @@
 
         public IActionResult EditDraft(long id)
         {
-            ViewData["title"] = Helper.GetEntityTile<Draft>(EnumTitle.Edit);
+            ViewData["title"] = Helper.GetEntityTitle<Draft>(EnumTitle.Edit);
 
             return PartialView(GetDraftById(id));
         }
@@ -79,7 +79,7 @@
 
         public IActionResult DeleteDraft(long id)
         {
-            ViewData["title"] = Helper.GetEntityTile<Draft>(EnumTitle.Delete);
+            ViewData["title"] = Helper.GetEntityTitle<Draft>(EnumTitle.Delete);
 
             return PartialView(GetDraftById(id));
         }

@@ -9,14 +9,14 @@
     {
         public IActionResult OverCostTypeList(string param)
         {
-            ViewData["title"] = Helper.GetEntityTile<OverCostType>(EnumTitle.List);
+            ViewData["title"] = Helper.GetEntityTitle<OverCostType>(EnumTitle.List);
 
             return View(Helper.GetServiceResponse<OverCostType>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1"));
         }
 
         public IActionResult AddOverCostType()
         {
-            ViewData["title"] = Helper.GetEntityTile<OverCostType>(EnumTitle.Add);
+            ViewData["title"] = Helper.GetEntityTitle<OverCostType>(EnumTitle.Add);
 
             return PartialView();
         }
@@ -47,7 +47,7 @@
 
         public IActionResult EditOverCostType(long id)
         {
-            ViewData["title"] = Helper.GetEntityTile<OverCostType>(EnumTitle.Edit);
+            ViewData["title"] = Helper.GetEntityTitle<OverCostType>(EnumTitle.Edit);
 
             return PartialView(GetOverCostTypeById(id));
         }
@@ -79,7 +79,7 @@
 
         public IActionResult DeleteOverCostType(long id)
         {
-            ViewData["title"] = Helper.GetEntityTile<OverCostType>(EnumTitle.Delete);
+            ViewData["title"] = Helper.GetEntityTitle<OverCostType>(EnumTitle.Delete);
 
             return PartialView(GetOverCostTypeById(id));
         }

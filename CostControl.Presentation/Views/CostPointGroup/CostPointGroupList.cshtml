@@ -3,16 +3,16 @@
 @{
 	Layout = null;
 
-	var addTitle = Helper.GetEntityTile<CostControl.BusinessEntity.Models.CostControl.CostPointGroup>(EnumTitle.Add);
-	var editTitle = Helper.GetEntityTile<CostControl.BusinessEntity.Models.CostControl.CostPointGroup>(EnumTitle.Edit);
-	var deleteTitle = Helper.GetEntityTile<CostControl.BusinessEntity.Models.CostControl.CostPointGroup>(EnumTitle.Delete);
+	var addTitle = Helper.GetEntityTitle<CostControl.BusinessEntity.Models.CostControl.CostPointGroup>(EnumTitle.Add);
+	var editTitle = Helper.GetEntityTitle<CostControl.BusinessEntity.Models.CostControl.CostPointGroup>(EnumTitle.Edit);
+	var deleteTitle = Helper.GetEntityTitle<CostControl.BusinessEntity.Models.CostControl.CostPointGroup>(EnumTitle.Delete);
 }
 
 <div class="row well">
 	<div class="col-md-6">
 		<div class="btn-group" data-toggle="modal">
 			<a id="btnAddCostPointGroup" href="#" class="btn btn-primary"
-			   onclick='createEntityModal("/CostPointGroup/AddCostPointGroup", "@addTitle")'>
+			   onclick='createEntityModal("/CostPointGroup/AddCostPointGroupExternal", "@addTitle")'>
 				<span class="fa fa-plus"> <i> جدید</i></span>
 			</a>
 
@@ -38,7 +38,7 @@
 				<td id="td_Code">@item.Code</td>
 				<td>
 					<span class="btn btn-sm btn-danger"
-					   onclick="DeleteEntityModal(@item.Id, '/CostPointGroup/DeleteCostPointGroup/', '@deleteTitle', '@item.Name')">
+						  onclick="DeleteEntityModal(@item.Id, '/CostPointGroup/DeleteCostPointGroup/', '@deleteTitle', '@item.Name')">
 						<i class="fa fa-trash"><span> حذف </span></i>
 					</span>
 				</td>

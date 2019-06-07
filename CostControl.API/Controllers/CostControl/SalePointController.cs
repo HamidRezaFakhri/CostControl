@@ -42,5 +42,19 @@
 				throw new Exception("Exception!", e);
 			}
 		}
+
+		[HttpPost("AddExternalData")]
+		public bool AddExternalData(string id)
+		{
+			try
+			{
+				(PDKBusinessLogic as SalePointLogic).AddExternalData(id);
+				return true;
+			}
+			catch (Exception e)
+			{
+				throw new Exception("Exception!", e);
+			}
+		}
 	}
 }

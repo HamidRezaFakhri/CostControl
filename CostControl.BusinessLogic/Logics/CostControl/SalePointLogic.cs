@@ -585,6 +585,9 @@
 			return salePoints.AsEnumerable();
 		}
 
+		public void AddExternalData(string key)
+		=> Repository.RunRawSql("EXEC CostControl.dbo.SP_AddExternallSalePoint @p0", new[] { key });
+	
 		public int Commit()
 		{
 			var commit = _unitOfWork.Commit();

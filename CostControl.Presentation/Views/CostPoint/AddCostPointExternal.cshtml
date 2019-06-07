@@ -4,7 +4,7 @@
 	Layout = null;
 }
 
-<table id="SalePointsExternallist" class="table table-bordered table-striped table-hover">
+<table id="CostPointsExternallist" class="table table-bordered table-striped table-hover">
 	<thead>
 		<tr>
 			<th>نام</th>
@@ -14,7 +14,7 @@
 			<th></th>
 		</tr>
 	</thead>
-	<tbody id="setSalePointList">
+	<tbody id="setCostPointList">
 		@foreach (var item in Model)
 		{
 			<tr id="tr_@item.code">
@@ -28,7 +28,7 @@
 				</td>
 				<td>
 					<span class="btn btn-sm btn-outline-info"
-						  onclick="insert('@item.code', 'SalePoint');">
+						  onclick="insert('@item.code', 'CostPoint');">
 						<i class="fa fa-angle-double-down"><span> درج </span></i>
 					</span>
 				</td>
@@ -40,7 +40,7 @@
 <script>
 	$(document).ready(function () {
 		$('#pageTitle').html('@ViewData["title"]');
-			$('#SalePointsExternallist').dataTable({
+			$('#CostPointsExternallist').dataTable({
 				"language": {
 					"url": "/lib/DataTables/i18n/Persian.lang.json"
 				}

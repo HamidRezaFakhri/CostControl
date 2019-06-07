@@ -10,7 +10,7 @@
     {
         public IActionResult RecipeList(long id, string param)
         {
-            ViewData["title"] = Helper.GetEntityTile<Recipe>(EnumTitle.List);
+            ViewData["title"] = Helper.GetEntityTitle<Recipe>(EnumTitle.List);
             ViewBag.ParentId = id;
 
             return View(Helper.GetServiceResponse<Recipe>
@@ -67,7 +67,7 @@
 
         public IActionResult EditRecipe(long id)
         {
-            ViewData["title"] = Helper.GetEntityTile<Recipe>(EnumTitle.Edit);
+            ViewData["title"] = Helper.GetEntityTitle<Recipe>(EnumTitle.Edit);
 
             var model = GetRecipeById(id);
 
@@ -103,7 +103,7 @@
 
         public IActionResult DeleteRecipe(long id)
         {
-            ViewData["title"] = Helper.GetEntityTile<Recipe>(EnumTitle.Delete);
+            ViewData["title"] = Helper.GetEntityTitle<Recipe>(EnumTitle.Delete);
 
             return PartialView(GetRecipeById(id));
         }

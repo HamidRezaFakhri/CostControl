@@ -9,14 +9,14 @@
     {
         public IActionResult ConsumptionUnitList(string param)
         {
-            ViewData["title"] = Helper.GetEntityTile<ConsumptionUnit>(EnumTitle.List);
+            ViewData["title"] = Helper.GetEntityTitle<ConsumptionUnit>(EnumTitle.List);
 
             return View(Helper.GetServiceResponse<ConsumptionUnit>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1"));
         }
 
         public IActionResult AddConsumptionUnit()
         {
-            ViewData["title"] = Helper.GetEntityTile<ConsumptionUnit>(EnumTitle.Add);
+            ViewData["title"] = Helper.GetEntityTitle<ConsumptionUnit>(EnumTitle.Add);
 
             return PartialView();
         }
@@ -47,7 +47,7 @@
 
         public IActionResult EditConsumptionUnit(long id)
         {
-            ViewData["title"] = Helper.GetEntityTile<ConsumptionUnit>(EnumTitle.Edit);
+            ViewData["title"] = Helper.GetEntityTitle<ConsumptionUnit>(EnumTitle.Edit);
 
             return PartialView(GetConsumptionUnitById(id));
         }
@@ -79,7 +79,7 @@
 
         public IActionResult DeleteConsumptionUnit(long id)
         {
-            ViewData["title"] = Helper.GetEntityTile<ConsumptionUnit>(EnumTitle.Delete);
+            ViewData["title"] = Helper.GetEntityTitle<ConsumptionUnit>(EnumTitle.Delete);
 
             return PartialView(GetConsumptionUnitById(id));
         }

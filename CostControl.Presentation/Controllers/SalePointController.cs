@@ -3,67 +3,53 @@
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
-	using System.Net.Http;
-	using System.Net.Http.Headers;
+
 	using CostControl.BusinessEntity.Models.CostControl;
+
 	using Microsoft.AspNetCore.Mvc;
 
 	public class SalePointController : BaseController
 	{
 		public IActionResult SalePointList(string param, int pageNumber, int pageSize)
 		{
-			ViewData["title"] = Helper.GetEntityTile<SalePoint>(EnumTitle.List);
+			ViewData["title"] = Helper.GetEntityTitle<SalePoint>(EnumTitle.List);
 
 			return View(Helper.GetServiceResponse<SalePoint>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1"));
 		}
 
-		public IActionResult AddSalePoint()
-		{
-			ViewData["title"] = Helper.GetEntityTile<SalePoint>(EnumTitle.Add);
-
-			return PartialView();
-		}
-
 		public IActionResult AddSalePointExternal()
 		{
-			ViewData["title"] = Helper.GetEntityTile<SalePoint>(EnumTitle.Add);
+			ViewData["title"] = Helper.GetEntityTitle<SalePoint>(EnumTitle.Import);
 
-			using (var client = new HttpClient())
-			{
-				client.Timeout = new TimeSpan(0, 0, 30);
-				client.BaseAddress = new Uri(Helper.GetAPIAddress("SalePoint"));
-
-				client.DefaultRequestHeaders.Clear();
-				client.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue("nl-NL"));
-
-				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-				var responseTask = client.GetAsync("GetExternalData");
-				//EnsureSuccessStatusCode();
-				responseTask.Wait();
-
-				var result = responseTask.Result;
-
-				if (result.IsSuccessStatusCode)
-				{
-					var readTask = result.Content.ReadAsAsync<IEnumerable<dynamic>>();
-
-					readTask.Wait();
-
-					return PartialView(readTask.Result);
-				}
-				else
-				{
-					return PartialView(null);
-				}
-			}
+			return PartialView(Helper.GetServiceResponseList("SalePoint", "GetExternalData"));
 		}
 
 		[HttpPost]
 		//[ValidateAntiForgeryToken]
-		public string AddSalePointExternal([FromBody]string code)
+		public IActionResult AddSalePointExternal(string id)
 		{
-			return "jkhkjhkkjh" + code;
+			try
+			{
+				var postResult = Helper.PostValueToSevice<SalePoint>("AddExternalData?id=" + id.ToString(), null);
+
+				return Json(new { success = postResult.result, message = postResult.message });
+			}
+			catch (Exception ex)
+			{
+				return Json(new
+				{
+					model = id,
+					success = false,
+					message = "External Insertaion Error!" + Environment.NewLine + ex.Message
+				});
+			}
+		}
+
+		public IActionResult AddSalePoint()
+		{
+			ViewData["title"] = Helper.GetEntityTitle<SalePoint>(EnumTitle.Add);
+
+			return PartialView();
 		}
 
 		[HttpPost]
@@ -84,7 +70,7 @@
 			//}
 
 			//ModelState.AddModelError("Code", "sdrgsdfgsdfg");
-			
+
 			return Json(new
 			{
 				model = SalePoint,
@@ -102,7 +88,7 @@
 
 		public IActionResult EditSalePoint(long id)
 		{
-			ViewData["title"] = Helper.GetEntityTile<SalePoint>(EnumTitle.Edit);
+			ViewData["title"] = Helper.GetEntityTitle<SalePoint>(EnumTitle.Edit);
 
 			return PartialView(GetSalePointById(id));
 		}
@@ -134,7 +120,7 @@
 
 		public IActionResult DeleteSalePoint(long id)
 		{
-			ViewData["title"] = Helper.GetEntityTile<SalePoint>(EnumTitle.Delete);
+			ViewData["title"] = Helper.GetEntityTitle<SalePoint>(EnumTitle.Delete);
 
 			return PartialView(GetSalePointById(id));
 		}

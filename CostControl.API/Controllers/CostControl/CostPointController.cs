@@ -38,5 +38,32 @@
 				return GenerateExceptionResponse(e, "Exception!");
 			}
 		}
+
+		[HttpGet("GetExternalData")]
+		public IEnumerable<dynamic> GetExternalData()
+		{
+			try
+			{
+				return (PDKBusinessLogic as CostPointLogic).GetExternalData();
+			}
+			catch (Exception e)
+			{
+				throw new Exception("Exception!", e);
+			}
+		}
+
+		[HttpPost("AddExternalData")]
+		public bool AddExternalData(string id)
+		{
+			try
+			{
+				(PDKBusinessLogic as CostPointLogic).AddExternalData(id);
+				return true;
+			}
+			catch (Exception e)
+			{
+				throw new Exception("Exception!", e);
+			}
+		}
 	}
 }

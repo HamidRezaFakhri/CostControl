@@ -10,7 +10,7 @@
     {
         public IActionResult MenuList(string param)
         {
-            ViewData["title"] = Helper.GetEntityTile<Menu>(EnumTitle.List);
+            ViewData["title"] = Helper.GetEntityTitle<Menu>(EnumTitle.List);
 
             return View(Helper.GetServiceResponse<Menu>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1"));
         }
@@ -28,7 +28,7 @@
 
         public IActionResult AddMenu()
         {
-            ViewData["title"] = Helper.GetEntityTile<Menu>(EnumTitle.Add);
+            ViewData["title"] = Helper.GetEntityTitle<Menu>(EnumTitle.Add);
 
             ViewBag.SaleCostPoint = GetSaleCostPointGroupList();
 
@@ -51,7 +51,7 @@
 
         public IActionResult EditMenu(long id)
         {
-            ViewData["title"] = Helper.GetEntityTile<Menu>(EnumTitle.Edit);
+            ViewData["title"] = Helper.GetEntityTitle<Menu>(EnumTitle.Edit);
 
             var model = GetMenuById(id);
 
@@ -77,7 +77,7 @@
 
         public IActionResult DeleteMenu(long id)
         {
-            ViewData["title"] = Helper.GetEntityTile<Menu>(EnumTitle.Delete);
+            ViewData["title"] = Helper.GetEntityTitle<Menu>(EnumTitle.Delete);
 
             return PartialView(GetMenuById(id));
         }

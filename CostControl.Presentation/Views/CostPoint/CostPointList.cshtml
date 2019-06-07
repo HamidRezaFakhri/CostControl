@@ -3,16 +3,16 @@
 @{
 	Layout = null;
 
-	var addTitle = Helper.GetEntityTile<CostControl.BusinessEntity.Models.CostControl.CostPoint>(EnumTitle.Add);
-	var editTitle = Helper.GetEntityTile<CostControl.BusinessEntity.Models.CostControl.CostPoint>(EnumTitle.Edit);
-	var deleteTitle = Helper.GetEntityTile<CostControl.BusinessEntity.Models.CostControl.CostPoint>(EnumTitle.Delete);
+	var addTitle = Helper.GetEntityTitle<CostControl.BusinessEntity.Models.CostControl.CostPoint>(EnumTitle.Add);
+	var editTitle = Helper.GetEntityTitle<CostControl.BusinessEntity.Models.CostControl.CostPoint>(EnumTitle.Edit);
+	var deleteTitle = Helper.GetEntityTitle<CostControl.BusinessEntity.Models.CostControl.CostPoint>(EnumTitle.Delete);
 }
 
 <div class="row well">
 	<div class="col-md-6">
 		<div class="btn-group" data-toggle="modal">
 			<a id="btnAddCostPoint" href="#" class="btn btn-primary"
-			   onclick='createEntityModal("/CostPoint/AddCostPoint", "@addTitle")'>
+			   onclick='createEntityModal("/CostPoint/AddCostPointExternal", "@addTitle")'>
 				<span class="fa fa-plus"> <i> جدید</i></span>
 			</a>
 
