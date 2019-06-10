@@ -6,8 +6,14 @@
 
   <ItemGroup>
     <Compile Remove="Logics\Security\**" />
+    <Compile Remove="Profiles\Base\**" />
+    <Compile Remove="Profiles\Security\**" />
     <EmbeddedResource Remove="Logics\Security\**" />
+    <EmbeddedResource Remove="Profiles\Base\**" />
+    <EmbeddedResource Remove="Profiles\Security\**" />
     <None Remove="Logics\Security\**" />
+    <None Remove="Profiles\Base\**" />
+    <None Remove="Profiles\Security\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,11 +27,6 @@
     <ProjectReference Include="..\CostControl.BusinessEntity\CostControl.BusinessEntity.csproj" />
     <ProjectReference Include="..\CostControl.Data\CostControl.Data.csproj" />
     <ProjectReference Include="..\CostControl.Entity\CostControl.Entity.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Profiles\Base\" />
-    <Folder Include="Profiles\Security\" />
   </ItemGroup>
 
 </Project>

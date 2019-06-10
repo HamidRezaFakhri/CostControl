@@ -85,6 +85,9 @@
     <Content Update="Views\OverCostType\AddOverCostType.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\OverCostType\AddOverCostTypeExternal.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\OverCostType\DeleteOverCostType.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

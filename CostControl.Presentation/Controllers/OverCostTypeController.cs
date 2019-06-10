@@ -1,101 +1,129 @@
 ﻿namespace CostControl.Presentation.Controllers
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using CostControl.BusinessEntity.Models.CostControl;
-    using Microsoft.AspNetCore.Mvc;
+	using System;
+	using System.Collections.Generic;
+	using System.Linq;
+	using CostControl.BusinessEntity.Models.CostControl;
+	using Microsoft.AspNetCore.Mvc;
 
-    public class OverCostTypeController : BaseController
-    {
-        public IActionResult OverCostTypeList(string param)
-        {
-            ViewData["title"] = Helper.GetEntityTitle<OverCostType>(EnumTitle.List);
+	public class OverCostTypeController : BaseController
+	{
+		public IActionResult OverCostTypeList(string param)
+		{
+			ViewData["title"] = Helper.GetEntityTitle<OverCostType>(EnumTitle.List);
 
-            return View(Helper.GetServiceResponse<OverCostType>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1"));
-        }
+			return View(Helper.GetServiceResponse<OverCostType>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1"));
+		}
 
-        public IActionResult AddOverCostType()
-        {
-            ViewData["title"] = Helper.GetEntityTitle<OverCostType>(EnumTitle.Add);
+		public IActionResult AddOverCostTypeExternal()
+		{
+			ViewData["title"] = Helper.GetEntityTitle<OverCostType>(EnumTitle.Import);
 
-            return PartialView();
-        }
+			return PartialView(Helper.GetServiceResponseList("OverCostType", "GetExternalData"));
+		}
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult AddOverCostType(OverCostType OverCostType)
-        {
-            if (ModelState.IsValid)
-            {
-                var postResult = Helper.PostValueToSevice<OverCostType>("POST", OverCostType);
+		[HttpPost]
+		public IActionResult AddOverCostTypeExternal(string id)
+		{
+			try
+			{
+				var postResult = Helper.PostValueToSevice<OverCostType>("AddExternalData?id=" + id.ToString(), null);
 
-                return Json(new { success = postResult.result, message = postResult.message });
-            }
+				return Json(new { success = postResult.result, message = postResult.message });
+			}
+			catch (Exception ex)
+			{
+				return Json(new
+				{
+					model = id,
+					success = false,
+					message = "External Insertaion Error!" + Environment.NewLine + ex.Message
+				});
+			}
+		}
 
-            return Json(new
-            {
-                model = OverCostType,
-                success = false,
-                message = ModelState
-                .Values
-                .FirstOrDefault(e => e.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
-                .Errors
-                .FirstOrDefault()
-                .ErrorMessage ?? "Model Is Not Vald!"
-            });
-        }
+		public IActionResult AddOverCostType()
+		{
+			ViewData["title"] = Helper.GetEntityTitle<OverCostType>(EnumTitle.Add);
 
-        public IActionResult EditOverCostType(long id)
-        {
-            ViewData["title"] = Helper.GetEntityTitle<OverCostType>(EnumTitle.Edit);
+			return PartialView();
+		}
 
-            return PartialView(GetOverCostTypeById(id));
-        }
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public IActionResult AddOverCostType(OverCostType OverCostType)
+		{
+			if (ModelState.IsValid)
+			{
+				var postResult = Helper.PostValueToSevice<OverCostType>("POST", OverCostType);
 
-        [HttpPost]
-        public IActionResult EditOverCostType(long id, OverCostType OverCostType)
-        {
-            if (ModelState.IsValid)
-            {
-                OverCostType.State = BusinessEntity.Models.Base.Enums.ObjectState.Active;
+				return Json(new { success = postResult.result, message = postResult.message });
+			}
 
-                var postResult = Helper.PostValueToSevice<OverCostType>("PUT?id=" + OverCostType.Id.ToString(), OverCostType);
+			return Json(new
+			{
+				model = OverCostType,
+				success = false,
+				message = ModelState
+				.Values
+				.FirstOrDefault(e => e.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+				.Errors
+				.FirstOrDefault()
+				.ErrorMessage ?? "Model Is Not Vald!"
+			});
+		}
 
-                return Json(new { success = postResult.result, message = postResult.message });
-            }
+		public IActionResult EditOverCostType(long id)
+		{
+			ViewData["title"] = Helper.GetEntityTitle<OverCostType>(EnumTitle.Edit);
 
-            return Json(new
-            {
-                model = OverCostType,
-                success = false,
-                message = ModelState
-                .Values
-                .FirstOrDefault(e => e.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
-                .Errors
-                .FirstOrDefault()
-                .ErrorMessage ?? "Model Is Not Vald!"
-            });
-        }
+			return PartialView(GetOverCostTypeById(id));
+		}
 
-        public IActionResult DeleteOverCostType(long id)
-        {
-            ViewData["title"] = Helper.GetEntityTitle<OverCostType>(EnumTitle.Delete);
+		[HttpPost]
+		public IActionResult EditOverCostType(long id, OverCostType OverCostType)
+		{
+			if (ModelState.IsValid)
+			{
+				OverCostType.State = BusinessEntity.Models.Base.Enums.ObjectState.Active;
 
-            return PartialView(GetOverCostTypeById(id));
-        }
+				var postResult = Helper.PostValueToSevice<OverCostType>("PUT?id=" + OverCostType.Id.ToString(), OverCostType);
 
-        [HttpPost]
-        public IActionResult DeleteOverCostType(OverCostType OverCostType)
-        {
-            var postResult = Helper.PostValueToSevice<OverCostType>("Delete?id=" + OverCostType.Id.ToString(), OverCostType);
+				return Json(new { success = postResult.result, message = postResult.message });
+			}
 
-            return Json(new { success = postResult.result, message = postResult.message });
-        }
+			return Json(new
+			{
+				model = OverCostType,
+				success = false,
+				message = ModelState
+				.Values
+				.FirstOrDefault(e => e.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+				.Errors
+				.FirstOrDefault()
+				.ErrorMessage ?? "Model Is Not Vald!"
+			});
+		}
 
-        private OverCostType GetOverCostTypeById(long id)
-        {
-            return (Helper.GetServiceResponse<OverCostType>("GetById?id=" + id.ToString()).data as List<OverCostType>)
-                .FirstOrDefault();
-        }
-    }
+		public IActionResult DeleteOverCostType(long id)
+		{
+			ViewData["title"] = Helper.GetEntityTitle<OverCostType>(EnumTitle.Delete);
+
+			return PartialView(GetOverCostTypeById(id));
+		}
+
+		[HttpPost]
+		public IActionResult DeleteOverCostType(OverCostType OverCostType)
+		{
+			var postResult = Helper.PostValueToSevice<OverCostType>("Delete?id=" + OverCostType.Id.ToString(), OverCostType);
+
+			return Json(new { success = postResult.result, message = postResult.message });
+		}
+
+		private OverCostType GetOverCostTypeById(long id)
+		{
+			return (Helper.GetServiceResponse<OverCostType>("GetById?id=" + id.ToString()).data as List<OverCostType>)
+				.FirstOrDefault();
+		}
+	}
 }
