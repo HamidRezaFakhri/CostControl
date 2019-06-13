@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using BusinessEntity.Validations;
-    using global::CostControl.BusinessEntity.Models.CostControl.Enums;
+    using BusinessEntity.Models.CostControl.Enums;
 
     public class Food : BaseValidating, Base.Interfaces.IEntity<long>
     {

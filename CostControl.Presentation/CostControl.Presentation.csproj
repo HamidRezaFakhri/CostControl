@@ -55,6 +55,12 @@
     <Content Update="Views\CostPoint\AddCostPointExternal.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\Food\AddFoodExternal.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Ingredient\AddIngredientExternal.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Ingredient\DeleteIngredient.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

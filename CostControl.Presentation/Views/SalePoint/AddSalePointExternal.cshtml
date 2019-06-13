@@ -10,7 +10,6 @@
 			<th>نام</th>
 			<th>کد</th>
 			<th>نام لاتین</th>
-			<th>سالن</th>
 			<th></th>
 		</tr>
 	</thead>
@@ -21,11 +20,6 @@
 				<td id="td_Name">@item.name</td>
 				<td id="td_Code">@item.code</td>
 				<td id="td_EnglishName">@item.englishName</td>
-				<td id="td_IsHall">
-					<input checked="@item.isHall" id="isHall"
-						   name="isHall" type="checkbox"
-						   value="@item.isHall" disabled />
-				</td>
 				<td>
 					<span class="btn btn-sm btn-outline-info"
 						  onclick="insert('@item.code', 'SalePoint');">

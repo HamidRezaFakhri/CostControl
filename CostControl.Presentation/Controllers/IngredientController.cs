@@ -1,130 +1,158 @@
 ﻿namespace CostControl.Presentation.Controllers
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using CostControl.BusinessEntity.Models.CostControl;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Mvc.Rendering;
+	using System;
+	using System.Collections.Generic;
+	using System.Linq;
+	using CostControl.BusinessEntity.Models.CostControl;
+	using Microsoft.AspNetCore.Mvc;
+	using Microsoft.AspNetCore.Mvc.Rendering;
 
-    public class IngredientController : BaseController
-    {
-        public IActionResult IngredientList(string param)
-        {
-            ViewData["title"] = Helper.GetEntityTitle<Ingredient>(EnumTitle.List);
+	public class IngredientController : BaseController
+	{
+		public IActionResult IngredientList(string param)
+		{
+			ViewData["title"] = Helper.GetEntityTitle<Ingredient>(EnumTitle.List);
 
-            return View(Helper.GetServiceResponse<Ingredient>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1"));
-        }
+			return View(Helper.GetServiceResponse<Ingredient>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1"));
+		}
 
-        public IActionResult AddIngredient()
-        {
-            ViewData["title"] = Helper.GetEntityTitle<Ingredient>(EnumTitle.Add);
+		public IActionResult AddIngredientExternal()
+		{
+			ViewData["title"] = Helper.GetEntityTitle<Ingredient>(EnumTitle.Import);
 
-            ViewBag.ConsumptionUnit = GetConsumptionUnitList();
+			return PartialView(Helper.GetServiceResponseList("Ingredient", "GetExternalData"));
+		}
 
-            return PartialView();
-        }
+		[HttpPost]
+		public IActionResult AddIngredientExternal(string id)
+		{
+			try
+			{
+				var postResult = Helper.PostValueToSevice<Ingredient>("AddExternalData?id=" + id.ToString(), null);
 
-        private IEnumerable<ConsumptionUnit> GetConsumptionUnits()
-        => Helper.GetServiceResponseList<ConsumptionUnit>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1");
+				return Json(new { success = postResult.result, message = postResult.message });
+			}
+			catch (Exception ex)
+			{
+				return Json(new
+				{
+					model = id,
+					success = false,
+					message = "External Insertaion Error!" + Environment.NewLine + ex.Message
+				});
+			}
+		}
 
-        private IEnumerable<SelectListItem> GetConsumptionUnitList(long? selected = null)
-        =>
-            GetConsumptionUnits()
-                .OrderBy(o => o.Name)
-                .Select(c => new SelectListItem()
-                {
-                    Text = c.Name,
-                    Value = c.Id.ToString(),
-                    Selected = selected == null ? false : c.Id == selected
-                })
-                .ToList();
+		public IActionResult AddIngredient()
+		{
+			ViewData["title"] = Helper.GetEntityTitle<Ingredient>(EnumTitle.Add);
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult AddIngredient(Ingredient Ingredient)
-        {
-            if (ModelState.IsValid)
-            {
-                var postResult = Helper.PostValueToSevice<Ingredient>("POST", Ingredient);
+			ViewBag.ConsumptionUnit = GetConsumptionUnitList();
 
-                return Json(new { success = postResult.result, message = postResult.message });
-            }
+			return PartialView();
+		}
 
-            return Json(new
-            {
-                model = Ingredient,
-                success = false,
-                message = ModelState
-                .Values
-                .FirstOrDefault(e => e.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
-                .Errors
-                .FirstOrDefault()
-                .ErrorMessage ?? "Model Is Not Vald!"
-            });
-        }
+		private IEnumerable<ConsumptionUnit> GetConsumptionUnits()
+		=> Helper.GetServiceResponseList<ConsumptionUnit>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1");
 
-        public IActionResult EditIngredient(long id)
-        {
-            ViewData["title"] = Helper.GetEntityTitle<Ingredient>(EnumTitle.Edit);
+		private IEnumerable<SelectListItem> GetConsumptionUnitList(long? selected = null)
+		=>
+			GetConsumptionUnits()
+				.OrderBy(o => o.Name)
+				.Select(c => new SelectListItem()
+				{
+					Text = c.Name,
+					Value = c.Id.ToString(),
+					Selected = selected == null ? false : c.Id == selected
+				})
+				.ToList();
 
-            var ingredient = GetIngredientById(id);
-            var consumptionUnit = GetConsumptionUnitById(ingredient.ConsumptionUnitId);
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public IActionResult AddIngredient(Ingredient Ingredient)
+		{
+			if (ModelState.IsValid)
+			{
+				var postResult = Helper.PostValueToSevice<Ingredient>("POST", Ingredient);
 
-            ViewBag.ConsumptionUnit = GetConsumptionUnitList(consumptionUnit.Id);
+				return Json(new { success = postResult.result, message = postResult.message });
+			}
 
-            return PartialView(ingredient);
-        }
+			return Json(new
+			{
+				model = Ingredient,
+				success = false,
+				message = ModelState
+				.Values
+				.FirstOrDefault(e => e.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+				.Errors
+				.FirstOrDefault()
+				.ErrorMessage ?? "Model Is Not Vald!"
+			});
+		}
 
-        private ConsumptionUnit GetConsumptionUnitById(long id)
-        {
-            return (Helper.GetServiceResponse<ConsumptionUnit>("GetById?id=" + id.ToString()).data as List<ConsumptionUnit>)
-                .FirstOrDefault();
-        }
+		public IActionResult EditIngredient(long id)
+		{
+			ViewData["title"] = Helper.GetEntityTitle<Ingredient>(EnumTitle.Edit);
 
-        [HttpPost]
-        public IActionResult EditIngredient(long id, Ingredient Ingredient)
-        {
-            if (ModelState.IsValid)
-            {
-                Ingredient.State = BusinessEntity.Models.Base.Enums.ObjectState.Active;
+			var ingredient = GetIngredientById(id);
+			var consumptionUnit = GetConsumptionUnitById(ingredient.ConsumptionUnitId);
 
-                var postResult = Helper.PostValueToSevice<Ingredient>("PUT?id=" + Ingredient.Id.ToString(), Ingredient);
+			ViewBag.ConsumptionUnit = GetConsumptionUnitList(consumptionUnit.Id);
 
-                return Json(new { success = postResult.result, message = postResult.message });
-            }
+			return PartialView(ingredient);
+		}
 
-            return Json(new
-            {
-                model = Ingredient,
-                success = false,
-                message = ModelState
-                .Values
-                .FirstOrDefault(e => e.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
-                .Errors
-                .FirstOrDefault()
-                .ErrorMessage ?? "Model Is Not Vald!"
-            });
-        }
+		private ConsumptionUnit GetConsumptionUnitById(long id)
+		{
+			return (Helper.GetServiceResponse<ConsumptionUnit>("GetById?id=" + id.ToString()).data as List<ConsumptionUnit>)
+				.FirstOrDefault();
+		}
 
-        public IActionResult DeleteIngredient(long id)
-        {
-            ViewData["title"] = Helper.GetEntityTitle<Ingredient>(EnumTitle.Delete);
+		[HttpPost]
+		public IActionResult EditIngredient(long id, Ingredient Ingredient)
+		{
+			if (ModelState.IsValid)
+			{
+				Ingredient.State = BusinessEntity.Models.Base.Enums.ObjectState.Active;
 
-            return PartialView(GetIngredientById(id));
-        }
+				var postResult = Helper.PostValueToSevice<Ingredient>("PUT?id=" + Ingredient.Id.ToString(), Ingredient);
 
-        [HttpPost]
-        public IActionResult DeleteIngredient(Ingredient Ingredient)
-        {
-            var postResult = Helper.PostValueToSevice<Ingredient>("Delete?id=" + Ingredient.Id.ToString(), Ingredient);
+				return Json(new { success = postResult.result, message = postResult.message });
+			}
 
-            return Json(new { success = postResult.result, message = postResult.message });
-        }
+			return Json(new
+			{
+				model = Ingredient,
+				success = false,
+				message = ModelState
+				.Values
+				.FirstOrDefault(e => e.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+				.Errors
+				.FirstOrDefault()
+				.ErrorMessage ?? "Model Is Not Vald!"
+			});
+		}
 
-        private Ingredient GetIngredientById(long id)
-        {
-            return (Helper.GetServiceResponse<Ingredient>("GetById?id=" + id.ToString()).data as List<Ingredient>)
-                .FirstOrDefault();
-        }
-    }
+		public IActionResult DeleteIngredient(long id)
+		{
+			ViewData["title"] = Helper.GetEntityTitle<Ingredient>(EnumTitle.Delete);
+
+			return PartialView(GetIngredientById(id));
+		}
+
+		[HttpPost]
+		public IActionResult DeleteIngredient(Ingredient Ingredient)
+		{
+			var postResult = Helper.PostValueToSevice<Ingredient>("Delete?id=" + Ingredient.Id.ToString(), Ingredient);
+
+			return Json(new { success = postResult.result, message = postResult.message });
+		}
+
+		private Ingredient GetIngredientById(long id)
+		{
+			return (Helper.GetServiceResponse<Ingredient>("GetById?id=" + id.ToString()).data as List<Ingredient>)
+				.FirstOrDefault();
+		}
+	}
 }

@@ -1,0 +1,41 @@
+﻿@model IEnumerable<dynamic>
+
+@{
+	Layout = null;
+}
+
+<table id="FoodsExternallist" class="table table-bordered table-striped table-hover">
+	<thead>
+		<tr>
+			<th>نام</th>
+			<th>کد</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody id="setFoodList">
+		@foreach (var item in Model)
+		{
+		<tr id="tr_@item.code">
+			<td id="td_Name">@item.name</td>
+			<td id="td_Code">@item.code</td>
+			<td>
+				<span class="btn btn-sm btn-outline-info"
+					  onclick="insert('@item.code', 'Food');">
+					<i class="fa fa-angle-double-down"><span> درج </span></i>
+				</span>
+			</td>
+		</tr>
+		}
+	</tbody>
+</table>
+
+<script>
+	$(document).ready(function () {
+		$('#pageTitle').html('@ViewData["title"]');
+			$('#FoodsExternallist').dataTable({
+				"language": {
+					"url": "/lib/DataTables/i18n/Persian.lang.json"
+				}
+			});
+	});
+</script>
