@@ -52,7 +52,6 @@
 			</div>
 		</div>
 
-
 		<div class="form-group col col-md-12">
 			<div class="form-group">
 				@Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -90,6 +89,10 @@
 
 @section Scripts{
 	<script>
+		$(document).ready(function () {
+			$(".selectpicker").chosen({ /*rtl: true,*/ width: "100%" });
+		});
+
 		function displayErrorMessage(error) {
 			$("#errorContent").html(error);
 		}

@@ -39,6 +39,28 @@
 			}
 		}
 
+		[HttpGet("GetExceptThisFood")]
+		public ActionResult<ServiceResponse<Ingredient>> GetExceptThisFood([FromQuery]long foodId, Pagination paginate = null, string token = "")
+		{
+			try
+			{
+				paginate = (paginate == null || paginate.PageSize <= 0) ? new Pagination() : paginate;
+				paginate.TotalCount = PDKBusinessLogic.GetCount();
+
+				return GenerateResponse(paginate,
+									(PDKBusinessLogic as IngredientLogic).GetExceptThisFood(foodId: foodId,
+										includeProperties: new List<Expression<Func<IQueryable<Ingredient>, IIncludableQueryable<Ingredient, object>>>>{
+											a => a.Include(b => b.ConsumptionUnit)
+										},
+										pageSize: paginate.PageSize,
+										page: paginate.PageNumber));
+			}
+			catch (Exception e)
+			{
+				return GenerateExceptionResponse(e, "Exception!");
+			}
+		}
+
 		[HttpGet("GetExternalData")]
 		public IEnumerable<dynamic> GetExternalData()
 		{

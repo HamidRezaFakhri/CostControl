@@ -32,9 +32,7 @@
 				data: $(form).serialize(),
 				success: function (data) {
 					if (data.success) {
-						$('body').removeClass('modal-open');
-						$('.modal-backdrop').remove();
-						$('#apModal').hide();
+						$('#apModal').modal('hide');
 						getData('SalePointList', 'SalePoint');
 					} else {
 						return false;

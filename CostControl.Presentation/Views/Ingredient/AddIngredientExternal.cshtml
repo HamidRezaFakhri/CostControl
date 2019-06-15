@@ -8,8 +8,8 @@
 	<thead>
 		<tr>
 			<th>نام</th>
-			<th>کد</th>
 			<th>واحد</th>
+			<th>کد</th>
 			<th></th>
 		</tr>
 	</thead>
@@ -18,8 +18,8 @@
 		{
 		<tr id="tr_@item.code">
 			<td id="td_Name">@item.name</td>
-			<td id="td_Code">@item.code</td>
 			<td id="td_Code">@item.unit</td>
+			<td id="td_Code">@item.code</td>
 			<td>
 				<span class="btn btn-sm btn-outline-info"
 					  onclick="insert('@item.code', 'Ingredient');">
@@ -33,7 +33,6 @@
 
 <script>
 	$(document).ready(function () {
-		$('#pageTitle').html('@ViewData["title"]');
 			$('#IngredientsExternallist').dataTable({
 				"language": {
 					"url": "/lib/DataTables/i18n/Persian.lang.json"

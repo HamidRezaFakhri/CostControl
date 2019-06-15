@@ -31,9 +31,7 @@
 				data: $(form).serialize(),
 				success: function (data) {
 					if (data.success) {
-						$('body').removeClass('modal-open');
-						$('.modal-backdrop').remove();
-						$('#apModal').hide();
+						$('#apModal').modal('hide');
 						getData('IngredientList', 'Ingredient');
 					} else {
 						return false;

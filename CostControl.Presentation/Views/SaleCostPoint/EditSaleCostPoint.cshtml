@@ -43,6 +43,10 @@
 
 @section Scripts{
 	<script>
+		$(document).ready(function () {
+			$(".selectpicker").chosen({ /*rtl: true,*/ width: "100%" });
+		});
+
 		function displayErrorMessage(error) {
 			$("#errorContent").html(error);
 		}

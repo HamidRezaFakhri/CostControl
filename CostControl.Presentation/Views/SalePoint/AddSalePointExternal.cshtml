@@ -13,7 +13,7 @@
 			<th></th>
 		</tr>
 	</thead>
-	<tbody id="setSalePointList">
+	<tbody id="setSalePointsExternallist">
 		@foreach (var item in Model)
 		{
 			<tr id="tr_@item.code">
@@ -33,7 +33,6 @@
 
 <script>
 	$(document).ready(function () {
-		$('#pageTitle').html('@ViewData["title"]');
 			$('#SalePointsExternallist').dataTable({
 				"language": {
 					"url": "/lib/DataTables/i18n/Persian.lang.json"

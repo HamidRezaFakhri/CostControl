@@ -36,12 +36,6 @@
 				<td id="td_Name">@item.Name</td>
 				<td id="td_Code">@item.FinancialCode</td>
 				<td>
-					<a href="#" class="btn btn-sm btn-warning"
-					   onclick="EditEntityModal(@item.Id, '/OverCostType/EditOverCostType/', '@editTitle (@item.Name)')">
-						<i class="fa fa-edit"><span> ویرایش </span></i>
-					</a>
-
-					<span> | </span>
 					<span class="btn btn-sm btn-danger"
 					   onclick="DeleteEntityModal(@item.Id, '/OverCostType/DeleteOverCostType/', '@deleteTitle', '@item.Name')">
 						<i class="fa fa-trash"><span> حذف </span></i>

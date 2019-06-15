@@ -32,8 +32,7 @@
 				data: $(form).serialize(),
 				success: function (data) {
 					if (data.success) {
-						//$('#apSecondModal').hide();
-						$('#apSecondModal').modal('toggle');
+						$('#apSecondModal').modal('hide');
 						$('#ingredientList').load('@Url.Action("RecipeList", "Recipe", new {id = Model.FoodId, param="" })');
 					} else {
 						return false;

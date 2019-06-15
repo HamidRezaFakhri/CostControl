@@ -17,7 +17,7 @@
 	</div>*@
 
 <!-- Modal -->
-<div class="modal fade" id="apModal" role="dialog" aria-labelledby="apModalLabel" aria-hidden="true">
+<div class="modal fade" id="apModal" role="dialog" aria-labelledby="apModalLabel" aria-hidden="true" tabindex="-1">
 	<div id="modalDialog" class="modal-dialog" role="document">
 		<div id="modalContent" class="modal-content">
 			<div class="modal-header">
@@ -158,14 +158,9 @@
 		});
 
 		function insert(code, externalControllerName) {
-			var postData = {
-				id: code,
-			};
-
 			var controlerName = externalControllerName;
 			var actionNanme = 'Add' + externalControllerName + 'External';
 			var list = externalControllerName + 'List';
-			//'@Helper.GetPresentationAddress()SalePoint/AddSalePointExternal/' + code
 
 			var addUrl = '@Helper.GetPresentationAddress()' + controlerName + '/' + actionNanme + '/' + code;
 
@@ -178,25 +173,23 @@
 				data: {},
 				success: function (data) {
 					if (data.success) {
-						$('body').removeClass('modal-open');
-						$('.modal-backdrop').remove();
-						$('#apModal').hide();
+						//$('body').removeClass('modal-open');
+						//$('.modal-backdrop').remove();
+						//$('#apModal').hide();
+						$('#apModal').modal('hide');
 						getData(list, controlerName);
 						return true;
 					} else {
 						return false;
 					}
 				}
-				//},
-				//	error: function (err) {
-				//		alert(err.status + "<--------->" + err.statusCode);
-				//}
 			}).done(
 				function (result) {
 				});
 		}
 
 		function createEntityModal(uri, title, modalLevel = 0) {
+			debugger;
 			$.ajax({
 				url: '@Helper.GetPresentationAddress()' + uri,
 				Type: "GET",
@@ -210,15 +203,14 @@
 				function (result) {
 					if (modalLevel === 0) {
 						$("#commands").addClass("d-none");
-						$('#modalDialog').removeClass('modal-lg');
-						//$("#apModalLabel").html("افزودن " + ((title === 'undefined' || jQuery.trim(title) == '') ? '' : title) + ' جدید');
+						$('#modalDialog').addClass('mw-100 w-75');
+						$('#modalDialog').removeClass('modal-sm');
 						$("#apModalLabel").html(title);
 						$("#modalBody").html(result);
 						$("#apModal").modal("show");
 					}
 					else if (modalLevel === 1) {
 						$("#commandsSecond").addClass("d-none");
-						//$("#apModalLabelSecond").html("افزودن " + ((title === 'undefined' || jQuery.trim(title) == '') ? '' : title) + ' جدید');
 						$("#apModalLabelSecond").html(title);
 						$("#modalBodySecond").html(result);
 						$("#apSecondModal").modal("show");
@@ -237,7 +229,7 @@
 			}).done(
 				function (result) {
 					$("#commands").addClass("d-none");
-					//$("#apModalLabel").html("اصلاح " + ((title === 'undefined' || jQuery.trim(title) == '') ? '' : title));
+					$('#modalDialog').addClass('mw-100 w-85');
 					$("#apModalLabel").html(title);
 					$("#modalBody").html(result);
 					$("#apModal").modal("show");
@@ -255,7 +247,8 @@
 			}).done(
 				function (result) {
 					//$("#commands").removeClass("d-none");
-					//$("#apModalLabel").html("حذف " + ((title === 'undefined' || jQuery.trim(title) == '') ? '' : title));
+					$('#modalDialog').removeClass('mw-100 w-85');
+					//$('#modalDialog').addClass('modal-sm');
 					$("#apModalLabel").html(title);
 					$("#modalBody").html(result);
 					//$("#modalBody").html('آیا اطمینان در حذف دارید  "' + '\'' + itemtext + '\'');
@@ -286,6 +279,5 @@
 				}
 			});
 		}
-
 	</script>
 }

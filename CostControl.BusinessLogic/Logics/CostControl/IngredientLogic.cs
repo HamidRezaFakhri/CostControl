@@ -400,6 +400,16 @@
 			throw new NotImplementedException();
 		}
 
+		public IEnumerable<CostControlBusinessEntity.Ingredient> GetExceptThisFood(long foodId,
+			Func<IQueryable<CostControlBusinessEntity.Ingredient>, IOrderedQueryable<CostControlBusinessEntity.Ingredient>> orderBy = null,
+			ICollection<Expression<Func<IQueryable<CostControlBusinessEntity.Ingredient>, IIncludableQueryable<CostControlBusinessEntity.Ingredient, object>>>> includeProperties = null,
+			int? page = null, int? pageSize = null)
+		{
+			//Ingredients.Except(Ingredients.SelectMany(i => i.Recipes.Where(r => r.FoodId == 1), (a, b) => a))
+
+			throw new NotImplementedException();
+		}
+
 		public IEnumerable<dynamic> GetExternalData()
 		{
 			var ingredients = new[] {

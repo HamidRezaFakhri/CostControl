@@ -33,7 +33,6 @@
 			</div>
 		</div>
 
-
 		<div class="form-group col col-md-12">
 			<div class="form-group">
 				<div class="col-md-12">
@@ -89,6 +88,10 @@
 
 @section Scripts{
 	<script>
+		$(document).ready(function () {
+			$(".selectpicker").chosen({ /*rtl: true,*/ width: "100%" });
+		});
+
 		//var input = document.querySelectorAll('.js-date')[0];
 		//var input = $('#Price');
 

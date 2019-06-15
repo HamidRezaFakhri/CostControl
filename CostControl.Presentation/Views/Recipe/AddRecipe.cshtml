@@ -15,18 +15,16 @@
 
 		@Html.HiddenFor(model => model.FoodId)
 
-		<div class="form-group col col-md-5">
-			<div class="form-group">
-				@Html.LabelFor(model => model.IngredientId, htmlAttributes: new { @class = "control-label col-md-12" })
-				<div class="col-md-10">
-					@Html.DropDownListFor(model => model.IngredientId, ViewBag.Ingredients as IEnumerable<SelectListItem>,
-				 "انتخاب کنید ...", htmlAttributes: new { @class = "selectpicker form-control" })
-					@Html.ValidationMessageFor(model => model.IngredientId, "", new { @class = "text-danger" })
-				</div>
+		<div class="form-group col col-md-7">
+			@Html.LabelFor(model => model.IngredientId, htmlAttributes: new { @class = "control-label col-md-12" })
+			<div class="col-md-12">
+				@Html.DropDownListFor(model => model.IngredientId, ViewBag.Ingredients as IEnumerable<SelectListItem>,
+						"انتخاب کنید ...", htmlAttributes: new { @class = "selectpicker form-control" })
+				@Html.ValidationMessageFor(model => model.IngredientId, "", new { @class = "text-danger" })
 			</div>
 		</div>
 
-		<div class="form-group col col-md-4">
+		<div class="form-group col col-md-3">
 			<div class="form-group">
 				@Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "control-label col-md-12" })
 				<div class="col-md-12">
@@ -35,10 +33,12 @@
 				</div>
 			</div>
 		</div>
+
 		<div id="errorContent" class="text-danger">
 
 		</div>
-		<div class="form-group col col-md-3">
+
+		<div class="form-group col col-md-2">
 			<div class="form-group">
 				<br />
 				<div class="col-md-offset-2 col-md-10">
@@ -55,12 +55,17 @@
 
 @section Scripts{
 	<script>
+		function displayErrorMessage(error) {
+			$("#errorContent").html(error);
+		}
+
 		$(document).ready(function () {
+			$(".selectpicker").chosen({ /*rtl: true,*/ width: "100%" });
 			$('#ingredientList').load('@Url.Action("RecipeList", "Recipe", new {id = Model.FoodId, param="" })');
 		});
 
-		function displayErrorMessage(error) {
-			$("#errorContent").html(error);
+		function refreshList() {
+			$('#ingredientList').load('@Url.Action("RecipeList", "Recipe", new {id = Model.FoodId, param="" })');
 		}
 
 		function SubmitForm(form) {
@@ -69,8 +74,9 @@
 				url: form.action,
 				data: $(form).serialize(),
 				success: function (data) {
+
 					refreshList();
-					
+
 					if (data.success) {
 
 						return false;
@@ -81,13 +87,8 @@
 				}
 			});
 
-			refreshList();
 
 			return false;
-		}
-
-		function refreshList() {
-			$('#ingredientList').load('@Url.Action("RecipeList", "Recipe", new {id = Model.FoodId, param="" })');
 		}
 	</script>
 }
