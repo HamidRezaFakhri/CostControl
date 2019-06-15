@@ -1,8 +1,8 @@
-﻿IF (OBJECT_ID('dbo.SP_GetCostPoint') IS NOT NULL)
-	DROP PROCEDURE dbo.SP_GetCostPoint;
+﻿IF (OBJECT_ID('dbo.SP_GetSalePoint') IS NOT NULL)
+	DROP PROCEDURE dbo.SP_GetSalePoint;
 GO
 
-CREATE PROCEDURE dbo.SP_GetCostPoint
+CREATE PROCEDURE dbo.SP_GetSalePoint
 AS
 	SET NOCOUNT ON
 	SET FMTONLY OFF

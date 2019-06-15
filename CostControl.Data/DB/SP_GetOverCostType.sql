@@ -15,8 +15,6 @@ AS
 	WHERE
 		Leaf = 'F'
 		AND
-		LTRIM(RTRIM(Code)) = '180017'
-		AND
 		NULLIF(LTRIM(RTRIM(Code)), '') collate Arabic_CI_AS
 			NOT IN
 				(
