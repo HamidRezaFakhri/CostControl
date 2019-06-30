@@ -83,7 +83,7 @@
         {
             ViewData["title"] = Helper.GetEntityTitle<SalePoint>(EnumTitle.Edit);
 
-            OverCost model = GetOverCostById(id);
+            var model = GetOverCostById(id);
 
             ViewBag.OverCostType = GetOverCostTypeList(model.OverCostTypeId);
 

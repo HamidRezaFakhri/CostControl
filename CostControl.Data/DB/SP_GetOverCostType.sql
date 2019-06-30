@@ -9,9 +9,17 @@ AS
 
 	SELECT
 		REPLACE(REPLACE(REPLACE(REPLACE(LTRIM(RTRIM(CAST(Name AS NVARCHAR(MAX)))), '  ', ' '), N'ك', N'ک'), N'ي', N'ی'), N'ئ', N'ی') Name,
-		NULLIF(LTRIM(RTRIM(Code)), 'Code For ' + Name) Code
+		NULLIF(LTRIM(RTRIM(Code)), 'Code For ' + Name) Code,
+		(
+			SELECT
+				REPLACE(REPLACE(REPLACE(REPLACE(LTRIM(RTRIM(CAST(Name AS NVARCHAR(MAX)))), '  ', ' '), N'ك', N'ک'), N'ي', N'ی'), N'ئ', N'ی')
+			FROM
+				PouyaD.dbo.FinAccCg
+			WHERE
+				Code = FACg.Parent
+		) OverCostTypeGroupName
 	FROM
-		PouyaD.dbo.FinAccCg
+		PouyaD.dbo.FinAccCg FACg
 	WHERE
 		Leaf = 'F'
 		AND
@@ -22,3 +30,5 @@ AS
 					FROM
 						dbo.OverCostType
 				)
+	ORDER BY
+		3, 1

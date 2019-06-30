@@ -1,53 +1,59 @@
 ﻿namespace CostControl.Data.EntityConfiguration.CostControl
 {
-    using System;
-    using Data.EntityConfiguration.Base;
-    using Entity.Models.CostControl;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+	using System;
+	using Data.EntityConfiguration.Base;
+	using Entity.Models.CostControl;
+	using Microsoft.EntityFrameworkCore;
+	using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-    public class OverCostConfigure : BaseEntityConfigure<OverCost, long>
-    {
-        public override void Configure(EntityTypeBuilder<OverCost> entityTypeBuilder)
-        {
-            base.Configure(entityTypeBuilder);
+	public class OverCostConfigure : BaseEntityConfigure<OverCost, long>
+	{
+		public override void Configure(EntityTypeBuilder<OverCost> entityTypeBuilder)
+		{
+			base.Configure(entityTypeBuilder);
 
-            entityTypeBuilder
-                .Property(e => e.SaleCostPointId)
-                .IsRequired();
+			entityTypeBuilder
+				.Property(e => e.SaleCostPointId)
+				.IsRequired();
 
-            entityTypeBuilder
-                .Property(e => e.OverCostTypeId)
-                .IsRequired();
+			entityTypeBuilder
+				.Property(e => e.OverCostTypeId)
+				.IsRequired();
 
-            entityTypeBuilder
-                .Property(e => e.StartDate)
-                .IsRequired();
+			entityTypeBuilder
+				.Property(e => e.StartDate)
+				.IsRequired();
 
-            entityTypeBuilder
-                .Property(e => e.EndDate)
-                .IsRequired();
+			entityTypeBuilder
+				.Property(e => e.EndDate)
+				.IsRequired();
 
-            entityTypeBuilder
-                .Property(e => e.Price)
-                .IsRequired();
+			entityTypeBuilder
+				.Property(e => e.Price)
+				.IsRequired();
 
-            entityTypeBuilder
-                .HasIndex(e => new { e.StartDate, e.EndDate })
-                .IsUnique();
+			entityTypeBuilder
+				.HasIndex(e => new { e.StartDate, e.EndDate })
+				.IsUnique();
 
-            entityTypeBuilder
-                .Property(e => e.RegisteredDate)
-                .HasDefaultValue(DateTime.Now)
-                .HasDefaultValueSql("GETDATE()")
-                .IsRequired();
+			entityTypeBuilder
+				.Property(e => e.RegisteredDate)
+				.HasDefaultValue(DateTime.Now)
+				.HasDefaultValueSql("GETDATE()")
+				.IsRequired();
 
-            entityTypeBuilder
-                .Property(e => e.RegisteredUserId)
-                .IsRequired();
+			entityTypeBuilder
+				.Property(e => e.RegisteredUserId)
+				.IsRequired();
 
-            entityTypeBuilder
-               .ToTable("OverCost", "dbo");
-        }
-    }
+			entityTypeBuilder
+				.HasOne(e => e.RegisteredUser)
+				.WithMany(iu => iu.OverCosts)
+				.HasForeignKey(oc => oc.RegisteredUserId)
+				.OnDelete(DeleteBehavior.Restrict);
+
+			entityTypeBuilder
+			   .ToTable("OverCost", "dbo");
+		}
+	}
 }

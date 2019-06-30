@@ -33,7 +33,7 @@
         
         public DateTime RegisteredDate { get; set; }
         
-        public long RegisteredUserId { get; set; }
+        public int RegisteredUserId { get; set; }
 
         public virtual IncommingUser RegisteredUser { get; set; }
     }

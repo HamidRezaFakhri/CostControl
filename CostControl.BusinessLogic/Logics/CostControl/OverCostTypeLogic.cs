@@ -403,7 +403,7 @@
 		public IEnumerable<dynamic> GetExternalData()
 		{
 			var costPointGroups = new[] {
-										new { Code = "0", Name = "Test"}
+										new { Code = "0", Name = "Test", OverCostTypeGroupName = "OverCostTypeGroupName"}
 									}.ToList();
 
 			Repository
@@ -412,7 +412,8 @@
 				.ForEach(sp => costPointGroups.Add(new
 				{
 					Code = (string)sp.Code,
-					Name = (string)sp.Name
+					Name = (string)sp.Name,
+					OverCostTypeGroupName = (string)sp.OverCostTypeGroupName
 				}));
 
 			costPointGroups.RemoveAt(0);

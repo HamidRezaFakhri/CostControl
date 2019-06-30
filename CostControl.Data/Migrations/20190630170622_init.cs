@@ -230,8 +230,7 @@ namespace CostControl.Data.Migrations
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     State = table.Column<int>(nullable: false, defaultValueSql: "1"),
-                    SaleCostPointId = table.Column<long>(nullable: false),
-                    SalePointId = table.Column<long>(nullable: true)
+                    SaleCostPointId = table.Column<long>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -241,13 +240,6 @@ namespace CostControl.Data.Migrations
                         column: x => x.SaleCostPointId,
                         principalSchema: "dbo",
                         principalTable: "SaleCostPoint",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Buffet_SalePoint_SalePointId",
-                        column: x => x.SalePointId,
-                        principalSchema: "dbo",
-                        principalTable: "SalePoint",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -326,18 +318,18 @@ namespace CostControl.Data.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     SaleCostPointId = table.Column<long>(nullable: false),
-                    IntakeDate = table.Column<DateTime>(nullable: false),
+                    IntakeFromDate = table.Column<DateTime>(nullable: false),
+                    IntakeToDate = table.Column<DateTime>(nullable: false),
                     Description = table.Column<string>(maxLength: 500, nullable: false),
                     RegisteredDate = table.Column<DateTime>(nullable: false, defaultValueSql: "GETDATE()"),
-                    RegisteredUserId = table.Column<long>(nullable: false),
-                    RegisteredUserId1 = table.Column<int>(nullable: true)
+                    RegisteredUserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_IntakeRemittance", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_IntakeRemittance_IncommingUser_RegisteredUserId1",
-                        column: x => x.RegisteredUserId1,
+                        name: "FK_IntakeRemittance_IncommingUser_RegisteredUserId",
+                        column: x => x.RegisteredUserId,
                         principalSchema: "dbo",
                         principalTable: "IncommingUser",
                         principalColumn: "Id",
@@ -395,8 +387,7 @@ namespace CostControl.Data.Migrations
                     Price = table.Column<decimal>(nullable: false),
                     Description = table.Column<string>(maxLength: 500, nullable: true),
                     RegisteredDate = table.Column<DateTime>(nullable: false, defaultValueSql: "GETDATE()"),
-                    RegisteredUserId = table.Column<long>(nullable: false),
-                    RegisteredUserId1 = table.Column<int>(nullable: true)
+                    RegisteredUserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -409,8 +400,8 @@ namespace CostControl.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_OverCost_IncommingUser_RegisteredUserId1",
-                        column: x => x.RegisteredUserId1,
+                        name: "FK_OverCost_IncommingUser_RegisteredUserId",
+                        column: x => x.RegisteredUserId,
                         principalSchema: "dbo",
                         principalTable: "IncommingUser",
                         principalColumn: "Id",
@@ -437,8 +428,7 @@ namespace CostControl.Data.Migrations
                     DepoId = table.Column<long>(nullable: false),
                     DraftDate = table.Column<DateTime>(nullable: false, defaultValueSql: "GETDATE()"),
                     RegisteredDate = table.Column<DateTime>(nullable: false, defaultValueSql: "GETDATE()"),
-                    RegisteredUserId = table.Column<long>(nullable: false),
-                    RegisteredUserId1 = table.Column<int>(nullable: true),
+                    RegisteredUserId = table.Column<int>(nullable: false),
                     Description = table.Column<string>(type: "NVARCHAR(500)", maxLength: 500, nullable: true)
                 },
                 constraints: table =>
@@ -459,8 +449,8 @@ namespace CostControl.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Draft_IncommingUser_RegisteredUserId1",
-                        column: x => x.RegisteredUserId1,
+                        name: "FK_Draft_IncommingUser_RegisteredUserId",
+                        column: x => x.RegisteredUserId,
                         principalSchema: "dbo",
                         principalTable: "IncommingUser",
                         principalColumn: "Id",
@@ -645,12 +635,6 @@ namespace CostControl.Data.Migrations
                 column: "SaleCostPointId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Buffet_SalePointId",
-                schema: "dbo",
-                table: "Buffet",
-                column: "SalePointId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ConsumptionUnit_Code",
                 schema: "dbo",
                 table: "ConsumptionUnit",
@@ -726,10 +710,10 @@ namespace CostControl.Data.Migrations
                 column: "InventoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Draft_RegisteredUserId1",
+                name: "IX_Draft_RegisteredUserId",
                 schema: "dbo",
                 table: "Draft",
-                column: "RegisteredUserId1");
+                column: "RegisteredUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Draft_SaleCostPointId",
@@ -785,16 +769,16 @@ namespace CostControl.Data.Migrations
                 filter: "[Code] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_IntakeRemittance_RegisteredUserId1",
+                name: "IX_IntakeRemittance_RegisteredUserId",
                 schema: "dbo",
                 table: "IntakeRemittance",
-                column: "RegisteredUserId1");
+                column: "RegisteredUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_IntakeRemittance_SaleCostPointId_IntakeDate",
+                name: "IX_IntakeRemittance_SaleCostPointId_IntakeFromDate_IntakeToDate",
                 schema: "dbo",
                 table: "IntakeRemittance",
-                columns: new[] { "SaleCostPointId", "IntakeDate" },
+                columns: new[] { "SaleCostPointId", "IntakeFromDate", "IntakeToDate" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -891,10 +875,10 @@ namespace CostControl.Data.Migrations
                 column: "OverCostTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OverCost_RegisteredUserId1",
+                name: "IX_OverCost_RegisteredUserId",
                 schema: "dbo",
                 table: "OverCost",
-                column: "RegisteredUserId1");
+                column: "RegisteredUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OverCost_SaleCostPointId",

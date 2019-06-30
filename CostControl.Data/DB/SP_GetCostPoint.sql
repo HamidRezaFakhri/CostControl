@@ -9,9 +9,17 @@ AS
 
 	SELECT
 		REPLACE(REPLACE(REPLACE(REPLACE(LTRIM(RTRIM(CAST(Name AS NVARCHAR(MAX)))), '  ', ' '), N'ك', N'ک'), N'ي', N'ی'), N'ئ', N'ی') Name,
-		NULLIF(LTRIM(RTRIM(Code)), '') Code
+		NULLIF(LTRIM(RTRIM(Code)), '') Code,
+		(
+			SELECT
+				REPLACE(REPLACE(REPLACE(REPLACE(LTRIM(RTRIM(CAST(Name AS NVARCHAR(MAX)))), '  ', ' '), N'ك', N'ک'), N'ي', N'ی'), N'ئ', N'ی')
+			FROM
+				PouyaD.dbo.FinDetCg
+			WHERE
+				Code = FDCg.Parent
+		) CostPointGroupName
 	FROM
-		PouyaD.dbo.FinDetCg
+		PouyaD.dbo.FinDetCg FDCg
 	WHERE
 		Leaf = 'F'
 		AND
@@ -24,4 +32,6 @@ AS
 					FROM
 						CostControl.dbo.CostPoint
 				)
+	ORDER BY
+		3, 1
 

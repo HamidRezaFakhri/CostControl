@@ -8,11 +8,20 @@
 }
 
 <div class="row well">
-	<div class="col-md-6">
+	<div class="col-md-1">
 		<div class="btn-group" data-toggle="modal">
 			<a id="btnAddOverCost" href="#" class="btn btn-primary"
 			   onclick='createEntityModal("/OverCost/AddOverCost", "@addTitle")'>
 				<span class="fa fa-plus"> <i> جدید</i></span>
+			</a>
+
+		</div>
+	</div>
+
+	<div class="col-md-1">
+		<div class="btn-group">
+			<a id="btnAddOverCost" href="#" class="btn btn-light">
+				<span class="fa fa-plus"> <i> فراخوانی از سرویس</i></span>
 			</a>
 
 		</div>
@@ -49,7 +58,7 @@
 
 					<span> | </span>
 					<span class="btn btn-sm btn-danger"
-					   onclick="DeleteEntityModal(@item.Id, '/OverCost/DeleteOverCost/', '@deleteTitle', '@item.Id')">
+						  onclick="DeleteEntityModal(@item.Id, '/OverCost/DeleteOverCost/', '@deleteTitle', '@item.Id')">
 						<i class="fa fa-trash"><span> حذف </span></i>
 					</span>
 				</td>

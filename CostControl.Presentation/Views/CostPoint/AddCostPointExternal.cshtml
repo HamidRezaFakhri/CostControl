@@ -7,6 +7,7 @@
 <table id="CostPointsExternallist" class="table table-bordered table-striped table-hover">
 	<thead>
 		<tr>
+			<th>گروه</th>
 			<th>نام</th>
 			<th>کد</th>
 			<th></th>
@@ -16,6 +17,7 @@
 		@foreach (var item in Model)
 		{
 			<tr id="tr_@item.code">
+				<td id="td_CostPointGroupName">@item.costPointGroupName</td>
 				<td id="td_Name">@item.name</td>
 				<td id="td_Code">@item.code</td>
 				<td>

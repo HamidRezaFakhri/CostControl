@@ -6,6 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="EntityConfiguration\Security\**" />
+    <EmbeddedResource Remove="EntityConfiguration\Security\**" />
+    <None Remove="EntityConfiguration\Security\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="2.2.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.4" />
@@ -21,7 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="EntityConfiguration\Security\" />
     <Folder Include="Repository\" />
   </ItemGroup>
 

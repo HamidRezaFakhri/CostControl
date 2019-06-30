@@ -404,11 +404,26 @@
 			Func<IQueryable<CostControlBusinessEntity.Ingredient>, IOrderedQueryable<CostControlBusinessEntity.Ingredient>> orderBy = null,
 			ICollection<Expression<Func<IQueryable<CostControlBusinessEntity.Ingredient>, IIncludableQueryable<CostControlBusinessEntity.Ingredient, object>>>> includeProperties = null,
 			int? page = null, int? pageSize = null)
-		{
-			//Ingredients.Except(Ingredients.SelectMany(i => i.Recipes.Where(r => r.FoodId == 1), (a, b) => a))
+		=> IngredientIMapper.Map<IEnumerable<CostControlBusinessEntity.Ingredient>>(
+					   Repository
+						.Get(
+						   filter: null,
+						   IngredientIMapper.Map<Func<IQueryable<CostControlEntity.Ingredient>, IOrderedQueryable<CostControlEntity.Ingredient>>>(orderBy),
+						   IngredientIMapper.MapIncludesList<Expression<Func<IQueryable<CostControlEntity.Ingredient>, IIncludableQueryable<CostControlEntity.Ingredient, object>>>>(includeProperties),
+						   page, pageSize)
+						.Except(Repository
+									.Get()
+									.SelectMany(i => i.RecipeItems.Where(f => f.FoodId == foodId), (ingredient, recipe) => ingredient)));
 
-			throw new NotImplementedException();
-		}
+		//var ingredients = Repository
+		//						.Get()
+		//						.SelectMany(i => i.RecipeItems.Where(f => f.FoodId == foodId), (a, b) => a);
+		//						//.AsQueryable()
+		//						//.ToList();
+
+		//Repository.Get(i => !ingredients.Contains(i));
+		//Ingredients.Except(Ingredients.SelectMany(i => i.Recipes.Where(r => r.FoodId == 1), (a, b) => a))
+
 
 		public IEnumerable<dynamic> GetExternalData()
 		{

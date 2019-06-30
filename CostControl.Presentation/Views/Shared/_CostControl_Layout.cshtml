@@ -11,15 +11,17 @@
 	<!-- Main CSS-->
 	<link rel="stylesheet" type="text/css" href="~/css/main.css">
 	<!-- Font-icon css-->
-	@*<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">*@
+	@*
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">*@
 
 	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
 	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-grid.css" />
 	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-reboot.css" />
 	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-rtl.css" />
 	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/font-awesome.min.css" />
-	@*<link rel="stylesheet" href="~/css/preloader.css" />
-		<link rel="stylesheet" href="~/css/site.css" />*@
+	@*
+	<link rel="stylesheet" href="~/css/preloader.css" />
+	<link rel="stylesheet" href="~/css/site.css" />*@
 	<link rel="stylesheet" href="~/css/style.css" />
 
 	<link href="~/lib/DataTables/css/jquery.dataTables.css" rel="stylesheet" />
@@ -42,7 +44,8 @@
 				<ul class="dropdown-menu settings-menu dropdown-menu-right">
 					<li><a class="dropdown-item" href="#"><i class="fa fa-cog fa-lg"></i> تنظیمات</a></li>
 					<li><a class="dropdown-item" href="#"><i class="fa fa-user fa-lg"></i> پروفایل</a></li>
-					@*<li><a class="dropdown-item" href="page-login.html"><i class="fa fa-sign-out fa-lg"></i>خروج</a></li>*@
+					@*
+					<li><a class="dropdown-item" href="page-login.html"><i class="fa fa-sign-out fa-lg"></i>خروج</a></li>*@
 					<li><a asp-controller="IncommingUser" asp-action="Logout" class="dropdown-item">خروج<i class="fa fa-sign-out fa-lg"></i></a></li>
 				</ul>
 			</li>
@@ -59,28 +62,55 @@
 			</div>
 		</div>
 		<ul class="app-menu">
-			<li><a class="app-menu__item active" asp-controller="Home" asp-action="Index"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">داشبورد</span></a></li>
+			<li>
+				<a class="app-menu__item active" asp-controller="Home" asp-action="Index">
+					<i class="app-menu__icon fa fa-dashboard"></i>
+					<span class="app-menu__label">داشبورد</span>
+				</a>
+			</li>
 			<li class="treeview">
-				<a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">اطلاعات پایه</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+				<a class="app-menu__item" href="#" data-toggle="treeview">
+					<i class="app-menu__icon fa fa-bank"></i>
+					<span class="app-menu__label">اطلاعات پایه</span>
+					<i class="treeview-indicator fa fa-angle-left"></i>
+				</a>
 				<ul class="treeview-menu">
 					<li><a id="SalePoint" class="treeview-item" href="#"><i class="icon fa fa-laptop"></i>مرکز فروش</a></li>
-					<li><a id="CostPointGroup" class="treeview-item" href="#"><i class="icon fa fa-laptop"></i>گروه مرکز هزینه</a></li>
+					@*<li><a id="CostPointGroup" class="treeview-item" href="#"><i class="icon fa fa-laptop"></i>گروه مرکز هزینه</a></li>*@
 					<li><a id="CostPoint" class="treeview-item" href="#"><i class="icon fa fa-laptop"></i>مرکز هزینه</a></li>
 					<li><a id="SaleCostPoint" class="treeview-item" href="#"><i class="icon fa fa-laptop"></i>مرکز هزینه - مرکز فروش</a></li>
 					<li><a id="OverCostType" class="treeview-item" href="#"><i class="icon fa fa-laptop"></i>سرفصل هزینه های سربار</a></li>
-					<li><a id="OverCost" class="treeview-item" href="#"><i class="icon fa fa-laptop"></i>هزینه های سربار دوره</a></li>
-					@*<li><a id="ConsumptionUnit" class="treeview-item" href="#"><i class="icon fa fa-laptop"></i>واحد های مصرفی</a></li>*@
+					@*
+					<li><a id="ConsumptionUnit" class="treeview-item" href="#"><i class="icon fa fa-laptop"></i>واحد های مصرفی</a></li>*@
 					<li><a id="Ingredient" class="treeview-item" href="#"><i class="icon fa fa-laptop"></i>مواد خام</a></li>
-					<li><a id="Food" class="treeview-item" href="#"><i class="icon fa fa-laptop"></i>دستور غذا</a></li>
-					@*<li><a id="Menu" class="treeview-item" href="#"><i class="icon fa fa-laptop"></i>منو</a></li>*@
-					@*<li><a id="Inventory" class="treeview-item" href="#"><i class="icon fa fa-laptop"></i>انبار</a></li>*@
-					@*<li><a id="Draft" class="treeview-item" href="#"><i class="icon fa fa-laptop"></i>حواله انبار</a></li>*@
-					<li><a id="IntakeRemittance" class="treeview-item" href="#"><i class="icon fa fa-laptop"></i>حواله مصرفی</a></li>
-					@*<li><a id="Setting" class="treeview-item" href="#"><i class="icon fa fa-laptop"></i>تنظیمات</a></li>*@
+					@*
+					<li><a id="Menu" class="treeview-item" href="#"><i class="icon fa fa-laptop"></i>منو</a></li>*@
+					@*
+					<li><a id="Inventory" class="treeview-item" href="#"><i class="icon fa fa-laptop"></i>انبار</a></li>*@
+					@*
+					<li><a id="Draft" class="treeview-item" href="#"><i class="icon fa fa-laptop"></i>حواله انبار</a></li>*@
+					@*
+					<li><a id="Setting" class="treeview-item" href="#"><i class="icon fa fa-laptop"></i>تنظیمات</a></li>*@
 				</ul>
 			</li>
 			<li class="treeview">
-				<a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-pie-chart"></i><span class="app-menu__label">گزارشات</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+				<a class="app-menu__item" href="#" data-toggle="treeview">
+					<i class="app-menu__icon fa fa-bell"></i>
+					<span class="app-menu__label">عملیات</span>
+					<i class="treeview-indicator fa fa-angle-left"></i>
+				</a>
+				<ul class="treeview-menu">
+					<li><a id="Food" class="treeview-item" href="#"><i class="icon fa fa-laptop"></i>دستور غذا</a></li>
+					<li><a id="OverCost" class="treeview-item" href="#"><i class="icon fa fa-laptop"></i>هزینه های سربار دوره</a></li>
+					<li><a id="IntakeRemittance" class="treeview-item" href="#"><i class="icon fa fa-laptop"></i>حواله مصرفی</a></li>
+				</ul>
+			</li>
+			<li class="treeview">
+				<a class="app-menu__item" href="#" data-toggle="treeview">
+					<i class="app-menu__icon fa fa-pie-chart"></i>
+					<span class="app-menu__label">گزارشات</span>
+					<i class="treeview-indicator fa fa-angle-left"></i>
+				</a>
 				<ul class="treeview-menu">
 					<li><a class="treeview-item" href="form-components.html"><i class="icon fa fa-pie-chart"></i> مصارف عمده</a></li>
 					<li><a class="treeview-item" href="form-custom.html"><i class="icon fa fa-pie-chart"></i> فروش رستوران</a></li>

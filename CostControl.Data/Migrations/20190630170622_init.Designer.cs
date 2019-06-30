@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CostControl.Data.Migrations
 {
     [DbContext(typeof(CostControlDbContext))]
-    [Migration("20190413165655_init")]
+    [Migration("20190630170622_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,8 +29,6 @@ namespace CostControl.Data.Migrations
 
                     b.Property<long>("SaleCostPointId");
 
-                    b.Property<long?>("SalePointId");
-
                     b.Property<int>("State")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("1");
@@ -38,8 +36,6 @@ namespace CostControl.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("SaleCostPointId");
-
-                    b.HasIndex("SalePointId");
 
                     b.ToTable("Buffet","dbo");
                 });
@@ -211,9 +207,7 @@ namespace CostControl.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("GETDATE()");
 
-                    b.Property<long>("RegisteredUserId");
-
-                    b.Property<int?>("RegisteredUserId1");
+                    b.Property<int>("RegisteredUserId");
 
                     b.Property<long>("SaleCostPointId");
 
@@ -227,7 +221,7 @@ namespace CostControl.Data.Migrations
 
                     b.HasIndex("InventoryId");
 
-                    b.HasIndex("RegisteredUserId1");
+                    b.HasIndex("RegisteredUserId");
 
                     b.HasIndex("SaleCostPointId");
 
@@ -378,15 +372,15 @@ namespace CostControl.Data.Migrations
                         .HasMaxLength(500)
                         .IsUnicode(true);
 
-                    b.Property<DateTime>("IntakeDate");
+                    b.Property<DateTime>("IntakeFromDate");
+
+                    b.Property<DateTime>("IntakeToDate");
 
                     b.Property<DateTime>("RegisteredDate")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("GETDATE()");
 
-                    b.Property<long>("RegisteredUserId");
-
-                    b.Property<int?>("RegisteredUserId1");
+                    b.Property<int>("RegisteredUserId");
 
                     b.Property<long>("SaleCostPointId");
 
@@ -396,9 +390,9 @@ namespace CostControl.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RegisteredUserId1");
+                    b.HasIndex("RegisteredUserId");
 
-                    b.HasIndex("SaleCostPointId", "IntakeDate")
+                    b.HasIndex("SaleCostPointId", "IntakeFromDate", "IntakeToDate")
                         .IsUnique();
 
                     b.ToTable("IntakeRemittance","dbo");
@@ -575,9 +569,7 @@ namespace CostControl.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("GETDATE()");
 
-                    b.Property<long>("RegisteredUserId");
-
-                    b.Property<int?>("RegisteredUserId1");
+                    b.Property<int>("RegisteredUserId");
 
                     b.Property<long>("SaleCostPointId");
 
@@ -591,7 +583,7 @@ namespace CostControl.Data.Migrations
 
                     b.HasIndex("OverCostTypeId");
 
-                    b.HasIndex("RegisteredUserId1");
+                    b.HasIndex("RegisteredUserId");
 
                     b.HasIndex("SaleCostPointId");
 
@@ -751,13 +743,9 @@ namespace CostControl.Data.Migrations
             modelBuilder.Entity("CostControl.Entity.Models.CostControl.Buffet", b =>
                 {
                     b.HasOne("CostControl.Entity.Models.CostControl.SaleCostPoint", "SaleCostPoint")
-                        .WithMany()
+                        .WithMany("Buffets")
                         .HasForeignKey("SaleCostPointId")
                         .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("CostControl.Entity.Models.CostControl.SalePoint")
-                        .WithMany("Buffets")
-                        .HasForeignKey("SalePointId");
                 });
 
             modelBuilder.Entity("CostControl.Entity.Models.CostControl.CostPoint", b =>
@@ -800,7 +788,8 @@ namespace CostControl.Data.Migrations
 
                     b.HasOne("CostControl.Entity.Models.CostControl.IncommingUser", "RegisteredUser")
                         .WithMany("Drafts")
-                        .HasForeignKey("RegisteredUserId1");
+                        .HasForeignKey("RegisteredUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("CostControl.Entity.Models.CostControl.SaleCostPoint", "SaleCostPoint")
                         .WithMany("Drafts")
@@ -844,8 +833,9 @@ namespace CostControl.Data.Migrations
             modelBuilder.Entity("CostControl.Entity.Models.CostControl.IntakeRemittance", b =>
                 {
                     b.HasOne("CostControl.Entity.Models.CostControl.IncommingUser", "RegisteredUser")
-                        .WithMany()
-                        .HasForeignKey("RegisteredUserId1");
+                        .WithMany("IntakeRemittances")
+                        .HasForeignKey("RegisteredUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("CostControl.Entity.Models.CostControl.SaleCostPoint", "SaleCostPoint")
                         .WithMany("IntakeRemittances")
@@ -911,7 +901,8 @@ namespace CostControl.Data.Migrations
 
                     b.HasOne("CostControl.Entity.Models.CostControl.IncommingUser", "RegisteredUser")
                         .WithMany("OverCosts")
-                        .HasForeignKey("RegisteredUserId1");
+                        .HasForeignKey("RegisteredUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("CostControl.Entity.Models.CostControl.SaleCostPoint", "SaleCostPoint")
                         .WithMany("OverCosts")

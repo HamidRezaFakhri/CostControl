@@ -101,21 +101,34 @@
 
 		public static string GetAPIAddress()
 		{
+#if DEBUG
+			return "http://localhost:5001/api/";
+#elif !DEBUG
 			return "http://79.175.155.6:5001/api/";
+#endif
+			//return "http://localhost/CostControl.Presentation/";
 			//return "http://localhost/CostControl.API/api/";
-			//return "http://localhost:5001/api/";
 		}
 
 		public static string GetPresentationAddress()
 		{
+#if DEBUG
+			return "http://localhost:5974/";
+#elif !DEBUG
 			return "http://79.175.155.6:80/";
+#endif
 			//return "http://localhost/CostControl.Presentation/";
-			//return "http://localhost:5974/";
 		}
 
 		public static string GetAuthenticationAddress()
-		//=> "http://127.0.0.1:89/api/um/";
-		=> "http://79.175.155.6:89/api/um/";
+		{
+#if DEBUG
+			return "http://127.0.0.1:89/api/um/";
+			;
+#elif !DEBUG
+			return "http://79.175.155.6:89/api/um/";
+#endif
+		}
 
 		public static string ConverToPersian(this DateTime datetime)
 		{

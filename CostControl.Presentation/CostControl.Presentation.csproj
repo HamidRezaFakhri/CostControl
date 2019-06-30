@@ -262,6 +262,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Middlewares\" />
     <Folder Include="wwwroot\js\CostControl\" />
   </ItemGroup>
 

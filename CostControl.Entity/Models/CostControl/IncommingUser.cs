@@ -14,5 +14,7 @@
 		public virtual ICollection<OverCost> OverCosts { get; set; }
 
 		public virtual ICollection<Draft> Drafts { get; set; }
+
+		public virtual ICollection<IntakeRemittance> IntakeRemittances { get; set; }
 	}
 }

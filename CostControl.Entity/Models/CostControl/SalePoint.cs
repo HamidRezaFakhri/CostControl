@@ -13,8 +13,6 @@
 
         public virtual ICollection<SaleCostPoint> SaleCostPoints { get; set; }
 
-        public virtual ICollection<Buffet> Buffets { get; set; }
-
         public override string ToString() => $"{Name?.ToString()} ({Code?.ToString()})";
     }
 }

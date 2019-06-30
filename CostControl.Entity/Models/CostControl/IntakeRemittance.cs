@@ -9,13 +9,15 @@
 
         public virtual SaleCostPoint SaleCostPoint { get; set; }
 
-        public DateTime IntakeDate { get; set; }
+        public DateTime IntakeFromDate { get; set; }
+
+        public DateTime IntakeToDate { get; set; }
 
         public string Description { get; set; }
 
         public DateTime RegisteredDate { get; set; }
 
-        public long RegisteredUserId { get; set; }
+        public int RegisteredUserId { get; set; }
 
         public virtual IncommingUser RegisteredUser { get; set; }
 
