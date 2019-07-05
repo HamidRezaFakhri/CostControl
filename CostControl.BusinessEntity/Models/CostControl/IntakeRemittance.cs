@@ -25,14 +25,17 @@
 		[Display(Name = "تاریخ پایان حواله")]
 		public DateTime IntakeToDate { get; set; }
 
-
 		[DataType(DataType.MultilineText)]
 		[Display(Name = "شرح")]
 		public string Description { get; set; }
 
+		public bool IsConfirmed { get; set; } = false;
+
 		public DateTime RegisteredDate { get; set; } = DateTime.Now;
 
 		public long RegisteredUserId { get; set; }
+			
+		public ICollection<IntakeRemittanceItem> IntakeRemittanceItems { get; set; }
 
 		public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
 		{

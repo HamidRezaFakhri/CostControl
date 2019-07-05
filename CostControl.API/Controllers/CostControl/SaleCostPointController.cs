@@ -56,6 +56,5 @@
                 return GenerateExceptionResponse(e, "Exception!");
             }
         }
-
     }
 }

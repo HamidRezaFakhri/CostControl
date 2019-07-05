@@ -14,7 +14,7 @@
 		private class Users
 		{
 			public List<ServiceUser> UserList { get; set; }
-
+			
 			public ResponseResult Result { get; set; }
 		}
 
@@ -52,16 +52,32 @@
 				return View("~/Views/IncommingUser/Login.cshtml", "نام کاربری و یا کلمه عبور اشتباه می باشد!");
 			}
 
+			var user = GetuserList()
+							.Where(u => u.UserID.ToString() == userName)
+							.SingleOrDefault();
+
+			if (!IsUserExists(user))
+			{
+				Helper.PostValueToSevice<IncommingUser>("POST", user);
+			}
+
 			HttpContext.Session.SetInt32("IUI", 1);
+			HttpContext.Session.SetString("userName", userName);
 
 			return RedirectToAction("Index", "Home");
+		}
+
+		private bool IsUserExists(IncommingUser user)
+		{
+			var usersResponse = Helper.GetServiceResponse<IncommingUser>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1");
+			return usersResponse.data.Any(u => u.UserName.Contains(user.UserName) && u.OperatorCode == user.OperatorCode);
 		}
 
 		private bool IsUserValid(string userName, string pass)
 		{
 			try
 			{
-				using (HttpClient client = new HttpClient())
+				using (var client = new HttpClient())
 				{
 					client.BaseAddress = new Uri($"{Helper.GetAuthenticationAddress()}isAuthorized?pUserID={userName}&pPassword={pass}");
 
@@ -72,7 +88,6 @@
 
 					if (result.Result.Trim().ToLower() == "true")
 					{
-						HttpContext.Session.SetString("userName", userName);
 						return true;
 					}
 				}
@@ -91,9 +106,9 @@
 			IEnumerable<IncommingUser> users = null;
 
 			string str = string.Empty;
-			using (HttpClient client = new HttpClient())
+			using (var client = new HttpClient())
 			{
-				client.BaseAddress = new Uri("http://localhost:8384/api/um");
+				client.BaseAddress = new Uri(Helper.GetAuthenticationAddress());
 
 				client.DefaultRequestHeaders.Clear();
 				client.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue("nl-NL"));
@@ -101,13 +116,13 @@
 				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
 				//HTTP GET
-				System.Threading.Tasks.Task<HttpResponseMessage> responseTask = client.GetAsync("");
+				var responseTask = client.GetAsync("");
 				responseTask.Wait();
 
-				HttpResponseMessage result = responseTask.Result;
+				var result = responseTask.Result;
 				if (result.IsSuccessStatusCode)
 				{
-					System.Threading.Tasks.Task<Users> readTask = result.Content.ReadAsAsync<Users>();
+					var readTask = result.Content.ReadAsAsync<Users>();
 
 					readTask.Wait();
 
@@ -139,9 +154,9 @@
 			Users values = null;
 
 			string str = string.Empty;
-			using (HttpClient client = new HttpClient())
+			using (var client = new HttpClient())
 			{
-				client.BaseAddress = new Uri("http://localhost:8384/api/um");
+				client.BaseAddress = new Uri(Helper.GetAuthenticationAddress());
 
 				client.DefaultRequestHeaders.Clear();
 				client.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue("nl-NL"));
@@ -149,13 +164,13 @@
 				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
 				//HTTP GET
-				System.Threading.Tasks.Task<HttpResponseMessage> responseTask = client.GetAsync("");
+				var responseTask = client.GetAsync("");
 				responseTask.Wait();
 
-				HttpResponseMessage result = responseTask.Result;
+				var result = responseTask.Result;
 				if (result.IsSuccessStatusCode)
 				{
-					System.Threading.Tasks.Task<Users> readTask = result.Content.ReadAsAsync<Users>();
+					var readTask = result.Content.ReadAsAsync<Users>();
 
 					readTask.Wait();
 

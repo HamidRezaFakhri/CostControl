@@ -67,6 +67,9 @@
     <Content Update="Views\IntakeRemittance\AddIntakeRemittance.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\IntakeRemittance\IntakeRemittanceItemList.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\IntakeRemittance\IntakeRemittanceList.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

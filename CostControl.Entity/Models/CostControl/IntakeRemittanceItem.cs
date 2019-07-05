@@ -2,7 +2,7 @@
 {
     public class IntakeRemittanceItem : Base.SuperEntity<long>
     {
-        public long IntakeRemittanceID { get; set; }
+        public long IntakeRemittanceId { get; set; }
 
         public virtual IntakeRemittance IntakeRemittance { get; set; }
 

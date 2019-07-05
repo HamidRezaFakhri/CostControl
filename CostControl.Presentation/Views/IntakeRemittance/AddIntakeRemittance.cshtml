@@ -4,7 +4,7 @@
 	var error = string.Empty;
 }
 
-@using (Html.BeginForm("CheckIntakeRemittance", "IntakeRemittance", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return SubmitForm(this)" }))
+@using (Html.BeginForm("AddIntakeRemittance", "IntakeRemittance", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return SubmitForm(this)" }))
 {
 	@Html.AntiForgeryToken()
 
@@ -85,7 +85,7 @@
 				success: function (data) {
 					if (data.success) {
 						$('#apModal').modal('hide');
-						//getData('IntakeRemittanceList', 'IntakeRemittance');
+						getData('IntakeRemittanceList', 'IntakeRemittance');
 					} else {
 						displayErrorMessage(data.message);
 						return false;

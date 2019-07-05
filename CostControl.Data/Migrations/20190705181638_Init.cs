@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CostControl.Data.Migrations
 {
-    public partial class init : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -321,6 +321,7 @@ namespace CostControl.Data.Migrations
                     IntakeFromDate = table.Column<DateTime>(nullable: false),
                     IntakeToDate = table.Column<DateTime>(nullable: false),
                     Description = table.Column<string>(maxLength: 500, nullable: false),
+                    IsConfirmed = table.Column<bool>(nullable: false, defaultValueSql: "0"),
                     RegisteredDate = table.Column<DateTime>(nullable: false, defaultValueSql: "GETDATE()"),
                     RegisteredUserId = table.Column<int>(nullable: false)
                 },
@@ -511,7 +512,7 @@ namespace CostControl.Data.Migrations
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     State = table.Column<int>(nullable: false, defaultValueSql: "1"),
-                    IntakeRemittanceID = table.Column<long>(nullable: false),
+                    IntakeRemittanceId = table.Column<long>(nullable: false),
                     IngredientId = table.Column<long>(nullable: false),
                     Amount = table.Column<decimal>(type: "numeric(28,2)", nullable: false),
                     ConsumptionUnitId = table.Column<long>(nullable: false)
@@ -534,8 +535,8 @@ namespace CostControl.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_IntakeRemittanceItem_IntakeRemittance_IntakeRemittanceID",
-                        column: x => x.IntakeRemittanceID,
+                        name: "FK_IntakeRemittanceItem_IntakeRemittance_IntakeRemittanceId",
+                        column: x => x.IntakeRemittanceId,
                         principalSchema: "dbo",
                         principalTable: "IntakeRemittance",
                         principalColumn: "Id",
@@ -794,10 +795,10 @@ namespace CostControl.Data.Migrations
                 column: "IngredientId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_IntakeRemittanceItem_IntakeRemittanceID_IngredientId",
+                name: "IX_IntakeRemittanceItem_IntakeRemittanceId_IngredientId",
                 schema: "dbo",
                 table: "IntakeRemittanceItem",
-                columns: new[] { "IntakeRemittanceID", "IngredientId" },
+                columns: new[] { "IntakeRemittanceId", "IngredientId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(

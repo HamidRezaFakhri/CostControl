@@ -5,8 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Models\CostControl\Interfaces\" />
-    <Folder Include="Models\Security\" />
+    <Compile Remove="Models\CostControl\Interfaces\**" />
+    <Compile Remove="Models\Security\**" />
+    <EmbeddedResource Remove="Models\CostControl\Interfaces\**" />
+    <EmbeddedResource Remove="Models\Security\**" />
+    <None Remove="Models\CostControl\Interfaces\**" />
+    <None Remove="Models\Security\**" />
   </ItemGroup>
 
 </Project>

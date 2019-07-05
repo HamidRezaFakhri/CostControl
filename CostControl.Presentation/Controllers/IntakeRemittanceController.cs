@@ -38,17 +38,15 @@
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public IActionResult CheckIntakeRemittance(/*IntakeRemittanceDate*/DateTime IntakeDate)
-		{
-			return null;
-		}
-
-		[HttpPost]
-		[ValidateAntiForgeryToken]
 		public IActionResult AddIntakeRemittance(IntakeRemittance IntakeRemittance)
 		{
+			HttpContext.Session.TryGetValue("IUI", out byte[] session);
+			string currentUserId = session.LastOrDefault().ToString();
+
+			IntakeRemittance.RegisteredUserId = Convert.ToInt64(currentUserId);
+
 			if (ModelState.IsValid)
-			{
+			{ 
 				var postResult = Helper.PostValueToSevice<IntakeRemittance>("POST", IntakeRemittance);
 
 				return Json(new { success = postResult.result, message = postResult.message });
@@ -81,6 +79,11 @@
 		[HttpPost]
 		public IActionResult EditIntakeRemittance(long id, IntakeRemittance IntakeRemittance)
 		{
+			HttpContext.Session.TryGetValue("IUI", out byte[] session);
+			string currentUserId = session.LastOrDefault().ToString();
+
+			IntakeRemittance.RegisteredUserId = Convert.ToInt64(currentUserId);
+
 			if (ModelState.IsValid)
 			{
 				IntakeRemittance.State = BusinessEntity.Models.Base.Enums.ObjectState.Active;
@@ -105,13 +108,29 @@
 
 		public IActionResult DeleteIntakeRemittance(long id)
 		{
-			ViewData["title"] = Helper.GetEntityTitle<SalePoint>(EnumTitle.Delete);
+			ViewData["title"] = Helper.GetEntityTitle<IntakeRemittance>(EnumTitle.Delete);
 
 			return PartialView(GetIntakeRemittanceById(id));
 		}
 
 		[HttpPost]
 		public IActionResult DeleteIntakeRemittance(IntakeRemittance IntakeRemittance)
+		{
+			var postResult = Helper.PostValueToSevice<IntakeRemittance>("Delete?id=" + IntakeRemittance.Id.ToString(), IntakeRemittance);
+
+			return Json(new { success = postResult.result, message = postResult.message });
+		}
+
+		public IActionResult DetailIntakeRemittance(long id)
+		{
+			ViewData["title"] = Helper.GetEntityTitle<IntakeRemittance>(EnumTitle.Edit);
+
+			return PartialView("~/Views/IntakeRemittance/IntakeRemittanceItemList.cshtml",
+				GetIntakeRemittanceById(id).IntakeRemittanceItems);
+		}
+		
+		[HttpPost]
+		public IActionResult ConfirmIntakeRemittance(IntakeRemittance IntakeRemittance)
 		{
 			var postResult = Helper.PostValueToSevice<IntakeRemittance>("Delete?id=" + IntakeRemittance.Id.ToString(), IntakeRemittance);
 

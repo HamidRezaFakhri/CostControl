@@ -81,7 +81,7 @@
 
         public IActionResult EditOverCost(long id)
         {
-            ViewData["title"] = Helper.GetEntityTitle<SalePoint>(EnumTitle.Edit);
+            ViewData["title"] = Helper.GetEntityTitle<OverCost>(EnumTitle.Edit);
 
             var model = GetOverCostById(id);
 

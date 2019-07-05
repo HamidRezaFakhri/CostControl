@@ -23,8 +23,8 @@
 	<thead>
 		<tr>
 			<th>شناسه</th>
-			<th>نام</th>
-			<th>کد</th>
+			<th>شروع</th>
+			<th>پایان</th>
 			<th></th>
 		</tr>
 	</thead>
@@ -33,20 +33,34 @@
 		{
 			<tr id="tr_@item.Id">
 				<td>@item.Id</td>
-				<td id="td_Name">@item.Id</td>
-				<td id="td_Code">@item.Id</td>
+				<td id="td_FromDate">@item.IntakeFromDate.ConverToPersian()</td>
+				<td id="td_ToDate">@item.IntakeToDate.ConverToPersian()</td>
 				<td>
 					<a href="#" class="btn btn-sm btn-warning"
-					   onclick="EditEntityModal(@item.Id, '/CostPoint/EditCostPoint/', '@editTitle (@item.Id)')">
+					   onclick="EditEntityModal(@item.Id, '/IntakeRemittance/EditIntakeRemittance/', '@editTitle (@item.Id)')">
 						<i class="fa fa-edit"><span> ویرایش </span></i>
 					</a>
 
 					<span> | </span>
 					<span class="btn btn-sm btn-danger"
-					   onclick="DeleteEntityModal(@item.Id, '/CostPoint/DeleteCostPoint/', '@deleteTitle', '@item.Id')">
+						  onclick="DeleteEntityModal(@item.Id, '/IntakeRemittance/DeleteIntakeRemittance/', '@deleteTitle', '@item.Id')">
 						<i class="fa fa-trash"><span> حذف </span></i>
 					</span>
 
+					<span> | </span>
+					<span class="btn btn-sm btn-outline-dark"
+						  onclick="DeleteEntityModal(@item.Id, '/IntakeRemittance/DetailIntakeRemittance/', '@editTitle', '@item.Id')">
+						<i class="fa"><span> جزئیات </span></i>
+					</span>
+
+					@if (!item.IsConfirmed)
+					{
+						<span> | </span>
+						<span class="btn btn-sm btn-primary"
+							  onclick="DeleteEntityModal(@item.Id, '/IntakeRemittance/ConfirmIntakeRemittance/', '@editTitle', '@item.Id')">
+							<i class="fa "><span> تائید </span></i>
+						</span>
+					}
 				</td>
 			</tr>
 		}

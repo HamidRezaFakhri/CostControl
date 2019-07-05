@@ -25,13 +25,15 @@
 				.IsRequired();
 
 			entityTypeBuilder
-				.HasIndex(e => new { e.SaleCostPointId, e.IntakeFromDate, e.IntakeToDate })
-				.IsUnique();
-
-			entityTypeBuilder
 				.Property(e => e.Description)
 				.HasMaxLength(500)
 				.IsUnicode()
+				.IsRequired();
+
+			entityTypeBuilder
+				.Property(e => e.IsConfirmed)
+				.HasDefaultValue(false)
+				.HasDefaultValueSql("0")
 				.IsRequired();
 
 			entityTypeBuilder
@@ -43,6 +45,10 @@
 			entityTypeBuilder
 				.Property(e => e.RegisteredUserId)
 				.IsRequired();
+
+			entityTypeBuilder
+				.HasIndex(e => new { e.SaleCostPointId, e.IntakeFromDate, e.IntakeToDate })
+				.IsUnique();
 
 			entityTypeBuilder
 				.ToTable("IntakeRemittance", "dbo");

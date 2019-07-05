@@ -1,0 +1,48 @@
+﻿@model List<CostControl.BusinessEntity.Models.CostControl.IntakeRemittanceItem>
+
+@{
+	Layout = null;
+	var addTitle = Helper.GetEntityTitle<CostControl.BusinessEntity.Models.CostControl.IntakeRemittance>(EnumTitle.Add);
+	var editTitle = Helper.GetEntityTitle<CostControl.BusinessEntity.Models.CostControl.IntakeRemittance>(EnumTitle.Edit);
+	var deleteTitle = Helper.GetEntityTitle<CostControl.BusinessEntity.Models.CostControl.IntakeRemittance>(EnumTitle.Delete);
+}
+
+<table id="IntakeRemittanceItemslist" class="table table-bordered table-striped table-hover">
+	<thead>
+		<tr>
+			<th>شناسه</th>
+			<th>مواد مصرفی</th>
+			<th>واحد</th>
+			<th>مقدار</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody id="setIntakeRemittanceItemList">
+		@foreach (CostControl.BusinessEntity.Models.CostControl.IntakeRemittanceItem item in Model)
+		{
+		<tr id="tr_@item.Id">
+			<td>@item.Id</td>
+			<td id="td_Ingredient">@item.Ingredient.Name</td>
+			<td id="td_ConsumptionUnit">@item.ConsumptionUnit.Name</td>
+			<td id="td_Amount"><input type="text" value="@item.Amount" /></td>
+			<td>
+				<a href="#" class="btn btn-sm btn-warning"
+				   onclick="EditEntityModal(@item.Id, '/IntakeRemittance/EditIntakeRemittance/', '@editTitle (@item.Id)')">
+					<i class="fa fa-edit"><span> ویرایش </span></i>
+				</a>
+			</td>
+		</tr>
+		}
+	</tbody>
+</table>
+
+<script>
+	$(document).ready(function () {
+		$('#pageTitle').html('@ViewData["title"]');
+		$('#IntakeRemittanceItemslist').dataTable({
+			"language": {
+				"url": "/lib/DataTables/i18n/Persian.lang.json"
+			}
+		});
+	});
+</script>

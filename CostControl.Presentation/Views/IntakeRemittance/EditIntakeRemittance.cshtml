@@ -26,7 +26,8 @@
 			<div class="form-group">
 				@Html.LabelFor(model => model.IntakeFromDate, htmlAttributes: new { @class = "control-label col-md-12" })
 				<div class="col-md-12">
-					<input id="IntakeFromDate" name="IntakeFromDate" type="text" class="form-control" placeholder="1398/01/01" autocomplete="off" />
+					<input id="IntakeFromDate" name="IntakeFromDate" type="text" class="form-control"
+						   placeholder="1398/01/01" autocomplete="off"  value="@Model.IntakeFromDate.ConverToPersian()"/>
 				</div>
 			</div>
 		</div>
@@ -35,7 +36,8 @@
 			<div class="form-group">
 				@Html.LabelFor(model => model.IntakeToDate, htmlAttributes: new { @class = "control-label col-md-12" })
 				<div class="col-md-12">
-					<input id="IntakeToDate" name="IntakeToDate" type="text" class="form-control" placeholder="1398/01/01" autocomplete="off" />
+					<input id="IntakeToDate" name="IntakeToDate" type="text" class="form-control"
+						   placeholder="1398/01/01" autocomplete="off"  value="@Model.IntakeToDate.ConverToPersian()"/>
 				</div>
 			</div>
 		</div>
@@ -68,6 +70,14 @@
 		function displayErrorMessage(error) {
 			$("#errorContent").html(error);
 		}
+
+		$('#IntakeFromDate').click(function () {
+			PersianDatePicker.Show(this, '@System.DateTime.Now.ConverToPersian()');
+		});
+
+		$('#IntakeToDate').click(function () {
+			PersianDatePicker.Show(this, '@System.DateTime.Now.ConverToPersian()');
+		});
 
 		function SubmitForm(form) {
 			$.ajax({

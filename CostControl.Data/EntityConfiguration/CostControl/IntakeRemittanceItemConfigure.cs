@@ -12,7 +12,7 @@
             base.Configure(entityTypeBuilder);
 
             entityTypeBuilder
-                .Property(e => e.IntakeRemittanceID)
+                .Property(e => e.IntakeRemittanceId)
                 .IsRequired();
 
             entityTypeBuilder
@@ -29,7 +29,7 @@
                 .IsRequired();
 
             entityTypeBuilder
-                .HasIndex(e => new { e.IntakeRemittanceID, e.IngredientId })
+                .HasIndex(e => new { e.IntakeRemittanceId, e.IngredientId })
                 .IsUnique();
 
             entityTypeBuilder

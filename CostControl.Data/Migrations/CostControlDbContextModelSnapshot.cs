@@ -374,6 +374,10 @@ namespace CostControl.Data.Migrations
 
                     b.Property<DateTime>("IntakeToDate");
 
+                    b.Property<bool>("IsConfirmed")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("0");
+
                     b.Property<DateTime>("RegisteredDate")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("GETDATE()");
@@ -409,7 +413,7 @@ namespace CostControl.Data.Migrations
 
                     b.Property<long>("IngredientId");
 
-                    b.Property<long>("IntakeRemittanceID");
+                    b.Property<long>("IntakeRemittanceId");
 
                     b.Property<int>("State")
                         .ValueGeneratedOnAdd()
@@ -421,7 +425,7 @@ namespace CostControl.Data.Migrations
 
                     b.HasIndex("IngredientId");
 
-                    b.HasIndex("IntakeRemittanceID", "IngredientId")
+                    b.HasIndex("IntakeRemittanceId", "IngredientId")
                         .IsUnique();
 
                     b.ToTable("IntakeRemittanceItem","dbo");
@@ -855,7 +859,7 @@ namespace CostControl.Data.Migrations
 
                     b.HasOne("CostControl.Entity.Models.CostControl.IntakeRemittance", "IntakeRemittance")
                         .WithMany("IntakeRemittanceItems")
-                        .HasForeignKey("IntakeRemittanceID")
+                        .HasForeignKey("IntakeRemittanceId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
