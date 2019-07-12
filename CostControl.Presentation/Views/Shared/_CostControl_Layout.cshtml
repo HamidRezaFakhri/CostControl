@@ -45,7 +45,7 @@
 					<li><a class="dropdown-item" href="#"><i class="fa fa-cog fa-lg"></i> تنظیمات</a></li>
 					<li><a class="dropdown-item" href="#"><i class="fa fa-user fa-lg"></i> پروفایل</a></li>
 					@*
-					<li><a class="dropdown-item" href="page-login.html"><i class="fa fa-sign-out fa-lg"></i>خروج</a></li>*@
+						<li><a class="dropdown-item" href="page-login.html"><i class="fa fa-sign-out fa-lg"></i>خروج</a></li>*@
 					<li><a asp-controller="IncommingUser" asp-action="Logout" class="dropdown-item">خروج<i class="fa fa-sign-out fa-lg"></i></a></li>
 				</ul>
 			</li>
@@ -81,16 +81,16 @@
 					<li><a id="SaleCostPoint" class="treeview-item" href="#"><i class="icon fa fa-laptop"></i>مرکز هزینه - مرکز فروش</a></li>
 					<li><a id="OverCostType" class="treeview-item" href="#"><i class="icon fa fa-laptop"></i>سرفصل هزینه های سربار</a></li>
 					@*
-					<li><a id="ConsumptionUnit" class="treeview-item" href="#"><i class="icon fa fa-laptop"></i>واحد های مصرفی</a></li>*@
+						<li><a id="ConsumptionUnit" class="treeview-item" href="#"><i class="icon fa fa-laptop"></i>واحد های مصرفی</a></li>*@
 					<li><a id="Ingredient" class="treeview-item" href="#"><i class="icon fa fa-laptop"></i>مواد خام</a></li>
 					@*
-					<li><a id="Menu" class="treeview-item" href="#"><i class="icon fa fa-laptop"></i>منو</a></li>*@
+						<li><a id="Menu" class="treeview-item" href="#"><i class="icon fa fa-laptop"></i>منو</a></li>*@
 					@*
-					<li><a id="Inventory" class="treeview-item" href="#"><i class="icon fa fa-laptop"></i>انبار</a></li>*@
+						<li><a id="Inventory" class="treeview-item" href="#"><i class="icon fa fa-laptop"></i>انبار</a></li>*@
 					@*
-					<li><a id="Draft" class="treeview-item" href="#"><i class="icon fa fa-laptop"></i>حواله انبار</a></li>*@
+						<li><a id="Draft" class="treeview-item" href="#"><i class="icon fa fa-laptop"></i>حواله انبار</a></li>*@
 					@*
-					<li><a id="Setting" class="treeview-item" href="#"><i class="icon fa fa-laptop"></i>تنظیمات</a></li>*@
+						<li><a id="Setting" class="treeview-item" href="#"><i class="icon fa fa-laptop"></i>تنظیمات</a></li>*@
 				</ul>
 			</li>
 			<li class="treeview">
@@ -155,6 +155,9 @@
 	<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
 	<script src="~/lib/PersianCalendar/js/PersianDatePicker.js"></script>
 	<script src="~/lib/jquery-mask-plugin/jquery.mask.js"></script>
+
+	<script src="~/lib/bootstrap-select/chosen.jquery.js"></script>
+	<script src="~/lib/bootstrap-select/chosen.proto.js"></script>
 
 	@RenderSection("Scripts", required: false)
 </body>

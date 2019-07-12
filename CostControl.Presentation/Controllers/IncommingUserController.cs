@@ -47,14 +47,14 @@
 		[HttpPost]
 		public IActionResult Login(string userName, string pass)
 		{
-			if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(pass) || !IsUserValid(userName, pass))
+			var user = GetuserList()
+							.Where(u => u.UserName == userName.Replace("ك", "ک").Replace("ي", "ی").Replace("ئ", "ی"))
+							.SingleOrDefault();
+
+			if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(pass) || !IsUserValid(user?.UserID.ToString(), pass))
 			{
 				return View("~/Views/IncommingUser/Login.cshtml", "نام کاربری و یا کلمه عبور اشتباه می باشد!");
 			}
-
-			var user = GetuserList()
-							.Where(u => u.UserID.ToString() == userName)
-							.SingleOrDefault();
 
 			if (!IsUserExists(user))
 			{
@@ -137,7 +137,7 @@
 												new IncommingUser
 												{
 													UserID = u.UserID,
-													UserName = u.UserName,
+													UserName = u.UserName.Replace("ك", "ک").Replace("ي", "ی").Replace("ئ", "ی"),
 													OperatorCode = u.OperatorCode
 												});
 					}
@@ -196,7 +196,9 @@
 		[HttpGet]
 		public IActionResult Logout()
 		{
+			HttpContext.Session.Remove("IUI");
 			HttpContext.Session.Remove("userName");
+
 			return RedirectToAction("Login", "IncommingUser");
 		}
 	}
