@@ -1,205 +1,235 @@
 ﻿namespace CostControl.Presentation.Controllers
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using System.Net.Http;
-	using System.Net.Http.Headers;
-	using CostControl.BusinessEntity.Models.CostControl;
-	using Microsoft.AspNetCore.Http;
-	using Microsoft.AspNetCore.Mvc;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Threading.Tasks;
+    using CostControl.BusinessEntity.Models.CostControl;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
 
-	public class IncommingUserController : BaseController
-	{
-		private class Users
-		{
-			public List<ServiceUser> UserList { get; set; }
-			
-			public ResponseResult Result { get; set; }
-		}
+    public class IncommingUserController : BaseController
+    {
+        private class Users
+        {
+            public List<ServiceUser> UserList { get; set; }
 
-		private class ServiceUser
-		{
-			public int UserID { get; set; }
+            public ResponseResult Result { get; set; }
+        }
 
-			public string UserName { get; set; }
+        private class ServiceUser
+        {
+            public int UserID { get; set; }
 
-			public int OperatorCode { get; set; }
-		}
+            public string UserName { get; set; }
 
-		private class ResponseResult
-		{
-			public int ErrorCode { get; set; }
+            public int OperatorCode { get; set; }
+        }
 
-			public string ErrorDescF { get; set; }
+        private class ResponseResult
+        {
+            public int ErrorCode { get; set; }
 
-			public string ErrorDescE { get; set; }
-		}
+            public string ErrorDescF { get; set; }
 
-		//[Route("")]
-		//[Route("Login")]
-		//[Route("~/")]
-		public IActionResult Login()
-		{
-			return View("~/Views/IncommingUser/Login.cshtml", "");
-		}
+            public string ErrorDescE { get; set; }
+        }
 
-		[HttpPost]
-		public IActionResult Login(string userName, string pass)
-		{
-			var user = GetuserList()
-							.Where(u => u.UserName == userName.Replace("ك", "ک").Replace("ي", "ی").Replace("ئ", "ی"))
-							.SingleOrDefault();
+        //[Route("")]
+        //[Route("Login")]
+        //[Route("~/")]
+        public IActionResult Login()
+        {
+            return View("~/Views/IncommingUser/Login.cshtml", "");
+        }
 
-			if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(pass) || !IsUserValid(user?.UserID.ToString(), pass))
-			{
-				return View("~/Views/IncommingUser/Login.cshtml", "نام کاربری و یا کلمه عبور اشتباه می باشد!");
-			}
+        [HttpPost]
+        public IActionResult Login(string userName, string pass)
+        {
+            if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(pass))
+            {
+                return View("~/Views/IncommingUser/Login.cshtml", "نام کاربری و یا کلمه عبور اشتباه می باشد!");
+            }
 
-			if (!IsUserExists(user))
-			{
-				Helper.PostValueToSevice<IncommingUser>("POST", user);
-			}
+            try
+            {
+                var user = GetuserList()
+                    .Where(u => u.UserName == userName.Replace("ك", "ک").Replace("ي", "ی").Replace("ئ", "ی"))
+                    .SingleOrDefault();
 
-			HttpContext.Session.SetInt32("IUI", 1);
-			HttpContext.Session.SetString("userName", userName);
+                if (!IsUserValid(user?.UserID.ToString(), pass))
+                {
+                    return View("~/Views/IncommingUser/Login.cshtml", "نام کاربری و یا کلمه عبور اشتباه می باشد!");
+                }
 
-			return RedirectToAction("Index", "Home");
-		}
+                if (!IsUserExists(user))
+                {
+                    Helper.PostValueToSevice<IncommingUser>("POST", user);
+                }
 
-		private bool IsUserExists(IncommingUser user)
-		{
-			var usersResponse = Helper.GetServiceResponse<IncommingUser>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1");
-			return usersResponse.data.Any(u => u.UserName.Contains(user.UserName) && u.OperatorCode == user.OperatorCode);
-		}
+                HttpContext.Session.SetInt32("IUI", 1);
+                HttpContext.Session.SetString("userName", userName);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
 
-		private bool IsUserValid(string userName, string pass)
-		{
-			try
-			{
-				using (var client = new HttpClient())
-				{
-					client.BaseAddress = new Uri($"{Helper.GetAuthenticationAddress()}isAuthorized?pUserID={userName}&pPassword={pass}");
+            return RedirectToAction("Index", "Home");
+        }
 
-					//List<IncommingUser> users = GetuserList().ToList();
+        private bool IsUserExists(IncommingUser user)
+        {
+            var usersResponse = Helper.GetServiceResponse<IncommingUser>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1");
+            return usersResponse.data.Any(u => u.UserName.Contains(user.UserName) && u.OperatorCode == user.OperatorCode);
+        }
 
-					var result = client.GetStringAsync("");
-					result.Wait();
+        private bool IsUserValid(string userName, string pass)
+        {
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri($"{Helper.GetAuthenticationAddress()}isAuthorized?pUserID={userName}&pPassword={pass}");
 
-					if (result.Result.Trim().ToLower() == "true")
-					{
-						return true;
-					}
-				}
+                    //List<IncommingUser> users = GetuserList().ToList();
 
-				return false;
-			}
-			catch
-			{
-				return false;
-			}
-		}
+                    var result = client.GetStringAsync("");
+                    result.Wait();
 
-		private IEnumerable<IncommingUser> GetuserList()
-		{
-			Users values = null;
-			IEnumerable<IncommingUser> users = null;
+                    if (result.Result.Trim().ToLower() == "true")
+                    {
+                        return true;
+                    }
+                }
 
-			string str = string.Empty;
-			using (var client = new HttpClient())
-			{
-				client.BaseAddress = new Uri(Helper.GetAuthenticationAddress());
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
 
-				client.DefaultRequestHeaders.Clear();
-				client.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue("nl-NL"));
+        private IEnumerable<IncommingUser> GetuserList()
+        {
+            try
+            {
+                Users values = null;
+                IEnumerable<IncommingUser> users = null;
 
-				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                string str = string.Empty;
+                using (var client = new HttpClient())
+                {
+                    client.Timeout = new TimeSpan(0, 0, 30);
+                    client.BaseAddress = new Uri(Helper.GetAuthenticationAddress());
 
-				//HTTP GET
-				var responseTask = client.GetAsync("");
-				responseTask.Wait();
+                    client.DefaultRequestHeaders.Clear();
+                    client.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue("nl-NL"));
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-				var result = responseTask.Result;
-				if (result.IsSuccessStatusCode)
-				{
-					var readTask = result.Content.ReadAsAsync<Users>();
+                    //HTTP GET
+                    var responseTask = client.GetAsync("");
+                    responseTask.Wait();
 
-					readTask.Wait();
+                    var result = responseTask.Result;
+                    result.EnsureSuccessStatusCode();
 
-					values = readTask.Result;
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var readTask = result.Content.ReadAsAsync<Users>();
 
-					if ((values != null) && (values.Result.ErrorCode == 0))
-					{
-						//users = new List<IncommingUser>();
-						users = values
-									.UserList
-									.Select(u =>
-												new IncommingUser
-												{
-													UserID = u.UserID,
-													UserName = u.UserName.Replace("ك", "ک").Replace("ي", "ی").Replace("ئ", "ی"),
-													OperatorCode = u.OperatorCode
-												});
-					}
-				}
-			}
+                        readTask.Wait();
 
-			return users;
-		}
+                        values = readTask.Result;
 
-		public IActionResult UserList(string param, int pageNumber, int pageSize)
-		{
-			ViewData["title"] = "فهرست کاربران";
+                        if ((values != null) && (values.Result.ErrorCode == 0))
+                        {
+                            //users = new List<IncommingUser>();
+                            users = values
+                                        .UserList
+                                        .Select(u =>
+                                                    new IncommingUser
+                                                    {
+                                                        UserID = u.UserID,
+                                                        UserName = u.UserName.Replace("ك", "ک").Replace("ي", "ی").Replace("ئ", "ی"),
+                                                        OperatorCode = u.OperatorCode
+                                                    });
+                        }
+                        else
+                        {
+                            return null;
+                        }
+                    }
+                }
 
-			Users values = null;
+                return users.ToList();
+            }
+            catch (OperationCanceledException)
+            {
+                return null;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
 
-			string str = string.Empty;
-			using (var client = new HttpClient())
-			{
-				client.BaseAddress = new Uri(Helper.GetAuthenticationAddress());
+        public IActionResult UserList(string param, int pageNumber, int pageSize)
+        {
+            ViewData["title"] = "فهرست کاربران";
 
-				client.DefaultRequestHeaders.Clear();
-				client.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue("nl-NL"));
+            Users values = null;
 
-				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            string str = string.Empty;
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(Helper.GetAuthenticationAddress());
 
-				//HTTP GET
-				var responseTask = client.GetAsync("");
-				responseTask.Wait();
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue("nl-NL"));
 
-				var result = responseTask.Result;
-				if (result.IsSuccessStatusCode)
-				{
-					var readTask = result.Content.ReadAsAsync<Users>();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-					readTask.Wait();
+                //HTTP GET
+                var responseTask = client.GetAsync("");
+                responseTask.Wait();
 
-					values = readTask.Result;
-				}
-				else //web api sent error response 
-				{
-					//log response status here..
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var readTask = result.Content.ReadAsAsync<Users>();
 
-					values = null;
+                    readTask.Wait();
 
-					ModelState.AddModelError(string.Empty, "Server error. Please contact administrator.");
+                    values = readTask.Result;
+                }
+                else //web api sent error response 
+                {
+                    //log response status here..
 
-					str = "Server error. Please contact administrator.";
-				}
-			}
+                    values = null;
 
-			//return PartialView("~/Views/SalePoint/SalePointList.cshtml");
-			return View(values);
-		}
+                    ModelState.AddModelError(string.Empty, "Server error. Please contact administrator.");
 
-		[Route("Logout")]
-		[HttpGet]
-		public IActionResult Logout()
-		{
-			HttpContext.Session.Remove("IUI");
-			HttpContext.Session.Remove("userName");
+                    str = "Server error. Please contact administrator.";
+                }
+            }
 
-			return RedirectToAction("Login", "IncommingUser");
-		}
-	}
+            //return PartialView("~/Views/SalePoint/SalePointList.cshtml");
+            return View(values);
+        }
+
+        [Route("Logout")]
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Remove("IUI");
+            HttpContext.Session.Remove("userName");
+
+            return RedirectToAction("Login", "IncommingUser");
+        }
+    }
 }

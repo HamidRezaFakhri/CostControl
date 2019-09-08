@@ -19,7 +19,8 @@
 		Add,
 		Edit,
 		Delete,
-		Import
+		Import,
+		Details
 	}
 
 	public class EntityTitle
@@ -103,6 +104,7 @@
 		{
 #if DEBUG
 			return "http://localhost:5001/api/";
+			//return "http://79.175.155.6:5001/api/";
 #elif !DEBUG
 			return "http://79.175.155.6:5001/api/";
 #endif
@@ -114,6 +116,7 @@
 		{
 #if DEBUG
 			return "http://localhost:5974/";
+			//return "http://79.175.155.6:80/";
 #elif !DEBUG
 			return "http://79.175.155.6:80/";
 #endif
@@ -124,7 +127,7 @@
 		{
 #if DEBUG
 			return "http://127.0.0.1:89/api/um/";
-			;
+			//return "http://79.175.155.6:89/api/um/";
 #elif !DEBUG
 			return "http://79.175.155.6:89/api/um/";
 #endif
@@ -163,7 +166,6 @@
 
 					client.DefaultRequestHeaders.Clear();
 					client.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue("nl-NL"));
-
 					client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
 					var responseTask = client.GetAsync(apiParams);

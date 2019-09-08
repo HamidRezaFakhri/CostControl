@@ -18,7 +18,7 @@
                 cfg.AddCollectionMappers();
                 cfg.AllowNullCollections = true;
                 cfg.AddExpressionMapping();
-                cfg.ValidateInlineMaps = false;
+                //cfg.ValidateInlineMaps = false;
 
                 //cfg.EnableNullPropagationForQueryMapping = true;
                 //cfg.Advanced.AllowAdditiveTypeMapCreation = true;

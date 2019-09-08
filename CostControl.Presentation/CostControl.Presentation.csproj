@@ -10,11 +10,22 @@
     <MvcRazorCompileOnPublish>true</MvcRazorCompileOnPublish>-->
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="Content\**" />
+    <Compile Remove="Middlewares\**" />
     <Content Remove="Content\**" />
+    <Content Remove="Middlewares\**" />
     <EmbeddedResource Remove="Content\**" />
+    <EmbeddedResource Remove="Middlewares\**" />
     <None Remove="Content\**" />
+    <None Remove="Middlewares\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -265,7 +276,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Middlewares\" />
     <Folder Include="wwwroot\js\CostControl\" />
   </ItemGroup>
 

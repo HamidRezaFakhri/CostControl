@@ -33,6 +33,11 @@
 
 		public virtual ConsumptionUnit ConsumptionUnit { get; set; }
 
+		[Required(ErrorMessage = "شرح اجباریست!")]
+		[Display(Name = "شرح")]
+		[DataType(DataType.MultilineText)]
+		public string Description { get; set; }
+
 		public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
 		{
 			#region IntakeRemittanceID validation rules

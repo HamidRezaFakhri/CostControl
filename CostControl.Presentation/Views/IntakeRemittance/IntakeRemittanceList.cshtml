@@ -5,6 +5,7 @@
 	var addTitle = Helper.GetEntityTitle<CostControl.BusinessEntity.Models.CostControl.IntakeRemittance>(EnumTitle.Add);
 	var editTitle = Helper.GetEntityTitle<CostControl.BusinessEntity.Models.CostControl.IntakeRemittance>(EnumTitle.Edit);
 	var deleteTitle = Helper.GetEntityTitle<CostControl.BusinessEntity.Models.CostControl.IntakeRemittance>(EnumTitle.Delete);
+	var detailsTitle = Helper.GetEntityTitle<CostControl.BusinessEntity.Models.CostControl.IntakeRemittanceItem>(EnumTitle.Details);
 }
 
 <div class="row well">
@@ -49,7 +50,7 @@
 
 					<span> | </span>
 					<span class="btn btn-sm btn-outline-dark"
-						  onclick="DeleteEntityModal(@item.Id, '/IntakeRemittance/DetailIntakeRemittance/', '@editTitle', '@item.Id')">
+						  onclick="DeleteEntityModal(@item.Id, '/IntakeRemittance/DetailIntakeRemittance/', '@detailsTitle', '@item.Id')">
 						<i class="fa"><span> جزئیات </span></i>
 					</span>
 

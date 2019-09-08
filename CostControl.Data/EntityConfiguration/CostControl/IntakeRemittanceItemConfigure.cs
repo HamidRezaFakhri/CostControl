@@ -33,6 +33,13 @@
                 .IsUnique();
 
             entityTypeBuilder
+                .Property(e => e.Descripton)
+                .HasMaxLength(1000)
+                .HasColumnType("NVARCHAR(1000)")
+                .IsRequired()
+                .IsUnicode();
+
+            entityTypeBuilder
                .ToTable("IntakeRemittanceItem", "dbo");
         }
     }
