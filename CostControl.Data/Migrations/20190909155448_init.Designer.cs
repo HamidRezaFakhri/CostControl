@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CostControl.Data.Migrations
 {
     [DbContext(typeof(CostControlDbContext))]
-    [Migration("20190909001941_IntakeDescription")]
-    partial class IntakeDescription
+    [Migration("20190909155448_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -423,6 +423,8 @@ namespace CostControl.Data.Migrations
 
                     b.Property<long>("IntakeRemittanceId");
 
+                    b.Property<bool>("IsAddedManualy");
+
                     b.Property<int>("State")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("1");
@@ -437,6 +439,44 @@ namespace CostControl.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("IntakeRemittanceItem","dbo");
+                });
+
+            modelBuilder.Entity("CostControl.Entity.Models.CostControl.IntakeRemittanceItemLog", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric(28,2)");
+
+                    b.Property<long>("ConsumptionUnitId");
+
+                    b.Property<string>("Descripton")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR(1000)")
+                        .HasMaxLength(1000)
+                        .IsUnicode(true);
+
+                    b.Property<long>("IngredientId");
+
+                    b.Property<long>("IntakeRemittanceItemId");
+
+                    b.Property<bool>("IsAddedManualy");
+
+                    b.Property<int>("State")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("1");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConsumptionUnitId");
+
+                    b.HasIndex("IngredientId");
+
+                    b.HasIndex("IntakeRemittanceItemId");
+
+                    b.ToTable("IntakeRemittanceItemLog","dbo");
                 });
 
             modelBuilder.Entity("CostControl.Entity.Models.CostControl.Inventory", b =>
@@ -868,6 +908,24 @@ namespace CostControl.Data.Migrations
                     b.HasOne("CostControl.Entity.Models.CostControl.IntakeRemittance", "IntakeRemittance")
                         .WithMany("IntakeRemittanceItems")
                         .HasForeignKey("IntakeRemittanceId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("CostControl.Entity.Models.CostControl.IntakeRemittanceItemLog", b =>
+                {
+                    b.HasOne("CostControl.Entity.Models.CostControl.ConsumptionUnit", "ConsumptionUnit")
+                        .WithMany()
+                        .HasForeignKey("ConsumptionUnitId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("CostControl.Entity.Models.CostControl.Ingredient", "Ingredient")
+                        .WithMany()
+                        .HasForeignKey("IngredientId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("CostControl.Entity.Models.CostControl.IntakeRemittanceItem", "IntakeRemittanceItem")
+                        .WithMany()
+                        .HasForeignKey("IntakeRemittanceItemId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 

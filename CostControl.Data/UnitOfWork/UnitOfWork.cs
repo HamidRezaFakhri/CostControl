@@ -236,6 +236,15 @@
 
 		public Repository<IntakeRemittance> IntakeRemittance => _intakeRemittance ?? (_intakeRemittance = new Repository<IntakeRemittance>(this));
 
+		private Repository<IntakeRemittanceItem> _intakeRemittanceItem;
+
+		public Repository<IntakeRemittanceItem> IntakeRemittanceItem => _intakeRemittanceItem ?? (_intakeRemittanceItem = new Repository<IntakeRemittanceItem>(this));
+
+
+		private Repository<IntakeRemittanceItemLog> _intakeRemittanceItemLog;
+
+		public Repository<IntakeRemittanceItemLog> IntakeRemittanceItemLog => _intakeRemittanceItemLog ?? (_intakeRemittanceItemLog = new Repository<IntakeRemittanceItemLog>(this));
+
 		private Repository<DataImport> _dataImport;
 
 		public Repository<DataImport> DataImport => _dataImport ?? (_dataImport = new Repository<DataImport>(this));

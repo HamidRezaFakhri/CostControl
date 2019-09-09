@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CostControl.Data.Migrations
 {
-    public partial class Init : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -514,8 +514,10 @@ namespace CostControl.Data.Migrations
                     State = table.Column<int>(nullable: false, defaultValueSql: "1"),
                     IntakeRemittanceId = table.Column<long>(nullable: false),
                     IngredientId = table.Column<long>(nullable: false),
+                    ConsumptionUnitId = table.Column<long>(nullable: false),
                     Amount = table.Column<decimal>(type: "numeric(28,2)", nullable: false),
-                    ConsumptionUnitId = table.Column<long>(nullable: false)
+                    Descripton = table.Column<string>(type: "NVARCHAR(1000)", maxLength: 1000, nullable: false),
+                    IsAddedManualy = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -625,6 +627,47 @@ namespace CostControl.Data.Migrations
                         column: x => x.IngredientId,
                         principalSchema: "dbo",
                         principalTable: "Ingredient",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "IntakeRemittanceItemLog",
+                schema: "dbo",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    State = table.Column<int>(nullable: false, defaultValueSql: "1"),
+                    IntakeRemittanceItemId = table.Column<long>(nullable: false),
+                    IngredientId = table.Column<long>(nullable: false),
+                    ConsumptionUnitId = table.Column<long>(nullable: false),
+                    Amount = table.Column<decimal>(type: "numeric(28,2)", nullable: false),
+                    Descripton = table.Column<string>(type: "NVARCHAR(1000)", maxLength: 1000, nullable: false),
+                    IsAddedManualy = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_IntakeRemittanceItemLog", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_IntakeRemittanceItemLog_ConsumptionUnit_ConsumptionUnitId",
+                        column: x => x.ConsumptionUnitId,
+                        principalSchema: "dbo",
+                        principalTable: "ConsumptionUnit",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_IntakeRemittanceItemLog_Ingredient_IngredientId",
+                        column: x => x.IngredientId,
+                        principalSchema: "dbo",
+                        principalTable: "Ingredient",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_IntakeRemittanceItemLog_IntakeRemittanceItem_IntakeRemittanceItemId",
+                        column: x => x.IntakeRemittanceItemId,
+                        principalSchema: "dbo",
+                        principalTable: "IntakeRemittanceItem",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -800,6 +843,24 @@ namespace CostControl.Data.Migrations
                 table: "IntakeRemittanceItem",
                 columns: new[] { "IntakeRemittanceId", "IngredientId" },
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_IntakeRemittanceItemLog_ConsumptionUnitId",
+                schema: "dbo",
+                table: "IntakeRemittanceItemLog",
+                column: "ConsumptionUnitId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_IntakeRemittanceItemLog_IngredientId",
+                schema: "dbo",
+                table: "IntakeRemittanceItemLog",
+                column: "IngredientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_IntakeRemittanceItemLog_IntakeRemittanceItemId",
+                schema: "dbo",
+                table: "IntakeRemittanceItemLog",
+                column: "IntakeRemittanceItemId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Inventory_Code",
@@ -978,7 +1039,7 @@ namespace CostControl.Data.Migrations
                 schema: "dbo");
 
             migrationBuilder.DropTable(
-                name: "IntakeRemittanceItem",
+                name: "IntakeRemittanceItemLog",
                 schema: "dbo");
 
             migrationBuilder.DropTable(
@@ -1002,7 +1063,7 @@ namespace CostControl.Data.Migrations
                 schema: "dbo");
 
             migrationBuilder.DropTable(
-                name: "IntakeRemittance",
+                name: "IntakeRemittanceItem",
                 schema: "dbo");
 
             migrationBuilder.DropTable(
@@ -1026,11 +1087,15 @@ namespace CostControl.Data.Migrations
                 schema: "dbo");
 
             migrationBuilder.DropTable(
-                name: "IncommingUser",
+                name: "IntakeRemittance",
                 schema: "dbo");
 
             migrationBuilder.DropTable(
                 name: "Ingredient",
+                schema: "dbo");
+
+            migrationBuilder.DropTable(
+                name: "IncommingUser",
                 schema: "dbo");
 
             migrationBuilder.DropTable(

@@ -42,6 +42,7 @@
                 cfg.AddProfile<IngredientProfile>();
                 cfg.AddProfile<IntakeRemittanceProfile>();
                 cfg.AddProfile<IntakeRemittanceItemProfile>();
+                cfg.AddProfile<IntakeRemittanceItemLogProfile>();
                 cfg.AddProfile<InventoryProfile>();
                 cfg.AddProfile<MenuProfile>();
                 cfg.AddProfile<MenuItemProfile>();

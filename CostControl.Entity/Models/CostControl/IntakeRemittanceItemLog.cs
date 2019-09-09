@@ -2,11 +2,11 @@
 
 namespace CostControl.Entity.Models.CostControl
 {
-    public class IntakeRemittanceItem : Base.SuperEntity<long>
+    public class IntakeRemittanceItemLog : Base.SuperEntity<long>
     {
-        public long IntakeRemittanceId { get; set; }
+        public long IntakeRemittanceItemId { get; set; }
 
-        public virtual IntakeRemittance IntakeRemittance { get; set; }
+        public virtual IntakeRemittanceItem IntakeRemittanceItem { get; set; }
 
         public long IngredientId { get; set; }
 

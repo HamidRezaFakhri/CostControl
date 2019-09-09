@@ -132,6 +132,10 @@
 
 		public virtual DbSet<IntakeRemittance> IntakeRemittances { get; set; }
 
+		public virtual DbSet<IntakeRemittanceItem> IntakeRemittanceItems { get; set; }
+
+		public virtual DbSet<IntakeRemittanceItemLog> IntakeRemittanceItemLogs { get; set; }
+
 		public virtual DbSet<DataImport> DataImports { get; set; }
 
 		public virtual DbSet<SaleCostPoint> SaleCostPoints { get; set; }
