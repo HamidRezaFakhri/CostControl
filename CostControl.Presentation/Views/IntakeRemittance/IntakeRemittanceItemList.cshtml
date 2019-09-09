@@ -5,7 +5,6 @@
 	var addTitle = Helper.GetEntityTitle<CostControl.BusinessEntity.Models.CostControl.IntakeRemittanceItem>(EnumTitle.Add);
 	var editTitle = Helper.GetEntityTitle<CostControl.BusinessEntity.Models.CostControl.IntakeRemittanceItem>(EnumTitle.Edit);
 	var deleteTitle = Helper.GetEntityTitle<CostControl.BusinessEntity.Models.CostControl.IntakeRemittanceItem>(EnumTitle.Delete);
-	var detailsTitle = Helper.GetEntityTitle<CostControl.BusinessEntity.Models.CostControl.IntakeRemittanceItem>(EnumTitle.Details);
 }
 
 <table id="IntakeRemittanceItemslist" class="table table-bordered table-striped table-hover">
@@ -15,6 +14,7 @@
 			<th>مواد مصرفی</th>
 			<th>واحد</th>
 			<th>مقدار</th>
+			<th>توضیحات</th>
 			<th></th>
 		</tr>
 	</thead>
@@ -24,11 +24,12 @@
 		<tr id="tr_@item.Id">
 			<td>@item.Id</td>
 			<td id="td_Ingredient">@item.Ingredient.Name</td>
-			<td id="td_ConsumptionUnit">@item.ConsumptionUnit.Name</td>
+			<td id="td_ConsumptionUnit">@item.Ingredient.ConsumptionUnit.Name</td>
 			<td id="td_Amount"><input type="text" value="@item.Amount" /></td>
+			<td id="td_Description"><input type="text" value="@item.Description" /></td>
 			<td>
 				<a href="#" class="btn btn-sm btn-warning"
-				   onclick="EditEntityModal(@item.Id, '/IntakeRemittance/EditIntakeRemittance/', '@editTitle (@item.Id)')">
+				   onclick="EditEntityModal(@item.Id, 'IntakeRemittance/EditIntakeRemittance/', '@editTitle (@item.Id)')">
 					<i class="fa fa-edit"><span> ویرایش </span></i>
 				</a>
 			</td>

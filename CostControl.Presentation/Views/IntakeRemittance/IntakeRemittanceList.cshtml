@@ -12,7 +12,7 @@
 	<div class="col-md-6">
 		<div class="btn-group" data-toggle="modal">
 			<a id="btnAddIntakeRemittance" href="#" class="btn btn-primary"
-			   onclick='createEntityModal("/IntakeRemittance/AddIntakeRemittance", "@addTitle")'>
+			   onclick='createEntityModal("IntakeRemittance/AddIntakeRemittance", "@addTitle")'>
 				<span class="fa fa-plus"> <i> جدید</i></span>
 			</a>
 
@@ -37,28 +37,34 @@
 				<td id="td_FromDate">@item.IntakeFromDate.ConverToPersian()</td>
 				<td id="td_ToDate">@item.IntakeToDate.ConverToPersian()</td>
 				<td>
-					<a href="#" class="btn btn-sm btn-warning"
-					   onclick="EditEntityModal(@item.Id, '/IntakeRemittance/EditIntakeRemittance/', '@editTitle (@item.Id)')">
-						<i class="fa fa-edit"><span> ویرایش </span></i>
-					</a>
-
-					<span> | </span>
-					<span class="btn btn-sm btn-danger"
-						  onclick="DeleteEntityModal(@item.Id, '/IntakeRemittance/DeleteIntakeRemittance/', '@deleteTitle', '@item.Id')">
-						<i class="fa fa-trash"><span> حذف </span></i>
-					</span>
-
-					<span> | </span>
-					<span class="btn btn-sm btn-outline-dark"
-						  onclick="DeleteEntityModal(@item.Id, '/IntakeRemittance/DetailIntakeRemittance/', '@detailsTitle', '@item.Id')">
-						<i class="fa"><span> جزئیات </span></i>
-					</span>
-
 					@if (!item.IsConfirmed)
 					{
+						<a href="#" class="btn btn-sm btn-warning"
+						   onclick="EditEntityModal(@item.Id, 'IntakeRemittance/EditIntakeRemittance/', '@editTitle (@item.Id)')">
+							<i class="fa fa-edit"><span> ویرایش </span></i>
+						</a>
+
+						<span> | </span>
+						<span class="btn btn-sm btn-outline-dark"
+							  onclick="EditEntityModal(@item.Id, 'IntakeRemittance/DetailIntakeRemittance/', '@detailsTitle', '@item.Id')">
+							<i class="fa"><span> جزئیات </span></i>
+						</span>
+
+						<span class="ui-slider-vertical"> | </span>
+						<span class="btn btn-sm btn-danger"
+							  onclick="DeleteEntityModal(@item.Id, 'IntakeRemittance/DeleteIntakeRemittance/', '@deleteTitle', '@item.Id')">
+							<i class="fa fa-trash"><span> حذف </span></i>
+						</span>
+
+						<span> | </span>
+						<span class="btn btn-sm btn-danger"
+							  onclick="DeleteEntityModal(@item.Id, 'IntakeRemittance/DeleteIntakeRemittance/', '@deleteTitle', '@item.Id')">
+							<i class="fa fa-trash"><span> افزودن </span></i>
+						</span>
+
 						<span> | </span>
 						<span class="btn btn-sm btn-primary"
-							  onclick="DeleteEntityModal(@item.Id, '/IntakeRemittance/ConfirmIntakeRemittance/', '@editTitle', '@item.Id')">
+							  onclick="DeleteEntityModal(@item.Id, 'IntakeRemittance/ConfirmIntakeRemittance/', '@editTitle', '@item.Id')">
 							<i class="fa "><span> تائید </span></i>
 						</span>
 					}

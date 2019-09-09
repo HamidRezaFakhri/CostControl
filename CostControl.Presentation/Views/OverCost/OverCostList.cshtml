@@ -11,7 +11,7 @@
 	<div class="col-md-1">
 		<div class="btn-group" data-toggle="modal">
 			<a id="btnAddOverCost" href="#" class="btn btn-primary"
-			   onclick='createEntityModal("/OverCost/AddOverCost", "@addTitle")'>
+			   onclick='createEntityModal("OverCost/AddOverCost", "@addTitle")'>
 				<span class="fa fa-plus"> <i> جدید</i></span>
 			</a>
 
@@ -52,13 +52,13 @@
 				<td id="td_OverCostType">@item.OverCostType.Name</td>
 				<td>
 					<a href="#" class="btn btn-sm btn-warning"
-					   onclick="EditEntityModal(@item.Id, '/OverCost/EditOverCost/', '@editTitle')">
+					   onclick="EditEntityModal(@item.Id, 'OverCost/EditOverCost/', '@editTitle')">
 						<i class="fa fa-edit"><span> ویرایش </span></i>
 					</a>
 
 					<span> | </span>
 					<span class="btn btn-sm btn-danger"
-						  onclick="DeleteEntityModal(@item.Id, '/OverCost/DeleteOverCost/', '@deleteTitle', '@item.Id')">
+						  onclick="DeleteEntityModal(@item.Id, 'OverCost/DeleteOverCost/', '@deleteTitle', '@item.Id')">
 						<i class="fa fa-trash"><span> حذف </span></i>
 					</span>
 				</td>

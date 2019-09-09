@@ -34,8 +34,8 @@
 #if !DEBUG
 					.UseSqlServer(@"Data Source=79.175.155.6;Initial Catalog=CostControl;Trusted_Connection=false;user id = sa;password=Cost#Point@98;Connection Timeout=300;MultipleActiveResultSets=true;",
 #elif DEBUG
-					.UseSqlServer(@"Data Source=DESKTOP-14E4F3E\SQLEXPRESS;Initial Catalog=CostControl;Trusted_Connection=false;user id = sa;password=2129123;Connection Timeout=300;MultipleActiveResultSets=true;",
-					//.UseSqlServer(@"Data Source=79.175.155.6;Initial Catalog=CostControl;Trusted_Connection=false;user id = sa;password=Cost#Point@98;Connection Timeout=300;MultipleActiveResultSets=true;",
+					//.UseSqlServer(@"Data Source=DESKTOP-14E4F3E\SQLEXPRESS;Initial Catalog=CostControl;Trusted_Connection=false;user id = sa;password=2129123;Connection Timeout=300;MultipleActiveResultSets=true;",
+					.UseSqlServer(@"Data Source=79.175.155.6;Initial Catalog=CostControl;Trusted_Connection=false;user id = sa;password=Cost#Point@98;Connection Timeout=300;MultipleActiveResultSets=true;",
 #endif
 					//opts => opts.CommandTimeout((int)TimeSpan.FromMinutes(10).TotalSeconds))
 					opts => opts.CommandTimeout(120))

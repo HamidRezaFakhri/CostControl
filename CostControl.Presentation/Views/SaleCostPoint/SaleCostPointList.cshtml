@@ -11,7 +11,7 @@
 	<div class="col-md-6">
 		<div class="btn-group" data-toggle="modal">
 			<a id="btnAddSaleCostPoint" href="#" class="btn btn-primary"
-			   onclick='createEntityModal("/SaleCostPoint/AddSaleCostPoint", "@addTitle")'>
+			   onclick='createEntityModal("SaleCostPoint/AddSaleCostPoint", "@addTitle")'>
 				<span class="fa fa-plus"> <i> جدید</i></span>
 			</a>
 		</div>
@@ -36,13 +36,13 @@
 				<td id="td_CostPointName">@item.CostPoint.Name</td>
 				<td>
 					<a href="#" class="btn btn-sm btn-warning"
-					   onclick="EditEntityModal(@item.Id, '/SaleCostPoint/EditSaleCostPoint/', '@editTitle (@item.SalePoint.Name @item.CostPoint.Name)')">
+					   onclick="EditEntityModal(@item.Id, 'SaleCostPoint/EditSaleCostPoint/', '@editTitle (@item.SalePoint.Name @item.CostPoint.Name)')">
 						<i class="fa fa-edit"><span> ویرایش </span></i>
 					</a>
 
 					<span> | </span>
 					<sapn class="btn btn-sm btn-danger"
-					   onclick="DeleteEntityModal(@item.Id, '/SaleCostPoint/DeleteSaleCostPoint/', '@deleteTitle', '@item.SalePoint.Name @item.CostPoint.Name')">
+					   onclick="DeleteEntityModal(@item.Id, 'SaleCostPoint/DeleteSaleCostPoint/', '@deleteTitle', '@item.SalePoint.Name @item.CostPoint.Name')">
 						<i class="fa fa-trash"><span> حذف </span></i>
 					</sapn>
 				</td>

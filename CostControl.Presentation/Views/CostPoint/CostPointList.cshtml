@@ -12,7 +12,7 @@
 	<div class="col-md-6">
 		<div class="btn-group" data-toggle="modal">
 			<a id="btnAddCostPoint" href="#" class="btn btn-primary"
-			   onclick='createEntityModal("/CostPoint/AddCostPointExternal", "@addTitle")'>
+			   onclick='createEntityModal("CostPoint/AddCostPointExternal", "@addTitle")'>
 				<span class="fa fa-plus"> <i> جدید</i></span>
 			</a>
 
@@ -40,7 +40,7 @@
 				<td id="td_CostPointGroupName">@item.CostPointGroupName</td>
 				<td>
 					<span class="btn btn-sm btn-danger"
-					   onclick="DeleteEntityModal(@item.Id, '/CostPoint/DeleteCostPoint/', '@deleteTitle', '@item.Name')">
+					   onclick="DeleteEntityModal(@item.Id, 'CostPoint/DeleteCostPoint/', '@deleteTitle', '@item.Name')">
 						<i class="fa fa-trash"><span> حذف </span></i>
 					</span>
 				</td>

@@ -11,7 +11,7 @@
 	<div class="col-md-6">
 		<div class="btn-group" data-toggle="modal">
 			<a id="btnAddFood" href="#" class="btn btn-primary"
-			   onclick='createEntityModal("/Food/AddFoodExternal", "@addTitle")'>
+			   onclick='createEntityModal("Food/AddFoodExternal", "@addTitle")'>
 				<span class="fa fa-plus"> <i> جدید</i></span>
 			</a>
 
@@ -48,7 +48,7 @@
 
 				<span> | </span>
 				<span href="#" class="btn btn-sm btn-danger"
-				   onclick="DeleteEntityModal(@item.Id, '/Food/DeleteFood/', '@deleteTitle', '@item.Name')">
+				   onclick="DeleteEntityModal(@item.Id, 'Food/DeleteFood/', '@deleteTitle', '@item.Name')">
 					<i class="fa fa-trash"><span> حذف </span></i>
 				</span>
 			</td>

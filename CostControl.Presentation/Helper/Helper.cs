@@ -188,12 +188,14 @@
 					}
 				}
 			}
-			catch (OperationCanceledException)
+			catch (OperationCanceledException ocex)
 			{
+				Console.WriteLine(ocex.Message);
 				return null;
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
+				Console.WriteLine(ex.Message);
 				return null;
 			}
 		}

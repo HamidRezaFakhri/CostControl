@@ -11,7 +11,7 @@
 	<div class="col-md-6">
 		<div class="btn-group" data-toggle="modal">
 			<a id="btnAddConsumptionUnit" href="#" class="btn btn-primary"
-			   onclick='createEntityModal("/ConsumptionUnit/AddConsumptionUnit", "@addTitle")'>
+			   onclick='createEntityModal("ConsumptionUnit/AddConsumptionUnit", "@addTitle")'>
 				<span class="fa fa-plus"> <i> جدید</i></span>
 			</a>
 
@@ -37,7 +37,7 @@
 				<td id="td_Code">@item.Code</td>
 				<td>
 					<span class="btn btn-sm btn-danger"
-					   onclick="DeleteEntityModal(@item.Id, '/ConsumptionUnit/DeleteConsumptionUnit/', '@deleteTitle', '@item.Name')">
+					   onclick="DeleteEntityModal(@item.Id, 'ConsumptionUnit/DeleteConsumptionUnit/', '@deleteTitle', '@item.Name')">
 						<i class="fa fa-trash"><span> حذف </span></i>
 					</span>
 				</td>

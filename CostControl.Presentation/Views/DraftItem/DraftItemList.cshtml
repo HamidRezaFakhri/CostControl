@@ -11,7 +11,7 @@
 	<div class="col-md-6">
 		<div class="btn-group" data-toggle="modal">
 			<a id="btnAddDraftItem" href="#" class="btn btn-primary"
-			   onclick='createEntityModal("/DraftItem/AddDraftItem", "@addTitle")'>
+			   onclick='createEntityModal("DraftItem/AddDraftItem", "@addTitle")'>
 				<span class="fa fa-plus"> <i> جدید</i></span>
 			</a>
 		</div>
@@ -36,13 +36,13 @@
 				<td id="td_Code">@item.Id</td>
 				<td>
 					<a href="#" class="btn btn-sm btn-warning"
-					   onclick="EditEntityModal(@item.Id, '/DraftItem/EditDraftItem/', '@editTitle (@item.Id)')">
+					   onclick="EditEntityModal(@item.Id, 'DraftItem/EditDraftItem/', '@editTitle (@item.Id)')">
 						<i class="fa fa-edit"><span> ویرایش </span></i>
 					</a>
 
 					<span> | </span>
 					<a class="btn btn-sm btn-danger"
-					   onclick="DeleteEntityModal(@item.Id, '/DraftItem/DeleteDraftItem/', '@deleteTitle', '@item.Id')">
+					   onclick="DeleteEntityModal(@item.Id, 'DraftItem/DeleteDraftItem/', '@deleteTitle', '@item.Id')">
 						<i class="fa fa-trash"><span> حذف </span></i>
 					</a>
 				</td>

@@ -71,7 +71,7 @@
 
 			var model = GetIntakeRemittanceById(id);
 
-			ViewBag.SaleCostPoint = GetSaleCostPointGroupList(model.SaleCostPointId);
+			ViewBag.SaleCostPoint = GetSaleCostPointGroupList(model?.SaleCostPointId);
 
 			return PartialView(model);
 		}
@@ -123,10 +123,10 @@
 
 		public IActionResult DetailIntakeRemittance(long id)
 		{
-			ViewData["title"] = Helper.GetEntityTitle<IntakeRemittance>(EnumTitle.Edit);
+			ViewData["title"] = Helper.GetEntityTitle<CostControl.BusinessEntity.Models.CostControl.IntakeRemittanceItem>(EnumTitle.Details);
 
 			return PartialView("~/Views/IntakeRemittance/IntakeRemittanceItemList.cshtml",
-				GetIntakeRemittanceById(id).IntakeRemittanceItems);
+				GetIntakeRemittanceById(id)?.IntakeRemittanceItems);
 		}
 		
 		[HttpPost]
@@ -139,8 +139,9 @@
 
 		private IntakeRemittance GetIntakeRemittanceById(long id)
 		{
-			return (Helper.GetServiceResponse<IntakeRemittance>("GetById?id=" + id.ToString()).data as List<IntakeRemittance>)
-				.FirstOrDefault();
+			var data = Helper.GetServiceResponse<IntakeRemittance>("GetById?id=" + id.ToString())?.data;
+
+			return data == null ? null : (data as List<IntakeRemittance>).FirstOrDefault();
 		}
 	}
 }

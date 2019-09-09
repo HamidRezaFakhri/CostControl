@@ -1,14 +1,13 @@
 ﻿namespace CostControl.Presentation.Controllers
 {
+    using CostControl.BusinessEntity.Models.CostControl;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net.Http;
     using System.Net.Http.Headers;
-    using System.Threading.Tasks;
-    using CostControl.BusinessEntity.Models.CostControl;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc;
 
     public class IncommingUserController : BaseController
     {
@@ -64,6 +63,8 @@
                     return View("~/Views/IncommingUser/Login.cshtml", "نام کاربری و یا کلمه عبور اشتباه می باشد!");
                 }
 
+                user.UserName = user.UserName.Replace("ك", "ک").Replace("ي", "ی").Replace("ئ", "ی");
+
                 if (!IsUserExists(user))
                 {
                     Helper.PostValueToSevice<IncommingUser>("POST", user);
@@ -83,6 +84,12 @@
         private bool IsUserExists(IncommingUser user)
         {
             var usersResponse = Helper.GetServiceResponse<IncommingUser>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1");
+
+            if (usersResponse?.data == null)
+            {
+                return false;
+            }
+
             return usersResponse.data.Any(u => u.UserName.Contains(user.UserName) && u.OperatorCode == user.OperatorCode);
         }
 
@@ -135,7 +142,7 @@
                     responseTask.Wait();
 
                     var result = responseTask.Result;
-                    result.EnsureSuccessStatusCode();
+                    //result.EnsureSuccessStatusCode();
 
                     if (result.IsSuccessStatusCode)
                     {
