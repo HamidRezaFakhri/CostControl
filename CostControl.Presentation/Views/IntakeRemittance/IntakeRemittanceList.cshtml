@@ -63,7 +63,7 @@
 
 						<span> | </span>
 						<span class="btn btn-sm btn-primary"
-							  onclick="DeleteEntityModal(@item.Id, 'IntakeRemittance/ConfirmIntakeRemittance/', '@editTitle', '@item.Id')">
+							  onclick="ConfirmIntakeRemitance(@item.Id, 'IntakeRemittance/ConfirmIntakeRemittance/', '@editTitle', '@item.Id')">
 							<i class="fa fa-check"><span> تائید </span></i>
 						</span>
 					}
@@ -76,10 +76,28 @@
 <script>
 	$(document).ready(function () {
 		$('#pageTitle').html('@ViewData["title"]');
+
 		$('#IntakeRemittanceslist').dataTable({
 			"language": {
 				"url": "/lib/DataTables/i18n/Persian.lang.json"
 			}
 		});
 	});
+
+	function ConfirmIntakeRemitance(id, uri, title, itemtext/*, callback*/) {
+			$.ajax({
+				url: '@Helper.GetPresentationAddress()' + uri + id,
+				Type: "GET",
+				data: {},
+				error: function (err) {
+					alert(err.status + "<--------->" + err.statusCode);
+				}
+			}).done(
+				function (result) {
+					$('#modalDialog').removeClass('mw-100 w-85');
+					$("#apModalLabel").html(title);
+					$("#modalBody").html(result);
+					$("#apModal").modal('show');
+				});
+		}
 </script>

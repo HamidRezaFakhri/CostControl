@@ -34,5 +34,24 @@
 				return GenerateExceptionResponse(e, "Exception!");
 			}
 		}
+
+		[HttpPost("Confirm")]
+		public ActionResult<ServiceResponse<IntakeRemittance>> Confirm(long id, [FromBody]IntakeRemittance entity)
+		{
+			if (entity != null /*&& id == entity.Id*/)
+			{
+				try
+				{
+					return GenerateResponse(null,
+						new List<IntakeRemittance>() { (PDKBusinessLogic as IntakeRemittanceLogic).Confirm(entity) });
+				}
+				catch (Exception e)
+				{
+					return GenerateExceptionResponse(e, "Exception!");
+				}
+			}
+
+			return GenerateExceptionResponse(new Exception("Model is null!"), "Exception!");
+		}
 	}
 }

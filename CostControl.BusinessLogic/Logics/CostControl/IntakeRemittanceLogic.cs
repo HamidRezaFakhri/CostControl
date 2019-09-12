@@ -360,6 +360,32 @@
 		public int GetCount(Expression<Func<CostControlBusinessEntity.IntakeRemittance, bool>> filter = null)
 		=> Repository.Count(IntakeRemittanceIMapper.Map<Expression<Func<CostControlEntity.IntakeRemittance, bool>>>(filter));
 
+		public CostControlBusinessEntity.IntakeRemittance Confirm(CostControlBusinessEntity.IntakeRemittance entity)
+		{
+			if (entity == null || entity.Id <= 0)
+			{
+				return null;
+			}
+
+			var entityFromDb = GetById(entity.Id);
+
+			if (entityFromDb.IsConfirmed)
+			{
+				return entityFromDb;
+			}
+
+			var IntakeRemittance = IntakeRemittanceIMapper.Map<CostControlEntity.IntakeRemittance>(entityFromDb);
+
+            Repository.RunRawSql("");
+            _unitOfWork.en
+            IntakeRemittance.IsConfirmed = true;
+
+			var result = IntakeRemittanceIMapper.Map<CostControlBusinessEntity.IntakeRemittance>(Repository.Update(IntakeRemittance));
+			Commit();
+
+			return result;
+		}
+
 		private bool _disposed = false;
 
 		protected virtual void Dispose(bool disposing)

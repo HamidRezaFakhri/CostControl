@@ -1,0 +1,48 @@
+﻿@model CostControl.BusinessEntity.Models.CostControl.IntakeRemittance
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("ConfirmIntakeRemittance", "IntakeRemittance", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return SubmitForm(this)" }))
+{
+	@Html.AntiForgeryToken()
+
+	<div>
+		<div>
+			<h3>آیا اطمینان در تائید دارید؟</h3>
+		</div>
+
+		<br />
+
+		<div class="form-group">
+			<div class="col-md-offset-2 col-md-10">
+				<input type="submit" value="تائید" class="btn btn-success" />
+				<input id="btnCancel" type="button" class="btn btn-default" data-dismiss="modal" value="انصراف" />
+			</div>
+		</div>
+	</div>
+}
+
+@section Scripts{
+	<script>
+		function SubmitForm(form) {
+			$.ajax({
+				type: "POST",
+				url: form.action,
+				data: $(form).serialize(),
+				success: function (data) {
+					if (data.success) {
+						$('body').removeClass('modal-open');
+						$('.modal-backdrop').remove();
+						$('#apModal').hide();
+						getData('IntakeRemittanceList', 'IntakeRemittance');
+					} else {
+						return false;
+					}
+				}
+			});
+
+			return false;
+		}
+	</script>
+}

@@ -264,12 +264,12 @@
 			if (param !== '' && param !== 'undefined' /*&& !isNaN(param)*/)
 				_param = '/' + param;
 
-            debugger;
+			debugger;
 
 			$.ajax({
 				url: '@Helper.GetPresentationAddress()' + controllerName + "/" + actionName + "?param=uyuyu" /*_param*/,
-                type: "GET",
-                data: {}
+				type: "GET",
+				data: {}
 			}).done(function (result) {
 				if (level === 0) {
 					$("#board").html("در حال بارگذاری ...");

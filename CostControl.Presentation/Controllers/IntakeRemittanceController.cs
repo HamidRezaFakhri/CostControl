@@ -1,150 +1,162 @@
 ﻿namespace CostControl.Presentation.Controllers
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using CostControl.BusinessEntity.Models.CostControl;
-	using Microsoft.AspNetCore.Mvc;
-	using Microsoft.AspNetCore.Mvc.Rendering;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using CostControl.BusinessEntity.Models.CostControl;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Rendering;
 
-	public class IntakeRemittanceController : BaseController
-	{
-		public IActionResult IntakeRemittanceList(string param)
-		{
-			ViewData["title"] = Helper.GetEntityTitle<IntakeRemittance>(EnumTitle.List);
+    public class IntakeRemittanceController : BaseController
+    {
+        public IActionResult IntakeRemittanceList(string param)
+        {
+            ViewData["title"] = Helper.GetEntityTitle<IntakeRemittance>(EnumTitle.List);
 
-			return View(Helper.GetServiceResponse<IntakeRemittance>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1"));
-		}
+            return View(Helper.GetServiceResponse<IntakeRemittance>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1"));
+        }
 
-		private IEnumerable<SelectListItem> GetSaleCostPointGroupList(long? selected = null)
-		=> Helper.GetServiceResponseList<SaleCostPoint>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1")
-				.OrderBy(o => o.SalePointName)
-				.Select(c => new SelectListItem()
-				{
-					Text = $"{c.SalePointName} - {c.CostPointName}",
-					Value = c.Id.ToString(),
-					Selected = selected == null ? false : c.Id == selected
-				})
-				.ToList();
+        private IEnumerable<SelectListItem> GetSaleCostPointGroupList(long? selected = null)
+        => Helper.GetServiceResponseList<SaleCostPoint>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1")
+                .OrderBy(o => o.SalePointName)
+                .Select(c => new SelectListItem()
+                {
+                    Text = $"{c.SalePointName} - {c.CostPointName}",
+                    Value = c.Id.ToString(),
+                    Selected = selected == null ? false : c.Id == selected
+                })
+                .ToList();
 
-		public IActionResult AddIntakeRemittance()
-		{
-			ViewData["title"] = Helper.GetEntityTitle<IntakeRemittance>(EnumTitle.Add);
+        public IActionResult AddIntakeRemittance()
+        {
+            ViewData["title"] = Helper.GetEntityTitle<IntakeRemittance>(EnumTitle.Add);
 
-			ViewBag.SaleCostPoint = GetSaleCostPointGroupList();
+            ViewBag.SaleCostPoint = GetSaleCostPointGroupList();
 
-			return PartialView();
-		}
+            return PartialView();
+        }
 
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public IActionResult AddIntakeRemittance(IntakeRemittance IntakeRemittance)
-		{
-			HttpContext.Session.TryGetValue("IUI", out byte[] session);
-			string currentUserId = session.LastOrDefault().ToString();
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddIntakeRemittance(IntakeRemittance IntakeRemittance)
+        {
+            HttpContext.Session.TryGetValue("IUI", out byte[] session);
+            string currentUserId = session.LastOrDefault().ToString();
 
-			IntakeRemittance.RegisteredUserId = Convert.ToInt64(currentUserId);
+            IntakeRemittance.RegisteredUserId = Convert.ToInt64(currentUserId);
 
-			IntakeRemittance.IntakeFromDate = IntakeRemittance.IntakeFromDate.StartOfDay();
-			IntakeRemittance.IntakeToDate = IntakeRemittance.IntakeFromDate.EndOfDay();
+            IntakeRemittance.IntakeFromDate = IntakeRemittance.IntakeFromDate.StartOfDay();
+            IntakeRemittance.IntakeToDate = IntakeRemittance.IntakeFromDate.EndOfDay();
 
-			if (ModelState.IsValid)
-			{ 
-				var postResult = Helper.PostValueToSevice<IntakeRemittance>("POST", IntakeRemittance);
+            if (ModelState.IsValid)
+            {
+                var postResult = Helper.PostValueToSevice<IntakeRemittance>("POST", IntakeRemittance);
 
-				return Json(new { success = postResult.result, message = postResult.message });
-			}
+                return Json(new { success = postResult.result, message = postResult.message });
+            }
 
-			return Json(new
-			{
-				model = IntakeRemittance,
-				success = false,
-				message = ModelState
-							.Values
-							.FirstOrDefault(e => e.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
-							.Errors
-							.FirstOrDefault()
-							.ErrorMessage ?? "Model Is Not Vald!"
-			});
-		}
+            return Json(new
+            {
+                model = IntakeRemittance,
+                success = false,
+                message = ModelState
+                            .Values
+                            .FirstOrDefault(e => e.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+                            .Errors
+                            .FirstOrDefault()
+                            .ErrorMessage ?? "Model Is Not Vald!"
+            });
+        }
 
-		public IActionResult EditIntakeRemittance(long id)
-		{
-			ViewData["title"] = Helper.GetEntityTitle<IntakeRemittance>(EnumTitle.Edit);
+        public IActionResult EditIntakeRemittance(long id)
+        {
+            ViewData["title"] = Helper.GetEntityTitle<IntakeRemittance>(EnumTitle.Edit);
 
-			var model = GetIntakeRemittanceById(id);
+            var model = GetIntakeRemittanceById(id);
 
-			ViewBag.SaleCostPoint = GetSaleCostPointGroupList(model?.SaleCostPointId);
+            ViewBag.SaleCostPoint = GetSaleCostPointGroupList(model?.SaleCostPointId);
 
-			return PartialView(model);
-		}
+            return PartialView(model);
+        }
 
-		[HttpPost]
-		public IActionResult EditIntakeRemittance(long id, IntakeRemittance IntakeRemittance)
-		{
-			HttpContext.Session.TryGetValue("IUI", out byte[] session);
-			string currentUserId = session.LastOrDefault().ToString();
+        [HttpPost]
+        public IActionResult EditIntakeRemittance(long id, IntakeRemittance IntakeRemittance)
+        {
+            if (id != IntakeRemittance.Id)
+            {
+                throw new Exception("Invalid Object");
+            }
 
-			IntakeRemittance.RegisteredUserId = Convert.ToInt64(currentUserId);
+            HttpContext.Session.TryGetValue("IUI", out byte[] session);
+            string currentUserId = session.LastOrDefault().ToString();
 
-			if (ModelState.IsValid)
-			{
-				IntakeRemittance.State = BusinessEntity.Models.Base.Enums.ObjectState.Active;
+            IntakeRemittance.RegisteredUserId = Convert.ToInt64(currentUserId);
 
-				var postResult = Helper.PostValueToSevice<IntakeRemittance>("PUT?id=" + IntakeRemittance.Id.ToString(), IntakeRemittance);
+            if (ModelState.IsValid)
+            {
+                IntakeRemittance.State = BusinessEntity.Models.Base.Enums.ObjectState.Active;
 
-				return Json(new { success = postResult.result, message = postResult.message });
-			}
+                var postResult = Helper.PostValueToSevice<IntakeRemittance>("PUT?id=" + IntakeRemittance.Id.ToString(), IntakeRemittance);
 
-			return Json(new
-			{
-				model = IntakeRemittance,
-				success = false,
-				message = ModelState
-							.Values
-							.FirstOrDefault(e => e.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
-							.Errors
-							.FirstOrDefault()
-							.ErrorMessage ?? "Model Is Not Vald!"
-			});
-		}
+                return Json(new { success = postResult.result, message = postResult.message });
+            }
 
-		public IActionResult DeleteIntakeRemittance(long id)
-		{
-			ViewData["title"] = Helper.GetEntityTitle<IntakeRemittance>(EnumTitle.Delete);
+            return Json(new
+            {
+                model = IntakeRemittance,
+                success = false,
+                message = ModelState
+                            .Values
+                            .FirstOrDefault(e => e.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+                            .Errors
+                            .FirstOrDefault()
+                            .ErrorMessage ?? "Model Is Not Vald!"
+            });
+        }
 
-			return PartialView(GetIntakeRemittanceById(id));
-		}
+        public IActionResult DeleteIntakeRemittance(long id)
+        {
+            ViewData["title"] = Helper.GetEntityTitle<IntakeRemittance>(EnumTitle.Delete);
 
-		[HttpPost]
-		public IActionResult DeleteIntakeRemittance(IntakeRemittance IntakeRemittance)
-		{
-			var postResult = Helper.PostValueToSevice<IntakeRemittance>("Delete?id=" + IntakeRemittance.Id.ToString(), IntakeRemittance);
+            return PartialView(GetIntakeRemittanceById(id));
+        }
 
-			return Json(new { success = postResult.result, message = postResult.message });
-		}
+        [HttpPost]
+        public IActionResult DeleteIntakeRemittance(IntakeRemittance IntakeRemittance)
+        {
+            var postResult = Helper.PostValueToSevice<IntakeRemittance>("Delete?id=" + IntakeRemittance.Id.ToString(), IntakeRemittance);
 
-		public IActionResult DetailIntakeRemittance(long id)
-		{
-			ViewData["title"] = Helper.GetEntityTitle<CostControl.BusinessEntity.Models.CostControl.IntakeRemittanceItem>(EnumTitle.Details);
+            return Json(new { success = postResult.result, message = postResult.message });
+        }
 
-			return PartialView("~/Views/IntakeRemittance/IntakeRemittanceItemList.cshtml",
-				GetIntakeRemittanceById(id)?.IntakeRemittanceItems);
-		}
-		
-		[HttpPost]
-		public IActionResult ConfirmIntakeRemittance(IntakeRemittance IntakeRemittance)
-		{
-			var postResult = Helper.PostValueToSevice<IntakeRemittance>("Delete?id=" + IntakeRemittance.Id.ToString(), IntakeRemittance);
+        public IActionResult DetailIntakeRemittance(long id)
+        {
+            ViewData["title"] = Helper.GetEntityTitle<CostControl.BusinessEntity.Models.CostControl.IntakeRemittanceItem>(EnumTitle.Details);
 
-			return Json(new { success = postResult.result, message = postResult.message });
-		}
+            return PartialView("~/Views/IntakeRemittance/IntakeRemittanceItemList.cshtml",
+                GetIntakeRemittanceById(id)?.IntakeRemittanceItems);
+        }
 
-		private IntakeRemittance GetIntakeRemittanceById(long id)
-		{
-			var data = Helper.GetServiceResponse<IntakeRemittance>("GetById?id=" + id.ToString())?.data;
+        public IActionResult ConfirmIntakeRemittance(long id)
+        {
+            ViewData["title"] = Helper.GetEntityTitle<IntakeRemittance>(EnumTitle.Delete);
 
-			return data == null ? null : (data as List<IntakeRemittance>).FirstOrDefault();
-		}
-	}
+            return PartialView(GetIntakeRemittanceById(id));
+        }
+
+        [HttpPost]
+        public IActionResult ConfirmIntakeRemittance(long id, IntakeRemittance IntakeRemittance)
+        {
+            var postResult = Helper.PostValueToSevice<IntakeRemittance>("Confirm?id=" + IntakeRemittance.Id.ToString(), IntakeRemittance);
+
+            return Json(new { success = postResult.result, message = postResult.message });
+        }
+
+        private IntakeRemittance GetIntakeRemittanceById(long id)
+        {
+            var data = Helper.GetServiceResponse<IntakeRemittance>("GetById?id=" + id.ToString())?.data;
+
+            return data == null ? null : (data as List<IntakeRemittance>).FirstOrDefault();
+        }
+    }
 }
