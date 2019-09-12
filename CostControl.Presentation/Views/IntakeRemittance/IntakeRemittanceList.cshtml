@@ -40,32 +40,31 @@
 					@if (!item.IsConfirmed)
 					{
 						<a href="#" class="btn btn-sm btn-warning"
-						   onclick="EditEntityModal(@item.Id, 'IntakeRemittance/EditIntakeRemittance/', '@editTitle (@item.Id)')">
+						   onclick="EditEntityModal(@item.Id, 'IntakeRemittance/EditIntakeRemittance/', '@editTitle (@item.Id @item.IntakeFromDate.ConverToPersian())')">
 							<i class="fa fa-edit"><span> ویرایش </span></i>
 						</a>
 
 						<span> | </span>
 						<span class="btn btn-sm btn-outline-dark"
-							  onclick="EditEntityModal(@item.Id, 'IntakeRemittance/DetailIntakeRemittance/', '@detailsTitle', '@item.Id')">
-							<i class="fa"><span> جزئیات </span></i>
+							  onclick="EditEntityModal(@item.Id, 'IntakeRemittance/DetailIntakeRemittance/', '@detailsTitle', '@item.Id @item.IntakeFromDate.ConverToPersian()')">
+							<i class="fa fa-info-circle"><span> جزئیات </span></i>
 						</span>
 
 						<span class="ui-slider-vertical"> | </span>
 						<span class="btn btn-sm btn-danger"
-							  onclick="DeleteEntityModal(@item.Id, 'IntakeRemittance/DeleteIntakeRemittance/', '@deleteTitle', '@item.Id')">
+							  onclick="DeleteEntityModal(@item.Id, 'IntakeRemittance/DeleteIntakeRemittance/', '@deleteTitle', '@item.Id @item.IntakeFromDate.ConverToPersian()')">
 							<i class="fa fa-trash"><span> حذف </span></i>
 						</span>
 
 						<span> | </span>
-						<span class="btn btn-sm btn-danger"
-							  onclick="DeleteEntityModal(@item.Id, 'IntakeRemittance/DeleteIntakeRemittance/', '@deleteTitle', '@item.Id')">
-							<i class="fa fa-trash"><span> افزودن </span></i>
+						<span class="btn btn-sm btn-success">
+							<i class="fa fa-hand-o-up"><span> افزودن دستی </span></i>
 						</span>
 
 						<span> | </span>
 						<span class="btn btn-sm btn-primary"
 							  onclick="DeleteEntityModal(@item.Id, 'IntakeRemittance/ConfirmIntakeRemittance/', '@editTitle', '@item.Id')">
-							<i class="fa "><span> تائید </span></i>
+							<i class="fa fa-check"><span> تائید </span></i>
 						</span>
 					}
 				</td>

@@ -18,11 +18,11 @@
 		public long SaleCostPointId { get; set; }
 
 		[Required(ErrorMessage = "تاریخ حواله اجباریست!")]
-		[Display(Name = "تاریخ شروع حواله")]
+		[Display(Name = "تاریخ حواله")]
 		public DateTime IntakeFromDate { get; set; }
 
-		[Required(ErrorMessage = "تاریخ حواله اجباریست!")]
-		[Display(Name = "تاریخ پایان حواله")]
+		//[Required(ErrorMessage = "تاریخ حواله اجباریست!")]
+		//[Display(Name = "تاریخ پایان حواله")]
 		public DateTime IntakeToDate { get; set; }
 
 		[DataType(DataType.MultilineText)]
@@ -52,15 +52,15 @@
 				yield return new ValidationResult(ValidationMessages.CanNotBeEmpty(nameof(IntakeFromDate)), new[] { nameof(IntakeFromDate) });
 			}
 
-			if (IntakeToDate == null || IntakeToDate == default(DateTime))
-			{
-				yield return new ValidationResult(ValidationMessages.CanNotBeEmpty(nameof(IntakeToDate)), new[] { nameof(IntakeToDate) });
-			}
+			//if (IntakeToDate == null || IntakeToDate == default(DateTime))
+			//{
+			//	yield return new ValidationResult(ValidationMessages.CanNotBeEmpty(nameof(IntakeToDate)), new[] { nameof(IntakeToDate) });
+			//}
 
-			if (IntakeToDate <= IntakeFromDate)
-			{
-				yield return new ValidationResult(ValidationMessages.CanNotBeEmpty(nameof(IntakeFromDate)), new[] { nameof(IntakeFromDate) });
-			}
+			//if (IntakeToDate <= IntakeFromDate)
+			//{
+			//	yield return new ValidationResult(ValidationMessages.CanNotBeEmpty(nameof(IntakeFromDate)), new[] { nameof(IntakeFromDate) });
+			//}
 			#endregion
 		}
 	}

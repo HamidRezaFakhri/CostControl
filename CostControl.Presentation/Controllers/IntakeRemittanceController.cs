@@ -45,6 +45,9 @@
 
 			IntakeRemittance.RegisteredUserId = Convert.ToInt64(currentUserId);
 
+			IntakeRemittance.IntakeFromDate = IntakeRemittance.IntakeFromDate.StartOfDay();
+			IntakeRemittance.IntakeToDate = IntakeRemittance.IntakeFromDate.EndOfDay();
+
 			if (ModelState.IsValid)
 			{ 
 				var postResult = Helper.PostValueToSevice<IntakeRemittance>("POST", IntakeRemittance);

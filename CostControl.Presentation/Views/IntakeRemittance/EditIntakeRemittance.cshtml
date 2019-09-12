@@ -16,7 +16,7 @@
 				@Html.LabelFor(model => model.SaleCostPointId, htmlAttributes: new { @class = "control-label col-md-12" })
 				<div class="col-md-12">
 					@Html.DropDownListFor(model => model.SaleCostPointId, ViewBag.SaleCostPoint as IEnumerable<SelectListItem>,
-							"انتخاب کنید ...", htmlAttributes: new { @class = "selectpicker form-control" })
+							"انتخاب کنید ...", htmlAttributes: new { @class = "selectpicker form-control", @disabled = "disabled" })
 					@Html.ValidationMessageFor(model => model.SaleCostPointId, "", new { @class = "text-danger" })
 				</div>
 			</div>
@@ -27,12 +27,12 @@
 				@Html.LabelFor(model => model.IntakeFromDate, htmlAttributes: new { @class = "control-label col-md-12" })
 				<div class="col-md-12">
 					<input id="IntakeFromDate" name="IntakeFromDate" type="text" class="form-control"
-						   placeholder="1398/01/01" autocomplete="off"  value="@Model.IntakeFromDate.ConverToPersian()"/>
+						   placeholder="1398/01/01" autocomplete="off"  value="@Model.IntakeFromDate.ConverToPersian()" disabled />
 				</div>
 			</div>
 		</div>
 
-		<div class="form-group col col-md-12">
+		@*<div class="form-group col col-md-12">
 			<div class="form-group">
 				@Html.LabelFor(model => model.IntakeToDate, htmlAttributes: new { @class = "control-label col-md-12" })
 				<div class="col-md-12">
@@ -40,7 +40,7 @@
 						   placeholder="1398/01/01" autocomplete="off"  value="@Model.IntakeToDate.ConverToPersian()"/>
 				</div>
 			</div>
-		</div>
+		</div>*@
 
 		<div class="form-group col col-md-12">
 			<div class="form-group">
