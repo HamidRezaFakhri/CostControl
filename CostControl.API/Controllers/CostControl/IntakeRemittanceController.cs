@@ -42,8 +42,16 @@
 			{
 				try
 				{
+					if(!(PDKBusinessLogic as IntakeRemittanceLogic).Confirm(entity))
+					{
+						throw new Exception("Confirm has been failed!?");
+					}
+
+					entity.IsConfirmed = true;
+
+
 					return GenerateResponse(null,
-						new List<IntakeRemittance>() { (PDKBusinessLogic as IntakeRemittanceLogic).Confirm(entity) });
+						new List<IntakeRemittance>() { entity });
 				}
 				catch (Exception e)
 				{

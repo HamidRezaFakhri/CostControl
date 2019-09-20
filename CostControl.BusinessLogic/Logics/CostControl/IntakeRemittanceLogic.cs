@@ -360,30 +360,23 @@
 		public int GetCount(Expression<Func<CostControlBusinessEntity.IntakeRemittance, bool>> filter = null)
 		=> Repository.Count(IntakeRemittanceIMapper.Map<Expression<Func<CostControlEntity.IntakeRemittance, bool>>>(filter));
 
-		public CostControlBusinessEntity.IntakeRemittance Confirm(CostControlBusinessEntity.IntakeRemittance entity)
+		public bool Confirm(CostControlBusinessEntity.IntakeRemittance entity)
 		{
 			if (entity == null || entity.Id <= 0)
 			{
-				return null;
+				return false;
 			}
 
-			var entityFromDb = GetById(entity.Id);
-
-			if (entityFromDb.IsConfirmed)
+			if(entity.IsConfirmed)
 			{
-				return entityFromDb;
+				return true;
 			}
 
-			var IntakeRemittance = IntakeRemittanceIMapper.Map<CostControlEntity.IntakeRemittance>(entityFromDb);
+			Repository.RunRawSql("UPDATE dbo.IntakeRemittance SET IsConfirmed = 1 WHERE Id = {0}", entity.Id);
 
-            Repository.RunRawSql("");
-            _unitOfWork.en
-            IntakeRemittance.IsConfirmed = true;
-
-			var result = IntakeRemittanceIMapper.Map<CostControlBusinessEntity.IntakeRemittance>(Repository.Update(IntakeRemittance));
 			Commit();
 
-			return result;
+			return true;
 		}
 
 		private bool _disposed = false;

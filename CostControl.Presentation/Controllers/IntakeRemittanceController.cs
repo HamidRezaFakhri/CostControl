@@ -82,6 +82,16 @@
         [HttpPost]
         public IActionResult EditIntakeRemittance(long id, IntakeRemittance IntakeRemittance)
         {
+            if (IntakeRemittance == null || IntakeRemittance.Id <= 0)
+            {
+                throw new Exception("Invalid Object");
+            }
+
+            if (IntakeRemittance.IsConfirmed)
+            {
+                throw new Exception("Invalid Object");
+            }
+
             if (id != IntakeRemittance.Id)
             {
                 throw new Exception("Invalid Object");
@@ -131,7 +141,7 @@
 
         public IActionResult DetailIntakeRemittance(long id)
         {
-            ViewData["title"] = Helper.GetEntityTitle<CostControl.BusinessEntity.Models.CostControl.IntakeRemittanceItem>(EnumTitle.Details);
+            ViewData["title"] = Helper.GetEntityTitle<IntakeRemittanceItem>(EnumTitle.Details);
 
             return PartialView("~/Views/IntakeRemittance/IntakeRemittanceItemList.cshtml",
                 GetIntakeRemittanceById(id)?.IntakeRemittanceItems);
