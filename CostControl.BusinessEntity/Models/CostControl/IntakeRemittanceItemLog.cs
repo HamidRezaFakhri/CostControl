@@ -38,7 +38,7 @@
 		[DataType(DataType.MultilineText)]
 		public string Description { get; set; }
 
-		public bool IsAddedManualy { get; set; } = false;
+		public bool IsAddedManually { get; set; } = false;
 
 		public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
 		{

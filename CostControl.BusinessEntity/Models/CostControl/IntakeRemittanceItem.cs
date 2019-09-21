@@ -33,6 +33,8 @@
 
 		public virtual ConsumptionUnit ConsumptionUnit { get; set; }
 
+		public bool IsAddedManually { get; set; }
+
 		[Required(ErrorMessage = "شرح اجباریست!")]
 		[Display(Name = "شرح")]
 		[DataType(DataType.MultilineText)]

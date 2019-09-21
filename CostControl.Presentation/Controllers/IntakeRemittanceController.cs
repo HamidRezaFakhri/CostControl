@@ -134,6 +134,16 @@
         [HttpPost]
         public IActionResult DeleteIntakeRemittance(IntakeRemittance IntakeRemittance)
         {
+            if (IntakeRemittance == null || IntakeRemittance.Id <= 0)
+            {
+                throw new Exception("Invalid Object");
+            }
+
+            if (IntakeRemittance.IsConfirmed)
+            {
+                throw new Exception("Invalid Object");
+            }
+
             var postResult = Helper.PostValueToSevice<IntakeRemittance>("Delete?id=" + IntakeRemittance.Id.ToString(), IntakeRemittance);
 
             return Json(new { success = postResult.result, message = postResult.message });

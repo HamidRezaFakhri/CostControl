@@ -20,8 +20,8 @@ namespace CostControl.Entity.Models.CostControl
 
         [StringLength(1000, MinimumLength = 10,
         ErrorMessage = "Please enter a vlid description, it must be greater than {2} characters and less than {1} characters.")]
-        public string Descripton { get; set; }
+        public string Description { get; set; }
 
-        public bool IsAddedManualy { get; set; } = false;
+        public bool IsAddedManually { get; set; }
     }
 }

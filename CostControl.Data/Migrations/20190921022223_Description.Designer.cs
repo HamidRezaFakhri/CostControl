@@ -4,14 +4,16 @@ using CostControl.Data.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CostControl.Data.Migrations
 {
     [DbContext(typeof(CostControlDbContext))]
-    partial class CostControlDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190921022223_Description")]
+    partial class Description
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -421,7 +423,7 @@ namespace CostControl.Data.Migrations
 
                     b.Property<long>("IntakeRemittanceId");
 
-                    b.Property<bool>("IsAddedManually")
+                    b.Property<bool>("IsAddedManualy")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("0");
 
@@ -462,7 +464,7 @@ namespace CostControl.Data.Migrations
 
                     b.Property<long>("IntakeRemittanceItemId");
 
-                    b.Property<bool>("IsAddedManually");
+                    b.Property<bool>("IsAddedManualy");
 
                     b.Property<int>("State")
                         .ValueGeneratedOnAdd()

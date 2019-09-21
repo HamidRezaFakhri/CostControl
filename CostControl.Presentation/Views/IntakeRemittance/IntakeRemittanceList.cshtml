@@ -30,35 +30,31 @@
 		</tr>
 	</thead>
 	<tbody id="setIntakeRemittanceList">
-		@foreach (CostControl.BusinessEntity.Models.CostControl.IntakeRemittance item in Model.data)
+		@foreach (CostControl.BusinessEntity.Models.CostControl.IntakeRemittance item in Model.data.OrderByDescending(o => o.IntakeFromDate))
 		{
 			<tr id="tr_@item.Id">
 				<td>@item.Id</td>
 				<td id="td_FromDate">@item.IntakeFromDate.ConverToPersian()</td>
 				<td id="td_ToDate">@item.IntakeToDate.ConverToPersian()</td>
 				<td>
+					<a href="#" class="btn btn-sm btn-warning"
+					   onclick="EditEntityModal(@item.Id, 'IntakeRemittance/EditIntakeRemittance/', '@editTitle (@item.Id @item.IntakeFromDate.ConverToPersian())')">
+						<i class="fa fa-edit"><span> ویرایش </span></i>
+					</a>
+
+					<span> | </span>
+					<span class="btn btn-sm btn-outline-dark"
+						  onclick="EditEntityModal(@item.Id, 'IntakeRemittance/DetailIntakeRemittance/', '@detailsTitle', '@item.Id @item.IntakeFromDate.ConverToPersian()')">
+						<i class="fa fa-info-circle"><span> جزئیات </span></i>
+					</span>
+
+					<span class="ui-slider-vertical"> | </span>
+
 					@if (!item.IsConfirmed)
 					{
-						<a href="#" class="btn btn-sm btn-warning"
-						   onclick="EditEntityModal(@item.Id, 'IntakeRemittance/EditIntakeRemittance/', '@editTitle (@item.Id @item.IntakeFromDate.ConverToPersian())')">
-							<i class="fa fa-edit"><span> ویرایش </span></i>
-						</a>
-
-						<span> | </span>
-						<span class="btn btn-sm btn-outline-dark"
-							  onclick="EditEntityModal(@item.Id, 'IntakeRemittance/DetailIntakeRemittance/', '@detailsTitle', '@item.Id @item.IntakeFromDate.ConverToPersian()')">
-							<i class="fa fa-info-circle"><span> جزئیات </span></i>
-						</span>
-
-						<span class="ui-slider-vertical"> | </span>
 						<span class="btn btn-sm btn-danger"
 							  onclick="DeleteEntityModal(@item.Id, 'IntakeRemittance/DeleteIntakeRemittance/', '@deleteTitle', '@item.Id @item.IntakeFromDate.ConverToPersian()')">
 							<i class="fa fa-trash"><span> حذف </span></i>
-						</span>
-
-						<span> | </span>
-						<span class="btn btn-sm btn-success">
-							<i class="fa fa-hand-o-up"><span> افزودن دستی </span></i>
 						</span>
 
 						<span> | </span>

@@ -29,11 +29,16 @@
                 .IsRequired();
 
             entityTypeBuilder
+                .Property(e => e.IsAddedManually)
+                .HasDefaultValue(false)
+                .HasDefaultValueSql("0");
+
+            entityTypeBuilder
                 .HasIndex(e => new { e.IntakeRemittanceId, e.IngredientId })
                 .IsUnique();
 
             entityTypeBuilder
-                .Property(e => e.Descripton)
+                .Property(e => e.Description)
                 .HasMaxLength(1000)
                 .HasColumnType("NVARCHAR(1000)")
                 .IsRequired()

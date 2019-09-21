@@ -7,6 +7,18 @@
 	var deleteTitle = Helper.GetEntityTitle<CostControl.BusinessEntity.Models.CostControl.IntakeRemittanceItem>(EnumTitle.Delete);
 }
 
+
+<div class="row well">
+	<div class="col-md-6">
+		<div class="btn-group" data-toggle="modal">
+			<a id="btnAddIntakeRemittance" href="#" class="btn btn-success">
+				<i class="fa fa-hand-o-up"><span> افزودن دستی </span></i>
+			</a>
+
+		</div>
+	</div>
+</div>
+
 <table id="IntakeRemittanceItemslist" class="table table-bordered table-striped table-hover">
 	<thead>
 		<tr>
@@ -20,20 +32,20 @@
 	</thead>
 	<tbody id="setIntakeRemittanceItemList">
 		@foreach (CostControl.BusinessEntity.Models.CostControl.IntakeRemittanceItem item in Model)
-		{
-		<tr id="tr_@item.Id">
-			<td>@item.Id</td>
-			<td id="td_Ingredient">@item.Ingredient.Name</td>
-			<td id="td_ConsumptionUnit">@item.Ingredient.ConsumptionUnit.Name</td>
-			<td id="td_Amount"><input type="text" value="@item.Amount" /></td>
-			<td id="td_Description"><input type="text" value="@item.Description" /></td>
-			<td>
-				<a href="#" class="btn btn-sm btn-warning"
-				   onclick="EditEntityModal(@item.Id, 'IntakeRemittance/EditIntakeRemittance/', '@editTitle (@item.Id)')">
-					<i class="fa fa-edit"><span> ویرایش </span></i>
-				</a>
-			</td>
-		</tr>
+{
+			<tr id="tr_@item.Id" class="@(item.IsAddedManually ? "table-success" : "")">
+				<td>@item.Id</td>
+				<td id="td_Ingredient_@item.Id">@item.Ingredient.Name</td>
+				<td id="td_ConsumptionUnit_@item.Id">@item.Ingredient.ConsumptionUnit.Name</td>
+				<td id="td_Amount_@item.Id"><input id="txt_Amount_@item.Id" type="text" value="@item.Amount" /></td>
+				<td id="td_Description_@item.Id"><input id="txt_Description_@item.Id" type="text" value="@item.Description" /></td>
+				<td>
+					<a href="#" class="btn btn-sm btn-warning"
+					   onclick="UpdateIntakeRemittanceItem(@item.Id)">
+						<i class="fa fa-edit"><span> ویرایش </span></i>
+					</a>
+				</td>
+			</tr>
 		}
 	</tbody>
 </table>
@@ -47,4 +59,10 @@
 			}
 		});
 	});
+
+	function UpdateIntakeRemittanceItem(id) {
+		
+		alert($('#txt_Amount_' + id).val());
+		alert($('#txt_Description_' + id).val());
+	}
 </script>
