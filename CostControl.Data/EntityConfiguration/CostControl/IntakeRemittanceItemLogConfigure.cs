@@ -35,6 +35,23 @@
                 .IsRequired()
                 .IsUnicode();
 
+
+            entityTypeBuilder
+                .Property(e => e.LogDate)
+                .HasDefaultValue(System.DateTime.Now)
+                .HasDefaultValueSql("GETDATE()")
+                .IsRequired();
+
+            entityTypeBuilder
+                .Property(e => e.LogUserId)
+                .IsRequired();
+
+            entityTypeBuilder
+                .HasOne(e => e.LogUser)
+                .WithMany(iu => iu.IntakeRemittanceItemLogs)
+                .HasForeignKey(oc => oc.LogUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             entityTypeBuilder
                .ToTable("IntakeRemittanceItemLog", "dbo");
         }

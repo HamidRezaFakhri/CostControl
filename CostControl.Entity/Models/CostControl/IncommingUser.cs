@@ -16,5 +16,7 @@
 		public virtual ICollection<Draft> Drafts { get; set; }
 
 		public virtual ICollection<IntakeRemittance> IntakeRemittances { get; set; }
+
+		public virtual ICollection<IntakeRemittanceItemLog> IntakeRemittanceItemLogs { get; set; }
 	}
 }

@@ -157,6 +157,12 @@
                 GetIntakeRemittanceById(id)?.IntakeRemittanceItems);
         }
 
+        [HttpPost]
+        public IActionResult UpdateIntakeRemittanceItem(long id, decimal amount, string description)
+        {
+            return null;
+        }
+
         public IActionResult ConfirmIntakeRemittance(long id)
         {
             ViewData["title"] = Helper.GetEntityTitle<IntakeRemittance>(EnumTitle.Delete);

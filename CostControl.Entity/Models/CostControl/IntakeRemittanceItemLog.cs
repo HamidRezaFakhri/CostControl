@@ -23,5 +23,11 @@ namespace CostControl.Entity.Models.CostControl
         public string Descripton { get; set; }
 
         public bool IsAddedManually { get; set; } = false;
+
+        public System.DateTime LogDate { get; set; }
+
+        public int LogUserId { get; set; }
+
+        public virtual IncommingUser LogUser { get; set; }
     }
 }

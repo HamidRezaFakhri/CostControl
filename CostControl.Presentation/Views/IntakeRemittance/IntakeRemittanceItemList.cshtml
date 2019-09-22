@@ -62,7 +62,24 @@
 
 	function UpdateIntakeRemittanceItem(id) {
 		
-		alert($('#txt_Amount_' + id).val());
-		alert($('#txt_Description_' + id).val());
+		var amount = $('#txt_Amount_' + id).val();
+		var description = $('#txt_Description_' + id).val();
+
+		var dd = { "id": 1, "amount" : amount, "description": description};
+
+			$.ajax({
+				type: "POST",
+				url: '@Helper.GetPresentationAddress()' + '/IntakeRemittance/UpdateIntakeRemittanceItem',
+				data: dd,
+				contentType: "application/json; charset=utf-8",
+				dataType: "json",
+				success: function (data) {
+					if (data.success) {
+						
+					} else {
+
+					}
+				}
+			});
 	}
 </script>
