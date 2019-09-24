@@ -40,6 +40,10 @@
 
 		public bool IsAddedManually { get; set; } = false;
 
+		public System.DateTime LogDate { get; set; } = System.DateTime.Now;
+
+		public long LogUserId { get; set; }
+
 		public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
 		{
 			#region IntakeRemittanceID validation rules

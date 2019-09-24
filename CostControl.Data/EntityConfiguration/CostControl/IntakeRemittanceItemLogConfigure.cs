@@ -29,7 +29,7 @@
                 .IsRequired();
 
             entityTypeBuilder
-                .Property(e => e.Descripton)
+                .Property(e => e.Description)
                 .HasMaxLength(1000)
                 .HasColumnType("NVARCHAR(1000)")
                 .IsRequired()

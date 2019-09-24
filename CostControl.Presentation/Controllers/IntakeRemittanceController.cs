@@ -160,7 +160,44 @@
         [HttpPost]
         public IActionResult UpdateIntakeRemittanceItem(long id, decimal amount, string description)
         {
-            return null;
+            HttpContext.Session.TryGetValue("IUI", out byte[] session);
+            string currentUserId = session.LastOrDefault().ToString();
+
+            if (id <= 0)
+            {
+                return Json(new { success = false, message = "Object is not valid!" });
+            }
+
+            var IntakeRemittanceItem = Helper
+                        .GetServiceResponse<IntakeRemittanceItem>("GetById?id=" + id.ToString())?
+                        .data?
+                        .SingleOrDefault();
+
+            if (IntakeRemittanceItem.Amount != amount || !IntakeRemittanceItem.Description.Equals(description))
+            {
+                var IntakeRemittanceItemLog = new IntakeRemittanceItemLog
+                {
+                    Amount = IntakeRemittanceItem.Amount,
+                    Description = IntakeRemittanceItem.Description,
+                    ConsumptionUnitId = IntakeRemittanceItem.ConsumptionUnitId,
+                    IngredientId = IntakeRemittanceItem.IngredientId,
+                    IsAddedManually = IntakeRemittanceItem.IsAddedManually,
+                    IntakeRemittanceItemId = IntakeRemittanceItem.Id,
+                    LogDate = DateTime.Now,
+                    LogUserId = Convert.ToInt64(currentUserId),
+                    State = BusinessEntity.Models.Base.Enums.ObjectState.Active
+            };
+
+                var IRILpostResult = Helper.PostValueToSevice<IntakeRemittanceItemLog>("POST", IntakeRemittanceItemLog);
+
+                IntakeRemittanceItem.State = BusinessEntity.Models.Base.Enums.ObjectState.Active;
+                IntakeRemittanceItem.Amount = amount;
+                IntakeRemittanceItem.Description = description;
+
+                var IRIpostResult = Helper.PostValueToSevice<IntakeRemittanceItem>("PUT?id=" + IntakeRemittanceItem.Id.ToString(), IntakeRemittanceItem);
+            }
+
+            return Json(new { success = true, message = "OK" });
         }
 
         public IActionResult ConfirmIntakeRemittance(long id)

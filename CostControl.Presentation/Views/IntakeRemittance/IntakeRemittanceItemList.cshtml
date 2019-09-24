@@ -7,8 +7,7 @@
 	var deleteTitle = Helper.GetEntityTitle<CostControl.BusinessEntity.Models.CostControl.IntakeRemittanceItem>(EnumTitle.Delete);
 }
 
-
-<div class="row well">
+@*<div class="row well">
 	<div class="col-md-6">
 		<div class="btn-group" data-toggle="modal">
 			<a id="btnAddIntakeRemittance" href="#" class="btn btn-success">
@@ -17,7 +16,7 @@
 
 		</div>
 	</div>
-</div>
+</div>*@
 
 <table id="IntakeRemittanceItemslist" class="table table-bordered table-striped table-hover">
 	<thead>
@@ -60,24 +59,26 @@
 		});
 	});
 
-	function UpdateIntakeRemittanceItem(id) {
+	function UpdateIntakeRemittanceItem(_id) {
 		
-		var amount = $('#txt_Amount_' + id).val();
-		var description = $('#txt_Description_' + id).val();
+		var _amount = $('#txt_Amount_' + _id).val();
+		var _description = $('#txt_Description_' + _id).val();
 
-		var dd = { "id": 1, "amount" : amount, "description": description};
+		var _data = { id: _id, amount: _amount, description: _description};
+
+		var _url = '@Helper.GetPresentationAddress()' + 'IntakeRemittance/UpdateIntakeRemittanceItem';
+
+		debugger;
 
 			$.ajax({
 				type: "POST",
-				url: '@Helper.GetPresentationAddress()' + '/IntakeRemittance/UpdateIntakeRemittanceItem',
-				data: dd,
-				contentType: "application/json; charset=utf-8",
-				dataType: "json",
+				url: _url,
+				data: _data,
 				success: function (data) {
 					if (data.success) {
 						
 					} else {
-
+						alert('Error in updating data!');
 					}
 				}
 			});
