@@ -24,8 +24,7 @@
 	<thead>
 		<tr>
 			<th>شناسه</th>
-			<th>شروع</th>
-			<th>پایان</th>
+			<th>تاریخ حواله</th>
 			<th></th>
 		</tr>
 	</thead>
@@ -35,7 +34,7 @@
 			<tr id="tr_@item.Id">
 				<td>@item.Id</td>
 				<td id="td_FromDate">@item.IntakeFromDate.ConverToPersian()</td>
-				<td id="td_ToDate">@item.IntakeToDate.ConverToPersian()</td>
+				
 				<td>
 					<a href="#" class="btn btn-sm btn-warning"
 					   onclick="EditEntityModal(@item.Id, 'IntakeRemittance/EditIntakeRemittance/', '@editTitle (@item.Id @item.IntakeFromDate.ConverToPersian())')">

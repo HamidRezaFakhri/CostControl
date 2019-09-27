@@ -149,9 +149,26 @@
             return Json(new { success = postResult.result, message = postResult.message });
         }
 
+        private IEnumerable<Ingredient> GetIngredients()
+            => Helper.GetServiceResponseList<Ingredient>("Get?PageNumber=1&PageSize=1000&searchKey=null&SortOrder=id&token=1");
+
+        private IEnumerable<SelectListItem> GetIngredienList(long? selected = null)
+            => GetIngredients()
+                      .OrderBy(o => o.Name)
+                      .Select(c => new SelectListItem()
+                      {
+                          Text = $"{c.Name} ({c.ConsumptionUnit.Name})",
+                          Value = c.Id.ToString(),
+                          Selected = selected == null ? false : c.Id == selected
+                      })
+                      .ToList();
+
         public IActionResult DetailIntakeRemittance(long id)
         {
             ViewData["title"] = Helper.GetEntityTitle<IntakeRemittanceItem>(EnumTitle.Details);
+
+
+            ViewBag.Ingredients = GetIngredienList();
 
             return PartialView("~/Views/IntakeRemittance/IntakeRemittanceItemList.cshtml",
                 GetIntakeRemittanceById(id)?.IntakeRemittanceItems);

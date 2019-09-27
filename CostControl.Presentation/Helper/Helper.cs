@@ -1,5 +1,7 @@
 ﻿namespace CostControl.Presentation
 {
+	using CostControl.API.Models;
+	using CostControl.BusinessEntity.Models.Base.Interfaces;
 	using System;
 	using System.Collections.Generic;
 	using System.ComponentModel.DataAnnotations;
@@ -8,9 +10,6 @@
 	using System.Net.Http;
 	using System.Net.Http.Headers;
 	using System.Reflection;
-	using CostControl.API.Models;
-	using CostControl.BusinessEntity.Models.Base.Interfaces;
-	using CostControl.BusinessEntity.Models.CostControl;
 
 	public enum EnumTitle
 	{

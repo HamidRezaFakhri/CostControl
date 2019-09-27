@@ -7,16 +7,66 @@
 	var deleteTitle = Helper.GetEntityTitle<CostControl.BusinessEntity.Models.CostControl.IntakeRemittanceItem>(EnumTitle.Delete);
 }
 
-@*<div class="row well">
-	<div class="col-md-6">
-		<div class="btn-group" data-toggle="modal">
-			<a id="btnAddIntakeRemittance" href="#" class="btn btn-success">
+<div id="manualAdd" class="row well">
+	<div class="col-md-12">
+		<div class="btn-group">
+			<a id="btnAddIntakeRemittance" href="#" class="btn btn-success" onclick="ManualAdd()">
 				<i class="fa fa-hand-o-up"><span> افزودن دستی </span></i>
 			</a>
 
 		</div>
 	</div>
-</div>*@
+</div>
+
+<div id="manualDiv" class="well" style="display: none">
+	@*<div class="form-group col col-md-7">
+			@Html.LabelFor(model => model.IngredientId, htmlAttributes: new { @class = "control-label col-md-12" })
+			<div class="col-md-12">
+				@Html.DropDownListFor(model => model.IngredientId, ViewBag.Ingredients as IEnumerable<SelectListItem>,
+						"انتخاب کنید ...", htmlAttributes: new { @class = "selectpicker form-control" })
+				@Html.ValidationMessageFor(model => model.IngredientId, "", new { @class = "text-danger" })
+			</div>
+		</div>*@
+
+	<div id="div_source1" class="form-group col col-md-12">
+		<div class="form-group">
+			<div class="col-md-12">
+				<label class="control-label col-md-9">مواد مصرفی</label>
+				<select id="selectIngredient" class="form-control col-md-9">
+					<option value="-1">انتخاب کنید...</option>
+				</select>
+			</div>
+		</div>
+	</div>
+
+	<div class="form-group col col-md-12">
+		<div class="form-group">
+			<div class="col-md-12">
+				<label class="control-label col-md-9">مقدار</label>
+				<input class="form-control col-md-9" id="manual_amount" type="number" />
+			</div>
+		</div>
+	</div>
+
+	<div class="form-group col col-md-12">
+		<div class="form-group">
+			<div class="col-md-12">
+				<label class="control-label col-md-9">شرح</label>
+				<textarea class="form-control col-md-9" rows="4" cols="50" id="manual_desc" />
+			</div>
+		</div>
+	</div>
+
+	<div class="form-group col col-md-12">
+		<div class="form-group">
+			<div class="col-md-12">
+				<a id="btnAddIntakeRemittance" href="#" class="btn btn-primary col-md-9" onclick="ManualSubmit()">
+					<i class="fa fa-save"><span> ثبت </span></i>
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
 
 <table id="IntakeRemittanceItemslist" class="table table-bordered table-striped table-hover">
 	<thead>
@@ -31,7 +81,7 @@
 	</thead>
 	<tbody id="setIntakeRemittanceItemList">
 		@foreach (CostControl.BusinessEntity.Models.CostControl.IntakeRemittanceItem item in Model)
-{
+		{
 			<tr id="tr_@item.Id" class="@(item.IsAddedManually ? "table-success" : "")">
 				<td>@item.Id</td>
 				<td id="td_Ingredient_@item.Id">@item.Ingredient.Name</td>
@@ -56,11 +106,40 @@
 			"language": {
 				"url": "/lib/DataTables/i18n/Persian.lang.json"
 			}
-		});
+        });
+
+        setDropDown();
 	});
 
+    function setDropDown() {
+  //      $('#selectIngredient').html('');
+		//var options = '';
+		//options += '<option value="Select">Select</option>';
+
+        var ingredients = @ViewBag.Ingredients;
+    
+        $.each(ingredients, function (value) {
+            console.log(value);
+        });
+
+		@*for (var item in @(ViewBag.Ingredients as IEnumerable<SelectListItem>)) {
+			options += '<option value="' + item.Value + '">' + item.Text + '</option>';
+					}*@
+					//$('#selectIngredient').append(options);
+    }
+
+	function ManualAdd() {
+		$('#manualDiv').show();
+		$('#manualAdd').hide();
+	}
+
+	function ManualSubmit() {
+		$('#manualDiv').hide();
+		$('#manualAdd').show();
+	}
+
 	function UpdateIntakeRemittanceItem(_id) {
-		
+
 		var _amount = $('#txt_Amount_' + _id).val();
 		var _description = $('#txt_Description_' + _id).val();
 
@@ -68,15 +147,13 @@
 
 		var _url = '@Helper.GetPresentationAddress()' + 'IntakeRemittance/UpdateIntakeRemittanceItem';
 
-		debugger;
-
 			$.ajax({
 				type: "POST",
 				url: _url,
 				data: _data,
 				success: function (data) {
 					if (data.success) {
-						
+
 					} else {
 						alert('Error in updating data!');
 					}
