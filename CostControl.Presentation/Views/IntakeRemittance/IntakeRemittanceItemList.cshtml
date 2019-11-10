@@ -19,53 +19,45 @@
 </div>
 
 <div id="manualDiv" class="well" style="display: none">
-	@*<div class="form-group col col-md-7">
-			@Html.LabelFor(model => model.IngredientId, htmlAttributes: new { @class = "control-label col-md-12" })
-			<div class="col-md-12">
-				@Html.DropDownListFor(model => model.IngredientId, ViewBag.Ingredients as IEnumerable<SelectListItem>,
-						"انتخاب کنید ...", htmlAttributes: new { @class = "selectpicker form-control" })
-				@Html.ValidationMessageFor(model => model.IngredientId, "", new { @class = "text-danger" })
-			</div>
-		</div>*@
+    <div id="div_source1" class="form-group col col-md-12">
+        <div class="form-group">
+            <div class="col-md-12">
+                <label class="control-label">مواد مصرفی</label>
+                @Html.DropDownList("Value", new SelectList(ViewBag.Ingredients as IEnumerable<SelectListItem>, "Value", "Text"), "انتخاب کنید...",
+                    new { @id = "selectIngredient", @class = "selectpicker form-control" })
 
-	<div id="div_source1" class="form-group col col-md-12">
-		<div class="form-group">
-			<div class="col-md-12">
-				<label class="control-label col-md-9">مواد مصرفی</label>
-				<select id="selectIngredient" class="form-control col-md-9">
-					<option value="-1">انتخاب کنید...</option>
-				</select>
-			</div>
-		</div>
-	</div>
+                @Html.Hidden("IngredientName", null, new { @id = "hiddenIngredientName" })
+            </div>
+        </div>
+    </div>
 
-	<div class="form-group col col-md-12">
-		<div class="form-group">
-			<div class="col-md-12">
-				<label class="control-label col-md-9">مقدار</label>
-				<input class="form-control col-md-9" id="manual_amount" type="number" />
-			</div>
-		</div>
-	</div>
+    <div class="form-group col col-md-12">
+        <div class="form-group">
+            <div class="col-md-12">
+                <label class="control-label">مقدار</label>
+                <input class="form-control" id="manual_amount" type="number" />
+            </div>
+        </div>
+    </div>
 
-	<div class="form-group col col-md-12">
-		<div class="form-group">
-			<div class="col-md-12">
-				<label class="control-label col-md-9">شرح</label>
-				<textarea class="form-control col-md-9" rows="4" cols="50" id="manual_desc" />
-			</div>
-		</div>
-	</div>
+    <div class="form-group col col-md-12">
+        <div class="form-group">
+            <div class="col-md-12">
+                <label class="control-label">شرح</label>
+                <textarea class="form-control" rows="4" cols="50" id="manual_desc" />
+            </div>
+        </div>
+    </div>
 
-	<div class="form-group col col-md-12">
-		<div class="form-group">
-			<div class="col-md-12">
-				<a id="btnAddIntakeRemittance" href="#" class="btn btn-primary col-md-9" onclick="ManualSubmit()">
-					<i class="fa fa-save"><span> ثبت </span></i>
-				</a>
-			</div>
-		</div>
-	</div>
+    <div class="form-group col col-md-12">
+        <div class="form-group">
+            <div class="col-md-12">
+                <a id="btnAddIntakeRemittance" href="#" class="btn btn-primary col-md-12" onclick="ManualSubmit()">
+                    <i class="fa fa-save"><span> ثبت </span></i>
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
 
 <table id="IntakeRemittanceItemslist" class="table table-bordered table-striped table-hover">
@@ -106,27 +98,12 @@
 			"language": {
 				"url": "/lib/DataTables/i18n/Persian.lang.json"
 			}
-        });
-
-        setDropDown();
+		});
 	});
 
-    function setDropDown() {
-  //      $('#selectIngredient').html('');
-		//var options = '';
-		//options += '<option value="Select">Select</option>';
-
-        var ingredients = @ViewBag.Ingredients;
-    
-        $.each(ingredients, function (value) {
-            console.log(value);
-        });
-
-		@*for (var item in @(ViewBag.Ingredients as IEnumerable<SelectListItem>)) {
-			options += '<option value="' + item.Value + '">' + item.Text + '</option>';
-					}*@
-					//$('#selectIngredient').append(options);
-    }
+    $("body").on("change", "#selectIngredient", function () {
+            $("#hiddenIngredientName").val($(this).find("option:selected").text());
+    });
 
 	function ManualAdd() {
 		$('#manualDiv').show();
@@ -135,11 +112,13 @@
 
 	function ManualSubmit() {
 		$('#manualDiv').hide();
-		$('#manualAdd').show();
+        $('#manualAdd').show();
+
+        alert($(this).find("option:selected").text());
+        alert($(this).find("option:selected").val());
 	}
 
 	function UpdateIntakeRemittanceItem(_id) {
-
 		var _amount = $('#txt_Amount_' + _id).val();
 		var _description = $('#txt_Description_' + _id).val();
 
